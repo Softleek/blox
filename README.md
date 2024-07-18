@@ -14,7 +14,16 @@ Before installing Blox CLI, ensure you have the following installed on your syst
 
 ### Setup Environment
 
-#### 1. Create a Virtual Environment (Optional but recommended)
+#### 1. Clone the Repository
+
+Clone your Blox project repository from GitHub:
+
+```bash
+git clone https://github.com/Softleek/blox.git
+cd blox
+```
+
+#### 2. Create a Virtual Environment
 
 It's a good practice to use a virtual environment to isolate your project dependencies from other Python projects.
 
@@ -43,15 +52,6 @@ Activate the virtual environment:
   ```bash
   source env/bin/activate
   ```
-
-#### 2. Clone the Repository
-
-Clone your Blox project repository from GitHub:
-
-```bash
-git clone https://github.com/Softleek/blox.git
-cd blox
-```
 
 ### Install Blox CLI
 
