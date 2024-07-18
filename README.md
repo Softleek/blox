@@ -24,6 +24,12 @@ It's a good practice to use a virtual environment to isolate your project depend
 python -m venv env
 ```
 
+or
+
+```bash
+python3 -m venv env
+```
+
 Activate the virtual environment:
 
 - **Windows:**
