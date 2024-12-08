@@ -1,0 +1,4184 @@
+[
+    {
+        "id": "frappe",
+        "name": "frappe",
+        "modules": [
+            {
+                "id": "core",
+                "name": "Core",
+                "docs": [
+                    {
+                        "id": "access_log",
+                        "name": "Access Log"
+                    },
+                    {
+                        "id": "activity_log",
+                        "name": "Activity Log"
+                    },
+                    {
+                        "id": "amended_document_naming_settings",
+                        "name": "Amended Document Naming Settings"
+                    },
+                    {
+                        "id": "audit_trail",
+                        "name": "Audit Trail"
+                    },
+                    {
+                        "id": "block_module",
+                        "name": "Block Module"
+                    },
+                    {
+                        "id": "comment",
+                        "name": "Comment"
+                    },
+                    {
+                        "id": "communication",
+                        "name": "Communication"
+                    },
+                    {
+                        "id": "communication_link",
+                        "name": "Communication Link"
+                    },
+                    {
+                        "id": "custom_docperm",
+                        "name": "Custom DocPerm"
+                    },
+                    {
+                        "id": "custom_role",
+                        "name": "Custom Role"
+                    },
+                    {
+                        "id": "data_export",
+                        "name": "Data Export"
+                    },
+                    {
+                        "id": "data_import",
+                        "name": "Data Import"
+                    },
+                    {
+                        "id": "data_import_log",
+                        "name": "Data Import Log"
+                    },
+                    {
+                        "id": "defaultvalue",
+                        "name": "DefaultValue"
+                    },
+                    {
+                        "id": "deleted_document",
+                        "name": "Deleted Document"
+                    },
+                    {
+                        "id": "docfield",
+                        "name": "DocField"
+                    },
+                    {
+                        "id": "docperm",
+                        "name": "DocPerm"
+                    },
+                    {
+                        "id": "docshare",
+                        "name": "DocShare"
+                    },
+                    {
+                        "id": "doctype",
+                        "name": "DocType"
+                    },
+                    {
+                        "id": "doctype_action",
+                        "name": "DocType Action"
+                    },
+                    {
+                        "id": "doctype_link",
+                        "name": "DocType Link"
+                    },
+                    {
+                        "id": "doctype_state",
+                        "name": "DocType State"
+                    },
+                    {
+                        "id": "document_naming_rule",
+                        "name": "Document Naming Rule"
+                    },
+                    {
+                        "id": "document_naming_rule_condition",
+                        "name": "Document Naming Rule Condition"
+                    },
+                    {
+                        "id": "document_naming_settings",
+                        "name": "Document Naming Settings"
+                    },
+                    {
+                        "id": "document_share_key",
+                        "name": "Document Share Key"
+                    },
+                    {
+                        "id": "domain",
+                        "name": "Domain"
+                    },
+                    {
+                        "id": "domain_settings",
+                        "name": "Domain Settings"
+                    },
+                    {
+                        "id": "dynamic_link",
+                        "name": "Dynamic Link"
+                    },
+                    {
+                        "id": "error_log",
+                        "name": "Error Log"
+                    },
+                    {
+                        "id": "file",
+                        "name": "File"
+                    },
+                    {
+                        "id": "has_domain",
+                        "name": "Has Domain"
+                    },
+                    {
+                        "id": "has_role",
+                        "name": "Has Role"
+                    },
+                    {
+                        "id": "installed_application",
+                        "name": "Installed Application"
+                    },
+                    {
+                        "id": "installed_applications",
+                        "name": "Installed Applications"
+                    },
+                    {
+                        "id": "language",
+                        "name": "Language"
+                    },
+                    {
+                        "id": "logs_to_clear",
+                        "name": "Logs To Clear"
+                    },
+                    {
+                        "id": "log_settings",
+                        "name": "Log Settings"
+                    },
+                    {
+                        "id": "log_setting_user",
+                        "name": "Log Setting User"
+                    },
+                    {
+                        "id": "module_def",
+                        "name": "Module Def"
+                    },
+                    {
+                        "id": "module_profile",
+                        "name": "Module Profile"
+                    },
+                    {
+                        "id": "navbar_item",
+                        "name": "Navbar Item"
+                    },
+                    {
+                        "id": "navbar_settings",
+                        "name": "Navbar Settings"
+                    },
+                    {
+                        "id": "package",
+                        "name": "Package"
+                    },
+                    {
+                        "id": "package_import",
+                        "name": "Package Import"
+                    },
+                    {
+                        "id": "package_release",
+                        "name": "Package Release"
+                    },
+                    {
+                        "id": "page",
+                        "name": "Page"
+                    },
+                    {
+                        "id": "patch_log",
+                        "name": "Patch Log"
+                    },
+                    {
+                        "id": "permission_inspector",
+                        "name": "Permission Inspector"
+                    },
+                    {
+                        "id": "permission_log",
+                        "name": "Permission Log"
+                    },
+                    {
+                        "id": "prepared_report",
+                        "name": "Prepared Report"
+                    },
+                    {
+                        "id": "recorder",
+                        "name": "Recorder"
+                    },
+                    {
+                        "id": "recorder_query",
+                        "name": "Recorder Query"
+                    },
+                    {
+                        "id": "recorder_suggested_index",
+                        "name": "Recorder Suggested Index"
+                    },
+                    {
+                        "id": "report",
+                        "name": "Report"
+                    },
+                    {
+                        "id": "report_column",
+                        "name": "Report Column"
+                    },
+                    {
+                        "id": "report_filter",
+                        "name": "Report Filter"
+                    },
+                    {
+                        "id": "role",
+                        "name": "Role"
+                    },
+                    {
+                        "id": "role_permission_for_page_and_report",
+                        "name": "Role Permission for Page and Report"
+                    },
+                    {
+                        "id": "role_profile",
+                        "name": "Role Profile"
+                    },
+                    {
+                        "id": "role_replication",
+                        "name": "Role Replication"
+                    },
+                    {
+                        "id": "rq_job",
+                        "name": "RQ Job"
+                    },
+                    {
+                        "id": "rq_worker",
+                        "name": "RQ Worker"
+                    },
+                    {
+                        "id": "scheduled_job_log",
+                        "name": "Scheduled Job Log"
+                    },
+                    {
+                        "id": "scheduled_job_type",
+                        "name": "Scheduled Job Type"
+                    },
+                    {
+                        "id": "server_script",
+                        "name": "Server Script"
+                    },
+                    {
+                        "id": "session_default",
+                        "name": "Session Default"
+                    },
+                    {
+                        "id": "session_default_settings",
+                        "name": "Session Default Settings"
+                    },
+                    {
+                        "id": "sms_log",
+                        "name": "SMS Log"
+                    },
+                    {
+                        "id": "sms_parameter",
+                        "name": "SMS Parameter"
+                    },
+                    {
+                        "id": "sms_settings",
+                        "name": "SMS Settings"
+                    },
+                    {
+                        "id": "submission_queue",
+                        "name": "Submission Queue"
+                    },
+                    {
+                        "id": "success_action",
+                        "name": "Success Action"
+                    },
+                    {
+                        "id": "system_settings",
+                        "name": "System Settings"
+                    },
+                    {
+                        "id": "transaction_log",
+                        "name": "Transaction Log"
+                    },
+                    {
+                        "id": "translation",
+                        "name": "Translation"
+                    },
+                    {
+                        "id": "user",
+                        "name": "User"
+                    },
+                    {
+                        "id": "user_document_type",
+                        "name": "User Document Type"
+                    },
+                    {
+                        "id": "user_email",
+                        "name": "User Email"
+                    },
+                    {
+                        "id": "user_group",
+                        "name": "User Group"
+                    },
+                    {
+                        "id": "user_group_member",
+                        "name": "User Group Member"
+                    },
+                    {
+                        "id": "user_permission",
+                        "name": "User Permission"
+                    },
+                    {
+                        "id": "user_role_profile",
+                        "name": "User Role Profile"
+                    },
+                    {
+                        "id": "user_select_document_type",
+                        "name": "User Select Document Type"
+                    },
+                    {
+                        "id": "user_social_login",
+                        "name": "User Social Login"
+                    },
+                    {
+                        "id": "user_type",
+                        "name": "User Type"
+                    },
+                    {
+                        "id": "user_type_module",
+                        "name": "User Type Module"
+                    },
+                    {
+                        "id": "version",
+                        "name": "Version"
+                    },
+                    {
+                        "id": "view_log",
+                        "name": "View Log"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "website",
+                "name": "Website",
+                "docs": [
+                    {
+                        "id": "about_us_settings",
+                        "name": "About Us Settings"
+                    },
+                    {
+                        "id": "about_us_team_member",
+                        "name": "About Us Team Member"
+                    },
+                    {
+                        "id": "blogger",
+                        "name": "Blogger"
+                    },
+                    {
+                        "id": "blog_category",
+                        "name": "Blog Category"
+                    },
+                    {
+                        "id": "blog_post",
+                        "name": "Blog Post"
+                    },
+                    {
+                        "id": "blog_settings",
+                        "name": "Blog Settings"
+                    },
+                    {
+                        "id": "color",
+                        "name": "Color"
+                    },
+                    {
+                        "id": "company_history",
+                        "name": "Company History"
+                    },
+                    {
+                        "id": "contact_us_settings",
+                        "name": "Contact Us Settings"
+                    },
+                    {
+                        "id": "discussion_reply",
+                        "name": "Discussion Reply"
+                    },
+                    {
+                        "id": "discussion_topic",
+                        "name": "Discussion Topic"
+                    },
+                    {
+                        "id": "help_article",
+                        "name": "Help Article"
+                    },
+                    {
+                        "id": "help_category",
+                        "name": "Help Category"
+                    },
+                    {
+                        "id": "personal_data_deletion_request",
+                        "name": "Personal Data Deletion Request"
+                    },
+                    {
+                        "id": "personal_data_deletion_step",
+                        "name": "Personal Data Deletion Step"
+                    },
+                    {
+                        "id": "personal_data_download_request",
+                        "name": "Personal Data Download Request"
+                    },
+                    {
+                        "id": "portal_menu_item",
+                        "name": "Portal Menu Item"
+                    },
+                    {
+                        "id": "portal_settings",
+                        "name": "Portal Settings"
+                    },
+                    {
+                        "id": "social_link_settings",
+                        "name": "Social Link Settings"
+                    },
+                    {
+                        "id": "top_bar_item",
+                        "name": "Top Bar Item"
+                    },
+                    {
+                        "id": "utm_campaign",
+                        "name": "UTM Campaign"
+                    },
+                    {
+                        "id": "utm_medium",
+                        "name": "UTM Medium"
+                    },
+                    {
+                        "id": "utm_source",
+                        "name": "UTM Source"
+                    },
+                    {
+                        "id": "website_meta_tag",
+                        "name": "Website Meta Tag"
+                    },
+                    {
+                        "id": "website_route_meta",
+                        "name": "Website Route Meta"
+                    },
+                    {
+                        "id": "website_route_redirect",
+                        "name": "Website Route Redirect"
+                    },
+                    {
+                        "id": "website_script",
+                        "name": "Website Script"
+                    },
+                    {
+                        "id": "website_settings",
+                        "name": "Website Settings"
+                    },
+                    {
+                        "id": "website_sidebar",
+                        "name": "Website Sidebar"
+                    },
+                    {
+                        "id": "website_sidebar_item",
+                        "name": "Website Sidebar Item"
+                    },
+                    {
+                        "id": "website_slideshow",
+                        "name": "Website Slideshow"
+                    },
+                    {
+                        "id": "website_slideshow_item",
+                        "name": "Website Slideshow Item"
+                    },
+                    {
+                        "id": "website_theme",
+                        "name": "Website Theme"
+                    },
+                    {
+                        "id": "website_theme_ignore_app",
+                        "name": "Website Theme Ignore App"
+                    },
+                    {
+                        "id": "web_form",
+                        "name": "Web Form"
+                    },
+                    {
+                        "id": "web_form_field",
+                        "name": "Web Form Field"
+                    },
+                    {
+                        "id": "web_form_list_column",
+                        "name": "Web Form List Column"
+                    },
+                    {
+                        "id": "web_page",
+                        "name": "Web Page"
+                    },
+                    {
+                        "id": "web_page_block",
+                        "name": "Web Page Block"
+                    },
+                    {
+                        "id": "web_page_view",
+                        "name": "Web Page View"
+                    },
+                    {
+                        "id": "web_template",
+                        "name": "Web Template"
+                    },
+                    {
+                        "id": "web_template_field",
+                        "name": "Web Template Field"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "workflow",
+                "name": "Workflow",
+                "docs": [
+                    {
+                        "id": "workflow",
+                        "name": "Workflow"
+                    },
+                    {
+                        "id": "workflow_action",
+                        "name": "Workflow Action"
+                    },
+                    {
+                        "id": "workflow_action_master",
+                        "name": "Workflow Action Master"
+                    },
+                    {
+                        "id": "workflow_action_permitted_role",
+                        "name": "Workflow Action Permitted Role"
+                    },
+                    {
+                        "id": "workflow_document_state",
+                        "name": "Workflow Document State"
+                    },
+                    {
+                        "id": "workflow_state",
+                        "name": "Workflow State"
+                    },
+                    {
+                        "id": "workflow_transition",
+                        "name": "Workflow Transition"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "email",
+                "name": "Email",
+                "docs": [
+                    {
+                        "id": "auto_email_report",
+                        "name": "Auto Email Report"
+                    },
+                    {
+                        "id": "document_follow",
+                        "name": "Document Follow"
+                    },
+                    {
+                        "id": "email_account",
+                        "name": "Email Account"
+                    },
+                    {
+                        "id": "email_domain",
+                        "name": "Email Domain"
+                    },
+                    {
+                        "id": "email_flag_queue",
+                        "name": "Email Flag Queue"
+                    },
+                    {
+                        "id": "email_group",
+                        "name": "Email Group"
+                    },
+                    {
+                        "id": "email_group_member",
+                        "name": "Email Group Member"
+                    },
+                    {
+                        "id": "email_queue",
+                        "name": "Email Queue"
+                    },
+                    {
+                        "id": "email_queue_recipient",
+                        "name": "Email Queue Recipient"
+                    },
+                    {
+                        "id": "email_rule",
+                        "name": "Email Rule"
+                    },
+                    {
+                        "id": "email_template",
+                        "name": "Email Template"
+                    },
+                    {
+                        "id": "email_unsubscribe",
+                        "name": "Email Unsubscribe"
+                    },
+                    {
+                        "id": "imap_folder",
+                        "name": "IMAP Folder"
+                    },
+                    {
+                        "id": "newsletter",
+                        "name": "Newsletter"
+                    },
+                    {
+                        "id": "newsletter_attachment",
+                        "name": "Newsletter Attachment"
+                    },
+                    {
+                        "id": "newsletter_email_group",
+                        "name": "Newsletter Email Group"
+                    },
+                    {
+                        "id": "notification",
+                        "name": "Notification"
+                    },
+                    {
+                        "id": "notification_recipient",
+                        "name": "Notification Recipient"
+                    },
+                    {
+                        "id": "unhandled_email",
+                        "name": "Unhandled Email"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "custom",
+                "name": "Custom",
+                "docs": [
+                    {
+                        "id": "client_script",
+                        "name": "Client Script"
+                    },
+                    {
+                        "id": "customize_form",
+                        "name": "Customize Form"
+                    },
+                    {
+                        "id": "customize_form_field",
+                        "name": "Customize Form Field"
+                    },
+                    {
+                        "id": "custom_field",
+                        "name": "Custom Field"
+                    },
+                    {
+                        "id": "doctype_layout",
+                        "name": "DocType Layout"
+                    },
+                    {
+                        "id": "doctype_layout_field",
+                        "name": "DocType Layout Field"
+                    },
+                    {
+                        "id": "property_setter",
+                        "name": "Property Setter"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "geo",
+                "name": "Geo",
+                "docs": [
+                    {
+                        "id": "country",
+                        "name": "Country"
+                    },
+                    {
+                        "id": "currency",
+                        "name": "Currency"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "desk",
+                "name": "Desk",
+                "docs": [
+                    {
+                        "id": "bulk_update",
+                        "name": "Bulk Update"
+                    },
+                    {
+                        "id": "calendar_view",
+                        "name": "Calendar View"
+                    },
+                    {
+                        "id": "changelog_feed",
+                        "name": "Changelog Feed"
+                    },
+                    {
+                        "id": "console_log",
+                        "name": "Console Log"
+                    },
+                    {
+                        "id": "custom_html_block",
+                        "name": "Custom HTML Block"
+                    },
+                    {
+                        "id": "dashboard",
+                        "name": "Dashboard"
+                    },
+                    {
+                        "id": "dashboard_chart",
+                        "name": "Dashboard Chart"
+                    },
+                    {
+                        "id": "dashboard_chart_field",
+                        "name": "Dashboard Chart Field"
+                    },
+                    {
+                        "id": "dashboard_chart_link",
+                        "name": "Dashboard Chart Link"
+                    },
+                    {
+                        "id": "dashboard_chart_source",
+                        "name": "Dashboard Chart Source"
+                    },
+                    {
+                        "id": "dashboard_settings",
+                        "name": "Dashboard Settings"
+                    },
+                    {
+                        "id": "desktop_icon",
+                        "name": "Desktop Icon"
+                    },
+                    {
+                        "id": "event",
+                        "name": "Event"
+                    },
+                    {
+                        "id": "event_participants",
+                        "name": "Event Participants"
+                    },
+                    {
+                        "id": "form_tour",
+                        "name": "Form Tour"
+                    },
+                    {
+                        "id": "form_tour_step",
+                        "name": "Form Tour Step"
+                    },
+                    {
+                        "id": "global_search_doctype",
+                        "name": "Global Search DocType"
+                    },
+                    {
+                        "id": "global_search_settings",
+                        "name": "Global Search Settings"
+                    },
+                    {
+                        "id": "kanban_board",
+                        "name": "Kanban Board"
+                    },
+                    {
+                        "id": "kanban_board_column",
+                        "name": "Kanban Board Column"
+                    },
+                    {
+                        "id": "list_filter",
+                        "name": "List Filter"
+                    },
+                    {
+                        "id": "list_view_settings",
+                        "name": "List View Settings"
+                    },
+                    {
+                        "id": "module_onboarding",
+                        "name": "Module Onboarding"
+                    },
+                    {
+                        "id": "note",
+                        "name": "Note"
+                    },
+                    {
+                        "id": "note_seen_by",
+                        "name": "Note Seen By"
+                    },
+                    {
+                        "id": "notification_log",
+                        "name": "Notification Log"
+                    },
+                    {
+                        "id": "notification_settings",
+                        "name": "Notification Settings"
+                    },
+                    {
+                        "id": "notification_subscribed_document",
+                        "name": "Notification Subscribed Document"
+                    },
+                    {
+                        "id": "number_card",
+                        "name": "Number Card"
+                    },
+                    {
+                        "id": "number_card_link",
+                        "name": "Number Card Link"
+                    },
+                    {
+                        "id": "onboarding_permission",
+                        "name": "Onboarding Permission"
+                    },
+                    {
+                        "id": "onboarding_step",
+                        "name": "Onboarding Step"
+                    },
+                    {
+                        "id": "onboarding_step_map",
+                        "name": "Onboarding Step Map"
+                    },
+                    {
+                        "id": "route_history",
+                        "name": "Route History"
+                    },
+                    {
+                        "id": "system_console",
+                        "name": "System Console"
+                    },
+                    {
+                        "id": "system_health_report",
+                        "name": "System Health Report"
+                    },
+                    {
+                        "id": "system_health_report_errors",
+                        "name": "System Health Report Errors"
+                    },
+                    {
+                        "id": "system_health_report_failing_jobs",
+                        "name": "System Health Report Failing Jobs"
+                    },
+                    {
+                        "id": "system_health_report_queue",
+                        "name": "System Health Report Queue"
+                    },
+                    {
+                        "id": "system_health_report_tables",
+                        "name": "System Health Report Tables"
+                    },
+                    {
+                        "id": "system_health_report_workers",
+                        "name": "System Health Report Workers"
+                    },
+                    {
+                        "id": "tag",
+                        "name": "Tag"
+                    },
+                    {
+                        "id": "tag_link",
+                        "name": "Tag Link"
+                    },
+                    {
+                        "id": "todo",
+                        "name": "ToDo"
+                    },
+                    {
+                        "id": "workspace",
+                        "name": "Workspace"
+                    },
+                    {
+                        "id": "workspace_chart",
+                        "name": "Workspace Chart"
+                    },
+                    {
+                        "id": "workspace_custom_block",
+                        "name": "Workspace Custom Block"
+                    },
+                    {
+                        "id": "workspace_link",
+                        "name": "Workspace Link"
+                    },
+                    {
+                        "id": "workspace_number_card",
+                        "name": "Workspace Number Card"
+                    },
+                    {
+                        "id": "workspace_quick_list",
+                        "name": "Workspace Quick List"
+                    },
+                    {
+                        "id": "workspace_settings",
+                        "name": "Workspace Settings"
+                    },
+                    {
+                        "id": "workspace_shortcut",
+                        "name": "Workspace Shortcut"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "integrations",
+                "name": "Integrations",
+                "docs": [
+                    {
+                        "id": "connected_app",
+                        "name": "Connected App"
+                    },
+                    {
+                        "id": "dropbox_settings",
+                        "name": "Dropbox Settings"
+                    },
+                    {
+                        "id": "geolocation_settings",
+                        "name": "Geolocation Settings"
+                    },
+                    {
+                        "id": "google_calendar",
+                        "name": "Google Calendar"
+                    },
+                    {
+                        "id": "google_contacts",
+                        "name": "Google Contacts"
+                    },
+                    {
+                        "id": "google_drive",
+                        "name": "Google Drive"
+                    },
+                    {
+                        "id": "google_settings",
+                        "name": "Google Settings"
+                    },
+                    {
+                        "id": "integration_request",
+                        "name": "Integration Request"
+                    },
+                    {
+                        "id": "ldap_group_mapping",
+                        "name": "LDAP Group Mapping"
+                    },
+                    {
+                        "id": "ldap_settings",
+                        "name": "LDAP Settings"
+                    },
+                    {
+                        "id": "oauth_authorization_code",
+                        "name": "OAuth Authorization Code"
+                    },
+                    {
+                        "id": "oauth_bearer_token",
+                        "name": "OAuth Bearer Token"
+                    },
+                    {
+                        "id": "oauth_client",
+                        "name": "OAuth Client"
+                    },
+                    {
+                        "id": "oauth_client_role",
+                        "name": "OAuth Client Role"
+                    },
+                    {
+                        "id": "oauth_provider_settings",
+                        "name": "OAuth Provider Settings"
+                    },
+                    {
+                        "id": "oauth_scope",
+                        "name": "OAuth Scope"
+                    },
+                    {
+                        "id": "push_notification_settings",
+                        "name": "Push Notification Settings"
+                    },
+                    {
+                        "id": "query_parameters",
+                        "name": "Query Parameters"
+                    },
+                    {
+                        "id": "s3_backup_settings",
+                        "name": "S3 Backup Settings"
+                    },
+                    {
+                        "id": "slack_webhook_url",
+                        "name": "Slack Webhook URL"
+                    },
+                    {
+                        "id": "social_login_key",
+                        "name": "Social Login Key"
+                    },
+                    {
+                        "id": "social_login_keys",
+                        "name": "social_login_keys"
+                    },
+                    {
+                        "id": "token_cache",
+                        "name": "Token Cache"
+                    },
+                    {
+                        "id": "webhook",
+                        "name": "Webhook"
+                    },
+                    {
+                        "id": "webhook_data",
+                        "name": "Webhook Data"
+                    },
+                    {
+                        "id": "webhook_header",
+                        "name": "Webhook Header"
+                    },
+                    {
+                        "id": "webhook_request_log",
+                        "name": "Webhook Request Log"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "printing",
+                "name": "Printing",
+                "docs": [
+                    {
+                        "id": "letter_head",
+                        "name": "Letter Head"
+                    },
+                    {
+                        "id": "network_printer_settings",
+                        "name": "Network Printer Settings"
+                    },
+                    {
+                        "id": "print_format",
+                        "name": "Print Format"
+                    },
+                    {
+                        "id": "print_format_field_template",
+                        "name": "Print Format Field Template"
+                    },
+                    {
+                        "id": "print_heading",
+                        "name": "Print Heading"
+                    },
+                    {
+                        "id": "print_settings",
+                        "name": "Print Settings"
+                    },
+                    {
+                        "id": "print_style",
+                        "name": "Print Style"
+                    }
+                ]
+            },
+            {
+                "id": "contacts",
+                "name": "Contacts",
+                "docs": [
+                    {
+                        "id": "address",
+                        "name": "Address"
+                    },
+                    {
+                        "id": "address_template",
+                        "name": "Address Template"
+                    },
+                    {
+                        "id": "contact",
+                        "name": "Contact"
+                    },
+                    {
+                        "id": "contact_email",
+                        "name": "Contact Email"
+                    },
+                    {
+                        "id": "contact_phone",
+                        "name": "Contact Phone"
+                    },
+                    {
+                        "id": "gender",
+                        "name": "Gender"
+                    },
+                    {
+                        "id": "salutation",
+                        "name": "Salutation"
+                    }
+                ]
+            },
+            {
+                "id": "social",
+                "name": "Social",
+                "docs": [
+                    {
+                        "id": "energy_point_log",
+                        "name": "Energy Point Log"
+                    },
+                    {
+                        "id": "energy_point_rule",
+                        "name": "Energy Point Rule"
+                    },
+                    {
+                        "id": "energy_point_settings",
+                        "name": "Energy Point Settings"
+                    },
+                    {
+                        "id": "review_level",
+                        "name": "Review Level"
+                    }
+                ]
+            },
+            {
+                "id": "automation",
+                "name": "Automation",
+                "docs": [
+                    {
+                        "id": "assignment_rule",
+                        "name": "Assignment Rule"
+                    },
+                    {
+                        "id": "assignment_rule_day",
+                        "name": "Assignment Rule Day"
+                    },
+                    {
+                        "id": "assignment_rule_user",
+                        "name": "Assignment Rule User"
+                    },
+                    {
+                        "id": "auto_repeat",
+                        "name": "Auto Repeat"
+                    },
+                    {
+                        "id": "auto_repeat_day",
+                        "name": "Auto Repeat Day"
+                    },
+                    {
+                        "id": "milestone",
+                        "name": "Milestone"
+                    },
+                    {
+                        "id": "milestone_tracker",
+                        "name": "Milestone Tracker"
+                    },
+                    {
+                        "id": "reminder",
+                        "name": "Reminder"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "payments",
+        "name": "payments",
+        "modules": [
+            {
+                "id": "payments",
+                "name": "Payments",
+                "docs": [
+                    {
+                        "id": "payment_gateway",
+                        "name": "Payment Gateway"
+                    }
+                ]
+            },
+            {
+                "id": "payment_gateways",
+                "name": "Payment Gateways",
+                "docs": [
+                    {
+                        "id": "braintree_settings",
+                        "name": "Braintree Settings"
+                    },
+                    {
+                        "id": "gocardless_mandate",
+                        "name": "GoCardless Mandate"
+                    },
+                    {
+                        "id": "gocardless_settings",
+                        "name": "GoCardless Settings"
+                    },
+                    {
+                        "id": "mpesa_settings",
+                        "name": "Mpesa Settings"
+                    },
+                    {
+                        "id": "paypal_settings",
+                        "name": "PayPal Settings"
+                    },
+                    {
+                        "id": "paytm_settings",
+                        "name": "Paytm Settings"
+                    },
+                    {
+                        "id": "razorpay_settings",
+                        "name": "Razorpay Settings"
+                    },
+                    {
+                        "id": "stripe_settings",
+                        "name": "Stripe Settings"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "erpnext",
+        "name": "erpnext",
+        "modules": [
+            {
+                "id": "accounts",
+                "name": "Accounts",
+                "docs": [
+                    {
+                        "id": "account",
+                        "name": "Account"
+                    },
+                    {
+                        "id": "accounting_dimension",
+                        "name": "Accounting Dimension"
+                    },
+                    {
+                        "id": "accounting_dimension_detail",
+                        "name": "Accounting Dimension Detail"
+                    },
+                    {
+                        "id": "accounting_dimension_filter",
+                        "name": "Accounting Dimension Filter"
+                    },
+                    {
+                        "id": "accounting_period",
+                        "name": "Accounting Period"
+                    },
+                    {
+                        "id": "accounts_settings",
+                        "name": "Accounts Settings"
+                    },
+                    {
+                        "id": "account_closing_balance",
+                        "name": "Account Closing Balance"
+                    },
+                    {
+                        "id": "advance_payment_ledger_entry",
+                        "name": "Advance Payment Ledger Entry"
+                    },
+                    {
+                        "id": "advance_tax",
+                        "name": "Advance Tax"
+                    },
+                    {
+                        "id": "advance_taxes_and_charges",
+                        "name": "Advance Taxes and Charges"
+                    },
+                    {
+                        "id": "allowed_dimension",
+                        "name": "Allowed Dimension"
+                    },
+                    {
+                        "id": "allowed_to_transact_with",
+                        "name": "Allowed To Transact With"
+                    },
+                    {
+                        "id": "applicable_on_account",
+                        "name": "Applicable On Account"
+                    },
+                    {
+                        "id": "bank",
+                        "name": "Bank"
+                    },
+                    {
+                        "id": "bank_account",
+                        "name": "Bank Account"
+                    },
+                    {
+                        "id": "bank_account_subtype",
+                        "name": "Bank Account Subtype"
+                    },
+                    {
+                        "id": "bank_account_type",
+                        "name": "Bank Account Type"
+                    },
+                    {
+                        "id": "bank_clearance",
+                        "name": "Bank Clearance"
+                    },
+                    {
+                        "id": "bank_clearance_detail",
+                        "name": "Bank Clearance Detail"
+                    },
+                    {
+                        "id": "bank_guarantee",
+                        "name": "Bank Guarantee"
+                    },
+                    {
+                        "id": "bank_reconciliation_tool",
+                        "name": "Bank Reconciliation Tool"
+                    },
+                    {
+                        "id": "bank_statement_import",
+                        "name": "Bank Statement Import"
+                    },
+                    {
+                        "id": "bank_transaction",
+                        "name": "Bank Transaction"
+                    },
+                    {
+                        "id": "bank_transaction_mapping",
+                        "name": "Bank Transaction Mapping"
+                    },
+                    {
+                        "id": "bank_transaction_payments",
+                        "name": "Bank Transaction Payments"
+                    },
+                    {
+                        "id": "bisect_accounting_statements",
+                        "name": "Bisect Accounting Statements"
+                    },
+                    {
+                        "id": "bisect_nodes",
+                        "name": "Bisect Nodes"
+                    },
+                    {
+                        "id": "budget",
+                        "name": "Budget"
+                    },
+                    {
+                        "id": "budget_account",
+                        "name": "Budget Account"
+                    },
+                    {
+                        "id": "campaign_item",
+                        "name": "Campaign Item"
+                    },
+                    {
+                        "id": "cashier_closing",
+                        "name": "Cashier Closing"
+                    },
+                    {
+                        "id": "cashier_closing_payments",
+                        "name": "Cashier Closing Payments"
+                    },
+                    {
+                        "id": "chart_of_accounts_importer",
+                        "name": "Chart of Accounts Importer"
+                    },
+                    {
+                        "id": "cheque_print_template",
+                        "name": "Cheque Print Template"
+                    },
+                    {
+                        "id": "closed_document",
+                        "name": "Closed Document"
+                    },
+                    {
+                        "id": "cost_center",
+                        "name": "Cost Center"
+                    },
+                    {
+                        "id": "cost_center_allocation",
+                        "name": "Cost Center Allocation"
+                    },
+                    {
+                        "id": "cost_center_allocation_percentage",
+                        "name": "Cost Center Allocation Percentage"
+                    },
+                    {
+                        "id": "coupon_code",
+                        "name": "Coupon Code"
+                    },
+                    {
+                        "id": "currency_exchange_settings",
+                        "name": "Currency Exchange Settings"
+                    },
+                    {
+                        "id": "currency_exchange_settings_details",
+                        "name": "Currency Exchange Settings Details"
+                    },
+                    {
+                        "id": "currency_exchange_settings_result",
+                        "name": "Currency Exchange Settings Result"
+                    },
+                    {
+                        "id": "customer_group_item",
+                        "name": "Customer Group Item"
+                    },
+                    {
+                        "id": "customer_item",
+                        "name": "Customer Item"
+                    },
+                    {
+                        "id": "discounted_invoice",
+                        "name": "Discounted Invoice"
+                    },
+                    {
+                        "id": "dunning",
+                        "name": "Dunning"
+                    },
+                    {
+                        "id": "dunning_letter_text",
+                        "name": "Dunning Letter Text"
+                    },
+                    {
+                        "id": "dunning_type",
+                        "name": "Dunning Type"
+                    },
+                    {
+                        "id": "exchange_rate_revaluation",
+                        "name": "Exchange Rate Revaluation"
+                    },
+                    {
+                        "id": "exchange_rate_revaluation_account",
+                        "name": "Exchange Rate Revaluation Account"
+                    },
+                    {
+                        "id": "finance_book",
+                        "name": "Finance Book"
+                    },
+                    {
+                        "id": "fiscal_year",
+                        "name": "Fiscal Year"
+                    },
+                    {
+                        "id": "fiscal_year_company",
+                        "name": "Fiscal Year Company"
+                    },
+                    {
+                        "id": "gl_entry",
+                        "name": "GL Entry"
+                    },
+                    {
+                        "id": "invoice_discounting",
+                        "name": "Invoice Discounting"
+                    },
+                    {
+                        "id": "item_tax_template",
+                        "name": "Item Tax Template"
+                    },
+                    {
+                        "id": "item_tax_template_detail",
+                        "name": "Item Tax Template Detail"
+                    },
+                    {
+                        "id": "journal_entry",
+                        "name": "Journal Entry"
+                    },
+                    {
+                        "id": "journal_entry_account",
+                        "name": "Journal Entry Account"
+                    },
+                    {
+                        "id": "journal_entry_template",
+                        "name": "Journal Entry Template"
+                    },
+                    {
+                        "id": "journal_entry_template_account",
+                        "name": "Journal Entry Template Account"
+                    },
+                    {
+                        "id": "ledger_health",
+                        "name": "Ledger Health"
+                    },
+                    {
+                        "id": "ledger_health_monitor",
+                        "name": "Ledger Health Monitor"
+                    },
+                    {
+                        "id": "ledger_health_monitor_company",
+                        "name": "Ledger Health Monitor Company"
+                    },
+                    {
+                        "id": "ledger_merge",
+                        "name": "Ledger Merge"
+                    },
+                    {
+                        "id": "ledger_merge_accounts",
+                        "name": "Ledger Merge Accounts"
+                    },
+                    {
+                        "id": "loyalty_point_entry",
+                        "name": "Loyalty Point Entry"
+                    },
+                    {
+                        "id": "loyalty_point_entry_redemption",
+                        "name": "Loyalty Point Entry Redemption"
+                    },
+                    {
+                        "id": "loyalty_program",
+                        "name": "Loyalty Program"
+                    },
+                    {
+                        "id": "loyalty_program_collection",
+                        "name": "Loyalty Program Collection"
+                    },
+                    {
+                        "id": "mode_of_payment",
+                        "name": "Mode of Payment"
+                    },
+                    {
+                        "id": "mode_of_payment_account",
+                        "name": "Mode of Payment Account"
+                    },
+                    {
+                        "id": "monthly_distribution",
+                        "name": "Monthly Distribution"
+                    },
+                    {
+                        "id": "monthly_distribution_percentage",
+                        "name": "Monthly Distribution Percentage"
+                    },
+                    {
+                        "id": "opening_invoice_creation_tool",
+                        "name": "Opening Invoice Creation Tool"
+                    },
+                    {
+                        "id": "opening_invoice_creation_tool_item",
+                        "name": "Opening Invoice Creation Tool Item"
+                    },
+                    {
+                        "id": "overdue_payment",
+                        "name": "Overdue Payment"
+                    },
+                    {
+                        "id": "party_account",
+                        "name": "Party Account"
+                    },
+                    {
+                        "id": "party_link",
+                        "name": "Party Link"
+                    },
+                    {
+                        "id": "payment_entry",
+                        "name": "Payment Entry"
+                    },
+                    {
+                        "id": "payment_entry_deduction",
+                        "name": "Payment Entry Deduction"
+                    },
+                    {
+                        "id": "payment_entry_reference",
+                        "name": "Payment Entry Reference"
+                    },
+                    {
+                        "id": "payment_gateway_account",
+                        "name": "Payment Gateway Account"
+                    },
+                    {
+                        "id": "payment_ledger_entry",
+                        "name": "Payment Ledger Entry"
+                    },
+                    {
+                        "id": "payment_order",
+                        "name": "Payment Order"
+                    },
+                    {
+                        "id": "payment_order_reference",
+                        "name": "Payment Order Reference"
+                    },
+                    {
+                        "id": "payment_reconciliation",
+                        "name": "Payment Reconciliation"
+                    },
+                    {
+                        "id": "payment_reconciliation_allocation",
+                        "name": "Payment Reconciliation Allocation"
+                    },
+                    {
+                        "id": "payment_reconciliation_invoice",
+                        "name": "Payment Reconciliation Invoice"
+                    },
+                    {
+                        "id": "payment_reconciliation_payment",
+                        "name": "Payment Reconciliation Payment"
+                    },
+                    {
+                        "id": "payment_request",
+                        "name": "Payment Request"
+                    },
+                    {
+                        "id": "payment_schedule",
+                        "name": "Payment Schedule"
+                    },
+                    {
+                        "id": "payment_term",
+                        "name": "Payment Term"
+                    },
+                    {
+                        "id": "payment_terms_template",
+                        "name": "Payment Terms Template"
+                    },
+                    {
+                        "id": "payment_terms_template_detail",
+                        "name": "Payment Terms Template Detail"
+                    },
+                    {
+                        "id": "period_closing_voucher",
+                        "name": "Period Closing Voucher"
+                    },
+                    {
+                        "id": "pos_closing_entry",
+                        "name": "POS Closing Entry"
+                    },
+                    {
+                        "id": "pos_closing_entry_detail",
+                        "name": "POS Closing Entry Detail"
+                    },
+                    {
+                        "id": "pos_closing_entry_taxes",
+                        "name": "POS Closing Entry Taxes"
+                    },
+                    {
+                        "id": "pos_customer_group",
+                        "name": "POS Customer Group"
+                    },
+                    {
+                        "id": "pos_field",
+                        "name": "POS Field"
+                    },
+                    {
+                        "id": "pos_invoice",
+                        "name": "POS Invoice"
+                    },
+                    {
+                        "id": "pos_invoice_item",
+                        "name": "POS Invoice Item"
+                    },
+                    {
+                        "id": "pos_invoice_merge_log",
+                        "name": "POS Invoice Merge Log"
+                    },
+                    {
+                        "id": "pos_invoice_reference",
+                        "name": "POS Invoice Reference"
+                    },
+                    {
+                        "id": "pos_item_group",
+                        "name": "POS Item Group"
+                    },
+                    {
+                        "id": "pos_opening_entry",
+                        "name": "POS Opening Entry"
+                    },
+                    {
+                        "id": "pos_opening_entry_detail",
+                        "name": "POS Opening Entry Detail"
+                    },
+                    {
+                        "id": "pos_payment_method",
+                        "name": "POS Payment Method"
+                    },
+                    {
+                        "id": "pos_profile",
+                        "name": "POS Profile"
+                    },
+                    {
+                        "id": "pos_profile_user",
+                        "name": "POS Profile User"
+                    },
+                    {
+                        "id": "pos_search_fields",
+                        "name": "POS Search Fields"
+                    },
+                    {
+                        "id": "pos_settings",
+                        "name": "POS Settings"
+                    },
+                    {
+                        "id": "pricing_rule",
+                        "name": "Pricing Rule"
+                    },
+                    {
+                        "id": "pricing_rule_brand",
+                        "name": "Pricing Rule Brand"
+                    },
+                    {
+                        "id": "pricing_rule_detail",
+                        "name": "Pricing Rule Detail"
+                    },
+                    {
+                        "id": "pricing_rule_item_code",
+                        "name": "Pricing Rule Item Code"
+                    },
+                    {
+                        "id": "pricing_rule_item_group",
+                        "name": "Pricing Rule Item Group"
+                    },
+                    {
+                        "id": "process_deferred_accounting",
+                        "name": "Process Deferred Accounting"
+                    },
+                    {
+                        "id": "process_payment_reconciliation",
+                        "name": "Process Payment Reconciliation"
+                    },
+                    {
+                        "id": "process_payment_reconciliation_log",
+                        "name": "Process Payment Reconciliation Log"
+                    },
+                    {
+                        "id": "process_payment_reconciliation_log_allocations",
+                        "name": "Process Payment Reconciliation Log Allocations"
+                    },
+                    {
+                        "id": "process_statement_of_accounts",
+                        "name": "Process Statement Of Accounts"
+                    },
+                    {
+                        "id": "process_statement_of_accounts_customer",
+                        "name": "Process Statement Of Accounts Customer"
+                    },
+                    {
+                        "id": "process_subscription",
+                        "name": "Process Subscription"
+                    },
+                    {
+                        "id": "promotional_scheme",
+                        "name": "Promotional Scheme"
+                    },
+                    {
+                        "id": "promotional_scheme_price_discount",
+                        "name": "Promotional Scheme Price Discount"
+                    },
+                    {
+                        "id": "promotional_scheme_product_discount",
+                        "name": "Promotional Scheme Product Discount"
+                    },
+                    {
+                        "id": "psoa_cost_center",
+                        "name": "PSOA Cost Center"
+                    },
+                    {
+                        "id": "psoa_project",
+                        "name": "PSOA Project"
+                    },
+                    {
+                        "id": "purchase_invoice",
+                        "name": "Purchase Invoice"
+                    },
+                    {
+                        "id": "purchase_invoice_advance",
+                        "name": "Purchase Invoice Advance"
+                    },
+                    {
+                        "id": "purchase_invoice_item",
+                        "name": "Purchase Invoice Item"
+                    },
+                    {
+                        "id": "purchase_taxes_and_charges",
+                        "name": "Purchase Taxes and Charges"
+                    },
+                    {
+                        "id": "purchase_taxes_and_charges_template",
+                        "name": "Purchase Taxes and Charges Template"
+                    },
+                    {
+                        "id": "repost_accounting_ledger",
+                        "name": "Repost Accounting Ledger"
+                    },
+                    {
+                        "id": "repost_accounting_ledger_items",
+                        "name": "Repost Accounting Ledger Items"
+                    },
+                    {
+                        "id": "repost_accounting_ledger_settings",
+                        "name": "Repost Accounting Ledger Settings"
+                    },
+                    {
+                        "id": "repost_allowed_types",
+                        "name": "Repost Allowed Types"
+                    },
+                    {
+                        "id": "repost_payment_ledger",
+                        "name": "Repost Payment Ledger"
+                    },
+                    {
+                        "id": "repost_payment_ledger_items",
+                        "name": "Repost Payment Ledger Items"
+                    },
+                    {
+                        "id": "sales_invoice",
+                        "name": "Sales Invoice"
+                    },
+                    {
+                        "id": "sales_invoice_advance",
+                        "name": "Sales Invoice Advance"
+                    },
+                    {
+                        "id": "sales_invoice_item",
+                        "name": "Sales Invoice Item"
+                    },
+                    {
+                        "id": "sales_invoice_payment",
+                        "name": "Sales Invoice Payment"
+                    },
+                    {
+                        "id": "sales_invoice_timesheet",
+                        "name": "Sales Invoice Timesheet"
+                    },
+                    {
+                        "id": "sales_partner_item",
+                        "name": "Sales Partner Item"
+                    },
+                    {
+                        "id": "sales_taxes_and_charges",
+                        "name": "Sales Taxes and Charges"
+                    },
+                    {
+                        "id": "sales_taxes_and_charges_template",
+                        "name": "Sales Taxes and Charges Template"
+                    },
+                    {
+                        "id": "shareholder",
+                        "name": "Shareholder"
+                    },
+                    {
+                        "id": "share_balance",
+                        "name": "Share Balance"
+                    },
+                    {
+                        "id": "share_transfer",
+                        "name": "Share Transfer"
+                    },
+                    {
+                        "id": "share_type",
+                        "name": "Share Type"
+                    },
+                    {
+                        "id": "shipping_rule",
+                        "name": "Shipping Rule"
+                    },
+                    {
+                        "id": "shipping_rule_condition",
+                        "name": "Shipping Rule Condition"
+                    },
+                    {
+                        "id": "shipping_rule_country",
+                        "name": "Shipping Rule Country"
+                    },
+                    {
+                        "id": "south_africa_vat_account",
+                        "name": "South Africa VAT Account"
+                    },
+                    {
+                        "id": "subscription",
+                        "name": "Subscription"
+                    },
+                    {
+                        "id": "subscription_invoice",
+                        "name": "Subscription Invoice"
+                    },
+                    {
+                        "id": "subscription_plan",
+                        "name": "Subscription Plan"
+                    },
+                    {
+                        "id": "subscription_plan_detail",
+                        "name": "Subscription Plan Detail"
+                    },
+                    {
+                        "id": "subscription_settings",
+                        "name": "Subscription Settings"
+                    },
+                    {
+                        "id": "supplier_group_item",
+                        "name": "Supplier Group Item"
+                    },
+                    {
+                        "id": "supplier_item",
+                        "name": "Supplier Item"
+                    },
+                    {
+                        "id": "tax_category",
+                        "name": "Tax Category"
+                    },
+                    {
+                        "id": "tax_rule",
+                        "name": "Tax Rule"
+                    },
+                    {
+                        "id": "tax_withheld_vouchers",
+                        "name": "Tax Withheld Vouchers"
+                    },
+                    {
+                        "id": "tax_withholding_account",
+                        "name": "Tax Withholding Account"
+                    },
+                    {
+                        "id": "tax_withholding_category",
+                        "name": "Tax Withholding Category"
+                    },
+                    {
+                        "id": "tax_withholding_rate",
+                        "name": "Tax Withholding Rate"
+                    },
+                    {
+                        "id": "territory_item",
+                        "name": "Territory Item"
+                    },
+                    {
+                        "id": "transaction_deletion_record_details",
+                        "name": "Transaction Deletion Record Details"
+                    },
+                    {
+                        "id": "unreconcile_payment",
+                        "name": "Unreconcile Payment"
+                    },
+                    {
+                        "id": "unreconcile_payment_entries",
+                        "name": "Unreconcile Payment Entries"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "crm",
+                "name": "CRM",
+                "docs": [
+                    {
+                        "id": "appointment",
+                        "name": "Appointment"
+                    },
+                    {
+                        "id": "appointment_booking_settings",
+                        "name": "Appointment Booking Settings"
+                    },
+                    {
+                        "id": "appointment_booking_slots",
+                        "name": "Appointment Booking Slots"
+                    },
+                    {
+                        "id": "availability_of_slots",
+                        "name": "Availability Of Slots"
+                    },
+                    {
+                        "id": "campaign",
+                        "name": "Campaign"
+                    },
+                    {
+                        "id": "campaign_email_schedule",
+                        "name": "Campaign Email Schedule"
+                    },
+                    {
+                        "id": "competitor",
+                        "name": "Competitor"
+                    },
+                    {
+                        "id": "competitor_detail",
+                        "name": "Competitor Detail"
+                    },
+                    {
+                        "id": "contract",
+                        "name": "Contract"
+                    },
+                    {
+                        "id": "contract_fulfilment_checklist",
+                        "name": "Contract Fulfilment Checklist"
+                    },
+                    {
+                        "id": "contract_template",
+                        "name": "Contract Template"
+                    },
+                    {
+                        "id": "contract_template_fulfilment_terms",
+                        "name": "Contract Template Fulfilment Terms"
+                    },
+                    {
+                        "id": "crm_note",
+                        "name": "CRM Note"
+                    },
+                    {
+                        "id": "crm_settings",
+                        "name": "CRM Settings"
+                    },
+                    {
+                        "id": "email_campaign",
+                        "name": "Email Campaign"
+                    },
+                    {
+                        "id": "lead",
+                        "name": "Lead"
+                    },
+                    {
+                        "id": "lost_reason_detail",
+                        "name": "Lost Reason Detail"
+                    },
+                    {
+                        "id": "market_segment",
+                        "name": "Market Segment"
+                    },
+                    {
+                        "id": "opportunity",
+                        "name": "Opportunity"
+                    },
+                    {
+                        "id": "opportunity_item",
+                        "name": "Opportunity Item"
+                    },
+                    {
+                        "id": "opportunity_lost_reason",
+                        "name": "Opportunity Lost Reason"
+                    },
+                    {
+                        "id": "opportunity_lost_reason_detail",
+                        "name": "Opportunity Lost Reason Detail"
+                    },
+                    {
+                        "id": "opportunity_type",
+                        "name": "Opportunity Type"
+                    },
+                    {
+                        "id": "prospect",
+                        "name": "Prospect"
+                    },
+                    {
+                        "id": "prospect_lead",
+                        "name": "Prospect Lead"
+                    },
+                    {
+                        "id": "prospect_opportunity",
+                        "name": "Prospect Opportunity"
+                    },
+                    {
+                        "id": "sales_stage",
+                        "name": "Sales Stage"
+                    }
+                ]
+            },
+            {
+                "id": "buying",
+                "name": "Buying",
+                "docs": [
+                    {
+                        "id": "buying_settings",
+                        "name": "Buying Settings"
+                    },
+                    {
+                        "id": "purchase_order",
+                        "name": "Purchase Order"
+                    },
+                    {
+                        "id": "purchase_order_item",
+                        "name": "Purchase Order Item"
+                    },
+                    {
+                        "id": "purchase_order_item_supplied",
+                        "name": "Purchase Order Item Supplied"
+                    },
+                    {
+                        "id": "purchase_receipt_item_supplied",
+                        "name": "Purchase Receipt Item Supplied"
+                    },
+                    {
+                        "id": "request_for_quotation",
+                        "name": "Request for Quotation"
+                    },
+                    {
+                        "id": "request_for_quotation_item",
+                        "name": "Request for Quotation Item"
+                    },
+                    {
+                        "id": "request_for_quotation_supplier",
+                        "name": "Request for Quotation Supplier"
+                    },
+                    {
+                        "id": "supplier",
+                        "name": "Supplier"
+                    },
+                    {
+                        "id": "supplier_quotation",
+                        "name": "Supplier Quotation"
+                    },
+                    {
+                        "id": "supplier_quotation_item",
+                        "name": "Supplier Quotation Item"
+                    },
+                    {
+                        "id": "supplier_scorecard",
+                        "name": "Supplier Scorecard"
+                    },
+                    {
+                        "id": "supplier_scorecard_criteria",
+                        "name": "Supplier Scorecard Criteria"
+                    },
+                    {
+                        "id": "supplier_scorecard_period",
+                        "name": "Supplier Scorecard Period"
+                    },
+                    {
+                        "id": "supplier_scorecard_scoring_criteria",
+                        "name": "Supplier Scorecard Scoring Criteria"
+                    },
+                    {
+                        "id": "supplier_scorecard_scoring_standing",
+                        "name": "Supplier Scorecard Scoring Standing"
+                    },
+                    {
+                        "id": "supplier_scorecard_scoring_variable",
+                        "name": "Supplier Scorecard Scoring Variable"
+                    },
+                    {
+                        "id": "supplier_scorecard_standing",
+                        "name": "Supplier Scorecard Standing"
+                    },
+                    {
+                        "id": "supplier_scorecard_variable",
+                        "name": "Supplier Scorecard Variable"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "projects",
+                "name": "Projects",
+                "docs": [
+                    {
+                        "id": "activity_cost",
+                        "name": "Activity Cost"
+                    },
+                    {
+                        "id": "activity_type",
+                        "name": "Activity Type"
+                    },
+                    {
+                        "id": "dependent_task",
+                        "name": "Dependent Task"
+                    },
+                    {
+                        "id": "project",
+                        "name": "Project"
+                    },
+                    {
+                        "id": "projects_settings",
+                        "name": "Projects Settings"
+                    },
+                    {
+                        "id": "project_template",
+                        "name": "Project Template"
+                    },
+                    {
+                        "id": "project_template_task",
+                        "name": "Project Template Task"
+                    },
+                    {
+                        "id": "project_type",
+                        "name": "Project Type"
+                    },
+                    {
+                        "id": "project_update",
+                        "name": "Project Update"
+                    },
+                    {
+                        "id": "project_user",
+                        "name": "Project User"
+                    },
+                    {
+                        "id": "task",
+                        "name": "Task"
+                    },
+                    {
+                        "id": "task_depends_on",
+                        "name": "Task Depends On"
+                    },
+                    {
+                        "id": "task_type",
+                        "name": "Task Type"
+                    },
+                    {
+                        "id": "timesheet",
+                        "name": "Timesheet"
+                    },
+                    {
+                        "id": "timesheet_detail",
+                        "name": "Timesheet Detail"
+                    }
+                ]
+            },
+            {
+                "id": "selling",
+                "name": "Selling",
+                "docs": [
+                    {
+                        "id": "customer",
+                        "name": "Customer"
+                    },
+                    {
+                        "id": "customer_credit_limit",
+                        "name": "Customer Credit Limit"
+                    },
+                    {
+                        "id": "industry_type",
+                        "name": "Industry Type"
+                    },
+                    {
+                        "id": "installation_note",
+                        "name": "Installation Note"
+                    },
+                    {
+                        "id": "installation_note_item",
+                        "name": "Installation Note Item"
+                    },
+                    {
+                        "id": "party_specific_item",
+                        "name": "Party Specific Item"
+                    },
+                    {
+                        "id": "product_bundle",
+                        "name": "Product Bundle"
+                    },
+                    {
+                        "id": "product_bundle_item",
+                        "name": "Product Bundle Item"
+                    },
+                    {
+                        "id": "quotation",
+                        "name": "Quotation"
+                    },
+                    {
+                        "id": "quotation_item",
+                        "name": "Quotation Item"
+                    },
+                    {
+                        "id": "sales_order",
+                        "name": "Sales Order"
+                    },
+                    {
+                        "id": "sales_order_item",
+                        "name": "Sales Order Item"
+                    },
+                    {
+                        "id": "sales_partner_type",
+                        "name": "Sales Partner Type"
+                    },
+                    {
+                        "id": "sales_team",
+                        "name": "Sales Team"
+                    },
+                    {
+                        "id": "selling_settings",
+                        "name": "Selling Settings"
+                    },
+                    {
+                        "id": "sms_center",
+                        "name": "SMS Center"
+                    }
+                ]
+            },
+            {
+                "id": "setup",
+                "name": "Setup",
+                "docs": [
+                    {
+                        "id": "authorization_control",
+                        "name": "Authorization Control"
+                    },
+                    {
+                        "id": "authorization_rule",
+                        "name": "Authorization Rule"
+                    },
+                    {
+                        "id": "branch",
+                        "name": "Branch"
+                    },
+                    {
+                        "id": "brand",
+                        "name": "Brand"
+                    },
+                    {
+                        "id": "company",
+                        "name": "Company"
+                    },
+                    {
+                        "id": "currency_exchange",
+                        "name": "Currency Exchange"
+                    },
+                    {
+                        "id": "customer_group",
+                        "name": "Customer Group"
+                    },
+                    {
+                        "id": "department",
+                        "name": "Department"
+                    },
+                    {
+                        "id": "designation",
+                        "name": "Designation"
+                    },
+                    {
+                        "id": "driver",
+                        "name": "Driver"
+                    },
+                    {
+                        "id": "driving_license_category",
+                        "name": "Driving License Category"
+                    },
+                    {
+                        "id": "email_digest",
+                        "name": "Email Digest"
+                    },
+                    {
+                        "id": "email_digest_recipient",
+                        "name": "Email Digest Recipient"
+                    },
+                    {
+                        "id": "employee",
+                        "name": "Employee"
+                    },
+                    {
+                        "id": "employee_education",
+                        "name": "Employee Education"
+                    },
+                    {
+                        "id": "employee_external_work_history",
+                        "name": "Employee External Work History"
+                    },
+                    {
+                        "id": "employee_group",
+                        "name": "Employee Group"
+                    },
+                    {
+                        "id": "employee_group_table",
+                        "name": "Employee Group Table"
+                    },
+                    {
+                        "id": "employee_internal_work_history",
+                        "name": "Employee Internal Work History"
+                    },
+                    {
+                        "id": "global_defaults",
+                        "name": "Global Defaults"
+                    },
+                    {
+                        "id": "holiday",
+                        "name": "Holiday"
+                    },
+                    {
+                        "id": "holiday_list",
+                        "name": "Holiday List"
+                    },
+                    {
+                        "id": "incoterm",
+                        "name": "Incoterm"
+                    },
+                    {
+                        "id": "item_group",
+                        "name": "Item Group"
+                    },
+                    {
+                        "id": "party_type",
+                        "name": "Party Type"
+                    },
+                    {
+                        "id": "print_heading",
+                        "name": "Print Heading"
+                    },
+                    {
+                        "id": "quotation_lost_reason",
+                        "name": "Quotation Lost Reason"
+                    },
+                    {
+                        "id": "quotation_lost_reason_detail",
+                        "name": "Quotation Lost Reason Detail"
+                    },
+                    {
+                        "id": "sales_partner",
+                        "name": "Sales Partner"
+                    },
+                    {
+                        "id": "sales_person",
+                        "name": "Sales Person"
+                    },
+                    {
+                        "id": "supplier_group",
+                        "name": "Supplier Group"
+                    },
+                    {
+                        "id": "target_detail",
+                        "name": "Target Detail"
+                    },
+                    {
+                        "id": "terms_and_conditions",
+                        "name": "Terms and Conditions"
+                    },
+                    {
+                        "id": "territory",
+                        "name": "Territory"
+                    },
+                    {
+                        "id": "transaction_deletion_record",
+                        "name": "Transaction Deletion Record"
+                    },
+                    {
+                        "id": "transaction_deletion_record_item",
+                        "name": "Transaction Deletion Record Item"
+                    },
+                    {
+                        "id": "uom",
+                        "name": "UOM"
+                    },
+                    {
+                        "id": "uom_conversion_factor",
+                        "name": "UOM Conversion Factor"
+                    },
+                    {
+                        "id": "vehicle",
+                        "name": "Vehicle"
+                    },
+                    {
+                        "id": "website_item_group",
+                        "name": "Website Item Group"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "manufacturing",
+                "name": "Manufacturing",
+                "docs": [
+                    {
+                        "id": "blanket_order",
+                        "name": "Blanket Order"
+                    },
+                    {
+                        "id": "blanket_order_item",
+                        "name": "Blanket Order Item"
+                    },
+                    {
+                        "id": "bom",
+                        "name": "BOM"
+                    },
+                    {
+                        "id": "bom_creator",
+                        "name": "BOM Creator"
+                    },
+                    {
+                        "id": "bom_creator_item",
+                        "name": "BOM Creator Item"
+                    },
+                    {
+                        "id": "bom_explosion_item",
+                        "name": "BOM Explosion Item"
+                    },
+                    {
+                        "id": "bom_item",
+                        "name": "BOM Item"
+                    },
+                    {
+                        "id": "bom_operation",
+                        "name": "BOM Operation"
+                    },
+                    {
+                        "id": "bom_scrap_item",
+                        "name": "BOM Scrap Item"
+                    },
+                    {
+                        "id": "bom_update_batch",
+                        "name": "BOM Update Batch"
+                    },
+                    {
+                        "id": "bom_update_log",
+                        "name": "BOM Update Log"
+                    },
+                    {
+                        "id": "bom_update_tool",
+                        "name": "BOM Update Tool"
+                    },
+                    {
+                        "id": "bom_website_item",
+                        "name": "BOM Website Item"
+                    },
+                    {
+                        "id": "bom_website_operation",
+                        "name": "BOM Website Operation"
+                    },
+                    {
+                        "id": "downtime_entry",
+                        "name": "Downtime Entry"
+                    },
+                    {
+                        "id": "job_card",
+                        "name": "Job Card"
+                    },
+                    {
+                        "id": "job_card_item",
+                        "name": "Job Card Item"
+                    },
+                    {
+                        "id": "job_card_operation",
+                        "name": "Job Card Operation"
+                    },
+                    {
+                        "id": "job_card_scheduled_time",
+                        "name": "Job Card Scheduled Time"
+                    },
+                    {
+                        "id": "job_card_scrap_item",
+                        "name": "Job Card Scrap Item"
+                    },
+                    {
+                        "id": "job_card_time_log",
+                        "name": "Job Card Time Log"
+                    },
+                    {
+                        "id": "manufacturing_settings",
+                        "name": "Manufacturing Settings"
+                    },
+                    {
+                        "id": "material_request_plan_item",
+                        "name": "Material Request Plan Item"
+                    },
+                    {
+                        "id": "operation",
+                        "name": "Operation"
+                    },
+                    {
+                        "id": "plant_floor",
+                        "name": "Plant Floor"
+                    },
+                    {
+                        "id": "production_plan",
+                        "name": "Production Plan"
+                    },
+                    {
+                        "id": "production_plan_item",
+                        "name": "Production Plan Item"
+                    },
+                    {
+                        "id": "production_plan_item_reference",
+                        "name": "Production Plan Item Reference"
+                    },
+                    {
+                        "id": "production_plan_material_request",
+                        "name": "Production Plan Material Request"
+                    },
+                    {
+                        "id": "production_plan_material_request_warehouse",
+                        "name": "Production Plan Material Request Warehouse"
+                    },
+                    {
+                        "id": "production_plan_sales_order",
+                        "name": "Production Plan Sales Order"
+                    },
+                    {
+                        "id": "production_plan_sub_assembly_item",
+                        "name": "Production Plan Sub Assembly Item"
+                    },
+                    {
+                        "id": "routing",
+                        "name": "Routing"
+                    },
+                    {
+                        "id": "sub_operation",
+                        "name": "Sub Operation"
+                    },
+                    {
+                        "id": "workstation",
+                        "name": "Workstation"
+                    },
+                    {
+                        "id": "workstation_type",
+                        "name": "Workstation Type"
+                    },
+                    {
+                        "id": "workstation_working_hour",
+                        "name": "Workstation Working Hour"
+                    },
+                    {
+                        "id": "work_order",
+                        "name": "Work Order"
+                    },
+                    {
+                        "id": "work_order_item",
+                        "name": "Work Order Item"
+                    },
+                    {
+                        "id": "work_order_operation",
+                        "name": "Work Order Operation"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "stock",
+                "name": "Stock",
+                "docs": [
+                    {
+                        "id": "batch",
+                        "name": "Batch"
+                    },
+                    {
+                        "id": "bin",
+                        "name": "Bin"
+                    },
+                    {
+                        "id": "closing_stock_balance",
+                        "name": "Closing Stock Balance"
+                    },
+                    {
+                        "id": "customs_tariff_number",
+                        "name": "Customs Tariff Number"
+                    },
+                    {
+                        "id": "delivery_note",
+                        "name": "Delivery Note"
+                    },
+                    {
+                        "id": "delivery_note_item",
+                        "name": "Delivery Note Item"
+                    },
+                    {
+                        "id": "delivery_settings",
+                        "name": "Delivery Settings"
+                    },
+                    {
+                        "id": "delivery_stop",
+                        "name": "Delivery Stop"
+                    },
+                    {
+                        "id": "delivery_trip",
+                        "name": "Delivery Trip"
+                    },
+                    {
+                        "id": "inventory_dimension",
+                        "name": "Inventory Dimension"
+                    },
+                    {
+                        "id": "item",
+                        "name": "Item"
+                    },
+                    {
+                        "id": "item_alternative",
+                        "name": "Item Alternative"
+                    },
+                    {
+                        "id": "item_attribute",
+                        "name": "Item Attribute"
+                    },
+                    {
+                        "id": "item_attribute_value",
+                        "name": "Item Attribute Value"
+                    },
+                    {
+                        "id": "item_barcode",
+                        "name": "Item Barcode"
+                    },
+                    {
+                        "id": "item_customer_detail",
+                        "name": "Item Customer Detail"
+                    },
+                    {
+                        "id": "item_default",
+                        "name": "Item Default"
+                    },
+                    {
+                        "id": "item_manufacturer",
+                        "name": "Item Manufacturer"
+                    },
+                    {
+                        "id": "item_price",
+                        "name": "Item Price"
+                    },
+                    {
+                        "id": "item_quality_inspection_parameter",
+                        "name": "Item Quality Inspection Parameter"
+                    },
+                    {
+                        "id": "item_reorder",
+                        "name": "Item Reorder"
+                    },
+                    {
+                        "id": "item_supplier",
+                        "name": "Item Supplier"
+                    },
+                    {
+                        "id": "item_tax",
+                        "name": "Item Tax"
+                    },
+                    {
+                        "id": "item_variant",
+                        "name": "Item Variant"
+                    },
+                    {
+                        "id": "item_variant_attribute",
+                        "name": "Item Variant Attribute"
+                    },
+                    {
+                        "id": "item_variant_settings",
+                        "name": "Item Variant Settings"
+                    },
+                    {
+                        "id": "item_website_specification",
+                        "name": "Item Website Specification"
+                    },
+                    {
+                        "id": "landed_cost_item",
+                        "name": "Landed Cost Item"
+                    },
+                    {
+                        "id": "landed_cost_purchase_receipt",
+                        "name": "Landed Cost Purchase Receipt"
+                    },
+                    {
+                        "id": "landed_cost_taxes_and_charges",
+                        "name": "Landed Cost Taxes and Charges"
+                    },
+                    {
+                        "id": "landed_cost_voucher",
+                        "name": "Landed Cost Voucher"
+                    },
+                    {
+                        "id": "manufacturer",
+                        "name": "Manufacturer"
+                    },
+                    {
+                        "id": "material_request",
+                        "name": "Material Request"
+                    },
+                    {
+                        "id": "material_request_item",
+                        "name": "Material Request Item"
+                    },
+                    {
+                        "id": "packed_item",
+                        "name": "Packed Item"
+                    },
+                    {
+                        "id": "packing_slip",
+                        "name": "Packing Slip"
+                    },
+                    {
+                        "id": "packing_slip_item",
+                        "name": "Packing Slip Item"
+                    },
+                    {
+                        "id": "pick_list",
+                        "name": "Pick List"
+                    },
+                    {
+                        "id": "pick_list_item",
+                        "name": "Pick List Item"
+                    },
+                    {
+                        "id": "price_list",
+                        "name": "Price List"
+                    },
+                    {
+                        "id": "price_list_country",
+                        "name": "Price List Country"
+                    },
+                    {
+                        "id": "purchase_receipt",
+                        "name": "Purchase Receipt"
+                    },
+                    {
+                        "id": "purchase_receipt_item",
+                        "name": "Purchase Receipt Item"
+                    },
+                    {
+                        "id": "putaway_rule",
+                        "name": "Putaway Rule"
+                    },
+                    {
+                        "id": "quality_inspection",
+                        "name": "Quality Inspection"
+                    },
+                    {
+                        "id": "quality_inspection_parameter",
+                        "name": "Quality Inspection Parameter"
+                    },
+                    {
+                        "id": "quality_inspection_parameter_group",
+                        "name": "Quality Inspection Parameter Group"
+                    },
+                    {
+                        "id": "quality_inspection_reading",
+                        "name": "Quality Inspection Reading"
+                    },
+                    {
+                        "id": "quality_inspection_template",
+                        "name": "Quality Inspection Template"
+                    },
+                    {
+                        "id": "quick_stock_balance",
+                        "name": "Quick Stock Balance"
+                    },
+                    {
+                        "id": "repost_item_valuation",
+                        "name": "Repost Item Valuation"
+                    },
+                    {
+                        "id": "sales_bom",
+                        "name": "sales_bom"
+                    },
+                    {
+                        "id": "sales_bom_item",
+                        "name": "sales_bom_item"
+                    },
+                    {
+                        "id": "serial_and_batch_bundle",
+                        "name": "Serial and Batch Bundle"
+                    },
+                    {
+                        "id": "serial_and_batch_entry",
+                        "name": "Serial and Batch Entry"
+                    },
+                    {
+                        "id": "serial_no",
+                        "name": "Serial No"
+                    },
+                    {
+                        "id": "shipment",
+                        "name": "Shipment"
+                    },
+                    {
+                        "id": "shipment_delivery_note",
+                        "name": "Shipment Delivery Note"
+                    },
+                    {
+                        "id": "shipment_parcel",
+                        "name": "Shipment Parcel"
+                    },
+                    {
+                        "id": "shipment_parcel_template",
+                        "name": "Shipment Parcel Template"
+                    },
+                    {
+                        "id": "stock_entry",
+                        "name": "Stock Entry"
+                    },
+                    {
+                        "id": "stock_entry_detail",
+                        "name": "Stock Entry Detail"
+                    },
+                    {
+                        "id": "stock_entry_type",
+                        "name": "Stock Entry Type"
+                    },
+                    {
+                        "id": "stock_ledger_entry",
+                        "name": "Stock Ledger Entry"
+                    },
+                    {
+                        "id": "stock_reconciliation",
+                        "name": "Stock Reconciliation"
+                    },
+                    {
+                        "id": "stock_reconciliation_item",
+                        "name": "Stock Reconciliation Item"
+                    },
+                    {
+                        "id": "stock_reposting_settings",
+                        "name": "Stock Reposting Settings"
+                    },
+                    {
+                        "id": "stock_reservation_entry",
+                        "name": "Stock Reservation Entry"
+                    },
+                    {
+                        "id": "stock_settings",
+                        "name": "Stock Settings"
+                    },
+                    {
+                        "id": "uom_category",
+                        "name": "UOM Category"
+                    },
+                    {
+                        "id": "uom_conversion_detail",
+                        "name": "UOM Conversion Detail"
+                    },
+                    {
+                        "id": "variant_field",
+                        "name": "Variant Field"
+                    },
+                    {
+                        "id": "warehouse",
+                        "name": "Warehouse"
+                    },
+                    {
+                        "id": "warehouse_type",
+                        "name": "Warehouse Type"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "support",
+                "name": "Support",
+                "docs": [
+                    {
+                        "id": "issue",
+                        "name": "Issue"
+                    },
+                    {
+                        "id": "issue_priority",
+                        "name": "Issue Priority"
+                    },
+                    {
+                        "id": "issue_type",
+                        "name": "Issue Type"
+                    },
+                    {
+                        "id": "pause_sla_on_status",
+                        "name": "Pause SLA On Status"
+                    },
+                    {
+                        "id": "service_day",
+                        "name": "Service Day"
+                    },
+                    {
+                        "id": "service_level_agreement",
+                        "name": "Service Level Agreement"
+                    },
+                    {
+                        "id": "service_level_priority",
+                        "name": "Service Level Priority"
+                    },
+                    {
+                        "id": "sla_fulfilled_on_status",
+                        "name": "SLA Fulfilled On Status"
+                    },
+                    {
+                        "id": "support_search_source",
+                        "name": "Support Search Source"
+                    },
+                    {
+                        "id": "support_settings",
+                        "name": "Support Settings"
+                    },
+                    {
+                        "id": "warranty_claim",
+                        "name": "Warranty Claim"
+                    }
+                ]
+            },
+            {
+                "id": "utilities",
+                "name": "Utilities",
+                "docs": [
+                    {
+                        "id": "portal_user",
+                        "name": "Portal User"
+                    },
+                    {
+                        "id": "rename_tool",
+                        "name": "Rename Tool"
+                    },
+                    {
+                        "id": "video",
+                        "name": "Video"
+                    },
+                    {
+                        "id": "video_settings",
+                        "name": "Video Settings"
+                    }
+                ]
+            },
+            {
+                "id": "assets",
+                "name": "Assets",
+                "docs": [
+                    {
+                        "id": "asset",
+                        "name": "Asset"
+                    },
+                    {
+                        "id": "asset_activity",
+                        "name": "Asset Activity"
+                    },
+                    {
+                        "id": "asset_capitalization",
+                        "name": "Asset Capitalization"
+                    },
+                    {
+                        "id": "asset_capitalization_asset_item",
+                        "name": "Asset Capitalization Asset Item"
+                    },
+                    {
+                        "id": "asset_capitalization_service_item",
+                        "name": "Asset Capitalization Service Item"
+                    },
+                    {
+                        "id": "asset_capitalization_stock_item",
+                        "name": "Asset Capitalization Stock Item"
+                    },
+                    {
+                        "id": "asset_category",
+                        "name": "Asset Category"
+                    },
+                    {
+                        "id": "asset_category_account",
+                        "name": "Asset Category Account"
+                    },
+                    {
+                        "id": "asset_depreciation_schedule",
+                        "name": "Asset Depreciation Schedule"
+                    },
+                    {
+                        "id": "asset_finance_book",
+                        "name": "Asset Finance Book"
+                    },
+                    {
+                        "id": "asset_maintenance",
+                        "name": "Asset Maintenance"
+                    },
+                    {
+                        "id": "asset_maintenance_log",
+                        "name": "Asset Maintenance Log"
+                    },
+                    {
+                        "id": "asset_maintenance_task",
+                        "name": "Asset Maintenance Task"
+                    },
+                    {
+                        "id": "asset_maintenance_team",
+                        "name": "Asset Maintenance Team"
+                    },
+                    {
+                        "id": "asset_movement",
+                        "name": "Asset Movement"
+                    },
+                    {
+                        "id": "asset_movement_item",
+                        "name": "Asset Movement Item"
+                    },
+                    {
+                        "id": "asset_repair",
+                        "name": "Asset Repair"
+                    },
+                    {
+                        "id": "asset_repair_consumed_item",
+                        "name": "Asset Repair Consumed Item"
+                    },
+                    {
+                        "id": "asset_repair_purchase_invoice",
+                        "name": "Asset Repair Purchase Invoice"
+                    },
+                    {
+                        "id": "asset_shift_allocation",
+                        "name": "Asset Shift Allocation"
+                    },
+                    {
+                        "id": "asset_shift_factor",
+                        "name": "Asset Shift Factor"
+                    },
+                    {
+                        "id": "asset_value_adjustment",
+                        "name": "Asset Value Adjustment"
+                    },
+                    {
+                        "id": "depreciation_schedule",
+                        "name": "Depreciation Schedule"
+                    },
+                    {
+                        "id": "linked_location",
+                        "name": "Linked Location"
+                    },
+                    {
+                        "id": "location",
+                        "name": "Location"
+                    },
+                    {
+                        "id": "maintenance_team_member",
+                        "name": "Maintenance Team Member"
+                    }
+                ]
+            },
+            {
+                "id": "portal",
+                "name": "Portal",
+                "docs": [
+                    {
+                        "id": "website_attribute",
+                        "name": "Website Attribute"
+                    },
+                    {
+                        "id": "website_filter_field",
+                        "name": "Website Filter Field"
+                    }
+                ]
+            },
+            {
+                "id": "maintenance",
+                "name": "Maintenance",
+                "docs": [
+                    {
+                        "id": "maintenance_schedule",
+                        "name": "Maintenance Schedule"
+                    },
+                    {
+                        "id": "maintenance_schedule_detail",
+                        "name": "Maintenance Schedule Detail"
+                    },
+                    {
+                        "id": "maintenance_schedule_item",
+                        "name": "Maintenance Schedule Item"
+                    },
+                    {
+                        "id": "maintenance_visit",
+                        "name": "Maintenance Visit"
+                    },
+                    {
+                        "id": "maintenance_visit_purpose",
+                        "name": "Maintenance Visit Purpose"
+                    }
+                ]
+            },
+            {
+                "id": "regional",
+                "name": "Regional",
+                "docs": [
+                    {
+                        "id": "import_supplier_invoice",
+                        "name": "Import Supplier Invoice"
+                    },
+                    {
+                        "id": "lower_deduction_certificate",
+                        "name": "Lower Deduction Certificate"
+                    },
+                    {
+                        "id": "south_africa_vat_settings",
+                        "name": "South Africa VAT Settings"
+                    },
+                    {
+                        "id": "uae_vat_account",
+                        "name": "UAE VAT Account"
+                    },
+                    {
+                        "id": "uae_vat_settings",
+                        "name": "UAE VAT Settings"
+                    }
+                ]
+            },
+            {
+                "id": "erpnext_integrations",
+                "name": "ERPNext Integrations",
+                "docs": [
+                    {
+                        "id": "plaid_settings",
+                        "name": "Plaid Settings"
+                    },
+                    {
+                        "id": "quickbooks_migrator",
+                        "name": "QuickBooks Migrator"
+                    },
+                    {
+                        "id": "tally_migration",
+                        "name": "Tally Migration"
+                    }
+                ]
+            },
+            {
+                "id": "quality_management",
+                "name": "Quality Management",
+                "docs": [
+                    {
+                        "id": "non_conformance",
+                        "name": "Non Conformance"
+                    },
+                    {
+                        "id": "quality_action",
+                        "name": "Quality Action"
+                    },
+                    {
+                        "id": "quality_action_resolution",
+                        "name": "Quality Action Resolution"
+                    },
+                    {
+                        "id": "quality_feedback",
+                        "name": "Quality Feedback"
+                    },
+                    {
+                        "id": "quality_feedback_parameter",
+                        "name": "Quality Feedback Parameter"
+                    },
+                    {
+                        "id": "quality_feedback_template",
+                        "name": "Quality Feedback Template"
+                    },
+                    {
+                        "id": "quality_feedback_template_parameter",
+                        "name": "Quality Feedback Template Parameter"
+                    },
+                    {
+                        "id": "quality_goal",
+                        "name": "Quality Goal"
+                    },
+                    {
+                        "id": "quality_goal_objective",
+                        "name": "Quality Goal Objective"
+                    },
+                    {
+                        "id": "quality_meeting",
+                        "name": "Quality Meeting"
+                    },
+                    {
+                        "id": "quality_meeting_agenda",
+                        "name": "Quality Meeting Agenda"
+                    },
+                    {
+                        "id": "quality_meeting_minutes",
+                        "name": "Quality Meeting Minutes"
+                    },
+                    {
+                        "id": "quality_procedure",
+                        "name": "Quality Procedure"
+                    },
+                    {
+                        "id": "quality_procedure_process",
+                        "name": "Quality Procedure Process"
+                    },
+                    {
+                        "id": "quality_review",
+                        "name": "Quality Review"
+                    },
+                    {
+                        "id": "quality_review_objective",
+                        "name": "Quality Review Objective"
+                    }
+                ]
+            },
+            {
+                "id": "communication",
+                "name": "Communication",
+                "docs": [
+                    {
+                        "id": "communication_medium",
+                        "name": "Communication Medium"
+                    },
+                    {
+                        "id": "communication_medium_timeslot",
+                        "name": "Communication Medium Timeslot"
+                    }
+                ]
+            },
+            {
+                "id": "telephony",
+                "name": "Telephony",
+                "docs": [
+                    {
+                        "id": "call_log",
+                        "name": "Call Log"
+                    },
+                    {
+                        "id": "incoming_call_handling_schedule",
+                        "name": "Incoming Call Handling Schedule"
+                    },
+                    {
+                        "id": "incoming_call_settings",
+                        "name": "Incoming Call Settings"
+                    },
+                    {
+                        "id": "telephony_call_type",
+                        "name": "Telephony Call Type"
+                    },
+                    {
+                        "id": "voice_call_settings",
+                        "name": "Voice Call Settings"
+                    }
+                ]
+            },
+            {
+                "id": "bulk_transaction",
+                "name": "Bulk Transaction",
+                "docs": [
+                    {
+                        "id": "bulk_transaction_log",
+                        "name": "Bulk Transaction Log"
+                    },
+                    {
+                        "id": "bulk_transaction_log_detail",
+                        "name": "Bulk Transaction Log Detail"
+                    }
+                ]
+            },
+            {
+                "id": "subcontracting",
+                "name": "Subcontracting",
+                "docs": [
+                    {
+                        "id": "subcontracting_bom",
+                        "name": "Subcontracting BOM"
+                    },
+                    {
+                        "id": "subcontracting_order",
+                        "name": "Subcontracting Order"
+                    },
+                    {
+                        "id": "subcontracting_order_item",
+                        "name": "Subcontracting Order Item"
+                    },
+                    {
+                        "id": "subcontracting_order_service_item",
+                        "name": "Subcontracting Order Service Item"
+                    },
+                    {
+                        "id": "subcontracting_order_supplied_item",
+                        "name": "Subcontracting Order Supplied Item"
+                    },
+                    {
+                        "id": "subcontracting_receipt",
+                        "name": "Subcontracting Receipt"
+                    },
+                    {
+                        "id": "subcontracting_receipt_item",
+                        "name": "Subcontracting Receipt Item"
+                    },
+                    {
+                        "id": "subcontracting_receipt_supplied_item",
+                        "name": "Subcontracting Receipt Supplied Item"
+                    }
+                ]
+            },
+            {
+                "id": "edi",
+                "name": "EDI",
+                "docs": [
+                    {
+                        "id": "code_list",
+                        "name": "Code List"
+                    },
+                    {
+                        "id": "common_code",
+                        "name": "Common Code"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "hrms",
+        "name": "hrms",
+        "modules": [
+            {
+                "id": "hr",
+                "name": "HR",
+                "docs": [
+                    {
+                        "id": "appointment_letter",
+                        "name": "Appointment Letter"
+                    },
+                    {
+                        "id": "appointment_letter_content",
+                        "name": "Appointment Letter content"
+                    },
+                    {
+                        "id": "appointment_letter_template",
+                        "name": "Appointment Letter Template"
+                    },
+                    {
+                        "id": "appraisal",
+                        "name": "Appraisal"
+                    },
+                    {
+                        "id": "appraisal_cycle",
+                        "name": "Appraisal Cycle"
+                    },
+                    {
+                        "id": "appraisal_goal",
+                        "name": "Appraisal Goal"
+                    },
+                    {
+                        "id": "appraisal_kra",
+                        "name": "Appraisal KRA"
+                    },
+                    {
+                        "id": "appraisal_template",
+                        "name": "Appraisal Template"
+                    },
+                    {
+                        "id": "appraisal_template_goal",
+                        "name": "Appraisal Template Goal"
+                    },
+                    {
+                        "id": "appraisee",
+                        "name": "Appraisee"
+                    },
+                    {
+                        "id": "attendance",
+                        "name": "Attendance"
+                    },
+                    {
+                        "id": "attendance_request",
+                        "name": "Attendance Request"
+                    },
+                    {
+                        "id": "compensatory_leave_request",
+                        "name": "Compensatory Leave Request"
+                    },
+                    {
+                        "id": "daily_work_summary",
+                        "name": "Daily Work Summary"
+                    },
+                    {
+                        "id": "daily_work_summary_group",
+                        "name": "Daily Work Summary Group"
+                    },
+                    {
+                        "id": "daily_work_summary_group_user",
+                        "name": "Daily Work Summary Group User"
+                    },
+                    {
+                        "id": "department_approver",
+                        "name": "Department Approver"
+                    },
+                    {
+                        "id": "designation_skill",
+                        "name": "Designation Skill"
+                    },
+                    {
+                        "id": "employee_advance",
+                        "name": "Employee Advance"
+                    },
+                    {
+                        "id": "employee_attendance_tool",
+                        "name": "Employee Attendance Tool"
+                    },
+                    {
+                        "id": "employee_boarding_activity",
+                        "name": "Employee Boarding Activity"
+                    },
+                    {
+                        "id": "employee_checkin",
+                        "name": "Employee Checkin"
+                    },
+                    {
+                        "id": "employee_feedback_criteria",
+                        "name": "Employee Feedback Criteria"
+                    },
+                    {
+                        "id": "employee_feedback_rating",
+                        "name": "Employee Feedback Rating"
+                    },
+                    {
+                        "id": "employee_grade",
+                        "name": "Employee Grade"
+                    },
+                    {
+                        "id": "employee_grievance",
+                        "name": "Employee Grievance"
+                    },
+                    {
+                        "id": "employee_health_insurance",
+                        "name": "Employee Health Insurance"
+                    },
+                    {
+                        "id": "employee_onboarding",
+                        "name": "Employee Onboarding"
+                    },
+                    {
+                        "id": "employee_onboarding_template",
+                        "name": "Employee Onboarding Template"
+                    },
+                    {
+                        "id": "employee_performance_feedback",
+                        "name": "Employee Performance Feedback"
+                    },
+                    {
+                        "id": "employee_promotion",
+                        "name": "Employee Promotion"
+                    },
+                    {
+                        "id": "employee_property_history",
+                        "name": "Employee Property History"
+                    },
+                    {
+                        "id": "employee_referral",
+                        "name": "Employee Referral"
+                    },
+                    {
+                        "id": "employee_separation",
+                        "name": "Employee Separation"
+                    },
+                    {
+                        "id": "employee_separation_template",
+                        "name": "Employee Separation Template"
+                    },
+                    {
+                        "id": "employee_skill",
+                        "name": "Employee Skill"
+                    },
+                    {
+                        "id": "employee_skill_map",
+                        "name": "Employee Skill Map"
+                    },
+                    {
+                        "id": "employee_training",
+                        "name": "Employee Training"
+                    },
+                    {
+                        "id": "employee_transfer",
+                        "name": "Employee Transfer"
+                    },
+                    {
+                        "id": "employment_type",
+                        "name": "Employment Type"
+                    },
+                    {
+                        "id": "exit_interview",
+                        "name": "Exit Interview"
+                    },
+                    {
+                        "id": "expected_skill_set",
+                        "name": "Expected Skill Set"
+                    },
+                    {
+                        "id": "expense_claim",
+                        "name": "Expense Claim"
+                    },
+                    {
+                        "id": "expense_claim_account",
+                        "name": "Expense Claim Account"
+                    },
+                    {
+                        "id": "expense_claim_advance",
+                        "name": "Expense Claim Advance"
+                    },
+                    {
+                        "id": "expense_claim_detail",
+                        "name": "Expense Claim Detail"
+                    },
+                    {
+                        "id": "expense_claim_type",
+                        "name": "Expense Claim Type"
+                    },
+                    {
+                        "id": "expense_taxes_and_charges",
+                        "name": "Expense Taxes and Charges"
+                    },
+                    {
+                        "id": "full_and_final_asset",
+                        "name": "Full and Final Asset"
+                    },
+                    {
+                        "id": "full_and_final_outstanding_statement",
+                        "name": "Full and Final Outstanding Statement"
+                    },
+                    {
+                        "id": "full_and_final_statement",
+                        "name": "Full and Final Statement"
+                    },
+                    {
+                        "id": "goal",
+                        "name": "Goal"
+                    },
+                    {
+                        "id": "grievance_type",
+                        "name": "Grievance Type"
+                    },
+                    {
+                        "id": "hr_settings",
+                        "name": "HR Settings"
+                    },
+                    {
+                        "id": "identification_document_type",
+                        "name": "Identification Document Type"
+                    },
+                    {
+                        "id": "interest",
+                        "name": "Interest"
+                    },
+                    {
+                        "id": "interview",
+                        "name": "Interview"
+                    },
+                    {
+                        "id": "interviewer",
+                        "name": "Interviewer"
+                    },
+                    {
+                        "id": "interview_detail",
+                        "name": "Interview Detail"
+                    },
+                    {
+                        "id": "interview_feedback",
+                        "name": "Interview Feedback"
+                    },
+                    {
+                        "id": "interview_round",
+                        "name": "Interview Round"
+                    },
+                    {
+                        "id": "interview_type",
+                        "name": "Interview Type"
+                    },
+                    {
+                        "id": "job_applicant",
+                        "name": "Job Applicant"
+                    },
+                    {
+                        "id": "job_applicant_source",
+                        "name": "Job Applicant Source"
+                    },
+                    {
+                        "id": "job_offer",
+                        "name": "Job Offer"
+                    },
+                    {
+                        "id": "job_offer_term",
+                        "name": "Job Offer Term"
+                    },
+                    {
+                        "id": "job_offer_term_template",
+                        "name": "Job Offer Term Template"
+                    },
+                    {
+                        "id": "job_opening",
+                        "name": "Job Opening"
+                    },
+                    {
+                        "id": "job_requisition",
+                        "name": "Job Requisition"
+                    },
+                    {
+                        "id": "kra",
+                        "name": "KRA"
+                    },
+                    {
+                        "id": "leave_allocation",
+                        "name": "Leave Allocation"
+                    },
+                    {
+                        "id": "leave_application",
+                        "name": "Leave Application"
+                    },
+                    {
+                        "id": "leave_block_list",
+                        "name": "Leave Block List"
+                    },
+                    {
+                        "id": "leave_block_list_allow",
+                        "name": "Leave Block List Allow"
+                    },
+                    {
+                        "id": "leave_block_list_date",
+                        "name": "Leave Block List Date"
+                    },
+                    {
+                        "id": "leave_control_panel",
+                        "name": "Leave Control Panel"
+                    },
+                    {
+                        "id": "leave_encashment",
+                        "name": "Leave Encashment"
+                    },
+                    {
+                        "id": "leave_ledger_entry",
+                        "name": "Leave Ledger Entry"
+                    },
+                    {
+                        "id": "leave_period",
+                        "name": "Leave Period"
+                    },
+                    {
+                        "id": "leave_policy",
+                        "name": "Leave Policy"
+                    },
+                    {
+                        "id": "leave_policy_assignment",
+                        "name": "Leave Policy Assignment"
+                    },
+                    {
+                        "id": "leave_policy_detail",
+                        "name": "Leave Policy Detail"
+                    },
+                    {
+                        "id": "leave_type",
+                        "name": "Leave Type"
+                    },
+                    {
+                        "id": "offer_term",
+                        "name": "Offer Term"
+                    },
+                    {
+                        "id": "purpose_of_travel",
+                        "name": "Purpose of Travel"
+                    },
+                    {
+                        "id": "pwa_notification",
+                        "name": "PWA Notification"
+                    },
+                    {
+                        "id": "shift_assignment",
+                        "name": "Shift Assignment"
+                    },
+                    {
+                        "id": "shift_assignment_schedule",
+                        "name": "Shift Assignment Schedule"
+                    },
+                    {
+                        "id": "shift_assignment_tool",
+                        "name": "Shift Assignment Tool"
+                    },
+                    {
+                        "id": "shift_location",
+                        "name": "Shift Location"
+                    },
+                    {
+                        "id": "shift_request",
+                        "name": "Shift Request"
+                    },
+                    {
+                        "id": "shift_type",
+                        "name": "Shift Type"
+                    },
+                    {
+                        "id": "skill",
+                        "name": "Skill"
+                    },
+                    {
+                        "id": "skill_assessment",
+                        "name": "Skill Assessment"
+                    },
+                    {
+                        "id": "staffing_plan",
+                        "name": "Staffing Plan"
+                    },
+                    {
+                        "id": "staffing_plan_detail",
+                        "name": "Staffing Plan Detail"
+                    },
+                    {
+                        "id": "training_event",
+                        "name": "Training Event"
+                    },
+                    {
+                        "id": "training_event_employee",
+                        "name": "Training Event Employee"
+                    },
+                    {
+                        "id": "training_feedback",
+                        "name": "Training Feedback"
+                    },
+                    {
+                        "id": "training_program",
+                        "name": "Training Program"
+                    },
+                    {
+                        "id": "training_result",
+                        "name": "Training Result"
+                    },
+                    {
+                        "id": "training_result_employee",
+                        "name": "Training Result Employee"
+                    },
+                    {
+                        "id": "travel_itinerary",
+                        "name": "Travel Itinerary"
+                    },
+                    {
+                        "id": "travel_request",
+                        "name": "Travel Request"
+                    },
+                    {
+                        "id": "travel_request_costing",
+                        "name": "Travel Request Costing"
+                    },
+                    {
+                        "id": "upload_attendance",
+                        "name": "Upload Attendance"
+                    },
+                    {
+                        "id": "vehicle_log",
+                        "name": "Vehicle Log"
+                    },
+                    {
+                        "id": "vehicle_service",
+                        "name": "Vehicle Service"
+                    },
+                    {
+                        "id": "vehicle_service_item",
+                        "name": "Vehicle Service Item"
+                    },
+                    {
+                        "id": "__pycache__",
+                        "name": "__pycache__"
+                    }
+                ]
+            },
+            {
+                "id": "payroll",
+                "name": "Payroll",
+                "docs": [
+                    {
+                        "id": "additional_salary",
+                        "name": "Additional Salary"
+                    },
+                    {
+                        "id": "bulk_salary_structure_assignment",
+                        "name": "Bulk Salary Structure Assignment"
+                    },
+                    {
+                        "id": "employee_benefit_application",
+                        "name": "Employee Benefit Application"
+                    },
+                    {
+                        "id": "employee_benefit_application_detail",
+                        "name": "Employee Benefit Application Detail"
+                    },
+                    {
+                        "id": "employee_benefit_claim",
+                        "name": "Employee Benefit Claim"
+                    },
+                    {
+                        "id": "employee_cost_center",
+                        "name": "Employee Cost Center"
+                    },
+                    {
+                        "id": "employee_incentive",
+                        "name": "Employee Incentive"
+                    },
+                    {
+                        "id": "employee_other_income",
+                        "name": "Employee Other Income"
+                    },
+                    {
+                        "id": "employee_tax_exemption_category",
+                        "name": "Employee Tax Exemption Category"
+                    },
+                    {
+                        "id": "employee_tax_exemption_declaration",
+                        "name": "Employee Tax Exemption Declaration"
+                    },
+                    {
+                        "id": "employee_tax_exemption_declaration_category",
+                        "name": "Employee Tax Exemption Declaration Category"
+                    },
+                    {
+                        "id": "employee_tax_exemption_proof_submission",
+                        "name": "Employee Tax Exemption Proof Submission"
+                    },
+                    {
+                        "id": "employee_tax_exemption_proof_submission_detail",
+                        "name": "Employee Tax Exemption Proof Submission Detail"
+                    },
+                    {
+                        "id": "employee_tax_exemption_sub_category",
+                        "name": "Employee Tax Exemption Sub Category"
+                    },
+                    {
+                        "id": "gratuity",
+                        "name": "Gratuity"
+                    },
+                    {
+                        "id": "gratuity_applicable_component",
+                        "name": "Gratuity Applicable Component"
+                    },
+                    {
+                        "id": "gratuity_rule",
+                        "name": "Gratuity Rule"
+                    },
+                    {
+                        "id": "gratuity_rule_slab",
+                        "name": "Gratuity Rule Slab"
+                    },
+                    {
+                        "id": "income_tax_slab",
+                        "name": "Income Tax Slab"
+                    },
+                    {
+                        "id": "income_tax_slab_other_charges",
+                        "name": "Income Tax Slab Other Charges"
+                    },
+                    {
+                        "id": "payroll_employee_detail",
+                        "name": "Payroll Employee Detail"
+                    },
+                    {
+                        "id": "payroll_entry",
+                        "name": "Payroll Entry"
+                    },
+                    {
+                        "id": "payroll_period",
+                        "name": "Payroll Period"
+                    },
+                    {
+                        "id": "payroll_period_date",
+                        "name": "Payroll Period Date"
+                    },
+                    {
+                        "id": "payroll_settings",
+                        "name": "Payroll Settings"
+                    },
+                    {
+                        "id": "retention_bonus",
+                        "name": "Retention Bonus"
+                    },
+                    {
+                        "id": "salary_component",
+                        "name": "Salary Component"
+                    },
+                    {
+                        "id": "salary_component_account",
+                        "name": "Salary Component Account"
+                    },
+                    {
+                        "id": "salary_detail",
+                        "name": "Salary Detail"
+                    },
+                    {
+                        "id": "salary_slip",
+                        "name": "Salary Slip"
+                    },
+                    {
+                        "id": "salary_slip_leave",
+                        "name": "Salary Slip Leave"
+                    },
+                    {
+                        "id": "salary_slip_loan",
+                        "name": "Salary Slip Loan"
+                    },
+                    {
+                        "id": "salary_slip_timesheet",
+                        "name": "Salary Slip Timesheet"
+                    },
+                    {
+                        "id": "salary_structure",
+                        "name": "Salary Structure"
+                    },
+                    {
+                        "id": "salary_structure_assignment",
+                        "name": "Salary Structure Assignment"
+                    },
+                    {
+                        "id": "salary_withholding",
+                        "name": "Salary Withholding"
+                    },
+                    {
+                        "id": "salary_withholding_cycle",
+                        "name": "Salary Withholding Cycle"
+                    },
+                    {
+                        "id": "taxable_salary_slab",
+                        "name": "Taxable Salary Slab"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "lending",
+        "name": "lending",
+        "modules": [
+            {
+                "id": "loan_management",
+                "name": "Loan Management",
+                "docs": [
+                    {
+                        "id": "days_past_due_log",
+                        "name": "Days Past Due Log"
+                    },
+                    {
+                        "id": "loan",
+                        "name": "Loan"
+                    },
+                    {
+                        "id": "loan_adjustment",
+                        "name": "Loan Adjustment"
+                    },
+                    {
+                        "id": "loan_adjustment_detail",
+                        "name": "Loan Adjustment Detail"
+                    },
+                    {
+                        "id": "loan_application",
+                        "name": "Loan Application"
+                    },
+                    {
+                        "id": "loan_balance_adjustment",
+                        "name": "Loan Balance Adjustment"
+                    },
+                    {
+                        "id": "loan_category",
+                        "name": "Loan Category"
+                    },
+                    {
+                        "id": "loan_charges",
+                        "name": "Loan Charges"
+                    },
+                    {
+                        "id": "loan_charge_reference",
+                        "name": "Loan Charge Reference"
+                    },
+                    {
+                        "id": "loan_classification",
+                        "name": "Loan Classification"
+                    },
+                    {
+                        "id": "loan_classification_range",
+                        "name": "Loan Classification Range"
+                    },
+                    {
+                        "id": "loan_disbursement",
+                        "name": "Loan Disbursement"
+                    },
+                    {
+                        "id": "loan_disbursement_charge",
+                        "name": "Loan Disbursement Charge"
+                    },
+                    {
+                        "id": "loan_interest_accrual",
+                        "name": "Loan Interest Accrual"
+                    },
+                    {
+                        "id": "loan_irac_provisioning_configuration",
+                        "name": "Loan IRAC Provisioning Configuration"
+                    },
+                    {
+                        "id": "loan_npa_log",
+                        "name": "Loan NPA Log"
+                    },
+                    {
+                        "id": "loan_partner",
+                        "name": "Loan Partner"
+                    },
+                    {
+                        "id": "loan_partner_shareable",
+                        "name": "Loan Partner Shareable"
+                    },
+                    {
+                        "id": "loan_product",
+                        "name": "Loan Product"
+                    },
+                    {
+                        "id": "loan_product_loan_partner",
+                        "name": "Loan Product Loan Partner"
+                    },
+                    {
+                        "id": "loan_refund",
+                        "name": "Loan Refund"
+                    },
+                    {
+                        "id": "loan_repayment",
+                        "name": "Loan Repayment"
+                    },
+                    {
+                        "id": "loan_repayment_detail",
+                        "name": "Loan Repayment Detail"
+                    },
+                    {
+                        "id": "loan_repayment_schedule",
+                        "name": "Loan Repayment Schedule"
+                    },
+                    {
+                        "id": "loan_restructure",
+                        "name": "Loan Restructure"
+                    },
+                    {
+                        "id": "loan_restructure_limit_log",
+                        "name": "Loan Restructure Limit Log"
+                    },
+                    {
+                        "id": "loan_security",
+                        "name": "Loan Security"
+                    },
+                    {
+                        "id": "loan_security_deposit",
+                        "name": "Loan Security Deposit"
+                    },
+                    {
+                        "id": "loan_security_pledge",
+                        "name": "Loan Security Pledge"
+                    },
+                    {
+                        "id": "loan_security_price",
+                        "name": "Loan Security Price"
+                    },
+                    {
+                        "id": "loan_security_shortfall",
+                        "name": "Loan Security Shortfall"
+                    },
+                    {
+                        "id": "loan_security_type",
+                        "name": "Loan Security Type"
+                    },
+                    {
+                        "id": "loan_security_unpledge",
+                        "name": "Loan Security Unpledge"
+                    },
+                    {
+                        "id": "loan_write_off",
+                        "name": "Loan Write Off"
+                    },
+                    {
+                        "id": "pledge",
+                        "name": "Pledge"
+                    },
+                    {
+                        "id": "process_loan_classification",
+                        "name": "Process Loan Classification"
+                    },
+                    {
+                        "id": "process_loan_interest_accrual",
+                        "name": "Process Loan Interest Accrual"
+                    },
+                    {
+                        "id": "process_loan_restructure_limit",
+                        "name": "Process Loan Restructure Limit"
+                    },
+                    {
+                        "id": "process_loan_security_shortfall",
+                        "name": "Process Loan Security Shortfall"
+                    },
+                    {
+                        "id": "proposed_pledge",
+                        "name": "Proposed Pledge"
+                    },
+                    {
+                        "id": "repayment_schedule",
+                        "name": "Repayment Schedule"
+                    },
+                    {
+                        "id": "sanctioned_loan_amount",
+                        "name": "Sanctioned Loan Amount"
+                    },
+                    {
+                        "id": "unpledge",
+                        "name": "Unpledge"
+                    }
+                ]
+            }
+        ]
+    }
+]
