@@ -1,7 +1,9 @@
 import os
 import shutil
 import click
+import re
 from ...utils.config import PROJECT_ROOT
+from ...utils.text import to_snake_case
 
 @click.command()
 @click.argument("doc_name")
@@ -10,17 +12,22 @@ from ...utils.config import PROJECT_ROOT
 def dropdoc(doc_name, app, module):
     """Delete the specified documentation folder from the module and remove it from the documentation list."""
 
+    # Convert inputs to snake_case
+    doc_name = to_snake_case(doc_name)
+    app = to_snake_case(app) if app else None
+    module = to_snake_case(module) if module else None
+
     # Load available apps
     apps_txt_path = os.path.join(PROJECT_ROOT, "config", "apps.txt")
     apps = []
     with open(apps_txt_path, "r") as f:
-        apps = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+        apps = [to_snake_case(line.strip()) for line in f if line.strip() and not line.startswith("#")]
 
     if not apps:
         click.echo("No apps found.")
         return
 
-    # Determine app selection 
+    # Determine app selection
     if app is None:
         click.echo("Select an app:")
         for i, app_name in enumerate(apps):
@@ -30,7 +37,7 @@ def dropdoc(doc_name, app, module):
             app_index = int(app_choice) - 1
             selected_app = apps[app_index] if 0 <= app_index < len(apps) else None
         else:
-            selected_app = app_choice if app_choice in apps else None
+            selected_app = to_snake_case(app_choice) if to_snake_case(app_choice) in apps else None
     else:
         selected_app = app if app in apps else None
 
@@ -39,10 +46,10 @@ def dropdoc(doc_name, app, module):
         return
 
     # Load available modules for the selected app
-    module_txt_path = os.path.join(PROJECT_ROOT, "apps", selected_app, "modules.txt")
+    module_txt_path = os.path.join(PROJECT_ROOT, "apps", selected_app, selected_app, "modules.txt")
     modules = []
     with open(module_txt_path, "r") as f:
-        modules = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+        modules = [to_snake_case(line.strip()) for line in f if line.strip() and not line.startswith("#")]
 
     if not modules:
         click.echo(f"No modules found for app '{selected_app}'.")
@@ -58,7 +65,7 @@ def dropdoc(doc_name, app, module):
             module_index = int(module_choice) - 1
             selected_module = modules[module_index] if 0 <= module_index < len(modules) else None
         else:
-            selected_module = module_choice if module_choice in modules else None
+            selected_module = to_snake_case(module_choice) if to_snake_case(module_choice) in modules else None
     else:
         selected_module = module if module in modules else None
 
@@ -67,7 +74,7 @@ def dropdoc(doc_name, app, module):
         return
 
     # Path to the doc folder
-    doc_path = os.path.join(PROJECT_ROOT, "apps", selected_app, selected_module, "doc", doc_name)
+    doc_path = os.path.join(PROJECT_ROOT, "apps", selected_app, selected_app, selected_module, "doctype", doc_name)
 
     # Check if the doc folder exists
     if not os.path.exists(doc_path):
@@ -76,8 +83,5 @@ def dropdoc(doc_name, app, module):
 
     # Remove the doc directory
     shutil.rmtree(doc_path)
-
-    # Update the documentation list in modules.txt if necessary (optional)
-    # This part can be customized based on your requirements
 
     click.echo(f"The documentation folder '{doc_name}' has been removed from '{selected_module}' in app '{selected_app}'.")

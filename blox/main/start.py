@@ -88,16 +88,6 @@ def start(mode, site):
             cwd=django_path
         )
 
-        click.echo(
-            click.style(f"Running Django server on port {django_port}", fg="green")
-        )
-        click.echo(
-            click.style(f"Running Next.js server on port {nextjs_port}", fg="green")
-        )
-        click.echo(
-            click.style(f"Open Next.js at: http://localhost:{nextjs_port}", fg="green")
-        )
-
         write_running_ports( selected_site,django_port, nextjs_port)
 
         # Start threads to read stdout and stderr from both processes
@@ -120,6 +110,9 @@ def start(mode, site):
         nextjs_stderr_thread.start()
         django_stdout_thread.start()
         django_stderr_thread.start()
+        click.echo(
+            click.style(f"\n\nOpen at: http://localhost:{nextjs_port}\n", fg="green")
+        )
 
         try:
             django_process.wait()

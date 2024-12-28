@@ -1,7 +1,9 @@
 import os
-import shutil
 import click
+import re
 from ...utils.config import PROJECT_ROOT
+from .file_handler import create_files
+from ...utils.text import to_snake_case
 
 @click.command()
 @click.argument("doc_name")
@@ -10,11 +12,16 @@ from ...utils.config import PROJECT_ROOT
 def newdoc(doc_name, app, module):
     """Create a new documentation folder with default files in the specified module."""
 
+    # Convert inputs to snake_case
+    doc_name = to_snake_case(doc_name)
+    app = to_snake_case(app) if app else None
+    module = to_snake_case(module) if module else None
+
     # Load available apps
     apps_txt_path = os.path.join(PROJECT_ROOT, "config", "apps.txt")
     apps = []
     with open(apps_txt_path, "r") as f:
-        apps = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+        apps = [to_snake_case(line.strip()) for line in f if line.strip() and not line.startswith("#")]
 
     if not apps:
         click.echo("No apps found.")
@@ -30,7 +37,7 @@ def newdoc(doc_name, app, module):
             app_index = int(app_choice) - 1
             selected_app = apps[app_index] if 0 <= app_index < len(apps) else None
         else:
-            selected_app = app_choice if app_choice in apps else None
+            selected_app = to_snake_case(app_choice) if to_snake_case(app_choice) in apps else None
     else:
         selected_app = app if app in apps else None
 
@@ -39,10 +46,10 @@ def newdoc(doc_name, app, module):
         return
 
     # Load available modules for the selected app
-    module_txt_path = os.path.join(PROJECT_ROOT, "apps", selected_app, "modules.txt")
+    module_txt_path = os.path.join(PROJECT_ROOT, "apps", selected_app, selected_app, "modules.txt")
     modules = []
     with open(module_txt_path, "r") as f:
-        modules = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+        modules = [to_snake_case(line.strip()) for line in f if line.strip() and not line.startswith("#")]
 
     if not modules:
         click.echo(f"No modules found for app '{selected_app}'.")
@@ -58,7 +65,7 @@ def newdoc(doc_name, app, module):
             module_index = int(module_choice) - 1
             selected_module = modules[module_index] if 0 <= module_index < len(modules) else None
         else:
-            selected_module = module_choice if module_choice in modules else None
+            selected_module = to_snake_case(module_choice) if to_snake_case(module_choice) in modules else None
     else:
         selected_module = module if module in modules else None
 
@@ -67,79 +74,7 @@ def newdoc(doc_name, app, module):
         return
 
     # Define paths
-    module_path = os.path.join(PROJECT_ROOT, "apps", selected_app, selected_module)
-    doc_folder_path = os.path.join(module_path, "doc", doc_name)
-
-    # Create the new documentation folder
-    os.makedirs(doc_folder_path, exist_ok=True)
-
-    # Define the default files to create
-    default_files = {
-        "detail.js": """
-// // CustomHeader component
-// export const CustomHeader = () => {
-//   return <></>;
-// };
-
-// // CustomBody component
-// export const CustomBody = ({ data }) => {
-//   return <></>;
-// };
-
-// // CustomFooter component
-// export const CustomFooter = () => {
-//   return <></>;
-// };
-
-// // AppendBeforeBody component
-// export const AppendBeforeBody = ({ data }) => {
-//   return <></>;
-// };
-
-// // AppendAfterBody component
-// export const AppendAfterBody = () => {
-//   return <></>;
-// };
-
-// export const header = true;
-// export const footer = true;
-// export const body = true;
-        """,
-        "fields.js": "",
-        "fields.json": "{}",
-        "list.js": """
-// // CustomPagination component
-// export const CustomPagination = () => {
-//   return <></>;
-// };
-
-// // CustomFilters component
-// export const CustomFilters = () => {
-//   return <></>;
-// };
-
-// // CustomTable component
-// export const CustomTable = () => {
-//   return <></>;
-// };
-// // AppendBeforeBody component
-// export const AppendBeforeBody = () => {
-//   return <></>;
-// };
-
-// // AppendAfterBody component
-// export const AppendAfterBody = () => {
-//   return <></>;
-// };
-        """,
-        "settings.json": "{}",
-        "views.py": ""
-    }
-
-    # Create each file with the specified content
-    for filename, content in default_files.items():
-        file_path = os.path.join(doc_folder_path, filename)
-        with open(file_path, "w") as file:
-            file.write(content)
+    module_path = os.path.join(PROJECT_ROOT, "apps", selected_app, selected_app, selected_module)
+    created_folder = create_files(module_path, doc_name)
 
     click.echo(f"The documentation folder '{doc_name}' has been created successfully in '{selected_module}'.")

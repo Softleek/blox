@@ -69,9 +69,10 @@ def write_running_ports(site, django_port, nextjs_port):
         if updated:
             with open(sites_json_path, 'w') as f:
                 json.dump(sites, f, indent=4)
-            click.echo(f"Updated ports for site '{site}' in sites.json.")
+            # click.echo(f"Updated ports for site '{site}' in sites.json.")
         else:
-            click.echo(f"No port changes needed for site '{site}'.")
+            # click.echo(f"No port changes needed for site '{site}'.")
+            pass
     else:
         click.echo("No sites.json file found. Please check your configuration.")
 

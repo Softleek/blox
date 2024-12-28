@@ -38,52 +38,47 @@ def delete_associated_py_files(folder_path, structure):
                 os.remove(os.path.join(root, file))
 
 
-
 def create_module_structure(app_path, custom_app_path,app_name):
-    """Create module directories and sub-files."""
     structure = ['views', 'models', 'tests', 'serializers', 'filters']
-    modules = get_modules_from_file(custom_app_path,app_name)
-        
+    modules = get_modules_from_file(custom_app_path, app_name)
+    
+    # Create all necessary folders and delete existing .py files
     for folder in structure:
         folder_path = os.path.join(app_path, folder)
         os.makedirs(folder_path, exist_ok=True)
+        delete_associated_py_files(app_path, structure)
+    
+    for module in modules:
+        module_snake_case = to_snake_case(module)
+        module_path = os.path.join(custom_app_path, module_snake_case, 'doc')
         
-         # Delete existing .py files in the folder
-        delete_associated_py_files(app_path,structure)
-
-        # Initialize __init__.py content
-        init_imports = []
-
-        for module in modules:
-            module = to_snake_case(module)  # Convert to snake_case
-            module_path = os.path.join(folder_path, module)
-            os.makedirs(module_path, exist_ok=True)
-
-            # Create individual files for each document in the module's folder
-            doc_base_path = os.path.join(custom_app_path, module, 'doc')
+        if not os.path.exists(module_path):
+            continue
+        
+        for folder in structure:
+            folder_path = os.path.join(app_path, folder)
+            module_folder_path = os.path.join(folder_path, module_snake_case)
+            os.makedirs(module_folder_path, exist_ok=True)
             
-            if os.path.exists(doc_base_path):
-                for subfolder in os.listdir(doc_base_path):
-                    subfolder = to_snake_case(subfolder)  # Convert to snake_case
-                    subfolder_path = os.path.join(doc_base_path, subfolder)
+            init_imports = []
+            for subfolder in os.listdir(module_path):
+                subfolder_snake_case = to_snake_case(subfolder)
+                subfolder_path = os.path.join(module_path, subfolder_snake_case)
+                
+                if os.path.isdir(subfolder_path):
+                    doc_file_path = os.path.join(module_folder_path, f"{subfolder_snake_case}.py")
+                    with open(doc_file_path, 'w') as f:
+                        f.write(f"# {subfolder_snake_case}.py for {folder} in {module_snake_case} module\n")
                     
-                    if os.path.isdir(subfolder_path):
-                        # Create a .py file for the folder
-                        doc_file_path = os.path.join(module_path, f"{subfolder}.py")
-                        with open(doc_file_path, 'w') as f:
-                            f.write(f"# {subfolder}.py for {folder} in {module} module\n")
-                        
-                        # Add import statement to init_imports
-                        import_statement = f"from .{module}.{subfolder} import *\n"
-                        init_imports.append(import_statement)
-                    
-                    elif subfolder == '__init__.py':
-                        # Handle __init__.py if necessary
-                        init_file_path = os.path.join(module_path, '__init__.py')
-                        with open(init_file_path, 'w') as f:
-                            f.write(f"# __init__.py for {folder} in {module} module\n")
-        
-        # Write import statements to __init__.py
-        with open(os.path.join(folder_path, '__init__.py'), 'w') as init_file:
-            init_file.write(f"# {folder}\n")
-            init_file.writelines(init_imports)
+                    import_statement = f"from .{module_snake_case}.{subfolder_snake_case} import *\n"
+                    init_imports.append(import_statement)
+                
+                elif subfolder == '__init__.py':
+                    init_file_path = os.path.join(module_folder_path, '__init__.py')
+                    with open(init_file_path, 'w') as f:
+                        f.write(f"# __init__.py for {folder} in {module_snake_case} module\n")
+            
+            # Write import statements to __init__.py
+            with open(os.path.join(folder_path, '__init__.py'), 'w') as init_file:
+                init_file.write(f"# {folder}\n")
+                init_file.writelines(init_imports)

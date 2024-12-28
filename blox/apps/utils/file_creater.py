@@ -1,6 +1,6 @@
 import os
 
-def create_files_from_templates(base_path, app_name, templates_folder):
+def create_files_from_templates(base_path, app_name, templates_folder, dynamic_content=None):
     """Create necessary files for the app by loading content from templates."""
     
     # Define mapping of template files to their destination paths
@@ -32,6 +32,21 @@ def create_files_from_templates(base_path, app_name, templates_folder):
         try:
             with open(template_path, "r") as template_file:
                 content = template_file.read()
+
+            # Prepend dynamic content if available
+            if dynamic_content and template_name in dynamic_content:
+                if template_name == "hooks.py":
+                    # Insert dynamic content after the second line in hooks.py
+                    lines = content.splitlines()
+                    # Ensure the file has at least 2 lines to insert content after the second line
+                    if len(lines) >= 2:
+                        lines.insert(2, dynamic_content[template_name])
+                        content = "\n".join(lines)
+                    else:
+                        content = dynamic_content[template_name] + content
+                else:
+                    # For other files, prepend the dynamic content
+                    content = dynamic_content[template_name] + content
 
             # Replace placeholders in the template content
             content = content.replace("{{app_name}}", app_name)

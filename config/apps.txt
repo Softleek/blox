@@ -4,4 +4,3 @@ hrms
 payments
 lending
 POS-Awesome
-soft

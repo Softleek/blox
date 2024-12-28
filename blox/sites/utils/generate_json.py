@@ -11,13 +11,13 @@ def process_docs(folder_path):
     """Processes all documents in the specified folder and returns a list of document names."""
     docs = []
     for item_name in os.listdir(folder_path):
+        if item_name.startswith('_'):
+            continue  # Skip folders starting with '_'
         item_path = os.path.join(folder_path, item_name)
         if os.path.isdir(item_path):  # Only process directories (docs)
-            # Construct the expected JSON file path
             json_file_path = os.path.join(item_path, f"{item_name}.json")
             doc_name = item_name  # Default to the folder name
 
-            # Check if the JSON file exists and load the 'name' field if present
             if os.path.isfile(json_file_path):
                 try:
                     with open(json_file_path, 'r') as json_file:
@@ -26,7 +26,6 @@ def process_docs(folder_path):
                 except (json.JSONDecodeError, IOError):
                     click.echo(f"Error reading or parsing JSON file: {json_file_path}. Using folder name.")
 
-            # Create doc data
             doc_data = {
                 "id": to_snake_case(item_name),  # Convert doc name to snake_case for ID
                 "name": doc_name  # Use the name from JSON or folder name
@@ -65,37 +64,29 @@ def find_or_create_module_entry(app_entry, module_id, module_name):
 
 def update_module_docs(module_entry, docs):
     """Updates the documents in a module, replacing names if IDs match."""
+    existing_docs = {doc["id"]: doc for doc in module_entry["docs"]}
     for doc in docs:
-        existing_doc = next((d for d in module_entry["docs"] if d["id"] == doc["id"]), None)
-        if existing_doc:
-            existing_doc["name"] = doc["name"]  # Replace the name if ID matches
+        if doc["id"] in existing_docs:
+            existing_docs[doc["id"]]["name"] = doc["name"]
         else:
             module_entry["docs"].append(doc)
 
 
 def add_single_doc(app_id, app_name, module_id, module_name, doc_id, doc_name):
     """Adds or updates a single document in the specified app and module."""
-    # Load existing data
     existing_data = load_existing_data()
 
-    # Find or create the app entry
     app_entry = find_or_create_app_entry(existing_data, app_id, app_name)
-
-    # Find or create the module entry
     module_entry = find_or_create_module_entry(app_entry, module_id, module_name)
 
-    # Check if the document exists
     doc_entry = next((doc for doc in module_entry["docs"] if doc["id"] == doc_id), None)
     if doc_entry:
-        # Replace the name even if the ID matches
         doc_entry["name"] = doc_name
     else:
-        # Add new document if it doesn't exist
         doc_entry = {"id": doc_id, "name": doc_name}
         module_entry["docs"].append(doc_entry)
         click.echo(f"Document '{doc_name}' added to module '{module_name}' in app '{app_name}'.")
 
-    # Save the updated data
     save_data_to_file(existing_data)
 
 
@@ -106,47 +97,35 @@ def process_module(app_name, module, app_entry):
 
     _, module_path = find_module_base_path(app_name=app_name, module_name=module_id)
 
-    # Check if module path exists
     if not module_path or not os.path.exists(module_path):
         click.echo(f"Module '{module}' does not exist in app '{app_name}'. Skipping...")
         return
 
-    # Define paths for 'doc' and 'doctype' folders
     doc_path = os.path.join(module_path, module_id, "doc")
     doctype_path = os.path.join(module_path, module_id, "doctype")
 
     docs = []
-    # Check for the 'doc' or 'doctype' folder and process whichever exists
     if os.path.isdir(doc_path):
         docs = process_docs(doc_path)
     elif os.path.isdir(doctype_path):
         docs = process_docs(doctype_path)
 
-    # Find or create the module entry
     module_entry = find_or_create_module_entry(app_entry, module_id, module_name)
-
-    # Update the module docs
     update_module_docs(module_entry, docs)
 
 
 def create_doctypes_json(app_name):
     """Generates or updates the doctypes.json file for the app with its modules and docs."""
-
-    # Load existing data
     existing_data = load_existing_data()
 
-    # Find or create the app entry
     app_id = to_snake_case(app_name)
     app_entry = find_or_create_app_entry(existing_data, app_id, app_name)
 
-    # Process each module in the app
-    modules = find_modules(app_name)  # Assumes this function exists and lists the app's modules
+    modules = find_modules(app_name)
     for module in modules:
         process_module(app_name, module, app_entry)
 
-    # Save the updated data
     save_data_to_file(existing_data)
-
 
 
 def add_single_entry(app_name=None, module_name=None, doc_name=None):

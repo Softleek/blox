@@ -8,8 +8,34 @@ from .utils.file_creater import create_files_from_templates
 
 @click.command()
 @click.argument("app_name")
-def newapp(app_name):
-    """Create a new Frappe-style app with the specified name."""
+@click.option("--title", 
+              prompt="App Title", 
+              default="My Blox App", 
+              help="The title of your app", 
+              show_default=True)
+@click.option("--description", 
+              prompt="App Description", 
+              default="This is a new Blox app.", 
+              help="A short description of your app", 
+              show_default=True)
+@click.option("--publisher", 
+              prompt="App Publisher", 
+              default="Blox Technologies", 
+              help="The publisher of your app", 
+              show_default=True)
+@click.option("--email", 
+              prompt="Publisher Email", 
+              default="contact@example.io", 
+              help="The email of the publisher", 
+              show_default=True)
+@click.option("--license", 
+              prompt="App License", 
+              type=click.Choice(['MIT', 'GPL-3.0', 'Apache-2.0'], case_sensitive=False), 
+              default="MIT", 
+              help="License for the app", 
+              show_default=True)
+def newapp(app_name, title, description, publisher, email, license):
+    """Create a new Blox-style app with the specified name."""
 
     # Define paths
     temp_app_path = os.path.join(PROJECT_ROOT, "apps", f"temp_{app_name}")
@@ -61,10 +87,27 @@ def newapp(app_name):
         folder_path = os.path.join(module_path, folder)
         os.makedirs(folder_path, exist_ok=True)
 
-    # Use the file creator utility to generate boilerplate files from templates
+    # Prepare dynamic content to pass to the file creation function
+    dynamic_content = {}
+
+    if title:
+        dynamic_content["hooks.py"] = f"""# App Information
+app_name = "{app_name}"
+app_title = "{title}"
+app_description = "{description}"
+app_publisher = "{publisher}"
+app_email = "{email}"
+app_license = "{license}"
+"""
+
+    # Convert app_name to title case for modules.txt
+    dynamic_content["modules.txt"] = f"{app_name.replace('_', ' ').title()}\n"
+
+    # Use the file creator utility to generate boilerplate files from templates, passing dynamic content
     templates_folder = os.path.join(PROJECT_ROOT, "blox", "templates")
-    create_files_from_templates(temp_app_path, app_name, templates_folder)
+    create_files_from_templates(temp_app_path, app_name, templates_folder, dynamic_content)
     
+    # Add the app to the apps.txt configuration
     apps_txt_path = os.path.join(PROJECT_ROOT, "config", "apps.txt")
     with open(apps_txt_path, "a") as apps_file:
         apps_file.write(f"{app_name}\n")

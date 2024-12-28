@@ -44,36 +44,63 @@ def create_entries_from_config(django_path):
     with open(DOCS_JSON_PATH, "r") as file:
         config = json.load(file)
 
+    # Cache existing entries to reduce redundant queries
+    existing_apps = {app.id: app for app in App.objects.all()}
+    existing_modules = {module.id: module for module in Module.objects.all()}
+    existing_docs = {doc.id: doc for doc in Document.objects.all()}
+
+    # Prepare lists for bulk operations
+    apps_to_create = []
+    modules_to_create = []
+    docs_to_create = []
+
     # Process each app and its modules/documents
     for app_data in config:
         app_id = app_data["id"]
         app_name = app_data["name"]
 
         # Update or create the App entry
-        app, _ = update_or_create_entry(App, app_id, app_name)
+        if app_id in existing_apps:
+            app = existing_apps[app_id]
+            if app.name != app_name:
+                app.name = app_name
+                app.save()
+        else:
+            app = App(id=app_id, name=app_name)
+            apps_to_create.append(app)
 
         for module_data in app_data.get("modules", []):
             module_id = module_data["id"]
             module_name = module_data["name"]
 
             # Update or create the Module entry, linked to the App
-            module, _ = update_or_create_entry(
-                Module, 
-                module_id, 
-                module_name, 
-                app=app
-            )
+            if module_id in existing_modules:
+                module = existing_modules[module_id]
+                if module.name != module_name:
+                    module.name = module_name
+                    module.save()
+            else:
+                module = Module(id=module_id, name=module_name, app=app)
+                modules_to_create.append(module)
 
             for doc_data in module_data.get("docs", []):
                 doc_id = doc_data["id"]
                 doc_name = doc_data["name"]
 
                 # Update or create the Document entry, linked to both Module and App
-                update_or_create_entry(
-                    Document, 
-                    doc_id, 
-                    doc_name, 
-                    module=module, 
-                    app=app
-                )
+                if doc_id in existing_docs:
+                    doc = existing_docs[doc_id]
+                    if doc.name != doc_name:
+                        doc.name = doc_name
+                        doc.save()
+                else:
+                    doc = Document(id=doc_id, name=doc_name, module=module, app=app)
+                    docs_to_create.append(doc)
 
+    # Bulk create new entries
+    if apps_to_create:
+        App.objects.bulk_create(apps_to_create)
+    if modules_to_create:
+        Module.objects.bulk_create(modules_to_create)
+    if docs_to_create:
+        Document.objects.bulk_create(docs_to_create)

@@ -23,7 +23,7 @@ def get_default_site_info(PROJECT_ROOT):
     selected_site = next((s for s in sites if s.get("default") == True), None)
 
     if selected_site:
-        click.echo(f"Using default site: {selected_site['site_name']}")
+        # click.echo(f"Using default site: {selected_site['site_name']}")
         django_path = os.path.join(PROJECT_ROOT, "sites", selected_site["site_name"], "django")
         return django_path, selected_site
     else:

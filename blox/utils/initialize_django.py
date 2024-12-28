@@ -31,6 +31,7 @@ def initialize_django_env():
     # Initialize Django if not already initialized
     if not django.apps.apps.ready:
         django.setup()
-        print("Django environment initialized.")
+        # print("Django environment initialized.")
     else:
-        print("Django environment was already initialized.")
+        # print("Django environment was already initialized.")
+        pass
