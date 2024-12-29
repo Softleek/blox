@@ -66,36 +66,32 @@ def create_entries_from_config(django_path):
                 app.name = app_name
                 app.save()
         else:
-            app = App(id=app_id, name=app_name)
-            apps_to_create.append(app)
+            apps_to_create.append(App(id=app_id, name=app_name))
 
+        # Process modules and documents similarly
         for module_data in app_data.get("modules", []):
             module_id = module_data["id"]
             module_name = module_data["name"]
 
-            # Update or create the Module entry, linked to the App
             if module_id in existing_modules:
                 module = existing_modules[module_id]
                 if module.name != module_name:
                     module.name = module_name
                     module.save()
             else:
-                module = Module(id=module_id, name=module_name, app=app)
-                modules_to_create.append(module)
+                modules_to_create.append(Module(id=module_id, name=module_name, app_id=app_id))
 
-            for doc_data in module_data.get("docs", []):
+            for doc_data in module_data.get("documents", []):
                 doc_id = doc_data["id"]
                 doc_name = doc_data["name"]
 
-                # Update or create the Document entry, linked to both Module and App
                 if doc_id in existing_docs:
                     doc = existing_docs[doc_id]
                     if doc.name != doc_name:
                         doc.name = doc_name
                         doc.save()
                 else:
-                    doc = Document(id=doc_id, name=doc_name, module=module, app=app)
-                    docs_to_create.append(doc)
+                    docs_to_create.append(Document(id=doc_id, name=doc_name, module_id=module_id))
 
     # Bulk create new entries
     if apps_to_create:

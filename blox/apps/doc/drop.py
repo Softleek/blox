@@ -78,10 +78,8 @@ def dropdoc(doc_name, app, module):
 
     # Check if the doc folder exists
     if not os.path.exists(doc_path):
-        click.echo(f"The documentation folder '{doc_name}' does not exist in module '{selected_module}'.")
         return
 
     # Remove the doc directory
     shutil.rmtree(doc_path)
 
-    click.echo(f"The documentation folder '{doc_name}' has been removed from '{selected_module}' in app '{selected_app}'.")

@@ -10,7 +10,7 @@ from ...utils.text import to_snake_case
 @click.option("--app", type=str, help="Select the app by number or name.")
 @click.option("--module", type=str, help="Select the module by number or name.")
 def newdoc(doc_name, app, module):
-    """Create a new documentation folder with default files in the specified module."""
+    """Create a new doctype folder with default files in the specified module."""
 
     # Convert inputs to snake_case
     doc_name = to_snake_case(doc_name)
@@ -77,4 +77,3 @@ def newdoc(doc_name, app, module):
     module_path = os.path.join(PROJECT_ROOT, "apps", selected_app, selected_app, selected_module)
     created_folder = create_files(module_path, doc_name)
 
-    click.echo(f"The documentation folder '{doc_name}' has been created successfully in '{selected_module}'.")
