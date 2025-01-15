@@ -1,17 +1,17 @@
 import os
-import click
-from django.contrib import admin
-from ...utils.config import find_module_base_path
-from ...utils.text import to_snake_case, underscore_to_titlecase
 
+import click
+
+from ...utils.config import find_module_base_path
+from ...utils.text import (to_snake_case, to_titlecase_no_space)
 from ..utils.app_actions import get_name_by_id
-from ...utils.text import to_snake_case, to_titlecase_no_space
+
 
 def update_urls_py(app_name, modules, django_path):
     """Update urls.py to register ViewSets for models within an app."""
-    
+
     # Path to urls.py
-    urls_path = os.path.join(django_path, f"{app_name}_app", 'urls.py')
+    urls_path = os.path.join(django_path, f"{app_name}_app", "urls.py")
 
     # Initialize content for urls.py
     urls_content = """from django.urls import path, include
@@ -24,11 +24,15 @@ router = DefaultRouter()
     # Process each module
     for module in modules:
         module_snake_case = to_snake_case(module)
-        _, module_path = find_module_base_path(app_name=app_name, module_name=module_snake_case)
+        _, module_path = find_module_base_path(
+            app_name=app_name, module_name=module_snake_case
+        )
 
         # Check if the module path exists
         if not module_path or not os.path.exists(module_path):
-            click.echo(f"Module '{module}' does not exist in app '{app_name}'. Skipping...")
+            click.echo(
+                f"Module '{module}' does not exist in app '{app_name}'. Skipping..."
+            )
             continue
 
         # Define paths for 'doc' and 'doctype' folders
@@ -41,7 +45,9 @@ router = DefaultRouter()
         elif os.path.isdir(doctype_path):
             models = extract_model_names(doctype_path)
         else:
-            click.echo(f"No 'doc' or 'doctype' folder found for module '{module}' in app '{app_name}'.")
+            click.echo(
+                f"No 'doc' or 'doctype' folder found for module '{module}' in app '{app_name}'."
+            )
             continue
 
         # Generate ViewSet registrations for each model
@@ -59,11 +65,12 @@ urlpatterns = [
 """
 
     # Write the final urls.py
-    with open(urls_path, 'w') as file:
+    with open(urls_path, "w") as file:
         file.write(urls_content)
 
+
 def extract_model_names(folder_path):
-    """Extract model names based on folder contents, skipping directories 
+    """Extract model names based on folder contents, skipping directories
     starting with '_' or 'pycache'."""
     models = []
     for item_name in os.listdir(folder_path):

@@ -1,36 +1,42 @@
+import json
 import os
 import sys
-import json
+
 import django
-from pathlib import Path
-import click
-from ...utils.text import underscore_to_titlecase_main
+
 from ...utils.config import DOCS_JSON_PATH
+
 
 def initialize_django_env(django_path):
     """Initialize the Django environment based on django_path."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")  # Update to your settings module
+    os.environ.setdefault(
+        "DJANGO_SETTINGS_MODULE", "backend.settings"
+    )  # Update to your settings module
     sys.path.insert(0, django_path)  # Add Django project path to Python path
     django.setup()
+
 
 def update_or_create_entry(model, id_value, name_value, **kwargs):
     """
     Update an existing entry's name if the ID exists, or create a new entry.
-    
+
     Args:
         model: The model class to query.
         id_value: The ID to look for.
         name_value: The name to set or update.
         kwargs: Additional fields for creating a new entry.
-    
+
     Returns:
         A tuple of (instance, created).
     """
-    instance, created = model.objects.get_or_create(id=id_value, defaults={"name": name_value, **kwargs})
+    instance, created = model.objects.get_or_create(
+        id=id_value, defaults={"name": name_value, **kwargs}
+    )
     if not created and instance.name != name_value:
         instance.name = name_value
         instance.save()
     return instance, created
+
 
 def create_entries_from_config(django_path):
     """Process the JSON configuration file and create/update database entries."""
@@ -38,7 +44,8 @@ def create_entries_from_config(django_path):
     initialize_django_env(django_path)
 
     # Import models after Django setup
-    from core.models import App, Module, Document  # Update with actual path to models
+    from core.models import (App,  # Update with actual path to models
+                             Document, Module)
 
     # Load JSON configuration file
     with open(DOCS_JSON_PATH, "r") as file:
@@ -79,7 +86,9 @@ def create_entries_from_config(django_path):
                     module.name = module_name
                     module.save()
             else:
-                modules_to_create.append(Module(id=module_id, name=module_name, app_id=app_id))
+                modules_to_create.append(
+                    Module(id=module_id, name=module_name, app_id=app_id)
+                )
 
             for doc_data in module_data.get("documents", []):
                 doc_id = doc_data["id"]
@@ -91,7 +100,9 @@ def create_entries_from_config(django_path):
                         doc.name = doc_name
                         doc.save()
                 else:
-                    docs_to_create.append(Document(id=doc_id, name=doc_name, module_id=module_id))
+                    docs_to_create.append(
+                        Document(id=doc_id, name=doc_name, module_id=module_id)
+                    )
 
     # Bulk create new entries
     if apps_to_create:

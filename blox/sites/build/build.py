@@ -2,7 +2,7 @@ import os
 import subprocess
 import sys
 import click
-from .config import PROJECT_ROOT
+from ...utils.config import PROJECT_ROOT
 
 
 @click.command()

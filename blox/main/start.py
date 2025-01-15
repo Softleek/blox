@@ -1,14 +1,16 @@
-import os
-import subprocess
-import sys
-import click
-import socket
-import threading
 import json
-import time
-from ..utils.config import PROJECT_ROOT, write_running_ports,DEFAULT_SITE,DJANGO_PATH
+import os
+import socket
+import subprocess
+import threading
+
+import click
+
+from ..utils.config import (DEFAULT_SITE, DJANGO_PATH, PROJECT_ROOT,
+                            write_running_ports)
 from ..utils.initialize_django import initialize_django_env
-from ..utils.run_process import run_subprocess, get_python_executable
+from ..utils.run_process import get_python_executable, run_subprocess
+
 
 def find_free_port(start_port=3000):
     port = start_port
@@ -17,6 +19,7 @@ def find_free_port(start_port=3000):
             if sock.connect_ex(("localhost", port)) != 0:
                 return port
             port += 1
+
 
 def stream_reader(stream, color, prefix="", first_line_only=False):
     """Reads from a stream and prints lines with a given color and optional prefix."""
@@ -31,11 +34,17 @@ def stream_reader(stream, color, prefix="", first_line_only=False):
             if line:
                 click.echo(click.style(f"{line}", fg=color))
 
+
 @click.command()
 @click.argument("mode", default="prod")
-@click.option("--site", default=None, help="Specify a site to start. If not provided, prompts for a site.")
+@click.option(
+    "--site",
+    default=None,
+    help="Specify a site to start. If not provided, prompts for a site.",
+)
 def start(mode, site):
     """Start Django and Next.js servers for the specified site."""
+    click.echo("Starting server")
     # Load sites from sites.json
     sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
     if os.path.exists(sites_json_path):
@@ -47,15 +56,20 @@ def start(mode, site):
 
     # Prompt for site if not provided
     if not site:
-       selected_site = DEFAULT_SITE
-       django_path = DJANGO_PATH
-    else:    django_path = os.path.join(PROJECT_ROOT, "sites", selected_site["site_name"], "django")
-
-
+        selected_site = DEFAULT_SITE
+        django_path = DJANGO_PATH
+    else:
+        django_path = os.path.join(
+            PROJECT_ROOT, "sites", selected_site["site_name"], "django"
+        )
 
     # Create Django and Next.js paths
-    django_path = os.path.join(PROJECT_ROOT, "sites", selected_site["site_name"], "django")
-    nextjs_path = os.path.join(PROJECT_ROOT, "sites", selected_site["site_name"], "nextjs")
+    django_path = os.path.join(
+        PROJECT_ROOT, "sites", selected_site["site_name"], "django"
+    )
+    nextjs_path = os.path.join(
+        PROJECT_ROOT, "sites", selected_site["site_name"], "nextjs"
+    )
 
     python_executable = get_python_executable()
 
@@ -75,20 +89,17 @@ def start(mode, site):
         )
 
         # Start Next.js process
-        nextjs_process = run_subprocess(
-            nextjs_command,
-            cwd=nextjs_path
-        )
-        
+        nextjs_process = run_subprocess(nextjs_command, cwd=nextjs_path)
+
         # time.sleep(3)
-        initialize_django_env() 
-        
+        initialize_django_env()
+
         django_process = run_subprocess(
             [python_executable, "manage.py", "runserver", f"0.0.0.0:{django_port}"],
-            cwd=django_path
+            cwd=django_path,
         )
 
-        write_running_ports( selected_site,django_port, nextjs_port)
+        write_running_ports(selected_site, django_port, nextjs_port)
 
         # Start threads to read stdout and stderr from both processes
         django_stdout_thread = threading.Thread(
@@ -151,5 +162,3 @@ def start(mode, site):
                 nextjs_process.wait(timeout=5)
             except subprocess.TimeoutExpired:
                 nextjs_process.kill()
-
-

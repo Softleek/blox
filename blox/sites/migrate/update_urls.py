@@ -1,21 +1,25 @@
 import os
 import re
+
 from ...utils.config import APPS_PATH
+from ...utils.text import to_titlecase_no_space
 from ..utils.app_actions import get_name_by_id
-from ...utils.text import to_snake_case, to_titlecase_no_space
+
 
 def underscore_to_titlecase(underscore_str):
     """Convert underscore string to title case."""
     return re.sub(r"_(.)", lambda m: m.group(1).upper(), underscore_str.title())
 
+
 def write_urls(url_file, model_name, module_name):
     """Generate a URL route for a given model."""
     return f"router.register(r'{module_name}', {model_name}ViewSet)\n"
 
+
 def update_urls(app_name, module, django_path):
     """Update the main urls.py file with new routes."""
     url_file_path = os.path.join(django_path, f"{app_name}_app", "urls.py")
-    
+
     # Prepare header lines
     header_lines = (
         f"from django.urls import path, include\n"
@@ -36,7 +40,7 @@ def update_urls(app_name, module, django_path):
         existing_content = ""
 
     new_content = []
- 
+
     # Add header lines if not already in the file
     if header_lines not in existing_content:
         new_content.append(header_lines)
@@ -44,17 +48,23 @@ def update_urls(app_name, module, django_path):
     # Check for valid folders in the documentation directory and generate routes
     for folder_name in os.listdir(doc_folder_path):
         folder_path = os.path.join(doc_folder_path, folder_name)
-        
+
         if os.path.isdir(folder_path) and not is_invalid_model_name(folder_name):
             model_name = to_titlecase_no_space(get_name_by_id(folder_name, "doc"))
-            line_to_add = f"router.register(r'{module}.{folder_name}', {model_name}ViewSet)\n"
-            
+            line_to_add = (
+                f"router.register(r'{module}.{folder_name}', {model_name}ViewSet)\n"
+            )
+
             # Add the route if it doesn't already exist
             if line_to_add not in existing_content:
                 new_content.append(line_to_add)
 
     # Remove the old urlpatterns if it exists
-    existing_content = re.sub(r"urlpatterns\s*=\s*\[path\(''\s*,\s*include\(router.urls\)\)\s*,?\]\n?", "", existing_content)
+    existing_content = re.sub(
+        r"urlpatterns\s*=\s*\[path\(''\s*,\s*include\(router.urls\)\)\s*,?\]\n?",
+        "",
+        existing_content,
+    )
 
     # Write new content if there are changes
     if new_content or urlpatterns_line not in existing_content:
@@ -64,11 +74,8 @@ def update_urls(app_name, module, django_path):
             url_file.writelines(new_content)
             url_file.write("\n" + urlpatterns_line)
 
+
 def is_invalid_model_name(name):
     """Check if a model name is invalid."""
     # Skip directories starting with '_' or 'pycache' and names starting or ending with underscores
-    return (
-        name.startswith("_") or
-        name.endswith("_") or
-        name.lower() == "pycache"
-    )
+    return name.startswith("_") or name.endswith("_") or name.lower() == "pycache"

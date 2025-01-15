@@ -3,7 +3,7 @@ import subprocess
 import sys
 import click
 import socket
-from .config import PROJECT_ROOT, write_running_ports
+from ...utils.config import PROJECT_ROOT, write_running_ports
 
 
 def find_free_port(start_port=3000):

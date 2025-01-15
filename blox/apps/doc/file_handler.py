@@ -1,6 +1,8 @@
 import os
+from ...utils.text import to_titlecase_no_space
 
-def create_files(base_path, doc_name):
+
+def create_files(base_path, doc_name, doc_id, module):
     """
     Create a doctype folder with Frappe-like files in the given base path.
 
@@ -10,29 +12,32 @@ def create_files(base_path, doc_name):
     """
     # Define the default files and their content
     default_files = {
-        f"{doc_name}.py": f"""
-# {doc_name.capitalize()} DocType
+        f"{doc_id}.py": f"""
+# {doc_name} DocType
 
 import frappe
 from frappe.model.document import Document
 
-class {doc_name.capitalize()}(Document):
+class {to_titlecase_no_space(doc_name)}(Document):
     pass
         """,
-        f"{doc_name}.js": f"""
-// {doc_name.capitalize()} JavaScript File
+        f"{doc_id}.js": f"""
+// {doc_name} JavaScript File
 
-frappe.ui.form.on('{doc_name.capitalize()}', {{
+frappe.ui.form.on('{doc_name}', {{
     refresh: function (frm) {{
         // Custom script logic here
     }},
 }});
         """,
-        f"{doc_name}.json": f"""
+        f"{doc_id}.json": f"""
 {{
-    "doctype": "{doc_name.capitalize()}",
-    "name": "{doc_name.capitalize()}",
-    "module": "Module Name",
+    "doctype": "DocType",
+    "default_view": "List",
+    "sort_field": "creation",
+    "sort_order": "DESC",
+    "name": "{doc_name}",
+    "module": "{module}",
     "fields": [],
     "permissions": [
         {{
@@ -45,21 +50,21 @@ frappe.ui.form.on('{doc_name.capitalize()}', {{
     ]
 }}
         """,
-        f"test_{doc_name}.py": f"""
-# Test for {doc_name.capitalize()}
+        f"test_{doc_id}.py": f"""
+# Test for {doc_name}
 
 import frappe
 import unittest
 
-class Test{doc_name.capitalize()}(unittest.TestCase):
+class Test{to_titlecase_no_space(doc_name)}(unittest.TestCase):
     def test_example(self):
         # Example test case
         self.assertTrue(True)
-        """
+        """,
     }
 
     # Create the doctype folder
-    doc_folder_path = os.path.join(base_path, "doctype", doc_name)
+    doc_folder_path = os.path.join(base_path, "doctype", doc_id)
     os.makedirs(doc_folder_path, exist_ok=True)
 
     # Create the files in the doctype folder

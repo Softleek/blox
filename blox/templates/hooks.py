@@ -1,5 +1,3 @@
-from . import __version__ as app_version
-
 
 # Includes in <head>
 # ------------------
@@ -101,7 +99,7 @@ from . import __version__ as app_version
 # ---------------
 
 # scheduler_events = {
-	
+
 # }
 
 # Testing

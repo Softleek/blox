@@ -1,12 +1,14 @@
 import os
-import subprocess
-import pymysql
-import sqlite3
 import platform
-from getpass import getpass
 import re
-from ...config import PROJECT_ROOT, APPS_TXT_PATH
+import subprocess
+from getpass import getpass
+
 import click
+import pymysql
+
+from ...config import PROJECT_ROOT
+
 
 def run_django_migrations():
     """Run Django makemigrations and migrate commands."""
@@ -25,6 +27,7 @@ def run_django_migrations():
 
     click.echo("Migration completed.")
 
+
 def createsuperuser():
     run_django_migrations()
 
@@ -37,10 +40,13 @@ def createsuperuser():
         create_superuser_args,
         shell=False,
         cwd=os.path.join(PROJECT_ROOT, "apps/core/django"),
-        env={**os.environ,}  
+        env={
+            **os.environ,
+        },
     )
 
     click.echo("Superuser created successfully.")
+
 
 def install_database():
     """Install MariaDB or MySQL depending on the OS."""
@@ -52,16 +58,35 @@ def install_database():
         print("MariaDB/MySQL is already installed.")
     except subprocess.CalledProcessError:
         print("MariaDB/MySQL is not installed. Installing now...")
-        if 'ubuntu' in os_name or 'debian' in os_name:
+        if "ubuntu" in os_name or "debian" in os_name:
             subprocess.run(["sudo", "apt", "update"], check=True)
-            subprocess.run(["sudo", "apt", "install", "mariadb-server", "-y"], check=True)
+            subprocess.run(
+                ["sudo", "apt", "install", "mariadb-server", "-y"], check=True
+            )
         else:
             subprocess.run(["sudo", "yum", "install", "mysql-server", "-y"], check=True)
 
-        subprocess.run(["sudo", "systemctl", "start", "mariadb" if 'ubuntu' in os_name or 'debian' in os_name else "mysqld"], check=True)
-        subprocess.run(["sudo", "systemctl", "enable", "mariadb" if 'ubuntu' in os_name or 'debian' in os_name else "mysqld"], check=True)
+        subprocess.run(
+            [
+                "sudo",
+                "systemctl",
+                "start",
+                "mariadb" if "ubuntu" in os_name or "debian" in os_name else "mysqld",
+            ],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "sudo",
+                "systemctl",
+                "enable",
+                "mariadb" if "ubuntu" in os_name or "debian" in os_name else "mysqld",
+            ],
+            check=True,
+        )
 
     return True
+
 
 def create_database_user():
     """Create a new database user or ensure the user exists with all privileges."""
@@ -74,17 +99,23 @@ def create_database_user():
     cursor = conn.cursor()
 
     try:
-        cursor.execute(f"SELECT COUNT(*) FROM mysql.user WHERE user = '{new_user}' AND host = 'localhost';")
+        cursor.execute(
+            f"SELECT COUNT(*) FROM mysql.user WHERE user = '{new_user}' AND host = 'localhost';"
+        )
         user_exists = cursor.fetchone()[0]
 
         if user_exists == 0:
-            cursor.execute(f"CREATE USER '{new_user}'@'localhost' IDENTIFIED BY '{new_password}';")
+            cursor.execute(
+                f"CREATE USER '{new_user}'@'localhost' IDENTIFIED BY '{new_password}';"
+            )
             print(f"User {new_user} created successfully.")
         else:
             print(f"User {new_user} already exists.")
 
         cursor.execute(f"CREATE DATABASE IF NOT EXISTS {new_db};")
-        cursor.execute(f"GRANT ALL PRIVILEGES ON {new_db}.* TO '{new_user}'@'localhost' WITH GRANT OPTION;")
+        cursor.execute(
+            f"GRANT ALL PRIVILEGES ON {new_db}.* TO '{new_user}'@'localhost' WITH GRANT OPTION;"
+        )
         conn.commit()
         print(f"Privileges granted to user {new_user} for database {new_db}.")
     except pymysql.MySQLError as e:
@@ -93,6 +124,7 @@ def create_database_user():
         conn.close()
 
     return new_user, new_password, new_db
+
 
 def drop_existing_tables(db_name, user, password, host="localhost"):
     """Drop all tables in the given database."""
@@ -116,6 +148,7 @@ def drop_existing_tables(db_name, user, password, host="localhost"):
     finally:
         conn.close()
 
+
 def update_app_settings(user, password, db_name, host="localhost"):
     """Update settings.py to use MariaDB/MySQL."""
     settings_file = "apps/core/django/backend/settings.py"
@@ -124,7 +157,9 @@ def update_app_settings(user, password, db_name, host="localhost"):
         settings_content = file.read()
 
     pattern = r"\bDATABASES\s*=\s*\{(?:[^{}]|\{[^{}]*\})*\}\s*"
-    updated_settings_content = re.sub(pattern, "", settings_content, flags=re.DOTALL).strip()
+    updated_settings_content = re.sub(
+        pattern, "", settings_content, flags=re.DOTALL
+    ).strip()
 
     new_db_settings = f"""
 DATABASES = {{
@@ -146,6 +181,7 @@ DATABASES = {{
 
     print(f"settings.py updated to use MariaDB/MySQL with database '{db_name}'.")
 
+
 @click.command()
 def migratedb(sqlite_db_path=None):
     """Main function to handle the entire migration process."""
@@ -154,6 +190,7 @@ def migratedb(sqlite_db_path=None):
     drop_existing_tables(db_name, user, password)
     update_app_settings(user, password, db_name)
     createsuperuser()
+
 
 if __name__ == "__main__":
     migratedb()

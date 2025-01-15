@@ -1,12 +1,16 @@
+import json
 import os
 import shutil
-import click
 import subprocess
-import json
+
+import click
+
 from ..utils.config import PROJECT_ROOT
+from ..sites.migrate.migrate import run_migration
+
 
 @click.command()
-@click.option('--app', type=str, help="The name of the app to delete.")
+@click.option("--app", type=str, help="The name of the app to delete.")
 def dropapp(app):
     """Delete the specified Django app, uninstall it from all sites using `blox uninstallapp`, and remove it from the configuration."""
 
@@ -18,7 +22,11 @@ def dropapp(app):
 
     # Load apps from apps.txt
     with open(apps_txt_path, "r") as settings_file:
-        apps = [line.strip() for line in settings_file.readlines() if line.strip() and not line.startswith("#")]
+        apps = [
+            line.strip()
+            for line in settings_file.readlines()
+            if line.strip() and not line.startswith("#")
+        ]
 
     # Prompt for app if not provided
     if not app:
@@ -40,7 +48,9 @@ def dropapp(app):
             return
 
     # Confirm the deletion
-    confirm = click.confirm(f"Are you sure you want to delete the app '{selected_app}'?", default=False)
+    confirm = click.confirm(
+        f"Are you sure you want to delete the app '{selected_app}'?", default=False
+    )
     if not confirm:
         click.echo("App deletion canceled.")
         return
@@ -56,17 +66,23 @@ def dropapp(app):
         sites = json.load(sites_file)
 
     for site in sites:
-        site_name = site.get('site_name')
+        site_name = site.get("site_name")
         try:
-            click.echo(f"Running `blox uninstallapp` for app '{selected_app}' on site '{site_name}'...")
+            click.echo(
+                f"Running `blox uninstallapp` for app '{selected_app}' on site '{site_name}'..."
+            )
             # Run the `blox uninstallapp` command
             subprocess.check_call(
                 ["blox", "uninstallapp", "--site", site_name, "--app", selected_app],
-                cwd=PROJECT_ROOT
+                cwd=PROJECT_ROOT,
             )
-            click.echo(f"Successfully uninstalled app '{selected_app}' from site '{site_name}'.")
+            click.echo(
+                f"Successfully uninstalled app '{selected_app}' from site '{site_name}'."
+            )
         except subprocess.CalledProcessError as e:
-            click.echo(f"Failed to uninstall app '{selected_app}' from site '{site_name}': {e}")
+            click.echo(
+                f"Failed to uninstall app '{selected_app}' from site '{site_name}': {e}"
+            )
 
     # Path to the app folder
     custom_app_path = os.path.join(PROJECT_ROOT, "apps", selected_app)
@@ -74,11 +90,15 @@ def dropapp(app):
     # Delete the app folder using PowerShell with admin privileges on Windows
     try:
         if os.path.exists(custom_app_path):
-            click.echo(f"Attempting to delete the app folder '{custom_app_path}' with admin privileges...")
+            click.echo(
+                f"Attempting to delete the app folder '{custom_app_path}' with admin privileges..."
+            )
 
-            if os.name == 'nt':  # Check if Windows
+            if os.name == "nt":  # Check if Windows
                 powershell_command = f'Remove-Item -Recurse -Force "{custom_app_path}"'
-                subprocess.check_call(["powershell", "-Command", powershell_command], shell=True)
+                subprocess.check_call(
+                    ["powershell", "-Command", powershell_command], shell=True
+                )
             else:
                 # For Unix-based systems, use shutil.rmtree
                 shutil.rmtree(custom_app_path)
@@ -97,4 +117,5 @@ def dropapp(app):
                 settings_file.write(line + "\n")
 
     click.echo(f"The app '{selected_app}' has been removed from apps.txt.")
-
+    
+    run_migration()

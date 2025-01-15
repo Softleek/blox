@@ -115,7 +115,6 @@
 #         json.dump(data, json_file, indent=4)
 
 
-
 # def restore_data_to_db():
 #     """Restore data from JSON file to the Django-managed database."""
 #     print("Restoring data to Django-managed database...")
@@ -143,7 +142,7 @@
 #     """Main function to handle the entire migration process."""
 #     settings = load_settings()  # Load settings from the Python module
 #     db_settings = settings['default']  # Retrieve DB settings from settings
-    
+
 #     # Prompt the user to confirm the password
 #     password = getpass.getpass("Enter database password: ")
 
@@ -157,10 +156,10 @@
 #         host=db_settings['HOST'],
 #         port=int(db_settings['PORT'])  # Convert PORT to integer
 #     )
-    
+
 #     # Migrate SQLite to MySQL/MariaDB
 #     migrate_sqlite_to_db(DB_PATH, db_conn, db_settings['NAME'])
-    
+
 #     db_conn.close()
 
 #     restore_data_to_db()

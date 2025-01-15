@@ -1,9 +1,12 @@
 import os
 import shutil
+
 import click
-import re
+
 from ...utils.config import PROJECT_ROOT
 from ...utils.text import to_snake_case
+from ...sites.migrate.migrate import run_migration
+
 
 @click.command()
 @click.argument("doc_name")
@@ -21,7 +24,11 @@ def dropdoc(doc_name, app, module):
     apps_txt_path = os.path.join(PROJECT_ROOT, "config", "apps.txt")
     apps = []
     with open(apps_txt_path, "r") as f:
-        apps = [to_snake_case(line.strip()) for line in f if line.strip() and not line.startswith("#")]
+        apps = [
+            to_snake_case(line.strip())
+            for line in f
+            if line.strip() and not line.startswith("#")
+        ]
 
     if not apps:
         click.echo("No apps found.")
@@ -32,12 +39,16 @@ def dropdoc(doc_name, app, module):
         click.echo("Select an app:")
         for i, app_name in enumerate(apps):
             click.echo(f"{i + 1}: {app_name}")
-        app_choice = click.prompt("Enter the number of the app or the app name", type=str)
+        app_choice = click.prompt(
+            "Enter the number of the app or the app name", type=str
+        )
         if app_choice.isdigit():
             app_index = int(app_choice) - 1
             selected_app = apps[app_index] if 0 <= app_index < len(apps) else None
         else:
-            selected_app = to_snake_case(app_choice) if to_snake_case(app_choice) in apps else None
+            selected_app = (
+                to_snake_case(app_choice) if to_snake_case(app_choice) in apps else None
+            )
     else:
         selected_app = app if app in apps else None
 
@@ -46,10 +57,16 @@ def dropdoc(doc_name, app, module):
         return
 
     # Load available modules for the selected app
-    module_txt_path = os.path.join(PROJECT_ROOT, "apps", selected_app, selected_app, "modules.txt")
+    module_txt_path = os.path.join(
+        PROJECT_ROOT, "apps", selected_app, selected_app, "modules.txt"
+    )
     modules = []
     with open(module_txt_path, "r") as f:
-        modules = [to_snake_case(line.strip()) for line in f if line.strip() and not line.startswith("#")]
+        modules = [
+            to_snake_case(line.strip())
+            for line in f
+            if line.strip() and not line.startswith("#")
+        ]
 
     if not modules:
         click.echo(f"No modules found for app '{selected_app}'.")
@@ -60,12 +77,20 @@ def dropdoc(doc_name, app, module):
         click.echo("Select a module:")
         for i, module_name in enumerate(modules):
             click.echo(f"{i + 1}: {module_name}")
-        module_choice = click.prompt("Enter the number of the module or the module name", type=str)
+        module_choice = click.prompt(
+            "Enter the number of the module or the module name", type=str
+        )
         if module_choice.isdigit():
             module_index = int(module_choice) - 1
-            selected_module = modules[module_index] if 0 <= module_index < len(modules) else None
+            selected_module = (
+                modules[module_index] if 0 <= module_index < len(modules) else None
+            )
         else:
-            selected_module = to_snake_case(module_choice) if to_snake_case(module_choice) in modules else None
+            selected_module = (
+                to_snake_case(module_choice)
+                if to_snake_case(module_choice) in modules
+                else None
+            )
     else:
         selected_module = module if module in modules else None
 
@@ -74,7 +99,15 @@ def dropdoc(doc_name, app, module):
         return
 
     # Path to the doc folder
-    doc_path = os.path.join(PROJECT_ROOT, "apps", selected_app, selected_app, selected_module, "doctype", doc_name)
+    doc_path = os.path.join(
+        PROJECT_ROOT,
+        "apps",
+        selected_app,
+        selected_app,
+        selected_module,
+        "doctype",
+        doc_name,
+    )
 
     # Check if the doc folder exists
     if not os.path.exists(doc_path):
@@ -82,4 +115,4 @@ def dropdoc(doc_name, app, module):
 
     # Remove the doc directory
     shutil.rmtree(doc_path)
-
+    run_migration(app=app, module=module)

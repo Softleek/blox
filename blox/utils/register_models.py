@@ -1,11 +1,15 @@
 import json
 import os
+
 from .config import DOCS_JSON_PATH
 
-def register_to_model_json(app_id, app_name, module_id, module_name, doc_id, doc_name, django_path):
+
+def register_to_model_json(
+    app_id, app_name, module_id, module_name, doc_id, doc_name, django_path
+):
     """
     Registers a model in config/models.json grouped by app and module with unique entries.
-    
+
     Args:
         app_id (str): The app's identifier.
         app_name (str): The app's display name.
@@ -36,7 +40,9 @@ def register_to_model_json(app_id, app_name, module_id, module_name, doc_id, doc
         model_entries.append(app_entry)
 
     # Find or create the module entry
-    module_entry = next((mod for mod in app_entry["modules"] if mod["id"] == module_id), None)
+    module_entry = next(
+        (mod for mod in app_entry["modules"] if mod["id"] == module_id), None
+    )
     if not module_entry:
         module_entry = {"id": module_id, "name": module_name, "docs": []}
         app_entry["modules"].append(module_entry)
@@ -53,25 +59,28 @@ def register_to_model_json(app_id, app_name, module_id, module_name, doc_id, doc
 def get_app_module_for_model(doc_id, django_path):
     """
     Retrieves the app and module names for a given model (doc_id).
-    
+
     Args:
         doc_id (str): The model's document identifier.
         django_path (str): Path to the Django project, used to locate config/models.json.
-    
+
     Returns:
         tuple: A tuple containing (app_id, module_id) or (None, None) if not found.
     """
-    
+
     # Load models.json data
     if os.path.exists(DOCS_JSON_PATH):
         with open(DOCS_JSON_PATH, "r") as file:
             model_entries = json.load(file)
     else:
-        raise FileNotFoundError("models.json not found in the expected config directory.")
-    
+        raise FileNotFoundError(
+            "models.json not found in the expected config directory."
+        )
+
     # Search for the doc_id within the model_entries
     for app in model_entries:
         for module in app["modules"]:
             if any(doc["id"] == doc_id for doc in module["docs"]):
                 return app["id"], module["id"]
+    print(doc_id, 99999999999999999)
     return None, None

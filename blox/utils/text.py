@@ -1,5 +1,6 @@
 import re
 
+
 def to_snake_case(name):
     """Convert a string to snake_case by replacing spaces with underscores and lowering the case.
 
@@ -12,6 +13,7 @@ def to_snake_case(name):
     # Replace spaces with underscores and convert to lowercase
     return name.replace(" ", "_").lower()
 
+
 def underscore_to_titlecase(underscore_str):
     """Convert underscore string to title case."""
     return re.sub(r"_(.)", lambda m: m.group(1).upper(), underscore_str.title())
@@ -21,6 +23,7 @@ def underscore_to_titlecase_main(underscore_str):
     """Convert an underscore-separated string to title case with spaces."""
     # Replace underscores with spaces, then convert to title case
     return re.sub(r"_+", " ", underscore_str).title()
+
 
 def to_titlecase_no_space(input_str):
     """Convert a string with underscores or whitespace to TitleCase with no spaces.

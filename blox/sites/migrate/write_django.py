@@ -1,7 +1,8 @@
 import os
+
 import click
-from .models.reserved_keywords import reserved_keywords
-from ...utils.text import to_snake_case
+
+
 
 def convert_frappe_fields_to_django(file_content):
     """
@@ -21,8 +22,10 @@ def convert_frappe_fields_to_django(file_content):
 
 
 @click.command()
-@click.option('--folder_path', required=True, help="Path to the Frappe app's folder")
-@click.option('--doc_name', required=True, help="Name of the DocType file (without .py extension)")
+@click.option("--folder_path", required=True, help="Path to the Frappe app's folder")
+@click.option(
+    "--doc_name", required=True, help="Name of the DocType file (without .py extension)"
+)
 def convert_frappe_to_django(folder_path, doc_name):
     """
     Convert a Frappe-style Python file to a Django-compatible model file.
@@ -37,14 +40,14 @@ def convert_frappe_to_django(folder_path, doc_name):
         return
 
     # Load the Frappe file content
-    with open(model_file_path, 'r', encoding='utf-8') as f:
+    with open(model_file_path, "r", encoding="utf-8") as f:
         file_content = f.read()
 
     # Process the file: Convert Frappe fields to Django equivalents
     django_file_content = convert_frappe_fields_to_django(file_content)
 
     # Write the updated content to the new file
-    with open(output_file_path, 'w', encoding='utf-8') as output_file:
+    with open(output_file_path, "w", encoding="utf-8") as output_file:
         output_file.write(django_file_content)
 
     click.echo(f"Django model file created at: {output_file_path}")

@@ -1,9 +1,12 @@
+import json
 import os
 import subprocess
-import click
 import sys
+
+import click
+
 from ...utils.config import PROJECT_ROOT
-import json
+
 
 def get_python_executable():
     """Get the path to the Python executable in the virtual environment."""
@@ -15,8 +18,9 @@ def get_python_executable():
     python_executable = os.path.join(venv_path, "bin", "python")
     if sys.platform.startswith("win"):
         python_executable = os.path.join(venv_path, "Scripts", "python.exe")
-    
+
     return python_executable
+
 
 @click.command()
 @click.argument("command")
@@ -24,11 +28,20 @@ def get_python_executable():
 @click.option("--site", default=None, help="Specify a site.")
 def django(command, args, site=None):
     """Run Django management commands."""
-    if command not in ["migrate", "makemigrations", "createsuperuser", "runserver", "shell", "createuser"]:
-        click.echo("Invalid command. Available commands: migrate, makemigrations, createsuperuser, runserver, shell, createuser.")
+    if command not in [
+        "migrate",
+        "makemigrations",
+        "createsuperuser",
+        "runserver",
+        "shell",
+        "createuser",
+    ]:
+        click.echo(
+            "Invalid command. Available commands: migrate, makemigrations, createsuperuser, runserver, shell, createuser."
+        )
         return
 
-  # Load sites from sites.json
+    # Load sites from sites.json
     sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:
@@ -51,12 +64,14 @@ def django(command, args, site=None):
 
         selected_site = sites[site_choice - 1]
     else:
-        selected_site = next((s for s in sites if s['site_name'] == site), None)
+        selected_site = next((s for s in sites if s["site_name"] == site), None)
         if not selected_site:
             click.echo(f"Site '{site}' not found in sites.json.")
             return
 
-    django_path = os.path.join(PROJECT_ROOT, "sites", selected_site["site_name"], "django")
+    django_path = os.path.join(
+        PROJECT_ROOT, "sites", selected_site["site_name"], "django"
+    )
 
     venv_path = os.path.join(PROJECT_ROOT, "env")
     if not os.path.exists(venv_path):
@@ -73,6 +88,7 @@ def django(command, args, site=None):
     # Execute the command
     subprocess.run(command_list, cwd=django_path)
     click.echo(f"Executed '{command}' command for site '{site}'.")
+
 
 if __name__ == "__main__":
     django()

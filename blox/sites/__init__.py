@@ -1,10 +1,10 @@
-from .new import *
-from .installapp import *
-from .drop import *
-from .installmodule import *
-from .installdoc import *
-from .migrate.migrate import migrate, update, registermodels
 from .django import *
-from .uninstallapp import *
+from .drop import *
+from .installapp import *
+from .installdoc import *
+from .installmodule import *
+from .migrate.migrate import migrate, migrate_django
 from .movedoc import *
+from .new import *
+from .uninstallapp import *
 from .use import *

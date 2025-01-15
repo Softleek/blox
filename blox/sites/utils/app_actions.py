@@ -1,6 +1,5 @@
-import click
 
-from ...utils.config import APPS_TXT_PATH,  find_module_base_path
+from ...utils.config import APPS_TXT_PATH, find_module_base_path
 from .load_doc_config import load_existing_data
 
 
@@ -25,6 +24,7 @@ def update_apps_txt(app_name, remove=False):
         for app in apps:
             apps_file.write(f"{app}\n")
 
+
 def find_modules(app_name):
     modules_file_path, base_module_path = find_module_base_path(app_name)
     if not modules_file_path:
@@ -39,6 +39,7 @@ def find_modules(app_name):
             if not module.strip().startswith("#")
         ]
     return modules
+
 
 def get_name_by_id(entity_id, entity_type):
     """
@@ -72,6 +73,7 @@ def get_name_by_id(entity_id, entity_type):
                             return doc_entry["name"]
     return None
 
+
 def get_doc_details(doc_identifier):
     """
     Retrieves the app ID, module ID, and doc ID associated with a given document name or ID.
@@ -94,8 +96,10 @@ def get_doc_details(doc_identifier):
             module_id = module_entry.get("id")
             for doc_entry in module_entry.get("docs", []):
                 # Check if the doc identifier matches either name or ID
-                if doc_entry.get("id") == doc_identifier or doc_entry.get("name") == doc_identifier:
-                    return  app_id,module_id,doc_entry.get("id")
-                       
-                  
+                if (
+                    doc_entry.get("id") == doc_identifier
+                    or doc_entry.get("name") == doc_identifier
+                ):
+                    return app_id, module_id, doc_entry.get("id")
+
     return None, None, None

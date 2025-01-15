@@ -1,12 +1,18 @@
-import os
-import click
 import json
+import os
+
+import click
+
 from ..utils.config import PROJECT_ROOT
 from .utils.uninstalldjangoapp import uninstall_django_app
+from ..sites.migrate.migrate import run_migration
+
 
 @click.command()
-@click.option('--site', type=str, help="The name of the site where the app will be uninstalled.")
-@click.option('--app', type=str, help="The name of the app to uninstall.")
+@click.option(
+    "--site", type=str, help="The name of the site where the app will be uninstalled."
+)
+@click.option("--app", type=str, help="The name of the app to uninstall.")
 def uninstallapp(site, app):
     """Uninstall an app from a selected site and update sites.json."""
 
@@ -33,7 +39,7 @@ def uninstallapp(site, app):
 
         selected_site = sites[site_choice - 1]
     else:
-        selected_site = next((s for s in sites if s['site_name'] == site), None)
+        selected_site = next((s for s in sites if s["site_name"] == site), None)
         if not selected_site:
             click.echo(f"Site '{site}' not found in sites.json.")
             return
@@ -49,7 +55,9 @@ def uninstallapp(site, app):
         for i, app_entry in enumerate(selected_site["installed_apps"], 1):
             click.echo(f"{i}. {app_entry}")
 
-        app_choice = click.prompt("Enter the number of the app you want to uninstall", type=int)
+        app_choice = click.prompt(
+            "Enter the number of the app you want to uninstall", type=int
+        )
 
         if app_choice < 1 or app_choice > len(selected_site["installed_apps"]):
             click.echo("Invalid app selection.")
@@ -59,7 +67,9 @@ def uninstallapp(site, app):
     else:
         selected_app = app
         if selected_app not in selected_site["installed_apps"]:
-            click.echo(f"App '{selected_app}' is not installed in '{selected_site['site_name']}'.")
+            click.echo(
+                f"App '{selected_app}' is not installed in '{selected_site['site_name']}'."
+            )
             return
 
     # Simulate uninstalling the app (e.g., removing files, undoing migrations, etc.)
@@ -72,10 +82,13 @@ def uninstallapp(site, app):
         json.dump(sites, json_file, indent=4)
 
     # Call the uninstall utility
-    uninstall_django_app(selected_site['site_name'], selected_app, PROJECT_ROOT)
+    uninstall_django_app(selected_site["site_name"], selected_app, PROJECT_ROOT)
 
-    click.echo(f"The app '{selected_app}' has been successfully uninstalled from '{selected_site['site_name']}'.")
+    click.echo(
+        f"The app '{selected_app}' has been successfully uninstalled from '{selected_site['site_name']}'."
+    )
+    run_migration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     uninstallapp()

@@ -1,39 +1,52 @@
 import os
 import shutil
-import click
 import subprocess
+
+import click
+
 from ..utils.config import PROJECT_ROOT
-from ..utils.subprocess import run_subprocess
 from .utils.file_creater import create_files_from_templates
+from ..sites.migrate.migrate import run_migration
+
 
 @click.command()
 @click.argument("app_name")
-@click.option("--title", 
-              prompt="App Title", 
-              default="My Blox App", 
-              help="The title of your app", 
-              show_default=True)
-@click.option("--description", 
-              prompt="App Description", 
-              default="This is a new Blox app.", 
-              help="A short description of your app", 
-              show_default=True)
-@click.option("--publisher", 
-              prompt="App Publisher", 
-              default="Blox Technologies", 
-              help="The publisher of your app", 
-              show_default=True)
-@click.option("--email", 
-              prompt="Publisher Email", 
-              default="contact@example.io", 
-              help="The email of the publisher", 
-              show_default=True)
-@click.option("--license", 
-              prompt="App License", 
-              type=click.Choice(['MIT', 'GPL-3.0', 'Apache-2.0'], case_sensitive=False), 
-              default="MIT", 
-              help="License for the app", 
-              show_default=True)
+@click.option(
+    "--title",
+    prompt="App Title",
+    default="My Blox App",
+    help="The title of your app",
+    show_default=True,
+)
+@click.option(
+    "--description",
+    prompt="App Description",
+    default="This is a new Blox app.",
+    help="A short description of your app",
+    show_default=True,
+)
+@click.option(
+    "--publisher",
+    prompt="App Publisher",
+    default="Blox Technologies",
+    help="The publisher of your app",
+    show_default=True,
+)
+@click.option(
+    "--email",
+    prompt="Publisher Email",
+    default="contact@example.io",
+    help="The email of the publisher",
+    show_default=True,
+)
+@click.option(
+    "--license",
+    prompt="App License",
+    type=click.Choice(["MIT", "GPL-3.0", "Apache-2.0"], case_sensitive=False),
+    default="MIT",
+    help="License for the app",
+    show_default=True,
+)
 def newapp(app_name, title, description, publisher, email, license):
     """Create a new Blox-style app with the specified name."""
 
@@ -51,18 +64,18 @@ def newapp(app_name, title, description, publisher, email, license):
 
     # Define app-level folders
     app_folders = [
-        "api",               # API endpoints
-        "config",             # App-level configuration
-        "docs",              # Documentation
-        "fixtures",          # Data fixtures
-        "patches",           # Patches for migrations
-        "public/css",        # Public assets
-        "public/js",         # JavaScript assets
-        "public/images",     # Images
-        "templates",         # HTML and other templates
-        "tests",             # Test files
-        "translations",      # Translation files
-        "www",               # Web pages
+        "api",  # API endpoints
+        "config",  # App-level configuration
+        "docs",  # Documentation
+        "fixtures",  # Data fixtures
+        "patches",  # Patches for migrations
+        "public/css",  # Public assets
+        "public/js",  # JavaScript assets
+        "public/images",  # Images
+        "templates",  # HTML and other templates
+        "tests",  # Test files
+        "translations",  # Translation files
+        "www",  # Web pages
     ]
 
     for folder in app_folders:
@@ -75,12 +88,12 @@ def newapp(app_name, title, description, publisher, email, license):
 
     # Define module-level folders
     module_folders = [
-        "doctype",           # Custom doctypes
-        "report",            # Reports
-        "dashboard",         # Dashboards
-        "dashboard_chart",   # Dashboard charts
-        "print_format",      # Print formats
-        "workspace",         # Workspaces
+        "doctype",  # Custom doctypes
+        "report",  # Reports
+        "dashboard",  # Dashboards
+        "dashboard_chart",  # Dashboard charts
+        "print_format",  # Print formats
+        "workspace",  # Workspaces
     ]
 
     for folder in module_folders:
@@ -91,7 +104,9 @@ def newapp(app_name, title, description, publisher, email, license):
     dynamic_content = {}
 
     if title:
-        dynamic_content["hooks.py"] = f"""# App Information
+        dynamic_content[
+            "hooks.py"
+        ] = f"""# App Information
 app_name = "{app_name}"
 app_title = "{title}"
 app_description = "{description}"
@@ -105,8 +120,10 @@ app_license = "{license}"
 
     # Use the file creator utility to generate boilerplate files from templates, passing dynamic content
     templates_folder = os.path.join(PROJECT_ROOT, "blox", "templates")
-    create_files_from_templates(temp_app_path, app_name, templates_folder, dynamic_content)
-    
+    create_files_from_templates(
+        temp_app_path, app_name, templates_folder, dynamic_content
+    )
+
     # Add the app to the apps.txt configuration
     apps_txt_path = os.path.join(PROJECT_ROOT, "config", "apps.txt")
     with open(apps_txt_path, "a") as apps_file:
@@ -120,7 +137,9 @@ app_license = "{license}"
         # Move the temporary directory to the final location
         shutil.move(temp_app_path, final_app_path)
 
-        click.echo(f"Initialized a new Git repository with 'main' branch in '{final_app_path}'.")
+        click.echo(
+            f"Initialized a new Git repository with 'main' branch in '{final_app_path}'."
+        )
     except subprocess.CalledProcessError as e:
         click.echo(f"Failed to initialize Git repository: {e}")
         # Rollback: Remove the temporary directory if it was created
@@ -132,3 +151,5 @@ app_license = "{license}"
         click.echo(f"The app '{app_name}' has been created successfully.")
     else:
         click.echo(f"Failed to create the app '{app_name}'.")
+
+    run_migration()

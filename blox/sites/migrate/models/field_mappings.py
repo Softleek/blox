@@ -33,18 +33,19 @@ def get_field_type(field_type):
         "Image": "FileField",
         "Barcode": "FileField",
         "JSON": "JSONField",
-        "Time": "TimeField"
+        "Time": "TimeField",
     }
 
     # Return the mapped Django field type, defaulting to CharField if not found
     return field_type_mapping.get(field_type, "CharField")
+
 
 def process_fields(fields):
     """Process fields, skipping any with the type 'Column Break' or 'Section Break'."""
     processed_fields = []
     for field in fields:
         raw_field_type = field.get("fieldtype")
-        
+
         # Skip fields with the type 'Column Break' or 'Section Break'
         if raw_field_type in ["Column Break", "Section Break", "Tab Break"]:
             continue  # Skip this field and move to the next one
@@ -53,9 +54,8 @@ def process_fields(fields):
         field_type = get_field_type(raw_field_type)
 
         # Add the processed field (you can also map other data if needed)
-        processed_fields.append({
-            "fieldname": field.get("fieldname"),
-            "fieldtype": field_type
-        })
-    
+        processed_fields.append(
+            {"fieldname": field.get("fieldname"), "fieldtype": field_type}
+        )
+
     return processed_fields

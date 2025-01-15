@@ -1,11 +1,12 @@
 import os
-import click
+
+
 from .models.json_loader import load_json_file
 
 
 def write_filter_fields(module_file, folder_path, model_name, doc_name, django_path):
     """Write filter fields for a given model, including only filterable fields."""
-    
+
     fields_file_path = os.path.join(folder_path, "fields.json")
     model_file_path = os.path.join(folder_path, f"{doc_name}.json")
     settings_file_path = os.path.join(folder_path, "settings.json")
@@ -39,7 +40,15 @@ def write_filter_fields(module_file, folder_path, model_name, doc_name, django_p
     filter_fields = ["id"]
 
     # Field types to exclude from filters (non-relevant fields)
-    non_filterable_types = ["Image", "File", "Password", "HTML", "Code", "Table", "Text"]
+    non_filterable_types = [
+        "Image",
+        "File",
+        "Password",
+        "HTML",
+        "Code",
+        "Table",
+        "Text",
+    ]
 
     # Add valid filterable fields to the list
     for field in field_list:
@@ -58,12 +67,16 @@ def write_filter_fields(module_file, folder_path, model_name, doc_name, django_p
         if field == "id":
             module_file.write(f"    {field} = filters.NumberFilter(label='ID')\n")
         else:
-            module_file.write(f"    {field} = filters.CharFilter(lookup_expr='icontains', label='{field.replace('_', ' ').title()}')\n")
+            module_file.write(
+                f"    {field} = filters.CharFilter(lookup_expr='icontains', label='{field.replace('_', ' ').title()}')\n"
+            )
 
     return filter_fields  # Return the filter fields list for use in the header
 
 
-def write_filters(module_file, app_name, module_name, model_name, doc_name, folder_path):
+def write_filters(
+    module_file, app_name, module_name, model_name, doc_name, folder_path
+):
     """Write the imports and class definition header for filters."""
     # Write imports for django_filters and the model
     module_file.write(
@@ -75,10 +88,13 @@ def write_filters(module_file, app_name, module_name, model_name, doc_name, fold
     module_file.write(f"class {model_name}Filter(filters.FilterSet):\n")
 
     # Write the filter fields dynamically
-    filter_fields = write_filter_fields(module_file, folder_path, model_name, doc_name, app_name)
+    filter_fields = write_filter_fields(
+        module_file, folder_path, model_name, doc_name, app_name
+    )
 
     # Write the Meta class at the end
     module_file.write(f"\n    class Meta:\n")
     module_file.write(f"        model = {model_name}\n")
-    module_file.write(f"        fields = {filter_fields}\n\n")  # Add the dynamically generated filter fields here
- 
+    module_file.write(
+        f"        fields = {filter_fields}\n\n"
+    )  # Add the dynamically generated filter fields here

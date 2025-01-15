@@ -1,11 +1,14 @@
 import click
+
 from .apps import *
-from .sites import *
 from .main import *
+from .sites import *
+
 
 @click.group()
 def cli():
     pass
+
 
 cli.add_command(newapp)
 cli.add_command(dropapp)
@@ -29,9 +32,8 @@ cli.add_command(npm)
 cli.add_command(install)
 cli.add_command(i)
 
-cli.add_command(migrate)
-cli.add_command(update)
-cli.add_command(registermodels)
+cli.add_command(migrate) 
+cli.add_command(migrate_django) 
 
 
 cli.add_command(django)

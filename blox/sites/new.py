@@ -1,8 +1,12 @@
-import os
-import click
-import subprocess
 import json
+import os
+import subprocess
+
+import click
+
 from ..utils.config import PROJECT_ROOT
+from ..sites.migrate.migrate import run_migration
+
 
 @click.command()
 @click.argument("site_name")
@@ -15,7 +19,9 @@ def newsite(site_name):
 
     # Clone the repository directly into the site name
     try:
-        subprocess.check_call(["git", "clone", repo_url, os.path.join(target_path, site_name)])
+        subprocess.check_call(
+            ["git", "clone", repo_url, os.path.join(target_path, site_name)]
+        )
     except subprocess.CalledProcessError as e:
         click.echo(f"Failed to clone the repository: {e}")
         return
@@ -32,7 +38,9 @@ def newsite(site_name):
                 if content:
                     sites = json.loads(content)
         except json.JSONDecodeError:
-            click.echo(f"Invalid JSON in {sites_json_path}. Initializing an empty list.")
+            click.echo(
+                f"Invalid JSON in {sites_json_path}. Initializing an empty list."
+            )
 
     # Determine the next available Django and Next.js ports
     django_ports = [site.get("django_port") for site in sites]
@@ -60,36 +68,67 @@ def newsite(site_name):
     with open(sites_json_path, "w") as json_file:
         json.dump(sites, json_file, indent=4)
 
-    click.echo(f"The site '{site_name}' has been created and added to sites.json with Django port {next_django_port} and Next.js port {next_nextjs_port}.")
+    click.echo(
+        f"The site '{site_name}' has been created and added to sites.json with Django port {next_django_port} and Next.js port {next_nextjs_port}."
+    )
 
- # After the site creation, run the additional commands
+    # After the site creation, run the additional commands
     try:
         # Flag before running 'blox install'
-        click.echo(click.style(f"Running 'blox install' for site '{site_name}'...", fg="cyan"))
+        click.echo(
+            click.style(f"Running 'blox install' for site '{site_name}'...", fg="cyan")
+        )
 
         # Run 'blox install' command
         subprocess.check_call(["blox", "install", "--site", site_name])
-        
+
         # Flag after running 'blox install'
-        click.echo(click.style(f"Successfully ran 'blox install' for site '{site_name}'.", fg="green"))
+        click.echo(
+            click.style(
+                f"Successfully ran 'blox install' for site '{site_name}'.", fg="green"
+            )
+        )
 
         # Flag before running 'blox migrate'
-        click.echo(click.style(f"Running 'blox migrate' for site '{site_name}'...", fg="cyan"))
+        click.echo(
+            click.style(f"Running 'blox migrate' for site '{site_name}'...", fg="cyan")
+        )
 
         # Run 'blox migrate' command
         subprocess.check_call(["blox", "migrate", "--site", site_name])
-        
+
         # Flag after running 'blox migrate'
-        click.echo(click.style(f"Successfully ran 'blox migrate' for site '{site_name}'.", fg="green"))
+        click.echo(
+            click.style(
+                f"Successfully ran 'blox migrate' for site '{site_name}'.", fg="green"
+            )
+        )
 
         # Flag before running 'blox django createsuperuser'
-        click.echo(click.style(f"Running 'blox django createsuperuser' for site '{site_name}'...", fg="cyan"))
+        click.echo(
+            click.style(
+                f"Running 'blox django createsuperuser' for site '{site_name}'...",
+                fg="cyan",
+            )
+        )
 
         # Run 'blox django createsuperuser' command
-        subprocess.check_call(["blox", "django", "createsuperuser", "--site", site_name])
-        
+        subprocess.check_call(
+            ["blox", "django", "createsuperuser", "--site", site_name]
+        )
+
         # Flag after running 'blox django createsuperuser'
-        click.echo(click.style(f"Successfully ran 'blox django createsuperuser' for site '{site_name}'.", fg="green"))
+        click.echo(
+            click.style(
+                f"Successfully ran 'blox django createsuperuser' for site '{site_name}'.",
+                fg="green",
+            )
+        )
 
     except subprocess.CalledProcessError as e:
-        click.echo(click.style(f"Failed to run one of the post-creation commands: {e}", fg="red"))
+        click.echo(
+            click.style(
+                f"Failed to run one of the post-creation commands: {e}", fg="red"
+            )
+        )
+    run_migration()

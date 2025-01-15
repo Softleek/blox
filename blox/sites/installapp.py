@@ -1,12 +1,18 @@
-import os
-import click
 import json
-from ..utils.config import PROJECT_ROOT, DJANGO_PATH, DEFAULT_SITE
+import os
+
+import click
+
+from ..utils.config import PROJECT_ROOT
 from .utils.installdjangoapp import install_django_app
+from ..sites.migrate.migrate import run_migration
+
 
 @click.command()
-@click.option('--site', type=str, help="The name of the site where the app will be installed.")
-@click.option('--app', type=str, help="The name of the app to install.")
+@click.option(
+    "--site", type=str, help="The name of the site where the app will be installed."
+)
+@click.option("--app", type=str, help="The name of the app to install.")
 def installapp(site, app):
     """Install an app into a selected site and update sites.json."""
 
@@ -39,13 +45,19 @@ def installapp(site, app):
             return
 
     # Set django_path based on the selected site
-    django_path = os.path.join(PROJECT_ROOT, "sites", selected_site["site_name"], "django")
+    django_path = os.path.join(
+        PROJECT_ROOT, "sites", selected_site["site_name"], "django"
+    )
 
     # Load apps from apps.txt
     apps_txt_path = os.path.join(PROJECT_ROOT, "config", "apps.txt")
     if os.path.exists(apps_txt_path):
         with open(apps_txt_path, "r") as apps_file:
-            apps = [line.strip() for line in apps_file if line.strip() and not line.startswith("#")]
+            apps = [
+                line.strip()
+                for line in apps_file
+                if line.strip() and not line.startswith("#")
+            ]
     else:
         click.echo("No apps.txt file found.")
         return
@@ -60,7 +72,9 @@ def installapp(site, app):
         for i, app_entry in enumerate(apps, 1):
             click.echo(f"{i}. {app_entry}")
 
-        app_choice = click.prompt("Enter the number of the app you want to install", type=int)
+        app_choice = click.prompt(
+            "Enter the number of the app you want to install", type=int
+        )
 
         if app_choice < 1 or app_choice > len(apps):
             click.echo("Invalid app selection.")
@@ -78,7 +92,9 @@ def installapp(site, app):
         selected_site["installed_apps"] = []
 
     if selected_app in selected_site["installed_apps"]:
-        click.echo(f"The app '{selected_app}' is already installed in '{selected_site['site_name']}'.")
+        click.echo(
+            f"The app '{selected_app}' is already installed in '{selected_site['site_name']}'."
+        )
         return
 
     # Install the app using the external function
@@ -98,4 +114,7 @@ def installapp(site, app):
     with open(sites_json_path, "w") as json_file:
         json.dump(sites, json_file, indent=4)
 
-    click.echo(f"The app '{selected_app}' has been successfully installed in '{selected_site['site_name']}'.")
+    click.echo(
+        f"The app '{selected_app}' has been successfully installed in '{selected_site['site_name']}'."
+    )
+    run_migration()

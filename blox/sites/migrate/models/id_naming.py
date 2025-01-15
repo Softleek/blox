@@ -1,6 +1,7 @@
-import uuid
-import click
 import re
+
+import click
+
 
 def write_id_field(module_file, file_path, settings, model_name):
     """Write the id field based on settings."""
@@ -8,12 +9,11 @@ def write_id_field(module_file, file_path, settings, model_name):
         # If settings is a list, convert it to a dictionary or handle it as needed
         # For now, I'll assume you want to use the first element as a dictionary
         settings = settings[0] if settings else {}
-    id_naming_method = settings.get("idNamingMethod", "incrementalNaming") 
+    id_naming_method = settings.get("idNamingMethod", "incrementalNaming")
     id_naming_rule = settings.get("idNamingRule", "")
     field_for_id_naming = settings.get("fieldForIdNaming", "")
     function_for_id_naming = settings.get("functionForIdNaming", "")
     length_for_incremental_naming = settings.get("lengthForIncrementalNaming", 6)
-
 
     try:
         if id_naming_method == "fieldNaming" and field_for_id_naming:

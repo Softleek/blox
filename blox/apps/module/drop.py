@@ -1,14 +1,18 @@
 import os
 import shutil
+
 import click
+
 from ...utils.config import PROJECT_ROOT
+from ...sites.migrate.migrate import run_migration
+
 
 @click.command()
 @click.argument("app_name")
 @click.argument("module_name")
 def dropmodule(app_name, module_name):
     """Delete the specified module from the Django app and remove it from modules.txt."""
-    
+
     # Path to the app's module directory
     app_path = os.path.join(PROJECT_ROOT, "apps", app_name)
     module_path = os.path.join(app_path, module_name)
@@ -44,3 +48,4 @@ def dropmodule(app_name, module_name):
         click.echo(f"The module '{module_name}' has been removed.")
     except Exception as e:
         click.echo(f"Failed to update modules.txt: {e}")
+    run_migration()
