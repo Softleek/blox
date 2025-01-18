@@ -14,6 +14,10 @@ def find_project_root(current_path):
     raise FileNotFoundError("Project root with 'blox.config' not found.")
 
 
+def find_django_path(site):
+    return os.path.join(PROJECT_ROOT, f"sites/{site}/django")
+
+
 def write_running_ports(site, django_port, nextjs_port):
     config_path = os.path.join(PROJECT_ROOT, "config")
     sites_json_path = os.path.join(config_path, "sites.json")

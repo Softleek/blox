@@ -166,7 +166,7 @@ def write_serializer(
     Generate and write a single serializer class for the given model, focusing on related fields.
     Use SerializerMethodField for self-referencing fields and declare related fields before Meta.
     """
-    fields = load_fields(doc_folder_path, doc_name)
+    load_fields(doc_folder_path, doc_name)
 
     related_fields = {}
     # for field in fields:

@@ -31,5 +31,4 @@ def get_default_site_info(PROJECT_ROOT):
         )
         return django_path, selected_site
     else:
-        click.echo("No default site is set. Please set a default site first.")
         return None, None

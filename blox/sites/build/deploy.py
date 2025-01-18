@@ -130,9 +130,9 @@ def deploy(mode):
         click.echo("Virtual environment not found. Please run 'blox setup' first.")
         return
 
-    python_executable = os.path.join(venv_path, "bin", "python3")
+    os.path.join(venv_path, "bin", "python3")
     if sys.platform.startswith("win"):
-        python_executable = os.path.join(venv_path, "Scripts", "python.exe")
+        os.path.join(venv_path, "Scripts", "python.exe")
 
     django_port = find_free_port(8000)
     nextjs_port = find_free_port(3000)

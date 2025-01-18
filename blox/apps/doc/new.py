@@ -102,5 +102,5 @@ def newdoc(doc_name, app, module):
     module_path = os.path.join(
         PROJECT_ROOT, "apps", selected_app, selected_app, selected_module
     )
-    created_folder = create_files(module_path, doc_name, doc_id, module)
+    create_files(module_path, doc_name, doc_id, module)
     run_migration(app=app, module=module, doc=doc_name)

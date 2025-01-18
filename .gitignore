@@ -1,5 +1,7 @@
 /env
 /sites
+/build
+/config
 /apps
 /blox.egg-info
 

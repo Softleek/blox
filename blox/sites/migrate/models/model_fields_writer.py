@@ -6,7 +6,6 @@ from .reserved_keywords import reserved_keywords
 
 def write_model(module_file, fields, model_name, django_path):
     """Main function to generate Django model fields from Frappe fields."""
-    has_barcode_field = False
     field_names = set()  # Set to keep track of field names for duplicate checking
 
     for field in fields:

@@ -27,7 +27,7 @@ def write_id_field(module_file, file_path, settings, model_name):
         elif id_naming_method == "functionNaming" and function_for_id_naming:
             new_save = f"    id = models.CharField(primary_key=True, max_length=255, default={function_for_id_naming})\n"
         elif id_naming_method == "incrementalNaming":
-            padded_length = int(length_for_incremental_naming)
+            int(length_for_incremental_naming)
             new_save = (
                 f"    def save(self, *args, **kwargs):\n"
                 f"        super().save(*args, **kwargs)\n\n"

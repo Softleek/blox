@@ -20,7 +20,7 @@ def installmodule(site, app, module):
     sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:
-            sites = json.load(json_file)
+            json.load(json_file)
     else:
         click.echo("No sites found in sites.json.")
         return

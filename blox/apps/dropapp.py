@@ -6,7 +6,6 @@ import subprocess
 import click
 
 from ..utils.config import PROJECT_ROOT
-from ..sites.migrate.migrate import run_migration
 
 
 @click.command()
@@ -63,7 +62,7 @@ def dropapp(app):
 
     # Load all sites from sites.json
     with open(sites_json_path, "r") as sites_file:
-        sites = json.load(sites_file)
+        json.load(sites_file)
 
     # Path to the app folder
     custom_app_path = os.path.join(PROJECT_ROOT, "apps", selected_app)
