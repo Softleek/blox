@@ -5,7 +5,7 @@ import click
 
 from ..utils.config import DEFAULT_SITE, DJANGO_PATH, PROJECT_ROOT
 from ..sites.migrate.migrate import run_migration
-
+from ..utils.file_operations import ensure_file_exists
 
 @click.command()
 @click.option(
@@ -19,6 +19,7 @@ def installdoc(site, app, module, doc):
 
     # Load sites from sites.json
     sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
+    ensure_file_exists(sites_json_path, initial_data=[])
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:
             json.load(json_file)

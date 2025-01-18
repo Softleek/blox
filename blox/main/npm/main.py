@@ -5,7 +5,7 @@ import subprocess
 import click
 
 from ...utils.config import APPS_PATH, PROJECT_ROOT
-
+from ...utils.file_operations import ensure_file_exists
 
 def update_package_json(app_name, libraries):
     package_json_path = os.path.join(APPS_PATH, app_name, "package.json")
@@ -76,6 +76,7 @@ def install(libraries, app, site):
 def run_npm_install(libraries, app, site):
     # Load sites from sites.json
     sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
+    ensure_file_exists(sites_json_path, initial_data=[])
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:
             sites = json.load(json_file)

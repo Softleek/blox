@@ -12,7 +12,7 @@ from ..utils.configure_app import configure_app, configure_doc, configure_module
 from .migrate_app import migrate_app
 from .migrate_doc import migrate_doc
 from .migrate_module import migrate_module
-
+from ...utils.file_operations import ensure_file_exists
 # from ....sites.pos2.django.core.management.commands.migrate_fixtures import migrate_fixtures
 
 MODULES_FOLDER = {
@@ -46,6 +46,7 @@ def updatefiles(app=None, module=None, doc=None, site=None, all=True):
     # Load sites from sites.json
     selected_site = None
     sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
+    ensure_file_exists(sites_json_path, initial_data=[])
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:
             sites = json.load(json_file)

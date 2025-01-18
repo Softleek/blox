@@ -6,7 +6,7 @@ import click
 
 from ..utils.config import PROJECT_ROOT
 from ..sites.migrate.migrate import run_migration
-
+from ..utils.file_operations import ensure_file_exists
 
 @click.command()
 @click.argument("site_name")
@@ -31,16 +31,16 @@ def newsite(site_name):
     sites = []
 
     # Check if sites.json exists and load it if it has valid content
-    if os.path.exists(sites_json_path):
-        try:
-            with open(sites_json_path, "r") as json_file:
-                content = json_file.read().strip()
-                if content:
-                    sites = json.loads(content)
-        except json.JSONDecodeError:
-            click.echo(
-                f"Invalid JSON in {sites_json_path}. Initializing an empty list."
-            )
+    ensure_file_exists(sites_json_path, initial_data=[])
+    try:
+        with open(sites_json_path, "r") as json_file:
+            content = json_file.read().strip()
+            if content:
+                sites = json.loads(content)
+    except json.JSONDecodeError:
+        click.echo(
+            f"Invalid JSON in {sites_json_path}. Initializing an empty list."
+        )
 
     # Determine the next available Django and Next.js ports
     django_ports = [site.get("django_port") for site in sites]

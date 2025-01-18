@@ -5,7 +5,7 @@ import sys
 import django
 
 from ...utils.config import DOCS_JSON_PATH
-
+from ...utils.file_operations import ensure_file_exists
 
 def initialize_django_env(django_path):
     """Initialize the Django environment based on django_path."""
@@ -48,6 +48,7 @@ def create_entries_from_config(django_path):
                              Document, Module)
 
     # Load JSON configuration file
+    ensure_file_exists(DOCS_JSON_PATH, initial_data=[])
     with open(DOCS_JSON_PATH, "r") as file:
         config = json.load(file)
 

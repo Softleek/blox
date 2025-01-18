@@ -6,7 +6,7 @@ import sys
 import click
 
 from ...utils.config import APPS_PATH, PROJECT_ROOT
-
+from ...utils.file_operations import ensure_file_exists
 
 def install_libraries(libraries, app_name=None, sites=None):
     venv_path = os.path.join(PROJECT_ROOT, "env")
@@ -87,6 +87,7 @@ def i(libraries, app, site):
 def run_pip_install(libraries, app, site):
     # Load sites from sites.json
     sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
+    ensure_file_exists(sites_json_path, initial_data=[])
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:
             sites = json.load(json_file)
