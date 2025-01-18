@@ -10,7 +10,7 @@ from ..utils.config import (DEFAULT_SITE, DJANGO_PATH, PROJECT_ROOT,
                             write_running_ports)
 from ..utils.initialize_django import initialize_django_env
 from ..utils.run_process import get_python_executable, run_subprocess
-
+from ..utils.file_operations import ensure_file_exists
 
 def find_free_port(start_port=3000):
     port = start_port
@@ -47,12 +47,10 @@ def start(mode, site):
     click.echo("Starting server")
     # Load sites from sites.json
     sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
+    ensure_file_exists(sites_json_path, initial_data=[])
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:
             json.load(json_file)
-    else:
-        click.echo("No sites found in sites.json.")
-        return
 
     # Prompt for site if not provided
     if not site:

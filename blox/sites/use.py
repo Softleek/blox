@@ -5,6 +5,7 @@ from datetime import datetime
 import click
 
 from ..utils.config import PROJECT_ROOT
+from ..utils.file_operations import ensure_file_exists
 
 # Define the path to sites.json
 SITES_JSON_PATH = os.path.join(PROJECT_ROOT, "config", "sites.json")
@@ -12,6 +13,7 @@ SITES_JSON_PATH = os.path.join(PROJECT_ROOT, "config", "sites.json")
 
 # Function to read sites.json file
 def load_sites():
+    ensure_file_exists(SITES_JSON_PATH, initial_data=[])
     if os.path.exists(SITES_JSON_PATH):
         with open(SITES_JSON_PATH, "r") as json_file:
             sites = json.load(json_file)

@@ -4,7 +4,7 @@ import os
 import click
 
 from .default_site import get_default_site_info
-
+from ..utils.file_operations import ensure_file_exists
 
 def find_project_root(current_path):
     while current_path != "/":
@@ -55,6 +55,7 @@ def write_running_ports(site, django_port, nextjs_port):
                 f.write(f"NEXT_PUBLIC_NEXTJS_PORT={nextjs_port}\n")
 
     # Update only the port values in sites.json
+    ensure_file_exists(sites_json_path, initial_data=[])
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as f:
             sites = json.load(f)

@@ -6,7 +6,7 @@ import sys
 import click
 
 from ...utils.config import PROJECT_ROOT
-
+from ...utils.file_operations import ensure_file_exists
 
 def get_python_executable():
     """Get the path to the Python executable in the virtual environment."""
@@ -43,6 +43,7 @@ def django(command, args, site=None):
 
     # Load sites from sites.json
     sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
+    ensure_file_exists(sites_json_path, initial_data=[])
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:
             sites = json.load(json_file)
