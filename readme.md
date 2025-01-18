@@ -19,7 +19,7 @@ Before installing Blox CLI, ensure you have the following installed on your syst
 Clone your Blox project repository from GitHub:
 
 ```bash
-git clone https://github.com/Softleek/blox-framework.git
+git clone https://github.com/Softleek/blox.git
 cd blox
 ```
 
@@ -95,7 +95,7 @@ The server will start and typically be accessible at `http://localhost:3000`.
 
 Blox CLI commands start with `blox`. Here are the available commands:
 
-#### Setup and update Site environment 
+#### Setup and update Site environment
 
 ```bash
 blox install
