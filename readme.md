@@ -18,13 +18,10 @@ Before installing Blox CLI, ensure you have the following installed on your syst
 
 Clone your Blox project repository from GitHub:
 
-````bash
 ```bash
 git clone https://github.com/Softleek/blox.git [project_name]
 cd [project_name]
-````
-
-````
+```
 
 #### Create a Virtual Environment
 
@@ -36,7 +33,7 @@ It's a good practice to use a virtual environment to isolate your project depend
 
   ```bash
   python -m venv env
-````
+  ```
 
 - **Unix or MacOS:**
 
