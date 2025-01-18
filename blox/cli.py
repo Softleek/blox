@@ -10,21 +10,21 @@ def cli():
     pass
 
 
-cli.add_command(newapp)
-cli.add_command(dropapp)
-cli.add_command(getapp)
-cli.add_command(newmodule)
-cli.add_command(dropmodule)
-cli.add_command(newdoc)
-cli.add_command(dropdoc)
-cli.add_command(movedoc)
+cli.add_command(newapp, name='new-app')
+cli.add_command(dropapp, name='drop-app')
+cli.add_command(getapp, name='get-app')
+cli.add_command(newmodule, name='new-module')
+cli.add_command(dropmodule, name='drop-module')
+cli.add_command(newdoc, name='new-doc')
+cli.add_command(dropdoc, name='drop-doc')
+cli.add_command(movedoc, name='move-doc')
 
-cli.add_command(newsite)
-cli.add_command(installapp)
-cli.add_command(uninstallapp)
-cli.add_command(dropsite)
-cli.add_command(installmodule)
-cli.add_command(installdoc)
+cli.add_command(newsite, name='new-site')
+cli.add_command(installapp, name='install-app')
+cli.add_command(uninstallapp, name='uninstall-app')
+cli.add_command(dropsite, name='drop-site')
+cli.add_command(installmodule, name='install-module')
+cli.add_command(installdoc, name='install-doc')
 
 cli.add_command(pip)
 cli.add_command(npm)
@@ -33,15 +33,14 @@ cli.add_command(install)
 cli.add_command(i)
 
 cli.add_command(migrate) 
-cli.add_command(migrate_django) 
-
+cli.add_command(migrate_django, name='migrate-django') 
 
 cli.add_command(django)
 
 cli.add_command(start)
 cli.add_command(build)
 
-cli.add_command(usesite)
+cli.add_command(usesite, name='use')
 
 
 # Add other commands as needed
