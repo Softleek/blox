@@ -1,6 +1,0 @@
-frappe
-erpnext
-hrms
-payments
-lending
-POS-Awesome

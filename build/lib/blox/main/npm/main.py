@@ -70,10 +70,6 @@ def install(libraries, app, site):
     Install the specified NPM packages in the project.
     Usage: blox npm install <library_name> [<library_name>...] [--app <app_name>] [--site <site_name>]
     """
-    run_npm_install(libraries, app, site)
-    
-    
-def run_npm_install(libraries, app, site):
     # Load sites from sites.json
     sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
     if os.path.exists(sites_json_path):
@@ -99,6 +95,23 @@ def run_npm_install(libraries, app, site):
         click.echo(f"App '{app}' not found in the selected sites.")
         return
 
+    if not app:
+        click.echo("Select an app to install the libraries:")
+        for i, app_entry in enumerate(app_names, 1):
+            click.echo(f"{i}. {app_entry}")
+
+        app_choice = click.prompt("Enter the number of the app", type=int)
+        if not app_choice:
+            install_npm_packages(libraries, None, selected_site)
+            return  # Exit early after installing for all selected sites
+
+        if app_choice < 1 or app_choice > len(app_names):
+
+            click.echo("Invalid app selection.")
+            return
+
+        app = list(app_names)[app_choice - 1]
+
     if app:
         update_package_json(app, libraries)
 
@@ -119,7 +132,7 @@ def i(libraries, app, site):
     Install the specified NPM packages in the project using the alias 'i'.
     Usage: blox npm i <library_name> [<library_name>...] [--app <app_name>] [--site <site_name>]
     """
-    run_npm_install(libraries, app, site)
+    install(libraries, app, site)
 
 
 npm.add_command(install)

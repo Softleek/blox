@@ -98,10 +98,9 @@ def install_dependencies(site):
         return
 
     installed_apps = site_info.get("installed_apps", [])
-    if len(installed_apps) > 0:
-        for app in installed_apps:
-            app_install_python_packages(app)
-            app_install_npm_packages(site, app)
+    for app in installed_apps:
+        app_install_python_packages(app)
+        app_install_npm_packages(site, app)
     install_python_packages(site)
     install_npm_packages(site)
 
@@ -117,24 +116,6 @@ def install(site):
     Install all dependencies for the specified site.
     Usage: blox install --site <site_name>
     """
-    run_install(site)
-    
-    
-@click.command()
-@click.option(
-    "--site",
-    type=str,
-    help="Specify a site to install dependencies. If not provided, a selection prompt will appear.",
-)
-def i(site):
-    """
-    Install all dependencies for the specified site.
-    Usage: blox i --site <site_name>
-    """   
-    run_install(site)
-    
-    
-def run_install(site):
     # Activate the virtual environment
     activate_script = activate_virtualenv()
     if activate_script:
@@ -149,13 +130,52 @@ def run_install(site):
         with open(sites_json_path, "r") as json_file:
             sites = json.load(json_file)
 
+        click.echo("Select a site to install dependencies:")
         for i, site_entry in enumerate(sites, 1):
-            install_dependencies(site_entry['site_name'])
-            
+            click.echo(f"{i}. {site_entry['site_name']}")
+
+        site_choices = click.prompt("Enter the number of the site", type=str)
+        selected_site = sites[int(site_choices) - 1]["site_name"]
     else:
         selected_site = site
-        install_dependencies(selected_site)
-    click.echo(f"Dependencies installed successfully.")
+
+    install_dependencies(selected_site)
+    click.echo(f"Dependencies installed successfully for site '{selected_site}'.")
 
 
+@click.command()
+@click.option(
+    "--site",
+    type=str,
+    help="Specify a site to install dependencies. If not provided, a selection prompt will appear.",
+)
+def i(site):
+    """
+    Install all dependencies for the specified site.
+    Usage: blox i --site <site_name>
+    """
+    # Activate the virtual environment
+    activate_script = activate_virtualenv()
+    if activate_script:
+        if os.name == "nt":
+            os.system(activate_script)
+        else:
+            subprocess.call(["source", activate_script], shell=True)
 
+    if not site:
+        # Load sites from sites.json
+        sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
+        with open(sites_json_path, "r") as json_file:
+            sites = json.load(json_file)
+
+        click.echo("Select a site to install dependencies:")
+        for i, site_entry in enumerate(sites, 1):
+            click.echo(f"{i}. {site_entry['site_name']}")
+
+        site_choices = click.prompt("Enter the number of the site", type=str)
+        selected_site = sites[int(site_choices) - 1]["site_name"]
+    else:
+        selected_site = site
+
+    install_dependencies(selected_site)
+    click.echo(f"Dependencies installed successfully for site '{selected_site}'.")

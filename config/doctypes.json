@@ -1503,7 +1503,7 @@
         "modules": [
             {
                 "id": "accounts",
-                "name": "accounts",
+                "name": "Accounts",
                 "docs": [
                     {
                         "id": "account",
@@ -2233,7 +2233,7 @@
                     {
                         "id": "sales_invoice_timesheet",
                         "model": "SalesInvoiceTimesheet",
-                        "name": "sales_invoice_timesheet"
+                        "name": "Sales Invoice Timesheet"
                     },
                     {
                         "id": "sales_partner_item",

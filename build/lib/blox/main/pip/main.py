@@ -63,28 +63,6 @@ def install(libraries, app, site):
     Install the specified Python libraries in the project.
     Usage: blox pip install <library_name> [<library_name>...] [--app <app_name>] [--site <site_name>]
     """
-    run_pip_install(libraries, app, site)
-   
-   
-@click.command()
-@click.argument("libraries", nargs=-1)
-@click.option(
-    "--app", type=str, help="Specify a custom app to update its requirements.txt"
-)
-@click.option(
-    "--site",
-    type=str,
-    help="Specify a site to install the libraries. If not provided, a selection prompt will appear.",
-)
-def i(libraries, app, site):
-    """
-    Install the specified Python libraries in the project using the alias 'i'.
-    Usage: blox pip i <library_name> [<library_name>...] [--app <app_name>] [--site <site_name>]
-    """
-    run_pip_install(libraries, app, site)
- 
-    
-def run_pip_install(libraries, app, site):
     # Load sites from sites.json
     sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
     if os.path.exists(sites_json_path):
@@ -116,6 +94,23 @@ def run_pip_install(libraries, app, site):
     except subprocess.CalledProcessError as e:
         click.echo(f"Error installing libraries: {e}")
 
+
+@click.command()
+@click.argument("libraries", nargs=-1)
+@click.option(
+    "--app", type=str, help="Specify a custom app to update its requirements.txt"
+)
+@click.option(
+    "--site",
+    type=str,
+    help="Specify a site to install the libraries. If not provided, a selection prompt will appear.",
+)
+def i(libraries, app, site):
+    """
+    Install the specified Python libraries in the project using the alias 'i'.
+    Usage: blox pip i <library_name> [<library_name>...] [--app <app_name>] [--site <site_name>]
+    """
+    install(libraries, app, site)
 
 
 pip.add_command(install)
