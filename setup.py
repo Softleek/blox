@@ -8,6 +8,7 @@ setup(
     install_requires=[
         "Click",
         "asgiref==3.7.2",
+        "autoflake",
         "certifi==2023.7.22",
         "cffi==1.16.0",
         "charset-normalizer==3.2.0",

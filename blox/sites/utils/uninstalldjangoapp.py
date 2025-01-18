@@ -104,7 +104,7 @@ def uninstall_django_app(site, app, project_root):
         raise ValueError(f"Path for site '{site}' does not exist.")
 
     # Determine Python executable
-    python_executable = get_python_executable(project_root)
+    get_python_executable(project_root)
 
     # Check if app exists in the site
     app_path = os.path.join(django_path, app_name)

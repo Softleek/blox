@@ -17,7 +17,7 @@ def initialize_django_env():
         raise ValueError(f"Invalid DJANGO_PATH: {DJANGO_PATH} does not exist.")
 
     # Set the Django settings module
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")  # Adjust this if your settings module is different
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 
     # Add project root and Django path to Python path
     sys.path.insert(0, PROJECT_ROOT)
