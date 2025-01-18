@@ -5,7 +5,6 @@ import subprocess
 import click
 
 from ..utils.config import PROJECT_ROOT
-from ..sites.migrate.migrate import run_migration
 from ..utils.file_operations import ensure_file_exists
 
 @click.command()
@@ -76,7 +75,7 @@ def newsite(site_name):
     try:
         # Flag before running 'blox install'
         click.echo(
-            click.style(f"Running 'blox install' for site '{site_name}'...", fg="cyan")
+            click.style(f"Installing depenedencies for site '{site_name}'...", fg="cyan")
         )
 
         # Run 'blox install' command
@@ -85,13 +84,13 @@ def newsite(site_name):
         # Flag after running 'blox install'
         click.echo(
             click.style(
-                f"Successfully ran 'blox install' for site '{site_name}'.", fg="green"
+                f"Successfully installed depenedencies for site '{site_name}'.", fg="green"
             )
         )
 
         # Flag before running 'blox migrate'
         click.echo(
-            click.style(f"Running 'blox migrate' for site '{site_name}'...", fg="cyan")
+            click.style(f"Running migrations for site '{site_name}'...", fg="cyan")
         )
 
         # Run 'blox migrate' command
@@ -100,14 +99,14 @@ def newsite(site_name):
         # Flag after running 'blox migrate'
         click.echo(
             click.style(
-                f"Successfully ran 'blox migrate' for site '{site_name}'.", fg="green"
+                f"Successfully migrated '{site_name}'.", fg="green"
             )
         )
 
         # Flag before running 'blox django createsuperuser'
         click.echo(
             click.style(
-                f"Running 'blox django createsuperuser' for site '{site_name}'...",
+                f"Creating superuser...",
                 fg="cyan",
             )
         )
@@ -120,7 +119,7 @@ def newsite(site_name):
         # Flag after running 'blox django createsuperuser'
         click.echo(
             click.style(
-                f"Successfully ran 'blox django createsuperuser' for site '{site_name}'.",
+                f"Successfully created site - '{site_name}'.",
                 fg="green",
             )
         )
@@ -131,4 +130,3 @@ def newsite(site_name):
                 f"Failed to run one of the post-creation commands: {e}", fg="red"
             )
         )
-    run_migration()
