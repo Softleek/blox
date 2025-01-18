@@ -99,7 +99,7 @@ def updatefiles(app=None, module=None, doc=None, site=None, all=True):
             migrate_app(app, django_path)
 
     # Run Django migrations
-    create_entries_from_config(django_path)
+    # create_entries_from_config(django_path)create_entries_from_config(django_path)
 
     # subprocess.run(
     #     ["autoflake", "--in-place", "--remove-unused-variables",  "--recursive", "--exclude", "*/__init__.py", "."],
@@ -149,11 +149,12 @@ def run_migrate_django(site):
     )
 
     # # Run migrate
-    # subprocess.run(
-    #     [python_executable, "manage.py", "migrate", "--noinput"],
-    #     cwd=django_path,
-    # )
-    # create_entries_from_config(django_path)
+    subprocess.run(
+        [python_executable, "manage.py", "migrate", "--noinput"],
+        cwd=django_path,
+    )
+    create_entries_from_config(django_path)
+    
 
 def run_migration(app=None, module=None, doc=None, site=None, all_sites=False, skip=False):
     """Core migration process."""

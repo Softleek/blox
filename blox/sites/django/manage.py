@@ -88,7 +88,6 @@ def django(command, args, site=None):
 
     # Execute the command
     subprocess.run(command_list, cwd=django_path)
-    click.echo(f"Executed '{command}' command for site '{site}'.")
 
 
 if __name__ == "__main__":
