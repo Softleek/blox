@@ -136,7 +136,7 @@ def run_migrate_django(site=None):
 
     # Run makemigrations
     subprocess.run(
-        [python_executable, "manage.py", "makemigrations"] + db_arg,
+        [python_executable, "manage.py", "makemigrations"],
         cwd=DJANGO_PATH,
     )
 
