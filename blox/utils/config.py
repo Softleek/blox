@@ -18,16 +18,9 @@ def find_django_path(site):
     return os.path.join(PROJECT_ROOT, f"sites/{site}/django")
 
 
-def write_running_ports(site, django_port, nextjs_port):
-    config_path = os.path.join(PROJECT_ROOT, "config")
-    sites_json_path = os.path.join(config_path, "sites.json")
-    next_path = os.path.join(PROJECT_ROOT, "sites", site["site_name"], "nextjs")
-    sites_next_path = os.path.join(next_path, "site.json")
+def write_running_ports(django_port, nextjs_port):
+    next_path = os.path.join(PROJECT_ROOT, "sites", "nextjs")
     env_file_path = os.path.join(next_path, ".env.local")
-
-    with open(sites_next_path, "w") as f:
-
-        json.dump(site, f, indent=4)
 
     # Update the .env.local file
     if not os.path.exists(env_file_path):
@@ -54,34 +47,6 @@ def write_running_ports(site, django_port, nextjs_port):
                 f.write(f"NEXT_PUBLIC_DJANGO_PORT={django_port}\n")
                 f.write(f"NEXT_PUBLIC_NEXTJS_PORT={nextjs_port}\n")
 
-    # Update only the port values in sites.json
-    ensure_file_exists(sites_json_path, initial_data=[])
-    if os.path.exists(sites_json_path):
-        with open(sites_json_path, "r") as f:
-            sites = json.load(f)
-
-        # Find the site and update the ports
-        updated = False
-        for site_entry in sites:
-            if site_entry["site_name"] == site:
-                if site_entry.get("django_port") != django_port:
-                    site_entry["django_port"] = django_port
-                    updated = True
-                if site_entry.get("nextjs_port") != nextjs_port:
-                    site_entry["nextjs_port"] = nextjs_port
-                    updated = True
-                break
-
-        # Write only if there were changes
-        if updated:
-            with open(sites_json_path, "w") as f:
-                json.dump(sites, f, indent=4)
-            # click.echo(f"Updated ports for site '{site}' in sites.json.")
-        else:
-            # click.echo(f"No port changes needed for site '{site}'.")
-            pass
-    else:
-        click.echo("No sites.json file found. Please check your configuration.")
 
 
 def find_module_base_path(app_name=None, module_name=None, app_path=None):
@@ -134,42 +99,6 @@ APPS_TXT_PATH = os.path.join(PROJECT_ROOT, "config", "apps.txt")
 SITES_JSON_PATH = os.path.join(PROJECT_ROOT, "config", "sites.json")
 DOCS_JSON_PATH = os.path.join(PROJECT_ROOT, "config", "doctypes.json")
 APPS_PATH = os.path.join(PROJECT_ROOT, "apps")
-DJANGO_PATH, DEFAULT_SITE = get_default_site_info(PROJECT_ROOT)
+DJANGO_PATH =  os.path.join(PROJECT_ROOT, "sites", "django")
+DEFAULT_SITE = get_default_site_info(PROJECT_ROOT)
 SITES_PATH = os.path.join(PROJECT_ROOT, "sites")
-FIELD_TYPE_MAP = {
-    "TextField": {"type": "models.TextField"},
-    "CharField": {"type": "models.CharField", "max_length": 255},
-    "NumberField": {"type": "models.IntegerField"},
-    "FloatField": {"type": "models.FloatField"},
-    "DecimalField": {
-        "type": "models.DecimalField",
-        "max_digits": 10,
-        "decimal_places": 2,
-    },
-    "BooleanField": {"type": "models.BooleanField"},
-    "DateField": {"type": "models.DateField"},
-    "DateTimeField": {"type": "models.DateTimeField"},
-    "TimeField": {"type": "models.TimeField"},
-    "EmailField": {"type": "models.EmailField", "max_length": 254},
-    "URLField": {"type": "models.URLField"},
-    "SlugField": {"type": "models.SlugField", "max_length": 50},
-    "UUIDField": {"type": "models.UUIDField"},
-    "IPAddressField": {"type": "models.GenericIPAddressField"},
-    "FileField": {"type": "models.FileField", "upload_to": "'uploads/'"},
-    "ImageField": {"type": "models.ImageField", "upload_to": "'images/'"},
-    "PasswordField": {"type": "models.CharField", "max_length": 128},
-    "PhoneField": {"type": "models.CharField", "max_length": 15},
-    "NameField": {"type": "models.CharField", "max_length": 255},
-    "AddressField": {"type": "models.TextField"},
-    "ForeignKey": {
-        "type": "models.ForeignKey",
-        "to": "'self'",
-        "on_delete": "models.CASCADE",
-    },
-    "OneToOneField": {
-        "type": "models.OneToOneField",
-        "to": "'self'",
-        "on_delete": "models.CASCADE",
-    },
-    "ManyToManyField": {"type": "models.ManyToManyField", "to": "'self'"},
-}

@@ -2,6 +2,8 @@ import os
 import shutil
 
 import click
+import sys
+import traceback
 
 from ...utils.config import PROJECT_ROOT
 from ...sites.migrate.migrate import run_migration
@@ -48,4 +50,6 @@ def dropmodule(app_name, module_name):
         click.echo(f"The module '{module_name}' has been removed.")
     except Exception as e:
         click.echo(f"Failed to update modules.txt: {e}")
+        exc_type, exc_value, exc_tb = sys.exc_info()
+        traceback.print_exception(exc_type, exc_value, exc_tb)
     run_migration()

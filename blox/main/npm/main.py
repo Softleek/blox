@@ -30,7 +30,7 @@ def update_package_json(app_name, libraries):
 
 
 def install_npm_packages(libraries, app_name, site):
-    nextjs_path = os.path.join(PROJECT_ROOT, "sites", site, "nextjs")
+    nextjs_path = os.path.join(PROJECT_ROOT, "sites", "nextjs")
 
     if not os.path.exists(nextjs_path):
         click.echo(f"Next.js path for site '{site}' not found.")
@@ -45,6 +45,7 @@ def install_npm_packages(libraries, app_name, site):
             subprocess.check_call(npm_command, cwd=nextjs_path, shell=True)
         else:  # Unix-based systems
             subprocess.check_call(npm_command, cwd=nextjs_path)
+            
         click.echo("Libraries installed successfully in core Next.js project.")
     except subprocess.CalledProcessError as e:
         click.echo(f"Error installing libraries in core Next.js project: {e}")

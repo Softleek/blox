@@ -1,5 +1,6 @@
 import os
-
+import sys
+import traceback
 
 def create_files_from_templates(
     base_path, app_name, templates_folder, dynamic_content=None
@@ -61,3 +62,5 @@ def create_files_from_templates(
             )
         except Exception as e:
             print(f"Error creating file '{destination_path}': {e}")
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            traceback.print_exception(exc_type, exc_value, exc_tb)

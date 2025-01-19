@@ -28,21 +28,21 @@ def app_install_python_packages(app):
         subprocess.check_call(["pip", "install", "-r", requirements_file])
 
 
-def install_python_packages(site):
+def install_python_packages():
     site_requirements = os.path.join(
-        PROJECT_ROOT, "sites", site, "django", "requirements.txt"
+        PROJECT_ROOT, "sites", "django", "requirements.txt"
     )
     if os.path.exists(site_requirements):
         click.echo(f"Installing packages from {site_requirements}...")
         subprocess.check_call(["pip", "install", "-r", site_requirements])
 
 
-def app_install_npm_packages(site, app):
+def app_install_npm_packages(app):
     package_json_path = os.path.join(APPS_PATH, app, "package.json")
     if os.path.exists(package_json_path):
         click.echo(f"Installing packages from {package_json_path}...")
 
-        nextjs_path = os.path.join(PROJECT_ROOT, "sites", site, "nextjs")
+        nextjs_path = os.path.join(PROJECT_ROOT, "sites", "nextjs")
 
         # Read package.json to get dependencies and devDependencies
         with open(package_json_path, "r") as f:
@@ -70,8 +70,8 @@ def app_install_npm_packages(site, app):
         click.echo(f"package.json not found for app '{app}'.")
 
 
-def install_npm_packages(site):
-    nextjs_path = os.path.join(PROJECT_ROOT, "sites", site, "nextjs")
+def install_npm_packages():
+    nextjs_path = os.path.join(PROJECT_ROOT, "sites", "nextjs")
 
     # Determine the command for the current operating system
     npm_command = ["npm", "install"]
@@ -80,61 +80,37 @@ def install_npm_packages(site):
     try:
         if os.name == "nt":  # Windows
             subprocess.check_call(npm_command, cwd=nextjs_path, shell=True)
-        else:  # Unix-based systems
+        else:  
             subprocess.check_call(npm_command, cwd=nextjs_path)
         click.echo("Libraries installed successfully in core Next.js project.")
     except subprocess.CalledProcessError as e:
         click.echo(f"Error installing libraries in core Next.js project: {e}")
 
 
-def install_dependencies(site):
-    sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
-    with open(sites_json_path, "r") as json_file:
-        sites = json.load(json_file)
-
-    site_info = next((s for s in sites if s["site_name"] == site), None)
-    if not site_info:
-        click.echo(f"Site '{site}' not found.")
-        return
-
-    installed_apps = site_info.get("installed_apps", [])
-    if len(installed_apps) > 0:
-        for app in installed_apps:
-            app_install_python_packages(app)
-            app_install_npm_packages(site, app)
-    install_python_packages(site)
-    install_npm_packages(site)
+def install_dependencies():
+    install_python_packages()
+    install_npm_packages()
 
 
 @click.command()
-@click.option(
-    "--site",
-    type=str,
-    help="Specify a site to install dependencies. If not provided, a selection prompt will appear.",
-)
-def install(site):
+def install():
     """
     Install all dependencies for the specified site.
     Usage: blox install --site <site_name>
     """
-    run_install(site)
+    run_install()
     
     
 @click.command()
-@click.option(
-    "--site",
-    type=str,
-    help="Specify a site to install dependencies. If not provided, a selection prompt will appear.",
-)
-def i(site):
+def i():
     """
     Install all dependencies for the specified site.
     Usage: blox i --site <site_name>
     """   
-    run_install(site)
+    run_install()
     
     
-def run_install(site):
+def run_install():
     # Activate the virtual environment
     activate_script = activate_virtualenv()
     if activate_script:
@@ -143,18 +119,7 @@ def run_install(site):
         else:
             subprocess.call(["source", activate_script], shell=True)
 
-    if not site:
-        # Load sites from sites.json
-        sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
-        with open(sites_json_path, "r") as json_file:
-            sites = json.load(json_file)
-
-        for i, site_entry in enumerate(sites, 1):
-            install_dependencies(site_entry['site_name'])
-            
-    else:
-        selected_site = site
-        install_dependencies(selected_site)
+    install_dependencies()
     click.echo(f"Dependencies installed successfully.")
 
 

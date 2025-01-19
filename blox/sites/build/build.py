@@ -3,7 +3,7 @@ import subprocess
 import sys
 import click
 from ...utils.config import PROJECT_ROOT
-
+import traceback
 
 @click.command()
 def build():
@@ -44,3 +44,5 @@ def build():
         click.echo(click.style(f"Build failed: {str(e)}", fg="red"))
     except Exception as e:
         click.echo(click.style(f"An unexpected error occurred: {str(e)}", fg="red"))
+        exc_type, exc_value, exc_tb = sys.exc_info()
+        traceback.print_exception(exc_type, exc_value, exc_tb)

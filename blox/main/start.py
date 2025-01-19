@@ -3,14 +3,14 @@ import os
 import socket
 import subprocess
 import threading
-
+import traceback
+import sys
 import click
 
-from ..utils.config import (DEFAULT_SITE, DJANGO_PATH, PROJECT_ROOT,
+from ..utils.config import (PROJECT_ROOT,
                             write_running_ports)
 from ..utils.initialize_django import initialize_django_env
 from ..utils.run_process import get_python_executable, run_subprocess
-from ..utils.file_operations import ensure_file_exists
 
 def find_free_port(start_port=3000):
     port = start_port
@@ -37,36 +37,16 @@ def stream_reader(stream, color, prefix="", first_line_only=False):
 
 @click.command()
 @click.argument("mode", default="prod")
-@click.option(
-    "--site",
-    default=None,
-    help="Specify a site to start. If not provided, prompts for a site.",
-)
-def start(mode, site):
+def start(mode):
     """Start Django and Next.js servers for the specified site."""
     click.echo("Starting server")
-    # Load sites from sites.json
-    sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
-    ensure_file_exists(sites_json_path, initial_data=[])
-    if os.path.exists(sites_json_path):
-        with open(sites_json_path, "r") as json_file:
-            json.load(json_file)
-
-    # Prompt for site if not provided
-    if not site:
-        selected_site = DEFAULT_SITE
-        django_path = DJANGO_PATH
-    else:
-        django_path = os.path.join(
-            PROJECT_ROOT, "sites", selected_site["site_name"], "django"
-        )
 
     # Create Django and Next.js paths
     django_path = os.path.join(
-        PROJECT_ROOT, "sites", selected_site["site_name"], "django"
+        PROJECT_ROOT, "sites", "django"
     )
     nextjs_path = os.path.join(
-        PROJECT_ROOT, "sites", selected_site["site_name"], "nextjs"
+        PROJECT_ROOT, "sites", "nextjs"
     )
 
     python_executable = get_python_executable()
@@ -97,7 +77,7 @@ def start(mode, site):
             cwd=django_path,
         )
 
-        write_running_ports(selected_site, django_port, nextjs_port)
+        write_running_ports(django_port, nextjs_port)
 
         # Start threads to read stdout and stderr from both processes
         django_stdout_thread = threading.Thread(
@@ -147,6 +127,9 @@ def start(mode, site):
 
     except Exception as e:
         click.echo(click.style(f"Exception: {str(e)}", fg="red"))
+        exc_type, exc_value, exc_tb = sys.exc_info()
+        traceback.print_exception(exc_type, exc_value, exc_tb)
+        
     finally:
         if django_process and django_process.poll() is None:
             django_process.terminate()

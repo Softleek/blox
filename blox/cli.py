@@ -37,6 +37,7 @@ cli.add_command(migrate_django, name='migrate-django')
 
 cli.add_command(django)
 
+cli.add_command(init)
 cli.add_command(start)
 cli.add_command(build)
 

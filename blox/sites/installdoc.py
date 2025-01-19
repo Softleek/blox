@@ -30,11 +30,6 @@ def installdoc(site, app, module, doc):
     # Prompt for site if not provided
     if not site:
         selected_site = DEFAULT_SITE
-        django_path = DJANGO_PATH
-    else:
-        django_path = os.path.join(
-            PROJECT_ROOT, "sites", selected_site["site_name"], "django"
-        )
 
     site = selected_site["site_name"]
     # Load available apps from apps.txt
@@ -91,7 +86,7 @@ def installdoc(site, app, module, doc):
         module = available_modules[module_choice - 1]
 
     # Define the app path
-    django_path = os.path.join(PROJECT_ROOT, "sites", site, "django", app_name)
+    django_path = os.path.join(DJANGO_PATH, app_name)
 
     structure = ["views", "models", "tests", "serializers", "filters"]
 

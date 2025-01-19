@@ -2,7 +2,8 @@ import os
 import shutil
 
 import click
-
+import sys
+import traceback
 from ..sites.migrate.migrate import run_migration
 from ..utils.config import PROJECT_ROOT
 
@@ -50,6 +51,8 @@ def movedoc(source_app, source_module, dest_app, dest_module, doc):
         )
     except Exception as e:
         click.echo(f"Error occurred while moving document: {str(e)}")
+        exc_type, exc_value, exc_tb = sys.exc_info()
+        traceback.print_exception(exc_type, exc_value, exc_tb)
         return
 
     # Cleanup: Remove empty directories in the source path if necessary

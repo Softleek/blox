@@ -57,59 +57,49 @@ def updatefiles(app=None, module=None, doc=None, site=None, all=True):
     # If --all is passed, iterate over all sites
     if all:
         for site_entry in sites:
-            site_name = site_entry["site_name"]
-            django_path = os.path.join(PROJECT_ROOT, "sites", site_name, "django")
-
             # Migrate all apps for the site
             installed_apps = site_entry.get("installed_apps", [])
             for app in installed_apps:
                 configure_app(app)
 
             for app in installed_apps:
-                migrate_app(app, django_path)
+                migrate_app(app, DJANGO_PATH)
 
         return
 
     # Prompt for site if not provided
     if not site:
         selected_site = DEFAULT_SITE
-        django_path = os.path.join(
-            PROJECT_ROOT, "sites", selected_site.get("site_name"), "django"
-        )
-    else:
-        django_path = os.path.join(
-            PROJECT_ROOT, "sites", site, "django"
-        )
 
     # Perform migrations based on provided options
     if doc and module and app:
         configure_doc(app, module, doc)
-        migrate_doc(app, module, doc, django_path)
+        migrate_doc(app, module, doc, DJANGO_PATH)
     elif module and app:
         configure_module(app, module)
-        migrate_module(app, module, django_path)
+        migrate_module(app, module, DJANGO_PATH)
     elif app:
         configure_app(app)
-        migrate_app(app, django_path)
+        migrate_app(app, DJANGO_PATH)
     elif selected_site:
         installed_apps = selected_site.get("installed_apps", [])
         for app in installed_apps:
             configure_app(app)
         for app in installed_apps:
-            migrate_app(app, django_path)
+            migrate_app(app, DJANGO_PATH)
 
     # Run Django migrations
-    # create_entries_from_config(django_path)create_entries_from_config(django_path)
+    # create_entries_from_config(DJANGO_PATH)create_entries_from_config(DJANGO_PATH)
 
-    # subprocess.run(
-    #     ["autoflake", "--in-place", "--remove-unused-variables",  "--recursive", "--exclude", "*/__init__.py", "."],
-    #     cwd=DJANGO_PATH,
-    # )
+    subprocess.run(
+        ["autoflake", "--in-place", "--remove-unused-variables",  "--recursive", "--exclude", "*/__init__.py", "."],
+        cwd=DJANGO_PATH,
+    )
     
-    # subprocess.run(
-    #     ["autoflake", "--in-place", "--remove-all-unused-imports",  "--recursive", "--exclude", "*/__init__.py", "."],
-    #     cwd=DJANGO_PATH,
-    # )
+    subprocess.run(
+        ["autoflake", "--in-place", "--remove-all-unused-imports",  "--recursive", "--exclude", "*/__init__.py", "."],
+        cwd=DJANGO_PATH,
+    )
 
     click.echo("Migration process completed successfully.")
 
@@ -137,23 +127,26 @@ def migrate_django():
     run_migrate_django()
     
     
-def run_migrate_django(site):
+def run_migrate_django(site=None):
     """Run Django makemigrations and migrate commands."""
     python_executable = get_python_executable()
-    django_path = find_django_path(site)
+
+    # Prepare database argument if site is provided
+    db_arg = [f"--database={site}"] if site else []
 
     # Run makemigrations
     subprocess.run(
-        [python_executable, "manage.py", "makemigrations"],
-        cwd=django_path,
+        [python_executable, "manage.py", "makemigrations"] + db_arg,
+        cwd=DJANGO_PATH,
     )
 
-    # # Run migrate
+    # Run migrate
     subprocess.run(
-        [python_executable, "manage.py", "migrate", "--noinput"],
-        cwd=django_path,
+        [python_executable, "manage.py", "migrate", "--noinput"] + db_arg,
+        cwd=DJANGO_PATH,
     )
-    create_entries_from_config(django_path)
+
+    create_entries_from_config(DJANGO_PATH)
     
 
 def run_migration(app=None, module=None, doc=None, site=None, all_sites=False, skip=False):
