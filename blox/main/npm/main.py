@@ -76,7 +76,7 @@ def install(libraries, app, site):
     
 def run_npm_install(libraries, app, site):
     # Load sites from sites.json
-    sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
+    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
     ensure_file_exists(sites_json_path, initial_data=[])
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:

@@ -21,7 +21,7 @@ def init(name):
         os.makedirs(os.path.join(project_root, directory), exist_ok=True)
     
     # Create necessary files
-    sites_json_path = os.path.join(project_root, "config", "sites.json")
+    sites_json_path = os.path.join(project_root, "sites", "sites.json")
     procfile_path = os.path.join(project_root, "Procfile") 
     procfile_path = os.path.join(project_root, "blox.config") 
     

@@ -8,7 +8,7 @@ from ..utils.config import PROJECT_ROOT
 from ..utils.file_operations import ensure_file_exists
 
 # Define the path to sites.json
-SITES_JSON_PATH = os.path.join(PROJECT_ROOT, "config", "sites.json")
+SITES_JSON_PATH = os.path.join(PROJECT_ROOT, "sites", "sites.json")
 
 
 # Function to read sites.json file

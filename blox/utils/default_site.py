@@ -11,7 +11,7 @@ def get_default_site_info(PROJECT_ROOT):
     :param PROJECT_ROOT: The root directory of the project
     :return: A tuple (django_path, site_name) if a default site is found, otherwise None
     """
-    sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
+    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
 
     if not os.path.exists(sites_json_path):
         click.echo("No sites found in sites.json.")

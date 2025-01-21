@@ -45,7 +45,7 @@ def remove_class_block(file_path, class_name):
 def updatefiles(app=None, module=None, doc=None, site=None, all=True):
     # Load sites from sites.json
     selected_site = None
-    sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
+    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
     ensure_file_exists(sites_json_path, initial_data=[])
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:

@@ -55,7 +55,7 @@ def dropapp(app):
         return
 
     # Uninstall the app from all sites using `blox uninstallapp`
-    sites_json_path = os.path.join(PROJECT_ROOT, "config", "sites.json")
+    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
     if not os.path.exists(sites_json_path):
         click.echo("No sites.json configuration found.")
         return

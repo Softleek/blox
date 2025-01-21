@@ -88,7 +88,7 @@ def uninstall_django_app(site, app, project_root):
     """Uninstall a Django app from a selected site by reversing actions taken during installation."""
     app_name = f"{app}_app"
     # Define paths
-    sites_json_path = os.path.join(project_root, "config", "sites.json")
+    sites_json_path = os.path.join(project_root, "sites", "sites.json")
     site_path = os.path.join(project_root, "sites", site)
     django_path = os.path.join(site_path, "django")
 
