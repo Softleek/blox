@@ -8,6 +8,11 @@ from ..utils.config import PROJECT_ROOT
 from .utils.file_creater import create_files_from_templates
 from ..sites.migrate.migrate import run_migration
 
+LICENSE_CHOICES = [
+    "MIT", "GPL-3.0", "GPL-2.0", "LGPL-3.0", "LGPL-2.1", "AGPL-3.0",
+    "Apache-2.0", "BSD-3-Clause", "BSD-2-Clause", "MPL-2.0", "EPL-2.0",
+    "CC0-1.0", "CC-BY-4.0", "CC-BY-SA-4.0", "Unlicense", "Zlib", "BSL-1.0", "WTFPL"
+]
 
 @click.command()
 @click.argument("app_name")
@@ -42,7 +47,7 @@ from ..sites.migrate.migrate import run_migration
 @click.option(
     "--license",
     prompt="App License",
-    type=click.Choice(["MIT", "GPL-3.0", "Apache-2.0"], case_sensitive=False),
+    type=click.Choice(LICENSE_CHOICES, case_sensitive=False),
     default="MIT",
     help="License for the app",
     show_default=True,
@@ -121,8 +126,11 @@ app_license = "{license}"
     # Use the file creator utility to generate boilerplate files from templates, passing dynamic content
     templates_folder = os.path.join(PROJECT_ROOT, "blox", "templates")
     create_files_from_templates(
-        temp_app_path, app_name, templates_folder, dynamic_content
+        temp_app_path, app_name, templates_folder, license, dynamic_content
     )
+    
+    # Create special files first
+    create_readme(temp_app_path, app_name, templates_folder, license, description, title, publisher, email)
 
     # Add the app to the apps.txt configuration
     apps_txt_path = os.path.join(PROJECT_ROOT, "config", "apps.txt")
@@ -137,9 +145,7 @@ app_license = "{license}"
         # Move the temporary directory to the final location
         shutil.move(temp_app_path, final_app_path)
 
-        click.echo(
-            f"Initialized a new Git repository with 'main' branch in '{final_app_path}'."
-        )
+
     except subprocess.CalledProcessError as e:
         click.echo(f"Failed to initialize Git repository: {e}")
         # Rollback: Remove the temporary directory if it was created
@@ -152,4 +158,93 @@ app_license = "{license}"
     else:
         click.echo(f"Failed to create the app '{app_name}'.")
 
-    run_migration()
+
+def create_readme(base_path, app_name, templates_folder, license, description, title, publisher, email):
+    """Create the README.md file with expanded content and advanced styling."""
+    readme_path = os.path.join(base_path, "README.md")
+    template_path = os.path.join(templates_folder, "README.md")
+
+    # Default content with advanced styling
+    default_content = f"""# {app_name}
+
+Welcome to **{app_name}**!.
+
+## App Information
+
+- **App Name**: {app_name}
+- **App Title**: {title}
+- **App Description**: {description}
+- **Publisher**: {publisher}
+- **Publisher Email**: {email}
+- **License**: {license}
+
+## Installation
+
+Follow the steps below to get started with **{app_name}**:
+
+1. Get the app:
+
+    ```bash
+    blox get-app https://github.com/{app_name}/{app_name}.git
+    ```
+
+2. Install in site:
+
+    ```bash
+    blox install-app --site [sitename] {app_name}
+    ```
+
+3. Install dependencies:
+
+    ```bash
+    blox install
+    ```
+
+4. Migrate the site:
+
+    ```bash
+    blox migrate --site [sitename]
+    ```
+
+
+
+## License
+
+This project is licensed under the terms of the **{license}** license.
+
+## Contributing
+
+We welcome contributions to **{app_name}**! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a pull request.
+
+## Contact
+
+If you have any questions, feel free to reach out to:
+
+- **Email**: {email}
+- **Website**: [www.blox.com](https://www.blox.com)
+"""
+
+    # Ensure directory exists
+    os.makedirs(os.path.dirname(readme_path), exist_ok=True)
+
+    try:
+        with open(template_path, "r") as template_file:
+            content = template_file.read()
+    except FileNotFoundError:
+        content = default_content
+    except Exception as e:
+        content = default_content  # Use default content if error occurs
+
+    content = content.replace("{{app_name}}", app_name)
+    content = content.replace("{{title}}", title)
+    content = content.replace("{{description}}", description)
+    content = content.replace("{{publisher}}", publisher)
+    content = content.replace("{{email}}", email)
+    content = content.replace("{{license}}", license)
+
+    # Write the generated content to the README.md file
+    try:
+        with open(readme_path, "w") as readme_file:
+            readme_file.write(content)
+    except Exception as e:
+        click.echo(f"Error creating README file: {e}")
