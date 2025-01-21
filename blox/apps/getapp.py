@@ -6,7 +6,7 @@ import click
 
 from ..utils.config import PROJECT_ROOT
 from ..utils.run_process import get_python_executable, run_subprocess
-from ..sites.migrate.migrate import run_migration
+from ..sites.utils.installdjangoapp import install_django_app
 
 
 def remove_hiredis_from_toml():
@@ -31,11 +31,7 @@ def remove_hiredis_from_toml():
 
 @click.command()
 @click.argument("git_url")
-@click.option(
-    "--name",
-    type=str,
-    help="Optional name for the cloned app. If not provided, the name will be parsed from the Git URL.",
-)
+@click.argument("name")
 def getapp(git_url, name):
     """Clone a Django app from a Git repository using the provided URL and optional app name."""
 
@@ -77,4 +73,4 @@ def getapp(git_url, name):
         cwd=PROJECT_ROOT,
     )
     
-    run_migration()
+    install_django_app(app_name, PROJECT_ROOT)

@@ -12,7 +12,7 @@ from ..utils.file_operations import ensure_file_exists
 @click.option(
     "--site", type=str, help="The name of the site where the app will be uninstalled."
 )
-@click.option("--app", type=str, help="The name of the app to uninstall.")
+@click.argument("app")
 def uninstallapp(site, app):
     """Uninstall an app from a selected site and update sites.json."""
 
@@ -81,9 +81,6 @@ def uninstallapp(site, app):
 
     with open(sites_json_path, "w") as json_file:
         json.dump(sites, json_file, indent=4)
-
-    # Call the uninstall utility
-    uninstall_django_app(selected_site["site_name"], selected_app, PROJECT_ROOT)
 
     click.echo(
         f"The app '{selected_app}' has been successfully uninstalled from '{selected_site['site_name']}'."

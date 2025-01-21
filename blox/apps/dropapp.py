@@ -6,10 +6,11 @@ import subprocess
 import click
 
 from ..utils.config import PROJECT_ROOT
+from ..sites.utils.uninstalldjangoapp import uninstall_django_app
 
 
 @click.command()
-@click.option("--app", type=str, help="The name of the app to delete.")
+@click.argument("app")
 def dropapp(app):
     """Delete the specified Django app, uninstall it from all sites using `blox uninstallapp`, and remove it from the configuration."""
 
@@ -84,6 +85,8 @@ def dropapp(app):
                 shutil.rmtree(custom_app_path)
 
             click.echo(f"Deleted the app folder '{custom_app_path}'.")
+            
+            uninstall_django_app(selected_app, PROJECT_ROOT)
         else:
             click.echo(f"App folder '{custom_app_path}' does not exist.")
     except subprocess.CalledProcessError as e:

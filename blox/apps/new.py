@@ -6,7 +6,7 @@ import click
 
 from ..utils.config import PROJECT_ROOT
 from .utils.file_creater import create_files_from_templates
-from ..sites.migrate.migrate import run_migration
+from ..sites.utils.installdjangoapp import install_django_app
 
 LICENSE_CHOICES = [
     "MIT", "GPL-3.0", "GPL-2.0", "LGPL-3.0", "LGPL-2.1", "AGPL-3.0",
@@ -144,6 +144,7 @@ app_license = "{license}"
 
         # Move the temporary directory to the final location
         shutil.move(temp_app_path, final_app_path)
+        install_django_app(app_name, PROJECT_ROOT)
 
 
     except subprocess.CalledProcessError as e:

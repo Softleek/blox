@@ -21,25 +21,15 @@ def get_python_executable(project_root):
     return os.path.join(venv_path, "bin", "python")
 
 
-def install_django_app(site, app, project_root):
+def install_django_app(app, project_root):
     """Create a Django app in a selected site using the Django startapp command."""
     app_name = f"{app}_app"
 
     # Define paths
     sites_json_path = os.path.join(project_root, "sites", "sites.json")
-    site_path = os.path.join(project_root, "sites", site)
+    site_path = os.path.join(project_root, "sites")
     django_path = os.path.join(site_path, "django")
 
-    # Load site options
-    with open(sites_json_path, "r") as sites_file:
-        sites = json.load(sites_file)
-
-    # Check if the site exists
-    if not any(s["site_name"] == site for s in sites):
-        raise ValueError(f"Site '{site}' does not exist.")
-
-    if not os.path.exists(site_path):
-        raise ValueError(f"Path for site '{site}' does not exist.")
 
     # Load app options from apps.txt
     apps_txt_path = os.path.join(project_root, "config", "apps.txt")
@@ -61,7 +51,6 @@ def install_django_app(site, app, project_root):
         # Activate the virtual environment and run the command
         command = [python_executable, "manage.py", "startapp", app_name]
         subprocess.check_call(command, cwd=django_path)
-        print(f"App '{app}' has been created successfully in site '{site}'.")
 
         # Update INSTALLED_APPS in settings.py
         settings_path = os.path.join(
@@ -115,4 +104,4 @@ def install_django_app(site, app, project_root):
         create_module_structure(app_path, custom_app_path, app)
 
     except subprocess.CalledProcessError as e:
-        print(f"Failed to create the app '{app}' in site '{site}': {e}")
+        print(f"Failed to create the app '{app}' : {e}")

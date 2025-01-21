@@ -4,7 +4,6 @@ import os
 import click
 
 from ..utils.config import PROJECT_ROOT
-from .utils.installdjangoapp import install_django_app
 from ..sites.migrate.migrate import run_migration
 from ..utils.file_operations import ensure_file_exists
 
@@ -12,7 +11,7 @@ from ..utils.file_operations import ensure_file_exists
 @click.option(
     "--site", type=str, help="The name of the site where the app will be installed."
 )
-@click.option("--app", type=str, help="The name of the app to install.")
+@click.argument("app")
 def installapp(site, app):
     """Install an app into a selected site and update sites.json."""
 
@@ -44,11 +43,6 @@ def installapp(site, app):
         if not selected_site:
             click.echo(f"Site '{site}' not found in sites.json.")
             return
-
-    # Set django_path based on the selected site
-    django_path = os.path.join(
-        PROJECT_ROOT, "sites", selected_site["site_name"], "django"
-    )
 
     # Load apps from apps.txt
     apps_txt_path = os.path.join(PROJECT_ROOT, "config", "apps.txt")
@@ -100,7 +94,6 @@ def installapp(site, app):
 
     # Install the app using the external function
     click.echo(f"Installing '{selected_app}' into '{selected_site['site_name']}'...")
-    install_django_app(selected_site["site_name"], selected_app, PROJECT_ROOT)
 
     # Update the selected site's installed_apps
     selected_site["installed_apps"].append(selected_app)
@@ -118,4 +111,4 @@ def installapp(site, app):
     click.echo(
         f"The app '{selected_app}' has been successfully installed in '{selected_site['site_name']}'."
     )
-    run_migration()
+    run_migration(site=selected_site["site_name"])

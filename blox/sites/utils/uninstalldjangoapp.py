@@ -84,24 +84,12 @@ def remove_app_urls(app, app_name, urls_path):
         print(f"No URL entry found for app '{app}'.")
 
 
-def uninstall_django_app(site, app, project_root):
+def uninstall_django_app(app, project_root):
     """Uninstall a Django app from a selected site by reversing actions taken during installation."""
     app_name = f"{app}_app"
-    # Define paths
-    sites_json_path = os.path.join(project_root, "sites", "sites.json")
-    site_path = os.path.join(project_root, "sites", site)
+    
+    site_path = os.path.join(project_root, "sites")
     django_path = os.path.join(site_path, "django")
-
-    # Load site options
-    with open(sites_json_path, "r") as sites_file:
-        sites = json.load(sites_file)
-
-    # Check if the site exists
-    if not any(s["site_name"] == site for s in sites):
-        raise ValueError(f"Site '{site}' does not exist.")
-
-    if not os.path.exists(site_path):
-        raise ValueError(f"Path for site '{site}' does not exist.")
 
     # Determine Python executable
     get_python_executable(project_root)
@@ -109,7 +97,7 @@ def uninstall_django_app(site, app, project_root):
     # Check if app exists in the site
     app_path = os.path.join(django_path, app_name)
     if not os.path.exists(app_path):
-        raise ValueError(f"App '{app}' does not exist in the site '{site}'.")
+        raise ValueError(f"App '{app}' does not exist in site.")
 
     # Remove the app's entry in settings.py
     settings_path = os.path.join(
@@ -129,8 +117,8 @@ def uninstall_django_app(site, app, project_root):
             subprocess.check_call(["cmd", "/c", "rmdir", "/s", "/q", app_path])
         else:  # Unix-based systems
             subprocess.check_call(["rm", "-rf", app_path])
-        print(f"App '{app}' has been removed from site '{site}'.")
+        print(f"App '{app}' has been removed from site'.")
     except subprocess.CalledProcessError as e:
-        print(f"Failed to remove the app '{app}' from site '{site}': {e}")
+        print(f"Failed to remove the app '{app}' from site': {e}")
 
     # You can also remove the app from the apps.txt file if necessary (optional).
