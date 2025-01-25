@@ -14,12 +14,8 @@ def update_urls_py(app_name, modules, django_path):
     urls_path = os.path.join(django_path, f"{app_name}_app", "urls.py")
 
     # Initialize content for urls.py
-    urls_content = """from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import *
-    
-router = DefaultRouter()
-"""
+    urls_content = "from django.urls import path, include\n"
+    urls_content += "from rest_framework.routers import DefaultRouter\nrouter = DefaultRouter()\n"
 
     # Process each module
     for module in modules:
@@ -50,15 +46,18 @@ router = DefaultRouter()
             )
             continue
 
+        # Add import statement for the module
+        urls_content += f"from .views.{module_snake_case} import *\n"
+
         # Generate ViewSet registrations for each model
         for model in models:
             model_name = to_titlecase_no_space(get_name_by_id(model, "doc"))
             viewset_name = f"{model_name}ViewSet"
             urls_content += f"router.register(r'{model}', {viewset_name})\n"
-            # print(to_snake_case(model), model)
 
     # Add the router's URLs to urlpatterns
     urls_content += """
+
 urlpatterns = [
     path('', include(router.urls)),
 ]

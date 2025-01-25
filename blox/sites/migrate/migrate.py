@@ -79,7 +79,7 @@ def updatefiles(app=None, module=None, doc=None, site=None, all=True):
             migrate_app(app, DJANGO_PATH)
 
     # Run Django migrations
-    # create_entries_from_config(DJANGO_PATH)create_entries_from_config(DJANGO_PATH)
+    # create_entries_from_config(DJANGO_PATH, site)
 
     subprocess.run(
         ["autoflake", "--in-place", "--remove-unused-variables",  "--recursive", "--exclude", "*/__init__.py", "."],

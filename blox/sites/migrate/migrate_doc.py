@@ -8,6 +8,7 @@ from .write_filters import write_filters
 from .write_models import write_model_fields
 from .write_serializers import write_serializer
 from .write_viewsets import write_viewset
+import click
 
 STRUCTURE = {
     "views": "views",
@@ -32,7 +33,7 @@ def migrate_doc(app_name, module, doc=None, django_path=""):
         return  # Exit if no valid path is found
 
     doc_folder_path = os.path.join(
-        module_base_path, module_name, doctype_folder_name, doc_name
+        module_base_path, doctype_folder_name, doc_name
     )
 
     for folder, structure_name in STRUCTURE.items():

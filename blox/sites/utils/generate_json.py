@@ -112,8 +112,8 @@ def process_module(app_name, module, app_entry):
         click.echo(f"Module '{module}' does not exist in app '{module_path}'. Skipping...")
         return
 
-    doc_path = os.path.join(module_path, module_id, "doc")
-    doctype_path = os.path.join(module_path, module_id, "doctype")
+    doc_path = os.path.join(module_path, "doc")
+    doctype_path = os.path.join(module_path, "doctype")
 
     docs = []
     if os.path.isdir(doc_path):

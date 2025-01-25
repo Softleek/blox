@@ -3,7 +3,6 @@ import os
 import sys
 
 import django
-import click
 from ...utils.config import DOCS_JSON_PATH
 from ...utils.file_operations import ensure_file_exists
 from .load_doc_config import get_all_sites
@@ -38,6 +37,7 @@ def update_or_create_entry(model, id_value, name_value, site, **kwargs):
         instance.save()
     return instance, created
 
+
 def create_entries_from_config(django_path, site):
     """Process the JSON configuration file and create/update database entries."""
     # Initialize Django environment
@@ -66,8 +66,12 @@ def create_entries_from_config(django_path, site):
 
     # Process each app and its modules/documents
     for app_data in config:
-        app_id = app_data["id"]
-        app_name = app_data["name"]
+        app_id = app_data.get("id")
+        app_name = app_data.get("name")
+
+        # Skip entries without id or name
+        if not app_id or not app_name:
+            continue
 
         # Only process apps that are in the installed_apps list
         if app_name not in installed_apps:
@@ -84,8 +88,12 @@ def create_entries_from_config(django_path, site):
 
         # Process modules and documents similarly
         for module_data in app_data.get("modules", []):
-            module_id = module_data["id"]
-            module_name = module_data["name"]
+            module_id = module_data.get("id")
+            module_name = module_data.get("name")
+
+            # Skip entries without id or name
+            if not module_id or not module_name:
+                continue
 
             if module_id in existing_modules:
                 module = existing_modules[module_id]
@@ -98,8 +106,12 @@ def create_entries_from_config(django_path, site):
                 )
 
             for doc_data in module_data.get("documents", []):
-                doc_id = doc_data["id"]
-                doc_name = doc_data["name"]
+                doc_id = doc_data.get("id")
+                doc_name = doc_data.get("name")
+
+                # Skip entries without id or name
+                if not doc_id or not doc_name:
+                    continue
 
                 if doc_id in existing_docs:
                     doc = existing_docs[doc_id]

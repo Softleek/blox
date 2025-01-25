@@ -71,7 +71,7 @@ def get_name_by_id(entity_id, entity_type):
                     for doc_entry in module_entry.get("docs", []):
                         if doc_entry["id"] == entity_id:
                             return doc_entry["name"]
-    return None
+    return entity_id
 
 
 def get_doc_details(doc_identifier):
