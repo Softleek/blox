@@ -109,7 +109,7 @@ def process_module(app_name, module, app_entry):
     _, module_path = find_module_base_path(app_name=app_name, module_name=module_id)
 
     if not module_path or not os.path.exists(module_path):
-        click.echo(f"Module '{module}' does not exist in app '{app_name}'. Skipping...")
+        click.echo(f"Module '{module}' does not exist in app '{module_path}'. Skipping...")
         return
 
     doc_path = os.path.join(module_path, module_id, "doc")

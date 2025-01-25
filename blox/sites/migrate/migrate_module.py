@@ -14,7 +14,8 @@ def add_init_files(folder_path):
     init_file_path = os.path.join(folder_path, "__init__.py")
 
     with open(init_file_path, "w+") as init_file:
-        init_file.truncate(0)  # Clear the contents of the file
+        init_file.truncate(0)  # Clear the contents of the 
+        # init_file.write(f"from . import *\n")
 
         # List all .py files except __init__.py
         files = [
@@ -52,12 +53,12 @@ def migrate_module(app_name, module, django_path):
 
     # Check if the module path exists
     if not module_path or not os.path.exists(module_path):
-        click.echo(f"Module '{module}' does not exist in app '{app_name}'. Skipping...")
+        click.echo(f"Module '{module}' does not exist in app '{module_path}'. Skipping...")
         return
 
     # Define the paths for 'doc' and 'doctype' folders
-    doc_path = os.path.join(module_path, module_name, "doc")
-    doctype_path = os.path.join(module_path, module_name, "doctype")
+    doc_path = os.path.join(module_path, "doc")
+    doctype_path = os.path.join(module_path, "doctype")
 
     # Check for the 'doc' folder first, and process it if found
     if os.path.isdir(doc_path) and not doc_path.startswith(("_", "pycache")):
@@ -70,9 +71,9 @@ def migrate_module(app_name, module, django_path):
     # If neither folder is found, print a message
     else:
         click.echo(
-            f"No 'doc' or 'doctype' folder found for module '{module}' in app '{app_name}'."
+            f"No 'doc' or 'doctype' folder found for module '{module}' in app '{app_name} {module_path}'."
         )
-
+ 
 
 
 STRUCTURE = {

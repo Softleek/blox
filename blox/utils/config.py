@@ -61,30 +61,17 @@ def find_module_base_path(app_name=None, module_name=None, app_path=None):
         tuple: Path to modules.txt and the base directory for modules, or (None, None) if not found.
     """
     # Determine the base path for the app, defaults to APPS_PATH/app_name
-    base_path = app_path if app_path else os.path.join(APPS_PATH, app_name)
+    base_path = os.path.join(APPS_PATH, app_name, app_name)
 
     # First, check for modules.txt directly in the base_path
     modules_file_path = os.path.join(base_path, "modules.txt")
-    if os.path.isfile(modules_file_path):
-        if module_name:
-            # Check if the specific module_name is listed in modules.txt
-            with open(modules_file_path, "r") as modules_file:
-                if module_name in [line.strip() for line in modules_file.readlines()]:
-                    return modules_file_path, base_path
-        else:
-            # Return the modules.txt found if no module_name is specified
-            return modules_file_path, base_path
-
-    # If not found, check in the subfolder named after the app_name
-    subfolder_path = os.path.join(base_path, app_name)
-
-    if os.path.isdir(subfolder_path):
-        # List all files in the subfolder
-        for item in os.listdir(subfolder_path):
-            if item == "modules.txt":
-                modules_file_path = os.path.join(subfolder_path, item)
-
-                return modules_file_path, subfolder_path
+    if module_name:
+        modules_path = os.path.join(base_path, module_name)
+        if os.path.isfile(modules_file_path):
+            return modules_file_path, modules_path
+    else:
+        if os.path.isfile(modules_file_path):
+            return modules_file_path, base_path    
 
     return None, None
 

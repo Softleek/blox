@@ -17,12 +17,14 @@ def add_init_files(folder_path, modules):
         modules (list): List of module names to be imported in the __init__.py file.
     """
     init_file_path = os.path.join(folder_path, "__init__.py")
+    os.makedirs(folder_path, exist_ok=True)
     with open(init_file_path, "w") as init_file:
         init_file.truncate(0)  # Clear the contents of the file
-        for module in modules:
-            # Convert module name to snake_case and lowercase before writing
-            module_snake_case = to_snake_case(module).lower()
-            init_file.write(f"from .{module_snake_case} import *\n")
+        init_file.write(f"from . import *\n")
+        # for module in modules:
+        #     # Convert module name to snake_case and lowercase before writing
+        #     module_snake_case = to_snake_case(module).lower()
+        #     init_file.write(f"from .{module_snake_case} import *\n")
 
 
 def migrate_app(app_name, django_path):

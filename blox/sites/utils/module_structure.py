@@ -94,4 +94,4 @@ def create_module_structure(app_path, custom_app_path, app_name):
             # Write import statements to __init__.py
             with open(os.path.join(folder_path, "__init__.py"), "w") as init_file:
                 init_file.write(f"# {folder}\n")
-                init_file.writelines(init_imports)
+                init_file.write(f"from . import *\n")

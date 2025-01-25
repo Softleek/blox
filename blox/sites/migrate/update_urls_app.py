@@ -31,13 +31,13 @@ router = DefaultRouter()
         # Check if the module path exists
         if not module_path or not os.path.exists(module_path):
             click.echo(
-                f"Module '{module}' does not exist in app '{app_name}'. Skipping..."
+                f"Module '{module}' does not exist in app '{module_path}'. Skipping..."
             )
             continue
 
         # Define paths for 'doc' and 'doctype' folders
-        doc_path = os.path.join(module_path, module_snake_case, "doc")
-        doctype_path = os.path.join(module_path, module_snake_case, "doctype")
+        doc_path = os.path.join(module_path, "doc")
+        doctype_path = os.path.join(module_path, "doctype")
 
         # Check for 'doc' or 'doctype' folders and process whichever exists
         if os.path.isdir(doc_path):

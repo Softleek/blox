@@ -2,7 +2,7 @@ import json
 import os
 
 
-from ...utils.config import DOCS_JSON_PATH
+from ...utils.config import DOCS_JSON_PATH, PROJECT_ROOT
 from ...utils.file_operations import ensure_file_exists
 
 def load_existing_data():
@@ -18,3 +18,13 @@ def load_existing_data():
         except json.JSONDecodeError:
             return []
     return []
+
+
+def get_all_sites():
+    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
+    ensure_file_exists(sites_json_path, initial_data=[])
+
+    with open(sites_json_path, "r") as json_file:
+        sites = json.load(json_file)
+
+    return sites

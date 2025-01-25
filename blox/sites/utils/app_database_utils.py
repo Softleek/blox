@@ -3,9 +3,10 @@ import os
 import sys
 
 import django
-
+import click
 from ...utils.config import DOCS_JSON_PATH
 from ...utils.file_operations import ensure_file_exists
+from .load_doc_config import get_all_sites
 
 def initialize_django_env(django_path):
     """Initialize the Django environment based on django_path."""
@@ -16,7 +17,7 @@ def initialize_django_env(django_path):
     django.setup()
 
 
-def update_or_create_entry(model, id_value, name_value, **kwargs):
+def update_or_create_entry(model, id_value, name_value, site, **kwargs):
     """
     Update an existing entry's name if the ID exists, or create a new entry.
 
@@ -29,7 +30,7 @@ def update_or_create_entry(model, id_value, name_value, **kwargs):
     Returns:
         A tuple of (instance, created).
     """
-    instance, created = model.objects.get_or_create(
+    instance, created = model.objects.using(site).get_or_create(
         id=id_value, defaults={"name": name_value, **kwargs}
     )
     if not created and instance.name != name_value:
@@ -37,25 +38,26 @@ def update_or_create_entry(model, id_value, name_value, **kwargs):
         instance.save()
     return instance, created
 
-
-def create_entries_from_config(django_path):
+def create_entries_from_config(django_path, site):
     """Process the JSON configuration file and create/update database entries."""
     # Initialize Django environment
     initialize_django_env(django_path)
-
     # Import models after Django setup
     from core.models import (App,  # Update with actual path to models
-                             Document, Module)
+                                Document, Module)
 
     # Load JSON configuration file
     ensure_file_exists(DOCS_JSON_PATH, initial_data=[])
+    sites = get_all_sites()
+    site_data = next((s for s in sites if s.get("site_name") == site), None)
+    installed_apps = site_data.get("installed_apps", []) if site_data else []
     with open(DOCS_JSON_PATH, "r") as file:
         config = json.load(file)
 
     # Cache existing entries to reduce redundant queries
-    existing_apps = {app.id: app for app in App.objects.all()}
-    existing_modules = {module.id: module for module in Module.objects.all()}
-    existing_docs = {doc.id: doc for doc in Document.objects.all()}
+    existing_apps = {app.id: app for app in App.objects.using(site).all()}
+    existing_modules = {module.id: module for module in Module.objects.using(site).all()}
+    existing_docs = {doc.id: doc for doc in Document.objects.using(site).all()}
 
     # Prepare lists for bulk operations
     apps_to_create = []
@@ -66,6 +68,10 @@ def create_entries_from_config(django_path):
     for app_data in config:
         app_id = app_data["id"]
         app_name = app_data["name"]
+
+        # Only process apps that are in the installed_apps list
+        if app_name not in installed_apps:
+            continue
 
         # Update or create the App entry
         if app_id in existing_apps:
@@ -105,10 +111,10 @@ def create_entries_from_config(django_path):
                         Document(id=doc_id, name=doc_name, module_id=module_id)
                     )
 
-    # Bulk create new entries
+    # Bulk create new entries 
     if apps_to_create:
-        App.objects.bulk_create(apps_to_create)
+        App.objects.using(site).bulk_create(apps_to_create)
     if modules_to_create:
-        Module.objects.bulk_create(modules_to_create)
+        Module.objects.using(site).bulk_create(modules_to_create)
     if docs_to_create:
-        Document.objects.bulk_create(docs_to_create)
+        Document.objects.using(site).bulk_create(docs_to_create)

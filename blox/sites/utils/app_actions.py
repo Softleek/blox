@@ -23,10 +23,10 @@ def update_apps_txt(app_name, remove=False):
     with open(APPS_TXT_PATH, "w") as apps_file:
         for app in apps:
             apps_file.write(f"{app}\n")
-
+            
 
 def find_modules(app_name):
-    modules_file_path, base_module_path = find_module_base_path(app_name)
+    modules_file_path, _ = find_module_base_path(app_name)
     if not modules_file_path:
         update_apps_txt(app_name, remove=True)
         return
@@ -36,7 +36,7 @@ def find_modules(app_name):
         modules = [
             module.strip()
             for module in modules_file.readlines()
-            if not module.strip().startswith("#")
+            if module.strip() and not module.strip().startswith("#")
         ]
     return modules
 
