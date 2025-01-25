@@ -252,7 +252,7 @@ def write_link_field(module_file, field, model_name, django_path):
     )
 
 
-def write_table_field(module_file, field, model_name, django_path):
+def write_table_field(module_file, field, model_name, django_path): 
     """Handles Link fields (ForeignKey relations)."""
     field_id = rename_reserved_keywords(field.get("fieldname", ""))
     related_model = field.get("options", "'self'")

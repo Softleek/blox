@@ -3,6 +3,7 @@ import os
 import sys
 
 import django
+
 from ...utils.config import DOCS_JSON_PATH
 from ...utils.file_operations import ensure_file_exists
 from .load_doc_config import get_all_sites
@@ -105,7 +106,7 @@ def create_entries_from_config(django_path, site):
                     Module(id=module_id, name=module_name, app_id=app_id)
                 )
 
-            for doc_data in module_data.get("documents", []):
+            for doc_data in module_data.get("docs", []):
                 doc_id = doc_data.get("id")
                 doc_name = doc_data.get("name")
 
@@ -120,7 +121,7 @@ def create_entries_from_config(django_path, site):
                         doc.save()
                 else:
                     docs_to_create.append(
-                        Document(id=doc_id, name=doc_name, module_id=module_id)
+                        Document(id=doc_id, name=doc_name, module_id=module_id, app_id=app_id)
                     )
 
     # Bulk create new entries 

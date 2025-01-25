@@ -82,5 +82,4 @@ def get_app_module_for_model(doc_id, django_path):
         for module in app["modules"]:
             if any(doc["id"] == doc_id for doc in module["docs"]):
                 return app["id"], module["id"]
-    print(doc_id, 99999999999999999)
     return None, None
