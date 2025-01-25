@@ -30,7 +30,6 @@ def install_django_app(app, project_root):
     site_path = os.path.join(project_root, "sites")
     django_path = os.path.join(site_path, "django")
 
-
     # Load app options from apps.txt
     apps_txt_path = os.path.join(project_root, "config", "apps.txt")
     with open(apps_txt_path, "r") as apps_file:
@@ -40,22 +39,16 @@ def install_django_app(app, project_root):
             if line.strip() and not line.startswith("#")
         ]
 
-    # if app in apps:
-    #     raise ValueError(f"App '{app}' already exists in the available apps list.")
-
     # Determine Python executable
     python_executable = get_python_executable(project_root)
 
     # Run Django's startapp command
     try:
-        # Activate the virtual environment and run the command
         command = [python_executable, "manage.py", "startapp", app_name]
         subprocess.check_call(command, cwd=django_path)
 
         # Update INSTALLED_APPS in settings.py
-        settings_path = os.path.join(
-            django_path, "backend", "settings.py"
-        )  # Adjust path as necessary
+        settings_path = os.path.join(django_path, "backend", "settings.py")
         with open(settings_path, "r") as file:
             settings_content = file.readlines()
 
@@ -72,7 +65,7 @@ def install_django_app(app, project_root):
             settings_content.insert(end_index, f"    '{app_name}',\n")
 
         path_append_line = (
-            f'sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "{app}")))'
+            f'sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "{app}")))\n'
         )
         if path_append_line not in settings_content:
             settings_content.append(f"\n{path_append_line}")
@@ -91,17 +84,32 @@ def install_django_app(app, project_root):
             urls_file.write("]\n")
 
         # Add the new app's URL to project's urls.py
-        main_urls_path = os.path.join(
-            django_path, "core", "urls.py"
-        )  # Adjust path as necessary
+        main_urls_path = os.path.join(django_path, "core", "urls.py")
         with open(main_urls_path, "a") as main_urls_file:
-            main_urls_file.write("urlpatterns += [")
-            main_urls_file.write(f"path('{app}/', include('{app_name}.urls')),")
+            main_urls_file.write("urlpatterns += [\n")
+            main_urls_file.write(f"    path('{app}/', include('{app_name}.urls')),\n")
             main_urls_file.write("]\n")
 
+        # **Modify apps.py to include the `ready` method**
+        apps_py_path = os.path.join(app_path, "apps.py")
+        with open(apps_py_path, "r") as apps_file:
+            apps_py_content = apps_file.readlines()
+
+        # Find the AppConfig class and insert the `ready` method
+        for i, line in enumerate(apps_py_content):
+            if "class" in line and "AppConfig" in line:
+                insert_index = i + 4  # Insert after class definition
+                break
+
+        ready_method = """\n    def ready(self):\n        import core.signals\n"""
+
+        apps_py_content.insert(insert_index, ready_method)
+
+        with open(apps_py_path, "w") as apps_file:
+            apps_file.writelines(apps_py_content)
+
         # Create module structure
-        # Example modules
         create_module_structure(app_path, custom_app_path, app)
 
     except subprocess.CalledProcessError as e:
-        print(f"Failed to create the app '{app}' : {e}")
+        print(f"Failed to create the app '{app}': {e}")

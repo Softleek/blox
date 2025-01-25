@@ -141,7 +141,7 @@ def write_model(module_file, fields, model_name, django_path):
                 "max_length=255",
                 field_name=field.get("label", ""),
             )
-        elif field_type in ["Attach", "Attach Image", "Image", "BarcodeField"]:
+        elif field_type in ["Attach", "Attach Image", "Image"]:
             write_field_declaration(
                 module_file,
                 field_id,
