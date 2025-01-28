@@ -6,13 +6,19 @@ from ...utils.config import PROJECT_ROOT
 import traceback
 
 @click.command()
-def build():
-    venv_path = os.path.join(PROJECT_ROOT, "env")
+def build() -> None:
+    """
+    Build the Django static files and the Next.js project.
+
+    This function checks for the existence of a virtual environment,
+    builds Django static files, and then builds the Next.js project.
+    """
+    venv_path: str = os.path.join(PROJECT_ROOT, "env")
     if not os.path.exists(venv_path):
         click.echo("Virtual environment not found. Please run 'blox setup' first.")
         return
 
-    python_executable = os.path.join(venv_path, "bin", "python3")
+    python_executable: str = os.path.join(venv_path, "bin", "python3")
     if sys.platform.startswith("win"):
         python_executable = os.path.join(venv_path, "Scripts", "python.exe")
 

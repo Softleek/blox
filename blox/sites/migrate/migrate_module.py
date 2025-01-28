@@ -1,4 +1,5 @@
 import os
+from typing import List, Tuple
 
 import click
 
@@ -8,14 +9,18 @@ from .migrate_doc import migrate_doc
 from .update_urls import underscore_to_titlecase
 
 
-def add_init_files(folder_path):
-    """Create __init__.py file importing all modules in the folder."""
+def add_init_files(folder_path: str) -> None:
+    """
+    Create __init__.py file importing all modules in the folder.
+
+    Args:
+        folder_path (str): Path to the folder where __init__.py should be created.
+    """
     os.makedirs(folder_path, exist_ok=True)
     init_file_path = os.path.join(folder_path, "__init__.py")
 
     with open(init_file_path, "w+") as init_file:
-        init_file.truncate(0)  # Clear the contents of the 
-        # init_file.write(f"from . import *\n")
+        init_file.truncate(0)  # Clear the contents of the file
 
         # List all .py files except __init__.py
         files = [
@@ -30,13 +35,27 @@ def add_init_files(folder_path):
             init_file.write(f"from .{snake_case_file} import *\n")
 
 
-def underscore_to_titlecase(s):
-    """Convert an underscore-separated string to title case."""
+def underscore_to_titlecase(s: str) -> str:
+    """
+    Convert an underscore-separated string to title case.
+
+    Args:
+        s (str): The underscore-separated string.
+
+    Returns:
+        str: The string converted to title case.
+    """
     return "".join(word.title() for word in s.split("_"))
 
 
-def write_empty_view(folder_name, view_path):
-    """Write a default class to the views.py file if it is empty."""
+def write_empty_view(folder_name: str, view_path: str) -> None:
+    """
+    Write a default class to the views.py file if it is empty.
+
+    Args:
+        folder_name (str): The name of the folder.
+        view_path (str): The path to the views.py file.
+    """
     class_name = underscore_to_titlecase(folder_name)
     with open(view_path, "w") as f:
         f.write(f"from rest_framework.response import Response\n\n")
@@ -44,9 +63,15 @@ def write_empty_view(folder_name, view_path):
         f.write(f"    pass\n")
 
 
-def migrate_module(app_name, module, django_path):
-    """Migrate a specific module within an app by processing either the 'doc' or 'doctype' folder, whichever exists first."""
+def migrate_module(app_name: str, module: str, django_path: str) -> None:
+    """
+    Migrate a specific module within an app by processing either the 'doc' or 'doctype' folder, whichever exists first.
 
+    Args:
+        app_name (str): The name of the Django app.
+        module (str): The name of the module to migrate.
+        django_path (str): The base path of the Django project.
+    """
     # Convert module name to snake_case
     module_name = to_snake_case(module)
     _, module_path = find_module_base_path(app_name=app_name, module_name=module_name)
@@ -73,7 +98,6 @@ def migrate_module(app_name, module, django_path):
         click.echo(
             f"No 'doc' or 'doctype' folder found for module '{module}' in app '{app_name} {module_path}'."
         )
- 
 
 
 STRUCTURE = {
@@ -84,9 +108,17 @@ STRUCTURE = {
     "tests": "tests",
 }
 
-def process_folder_docs(app_name, module, folder_path, folder_type, django_path):
-    """Processes each document or doctype in the specified folder."""
-    
+def process_folder_docs(app_name: str, module: str, folder_path: str, folder_type: str, django_path: str) -> None:
+    """
+    Processes each document or doctype in the specified folder.
+
+    Args:
+        app_name (str): The name of the Django app.
+        module (str): The name of the module to process.
+        folder_path (str): The path to the folder containing documents or doctypes.
+        folder_type (str): The type of folder ('doc' or 'doctype').
+        django_path (str): The base path of the Django project.
+    """
     # List all documents in the folder
     folder_docs = [
         item_name
@@ -129,4 +161,3 @@ def process_folder_docs(app_name, module, folder_path, folder_type, django_path)
                 doc=item_name,
                 django_path=django_path,
             )
-

@@ -1,9 +1,10 @@
 import os
 import subprocess
 import sys
+from typing import List, Optional
 
 
-def run_subprocess(command, cwd=None):
+def run_subprocess(command: List[str], cwd: Optional[str] = None) -> None:
     """Run a subprocess command within the virtual environment."""
     project_root = cwd or os.getcwd()
     venv_activate = activate_virtualenv(project_root)
@@ -16,7 +17,7 @@ def run_subprocess(command, cwd=None):
         subprocess.check_call(full_command, cwd=cwd, shell=True)
 
 
-def get_python_executable(project_root):
+def get_python_executable(project_root: str) -> str:
     """Return the path to the Python executable in the virtual environment."""
     venv_path = os.path.join(project_root, "env")
     if sys.platform.startswith("win"):
@@ -24,7 +25,7 @@ def get_python_executable(project_root):
     return os.path.join(venv_path, "bin", "python")
 
 
-def activate_virtualenv(project_root):
+def activate_virtualenv(project_root: str) -> str:
     """Return the path to the activate script of the virtual environment."""
     if sys.platform.startswith("win"):
         return os.path.join(project_root, "env", "Scripts", "activate")

@@ -1,7 +1,8 @@
 import re
+from typing import Callable
 
 
-def to_snake_case(name):
+def to_snake_case(name: str) -> str:
     """Convert a string to snake_case by replacing spaces with underscores and lowering the case.
 
     Args:
@@ -14,18 +15,18 @@ def to_snake_case(name):
     return name.replace(" ", "_").lower()
 
 
-def underscore_to_titlecase(underscore_str):
+def underscore_to_titlecase(underscore_str: str) -> str:
     """Convert underscore string to title case."""
     return re.sub(r"_(.)", lambda m: m.group(1).upper(), underscore_str.title())
 
 
-def underscore_to_titlecase_main(underscore_str):
+def underscore_to_titlecase_main(underscore_str: str) -> str:
     """Convert an underscore-separated string to title case with spaces."""
     # Replace underscores with spaces, then convert to title case
     return re.sub(r"_+", " ", underscore_str).title()
 
 
-def to_titlecase_no_space(input_str):
+def to_titlecase_no_space(input_str: str) -> str:
     """Convert a string with underscores or whitespace to TitleCase with no spaces.
 
     Args:

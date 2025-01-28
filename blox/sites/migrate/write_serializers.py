@@ -1,6 +1,6 @@
 import os
 import re
-
+from typing import Dict, List, Any
 
 from ...utils.text import to_snake_case, to_titlecase_no_space
 from .models.field_mappings import get_field_type
@@ -8,26 +8,45 @@ from .models.json_loader import load_json_file
 from .models.reserved_keywords import reserved_keywords
 
 
-def rename_reserved_keywords(field_id):
+def rename_reserved_keywords(field_id: str) -> str:
     """
     Rename field ID if it is a reserved keyword.
+    
+    Args:
+        field_id (str): The original field ID.
+    
+    Returns:
+        str: The renamed field ID if it was a reserved keyword, otherwise the original field ID.
     """
     return reserved_keywords.get(field_id, field_id)
 
 
-def sanitize_field_name(field_id):
+def sanitize_field_name(field_id: str) -> str:
     """
     Sanitize the field name to ensure it is a valid Python variable name.
     - Replace invalid characters with underscores.
     - Prefix with an underscore if the name starts with a digit.
+    
+    Args:
+        field_id (str): The original field ID.
+    
+    Returns:
+        str: The sanitized field name.
     """
     sanitized = re.sub(r"\W|^(?=\d)", "_", field_id)
     return sanitized
 
 
-def load_fields(folder_path, doc_name):
+def load_fields(folder_path: str, doc_name: str) -> List[Dict[str, Any]]:
     """
     Load fields from doc_name.json.
+    
+    Args:
+        folder_path (str): The path to the folder containing the JSON file.
+        doc_name (str): The name of the document (without .json extension).
+    
+    Returns:
+        List[Dict[str, Any]]: A list of fields loaded from the JSON file.
     """
     model_file_path = os.path.join(folder_path, f"{doc_name}.json")
 
@@ -43,11 +62,19 @@ def load_fields(folder_path, doc_name):
 
 
 def write_serializers_header(
-    module_file, app_name, module_name, model_name, doc_name, related_fields
-):
+    module_file: Any, app_name: str, module_name: str, model_name: str, doc_name: str, related_fields: Dict[str, Dict[str, Any]]
+) -> None:
     """
     Write the imports for the serializers at the top of the file.
     Only import serializers for related models that are not the same as the current model.
+    
+    Args:
+        module_file (Any): The file object to write to.
+        app_name (str): The name of the app.
+        module_name (str): The name of the module.
+        model_name (str): The name of the model.
+        doc_name (str): The name of the document.
+        related_fields (Dict[str, Dict[str, Any]]): A dictionary of related fields.
     """
     # Start with basic imports
     module_file.write(
@@ -60,59 +87,33 @@ def write_serializers_header(
         f"from {app_name}.models.{module_name}.{doc_name} import {model_name}\n\n"
     )
 
-    # # Import serializers for related models only if they are different from the current model
-    # for field_name, related_info in related_fields.items():
-    #     if not related_info:
-    #         continue  # Skip if related_info is empty or None
 
-    #     # Ensure 'model' exists in related_info dictionary
-    #     related_model = related_info.get('model', None)
-
-    #     if related_model is None:
-    #         continue  # Skip if the 'model' key is not found in related_info
-
-    #     if related_model == model_name:  # Skip if the related model is the same as the current model
-    #         continue  # Do not import the serializer for the current model itself
-
-    #     # Fetch the details for the related model
-    #     appur_name, modulur_name, related_file = get_doc_details(related_model)
-
-    #     # Create the related serializer's name
-    #     serializer_name = f"{to_titlecase_no_space(related_model)}"
-
-    #     # Write the import statement for the related serializer
-    #     module_file.write(
-    #         # f"def get_{to_snake_case(serializer_name)}():\n"
-    #         f"from {appur_name}_app.models.{modulur_name}.{related_file} import {serializer_name}\n"
-    #         # f"        return {serializer_name}\n\n"
-    #     )
-
-
-def write_meta_class(module_file, model_name, related_fields):
+def write_meta_class(module_file: Any, model_name: str, related_fields: Dict[str, Dict[str, Any]]) -> None:
     """
     Write the Meta class, including related fields, for the serializer.
+    
+    Args:
+        module_file (Any): The file object to write to.
+        model_name (str): The name of the model.
+        related_fields (Dict[str, Dict[str, Any]]): A dictionary of related fields.
     """
     module_file.write("    class Meta:\n")
     module_file.write(f"        model = {model_name}\n")
     module_file.write("        fields = '__all__'\n")
-    # if related_fields:
-    #     module_file.write("        related_fields: Dict[str, Dict[str, str]] = {\n")
-    #     for field_name, related_info in related_fields.items():
-    #         if related_info.get("self_referencing"):
-    #             continue
-    #         model_field = related_info["model"]
-    #         many = related_info["many"]
-    #         serializer_class_name = related_info["serializer"]
-    #         module_file.write(
-    #             f"            '{field_name}': {{'model': {to_titlecase_no_space(model_field)}, 'many': {str(many).title()}}},\n"
-    #         )
-    #     module_file.write("        }\n\n")
 
 
-def process_field(field, model_name, current_doc_name):
+def process_field(field: Dict[str, Any], model_name: str, current_doc_name: str) -> Dict[str, Dict[str, Any]]:
     """
     Process a single field and return its related field definition if applicable.
     Handles nested representation for self-referencing fields, ManyToManyField, and OneToOneField relationships.
+    
+    Args:
+        field (Dict[str, Any]): The field to process.
+        model_name (str): The name of the model.
+        current_doc_name (str): The name of the current document.
+    
+    Returns:
+        Dict[str, Dict[str, Any]]: A dictionary of related fields.
     """
     if not isinstance(field, dict):
         raise ValueError(f"Invalid field format: {field}. Expected a dictionary.")
@@ -136,10 +137,6 @@ def process_field(field, model_name, current_doc_name):
                 f"Field {field_id} has a '{field_type}' type but no related model specified."
             )
 
-        # Check if the related model is the same as the current serializer's model
-        # if to_snake_case(related_model) == current_doc_name:
-        #     return {field_id: {"self_referencing": True}}
-
         # Determine the serializer name for the related model
         serializer_name = f"{to_titlecase_no_space(related_model)}Serializer"
         related_fields[field_id] = {
@@ -160,18 +157,23 @@ def process_field(field, model_name, current_doc_name):
 
 
 def write_serializer(
-    module_file, app_name, module_name, model_name, doc_name, doc_folder_path
-):
+    module_file: Any, app_name: str, module_name: str, model_name: str, doc_name: str, doc_folder_path: str
+) -> None:
     """
     Generate and write a single serializer class for the given model, focusing on related fields.
     Use SerializerMethodField for self-referencing fields and declare related fields before Meta.
+    
+    Args:
+        module_file (Any): The file object to write to.
+        app_name (str): The name of the app.
+        module_name (str): The name of the module.
+        model_name (str): The name of the model.
+        doc_name (str): The name of the document.
+        doc_folder_path (str): The path to the folder containing the document.
     """
     load_fields(doc_folder_path, doc_name)
 
     related_fields = {}
-    # for field in fields:
-    #     field_related = process_field(field, model_name, doc_name)
-    #     related_fields.update(field_related)
 
     # Write imports
     write_serializers_header(
@@ -183,60 +185,5 @@ def write_serializer(
         f"class {model_name}Serializer(RelationshipHandlerMixin, serializers.ModelSerializer):\n\n"
     )
 
-    # # Declare related fields before Meta
-    # for field_name, related_info in related_fields.items():
-    #     related_model = related_info.get('model', None)
-    #     appur_name, modulur_name, related_file = get_doc_details(related_model)
-    #     if related_info.get("self_referencing"):
-    #         # Use SerializerMethodField for self-referencing fields
-    #         module_file.write(f"    {field_name} = serializers.SerializerMethodField()\n")
-    #     else:
-    #         # Use the related serializer for other related fields
-    #         serializer_class = related_info["serializer"]
-    #         many = related_info["many"]
-    #         serializer_name = f"{to_titlecase_no_space(related_model)}"
-
-    #         module_file.write(
-    #             f"    {field_name} = serializers.PrimaryKeyRelatedField(queryset={serializer_name}.objects.all())\n"
-    #         )
-    # module_file.write("\n")
-
-    # # Define SerializerMethodField methods for self-referencing fields
-    # for field_name, related_info in related_fields.items():
-    #     if related_info.get("self_referencing"):
-    #         module_file.write(
-    #             f"    def get_{field_name}(self, obj):\n"
-    #             f"        related_items = obj.{field_name}.all() if hasattr(obj, '{field_name}') else []\n"
-    #             f"        return {model_name}Serializer(related_items, many=True).data\n\n"
-    #         )
-
     # Write the Meta class for the serializer
     write_meta_class(module_file, model_name, related_fields)
-
-    # for field_name, related_info in related_fields.items():
-    #     if not related_info:
-    #         continue  # Skip if related_info is empty or None
-
-    #     # Ensure 'model' exists in related_info dictionary
-    #     related_model = related_info.get('model', None)
-
-    #     if related_model is None:
-    #         continue  # Skip if the 'model' key is not found in related_info
-
-    #     if related_model == model_name:  # Skip if the related model is the same as the current model
-    #         continue  # Do not import the serializer for the current model itself
-
-    #     # Fetch the details for the related model
-    #     appur_name, modulur_name, related_file = get_doc_details(related_model)
-
-    #     # Create the related serializer's name
-    #     serializer_name = f"{to_titlecase_no_space(related_model)}"
-
-    #     # Write the import statement for the related serializer
-    #     module_file.write(
-    #        f"    def get_{field_name}(self, obj):\n"
-    #         f"        from {appur_name}_app.models.{modulur_name}.{related_file} import {serializer_name}\n"
-    #         f"        try:\n"
-    #         f"            return {serializer_name}(obj.{field_name}).data\n"
-    #         f"        except: return None\n\n"
-    #     )

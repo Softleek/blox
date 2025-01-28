@@ -1,4 +1,5 @@
 import os
+from typing import List
 
 import click
 
@@ -9,7 +10,7 @@ from .migrate_module import migrate_module
 from .update_urls_app import update_urls_py
 
 
-def add_init_files(folder_path, modules):
+def add_init_files(folder_path: str, modules: List[str]) -> None:
     """Create an __init__.py file in the specified folder, importing all modules listed.
 
     Args:
@@ -27,7 +28,7 @@ def add_init_files(folder_path, modules):
         #     init_file.write(f"from .{module_snake_case} import *\n")
 
 
-def migrate_app(app_name, django_path):
+def migrate_app(app_name: str, django_path: str) -> None:
     """Migrate a specific app by updating modules and folders as per configuration.
 
     Args:

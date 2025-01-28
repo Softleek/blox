@@ -3,6 +3,7 @@ import os
 import re
 import subprocess
 import sys
+from typing import Optional
 
 import click
 
@@ -13,7 +14,6 @@ from .migrate_app import migrate_app
 from .migrate_doc import migrate_doc
 from .migrate_module import migrate_module
 from ..utils.load_doc_config import get_all_sites
-# from ....sites.pos2.django.core.management.commands.migrate_fixtures import migrate_fixtures
 
 MODULES_FOLDER = {
     "views": "views",
@@ -24,7 +24,7 @@ MODULES_FOLDER = {
 }
 
 
-def remove_class_block(file_path, class_name):
+def remove_class_block(file_path: str, class_name: str) -> None:
     """Remove the class definition block for a specified class from a file.
 
     Args:
@@ -41,14 +41,20 @@ def remove_class_block(file_path, class_name):
         file.write(content)
 
 
-def updatefiles(app=None, module=None, doc=None, site=None, all=True):
-    # Load sites from sites.json
-    sites = get_all_sites()    
+def updatefiles(app: Optional[str] = None, module: Optional[str] = None, doc: Optional[str] = None, site: Optional[str] = None, all: bool = True) -> None:
+    """Update files and perform migrations based on provided options.
 
-    # If --all is passed, iterate over all sites
+    Args:
+        app (Optional[str]): Name of the app to migrate.
+        module (Optional[str]): Name of the module to migrate.
+        doc (Optional[str]): Name of the document to migrate.
+        site (Optional[str]): Name of the site to migrate.
+        all (bool): If True, migrate all sites.
+    """
+    sites = get_all_sites()
+
     if all:
         for site_entry in sites:
-            # Migrate all apps for the site
             installed_apps = site_entry.get("installed_apps", [])
             for app in installed_apps:
                 configure_app(app)
@@ -60,7 +66,6 @@ def updatefiles(app=None, module=None, doc=None, site=None, all=True):
 
     selected_site = next((s for s in sites if s.get("site_name") == site), None) if site else None
 
-    # Perform migrations based on provided options
     if doc and module and app:
         configure_doc(app, module, doc)
         migrate_doc(app, module, doc, DJANGO_PATH)
@@ -78,23 +83,24 @@ def updatefiles(app=None, module=None, doc=None, site=None, all=True):
         for app in installed_apps:
             migrate_app(app, DJANGO_PATH)
 
-    # Run Django migrations
-    # create_entries_from_config(DJANGO_PATH, site)
-
     subprocess.run(
-        ["autoflake", "--in-place", "--remove-unused-variables",  "--recursive", "--exclude", "*/__init__.py", "."],
+        ["autoflake", "--in-place", "--remove-unused-variables", "--recursive", "--exclude", "*/__init__.py", "."],
         cwd=DJANGO_PATH,
     )
-    
+
     subprocess.run(
-        ["autoflake", "--in-place", "--remove-all-unused-imports",  "--recursive", "--exclude", "*/__init__.py", "."],
+        ["autoflake", "--in-place", "--remove-all-unused-imports", "--recursive", "--exclude", "*/__init__.py", "."],
         cwd=DJANGO_PATH,
     )
     click.echo("Migration process completed successfully.")
 
 
-def get_python_executable():
-    """Get the path to the Python executable in the virtual environment."""
+def get_python_executable() -> str:
+    """Get the path to the Python executable in the virtual environment.
+
+    Returns:
+        str: Path to the Python executable.
+    """
     venv_path = os.path.join(PROJECT_ROOT, "env")
     if not os.path.exists(venv_path):
         click.echo("Virtual environment not found. Please run 'blox setup' first.")
@@ -106,35 +112,37 @@ def get_python_executable():
 
     return python_executable
 
+
 @click.command()
 @click.option(
     "--site",
     default=None,
     help="Specify a site to migrate. If not provided, prompts for a site.",
 )
-def migrate_django(site=None):
+def migrate_django(site: Optional[str] = None) -> None:
     """Execute Django migration commands (makemigrations and migrate) for a specified project.
 
     Args:
-        skip_updatefiles (bool): If True, skips calling updatefiles before migrations.
+        site (Optional[str]): Name of the site to migrate.
     """
     run_migrate_django(site)
-    
-    
-def run_migrate_django(site=None):
-    """Run Django makemigrations and migrate commands."""
+
+
+def run_migrate_django(site: Optional[str] = None) -> None:
+    """Run Django makemigrations and migrate commands.
+
+    Args:
+        site (Optional[str]): Name of the site to migrate.
+    """
     python_executable = get_python_executable()
 
-    # Prepare database argument if site is provided
     db_arg = [f"--database={site}"] if site else []
 
-    # Run makemigrations
     subprocess.run(
         [python_executable, "manage.py", "makemigrations"],
         cwd=DJANGO_PATH,
     )
 
-    # Run migrate
     subprocess.run(
         [python_executable, "manage.py", "migrate", "--noinput"] + db_arg,
         cwd=DJANGO_PATH,
@@ -143,10 +151,19 @@ def run_migrate_django(site=None):
     create_entries_from_config(DJANGO_PATH, site)
     message = f"Migration completed successfully for site '{site}'." if site else "Migration completed successfully."
     click.echo(message)
-    
 
-def run_migration(app=None, module=None, doc=None, site=None, all_sites=True, skip=False):
-    """Core migration process."""
+
+def run_migration(app: Optional[str] = None, module: Optional[str] = None, doc: Optional[str] = None, site: Optional[str] = None, all_sites: bool = True, skip: bool = False) -> None:
+    """Core migration process.
+
+    Args:
+        app (Optional[str]): Name of the app to migrate.
+        module (Optional[str]): Name of the module to migrate.
+        doc (Optional[str]): Name of the document to migrate.
+        site (Optional[str]): Name of the site to migrate.
+        all_sites (bool): If True, migrate all sites.
+        skip (bool): If True, skip updating files before running migrations.
+    """
     import traceback
 
     try:
@@ -154,7 +171,7 @@ def run_migration(app=None, module=None, doc=None, site=None, all_sites=True, sk
             updatefiles(app, module, doc, site, all_sites)
         if all_sites:
             if all:
-                sites = get_all_sites()   
+                sites = get_all_sites()
                 for site_entry in sites:
                     run_migrate_django(site_entry.get("site_name"))
             else:
@@ -185,8 +202,17 @@ def run_migration(app=None, module=None, doc=None, site=None, all_sites=True, sk
 @click.option(
     "-s", "--skip", is_flag=True, help="Skip updating files before running migrations."
 )
-def migrate(app=None, module=None, doc=None, site=None, all=True, skip=False):
-    """Run Django makemigrations and migrate commands."""
+def migrate(app: Optional[str] = None, module: Optional[str] = None, doc: Optional[str] = None, site: Optional[str] = None, all: bool = True, skip: bool = False) -> None:
+    """Run Django makemigrations and migrate commands.
+
+    Args:
+        app (Optional[str]): Name of the app to migrate.
+        module (Optional[str]): Name of the module to migrate.
+        doc (Optional[str]): Name of the document to migrate.
+        site (Optional[str]): Name of the site to migrate.
+        all (bool): If True, migrate all sites.
+        skip (bool): If True, skip updating files before running migrations.
+    """
     run_migration(app, module, doc, site, all, skip)
 
 
@@ -196,6 +222,10 @@ def migrate(app=None, module=None, doc=None, site=None, all=True, skip=False):
     default=None,
     help="Specify a site to migrate. If not provided, prompts for a site.",
 )
-def registermodels(site):
-    """Run Django makemigrations and migrate commands."""
+def registermodels(site: Optional[str]) -> None:
+    """Run Django makemigrations and migrate commands.
+
+    Args:
+        site (Optional[str]): Name of the site to migrate.
+    """
     create_entries_from_config(find_django_path(site), site)

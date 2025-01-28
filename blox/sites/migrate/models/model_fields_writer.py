@@ -1,11 +1,18 @@
-# from .field_mappings import FIELD_TYPE_MAP
+from typing import List, Dict, Any, TextIO
 from ....utils.register_models import get_app_module_for_model
 from ....utils.text import to_snake_case
 from .reserved_keywords import reserved_keywords
 
 
-def write_model(module_file, fields, model_name, django_path):
-    """Main function to generate Django model fields from Frappe fields."""
+def write_model(module_file: TextIO, fields: List[Dict[str, Any]], model_name: str, django_path: str) -> None:
+    """Main function to generate Django model fields from Frappe fields.
+
+    Args:
+        module_file (TextIO): The file object to write the model fields to.
+        fields (List[Dict[str, Any]]): List of field definitions.
+        model_name (str): The name of the model.
+        django_path (str): The Django app path.
+    """
     field_names = set()  # Set to keep track of field names for duplicate checking
 
     for field in fields:
@@ -76,9 +83,7 @@ def write_model(module_file, fields, model_name, django_path):
                 "models.TextField",
                 field_name=field.get("label", ""),
             )
-        elif field_type in [
-            "Data"
-        ]:  # CharFields for Data and BarcodeField
+        elif field_type in ["Data"]:  # CharFields for Data and BarcodeField
             write_field_declaration(
                 module_file,
                 field_id,
@@ -86,7 +91,6 @@ def write_model(module_file, fields, model_name, django_path):
                 "max_length=255",
                 field_name=field.get("label", ""),
             )
-
         elif field_type == "Duration":
             write_field_declaration(
                 module_file,
@@ -163,7 +167,6 @@ def write_model(module_file, fields, model_name, django_path):
                 "models.TimeField",
                 field_name=field.get("label", ""),
             )
-
         elif field_type not in [
             "Section Break",
             "Column Break",
@@ -178,15 +181,30 @@ def write_model(module_file, fields, model_name, django_path):
             )
 
 
-def rename_reserved_keywords(field_id):
-    """Rename field ID if it is a reserved keyword."""
+def rename_reserved_keywords(field_id: str) -> str:
+    """Rename field ID if it is a reserved keyword.
+
+    Args:
+        field_id (str): The original field ID.
+
+    Returns:
+        str: The renamed field ID if it was a reserved keyword, otherwise the original field ID.
+    """
     return reserved_keywords.get(field_id, field_id)
 
 
 def write_field_declaration(
-    module_file, field_id, field_type, extra_params="", field_name=""
-):
-    """Writes a field declaration line in the Django model file with verbose name, null, and blank at the end."""
+    module_file: TextIO, field_id: str, field_type: str, extra_params: str = "", field_name: str = ""
+) -> None:
+    """Writes a field declaration line in the Django model file with verbose name, null, and blank at the end.
+
+    Args:
+        module_file (TextIO): The file object to write the field declaration to.
+        field_id (str): The field ID.
+        field_type (str): The Django field type.
+        extra_params (str, optional): Additional parameters for the field. Defaults to "".
+        field_name (str, optional): The verbose name of the field. Defaults to "".
+    """
     module_file.write(f"    {field_id} = {field_type}(")
     if extra_params:
         module_file.write(f"{extra_params}, ")
@@ -195,8 +213,15 @@ def write_field_declaration(
     module_file.write(")\n")
 
 
-def write_choices_field(module_file, field, field_type, max_length=None):
-    """Handles Select and MultiSelect fields with choices."""
+def write_choices_field(module_file: TextIO, field: Dict[str, Any], field_type: str, max_length: int = None) -> None:
+    """Handles Select and MultiSelect fields with choices.
+
+    Args:
+        module_file (TextIO): The file object to write the field declaration to.
+        field (Dict[str, Any]): The field definition.
+        field_type (str): The Django field type.
+        max_length (int, optional): The maximum length for CharField. Defaults to None.
+    """
     field_id = rename_reserved_keywords(field.get("fieldname", ""))
     choices = field.get("options", "").strip().split("\n")
 
@@ -223,8 +248,15 @@ def write_choices_field(module_file, field, field_type, max_length=None):
         )
 
 
-def write_link_field(module_file, field, model_name, django_path):
-    """Handles Link fields (ForeignKey relations)."""
+def write_link_field(module_file: TextIO, field: Dict[str, Any], model_name: str, django_path: str) -> None:
+    """Handles Link fields (ForeignKey relations).
+
+    Args:
+        module_file (TextIO): The file object to write the field declaration to.
+        field (Dict[str, Any]): The field definition.
+        model_name (str): The name of the model.
+        django_path (str): The Django app path.
+    """
     field_id = rename_reserved_keywords(field.get("fieldname", ""))
     related_model = field.get("options", "'self'")
 
@@ -252,8 +284,15 @@ def write_link_field(module_file, field, model_name, django_path):
     )
 
 
-def write_table_field(module_file, field, model_name, django_path): 
-    """Handles Link fields (ForeignKey relations)."""
+def write_table_field(module_file: TextIO, field: Dict[str, Any], model_name: str, django_path: str) -> None:
+    """Handles Table fields (ManyToMany relations).
+
+    Args:
+        module_file (TextIO): The file object to write the field declaration to.
+        field (Dict[str, Any]): The field definition.
+        model_name (str): The name of the model.
+        django_path (str): The Django app path.
+    """
     field_id = rename_reserved_keywords(field.get("fieldname", ""))
     related_model = field.get("options", "'self'")
 
@@ -282,8 +321,13 @@ def write_table_field(module_file, field, model_name, django_path):
     )
 
 
-def write_save_method(module_file, fields):
-    """Writes the save method to handle barcode generation and other custom logic."""
+def write_save_method(module_file: TextIO, fields: List[Dict[str, Any]]) -> None:
+    """Writes the save method to handle barcode generation and other custom logic.
+
+    Args:
+        module_file (TextIO): The file object to write the save method to.
+        fields (List[Dict[str, Any]]): List of field definitions.
+    """
     module_file.write("\n    def save(self, *args, **kwargs):\n")
     for field in fields:
         if field.get("fieldtype") == "BarcodeField":

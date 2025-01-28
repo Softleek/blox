@@ -1,13 +1,21 @@
 import json
 import os
 import subprocess
+from typing import List, Optional
 
 import click
 
 from ...utils.config import APPS_PATH, PROJECT_ROOT
 from ...utils.file_operations import ensure_file_exists
 
-def update_package_json(app_name, libraries):
+def update_package_json(app_name: str, libraries: List[str]) -> None:
+    """
+    Update the package.json file of the specified app with the given libraries.
+
+    Args:
+        app_name (str): The name of the app.
+        libraries (List[str]): A list of libraries to add to the dependencies.
+    """
     package_json_path = os.path.join(APPS_PATH, app_name, "package.json")
 
     if not os.path.exists(package_json_path):
@@ -29,7 +37,15 @@ def update_package_json(app_name, libraries):
     click.echo(f"Updated {package_json_path} with new dependencies.")
 
 
-def install_npm_packages(libraries, app_name, site):
+def install_npm_packages(libraries: List[str], app_name: Optional[str], site: str) -> None:
+    """
+    Install the specified NPM packages in the core Next.js project.
+
+    Args:
+        libraries (List[str]): A list of libraries to install.
+        app_name (Optional[str]): The name of the app (if any).
+        site (str): The name of the site.
+    """
     nextjs_path = os.path.join(PROJECT_ROOT, "sites", "nextjs")
 
     if not os.path.exists(nextjs_path):
@@ -52,7 +68,7 @@ def install_npm_packages(libraries, app_name, site):
 
 
 @click.group()
-def npm():
+def npm() -> None:
     """
     Manage NPM packages for the project.
     """
@@ -66,15 +82,29 @@ def npm():
     type=str,
     help="Specify a site to install the libraries. If not provided, a selection prompt will appear.",
 )
-def install(libraries, app, site):
+def install(libraries: List[str], app: Optional[str], site: Optional[str]) -> None:
     """
     Install the specified NPM packages in the project.
+    
     Usage: blox npm install <library_name> [<library_name>...] [--app <app_name>] [--site <site_name>]
+
+    Args:
+        libraries (List[str]): A list of libraries to install.
+        app (Optional[str]): The name of the app (if any).
+        site (Optional[str]): The name of the site (if any).
     """
     run_npm_install(libraries, app, site)
     
     
-def run_npm_install(libraries, app, site):
+def run_npm_install(libraries: List[str], app: Optional[str], site: Optional[str]) -> None:
+    """
+    Run the NPM install process for the specified libraries, app, and site.
+
+    Args:
+        libraries (List[str]): A list of libraries to install.
+        app (Optional[str]): The name of the app (if any).
+        site (Optional[str]): The name of the site (if any).
+    """
     # Load sites from sites.json
     sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
     ensure_file_exists(sites_json_path, initial_data=[])
@@ -116,10 +146,16 @@ def run_npm_install(libraries, app, site):
     type=str,
     help="Specify a site to install the libraries. If not provided, a selection prompt will appear.",
 )
-def i(libraries, app, site):
+def i(libraries: List[str], app: Optional[str], site: Optional[str]) -> None:
     """
     Install the specified NPM packages in the project using the alias 'i'.
+    
     Usage: blox npm i <library_name> [<library_name>...] [--app <app_name>] [--site <site_name>]
+
+    Args:
+        libraries (List[str]): A list of libraries to install.
+        app (Optional[str]): The name of the app (if any).
+        site (Optional[str]): The name of the site (if any).
     """
     run_npm_install(libraries, app, site)
 

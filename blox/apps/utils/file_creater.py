@@ -4,10 +4,11 @@ import traceback
 import requests
 import datetime
 import getpass
+from typing import Optional, Dict
 
 SPDX_LICENSE_URL = "https://raw.githubusercontent.com/spdx/license-list-data/main/text/"
 
-def normalize_license_name(license_type):
+def normalize_license_name(license_type: str) -> str:
     """Convert license names to SPDX-compliant format."""
 
     license_map = {
@@ -131,14 +132,13 @@ def normalize_license_name(license_type):
         "do what the f*** you want to public license": "WTFPL",
     }
 
-        # Normalize input: lowercase and strip spaces
-    
+    # Normalize input: lowercase and strip spaces
     license_type = license_type.strip().lower()
     
     # Return SPDX-compliant name or assume correct if not mapped
     return license_map.get(license_type, license_type.replace(" ", "-"))
 
-def fetch_license_text(license_type):
+def fetch_license_text(license_type: str) -> str:
     """Fetch the full license text from the official URL for each license type."""
     license_urls = {
         "MIT": "https://opensource.org/licenses/MIT",
@@ -173,11 +173,10 @@ def fetch_license_text(license_type):
             return response.text
         else:
             return f"{normalized_license} License\n\n[License text unavailable. Please check official site]."
-    except requests.RequestException as e:
+    except requests.RequestException:
         return f"{normalized_license} License\n\n[License text unavailable. Please check official site]."
 
-
-def autofill_license(license_text):
+def autofill_license(license_text: str) -> str:
     """Replace placeholders in license text."""
     current_year = str(datetime.datetime.now().year)
     copyright_holder = getpass.getuser()  # Use the current system user
@@ -187,7 +186,7 @@ def autofill_license(license_text):
 
     return license_text
 
-def create_license(base_path, license_type):
+def create_license(base_path: str, license_type: str) -> None:
     """Create a LICENSE.txt file with the specified license type."""
     license_path = os.path.join(base_path, "LICENSE.txt")
     
@@ -202,13 +201,11 @@ def create_license(base_path, license_type):
     try:
         with open(license_path, "w") as license_file:
             license_file.write(license_content)
-    except Exception as e:
+    except Exception:
         exc_type, exc_value, exc_tb = sys.exc_info()
         traceback.print_exception(exc_type, exc_value, exc_tb)
 
-
-
-def create_files_from_templates(base_path, app_name, templates_folder, license_type, dynamic_content=None):
+def create_files_from_templates(base_path: str, app_name: str, templates_folder: str, license_type: str, dynamic_content: Optional[Dict[str, str]] = None) -> None:
     """Create necessary files for the app by loading content from templates."""
 
     file_mappings = {
@@ -244,7 +241,7 @@ def create_files_from_templates(base_path, app_name, templates_folder, license_t
         except FileNotFoundError:
             pass
         
-        except Exception as e:
+        except Exception:
             exc_type, exc_value, exc_tb = sys.exc_info()
             traceback.print_exception(exc_type, exc_value, exc_tb)
             continue
@@ -265,7 +262,6 @@ def create_files_from_templates(base_path, app_name, templates_folder, license_t
         try:
             with open(destination_path, "w") as destination_file:
                 destination_file.write(content)
-        except Exception as e:
+        except Exception:
             exc_type, exc_value, exc_tb = sys.exc_info()
             traceback.print_exception(exc_type, exc_value, exc_tb)
-

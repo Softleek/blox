@@ -1,6 +1,7 @@
 import json
 import os
 import subprocess
+from typing import Optional
 
 import click
 
@@ -8,11 +9,17 @@ from ..utils.config import APPS_PATH, PROJECT_ROOT
 from .init import perform_init
 
 
-def activate_virtualenv():
+def activate_virtualenv() -> Optional[str]:
+    """
+    Activate the virtual environment.
+
+    Returns:
+        Optional[str]: The path to the activation script, or None if the virtual environment is not found.
+    """
     venv_path = os.path.join(PROJECT_ROOT, "env")
     if not os.path.exists(venv_path):
         click.echo("Virtual environment not found. Please run 'blox setup' first.")
-        return False
+        return None
 
     if os.name == "nt":  # Windows
         activate_script = os.path.join(venv_path, "Scripts", "activate.bat")
@@ -23,13 +30,22 @@ def activate_virtualenv():
 
 
 def app_install_python_packages(app: str) -> None:
+    """
+    Install Python packages for a specific app.
+
+    Args:
+        app (str): The name of the app.
+    """
     requirements_file = os.path.join(APPS_PATH, app, "requirements.txt")
     if os.path.exists(requirements_file):
         click.echo(f"Installing packages from {requirements_file}...")
         subprocess.check_call(["pip", "install", "-r", requirements_file])
 
 
-def install_python_packages():
+def install_python_packages() -> None:
+    """
+    Install Python packages for the site.
+    """
     site_requirements = os.path.join(
         PROJECT_ROOT, "sites", "django", "requirements.txt"
     )
@@ -39,6 +55,12 @@ def install_python_packages():
 
 
 def app_install_npm_packages(app: str) -> None:
+    """
+    Install npm packages for a specific app.
+
+    Args:
+        app (str): The name of the app.
+    """
     package_json_path = os.path.join(APPS_PATH, app, "package.json")
     if os.path.exists(package_json_path):
         click.echo(f"Installing packages from {package_json_path}...")
@@ -72,6 +94,9 @@ def app_install_npm_packages(app: str) -> None:
 
 
 def install_npm_packages() -> None:
+    """
+    Install npm packages for the site.
+    """
     nextjs_path = os.path.join(PROJECT_ROOT, "sites", "nextjs")
 
     # Determine the command for the current operating system
@@ -81,7 +106,7 @@ def install_npm_packages() -> None:
     try:
         if os.name == "nt":  # Windows
             subprocess.check_call(npm_command, cwd=nextjs_path, shell=True)
-        else:  
+        else:
             subprocess.check_call(npm_command, cwd=nextjs_path)
         click.echo("Libraries installed successfully in core Next.js project.")
     except subprocess.CalledProcessError as e:
@@ -89,6 +114,9 @@ def install_npm_packages() -> None:
 
 
 def install_dependencies() -> None:
+    """
+    Install all dependencies for the site.
+    """
     install_python_packages()
     install_npm_packages()
 
@@ -112,6 +140,9 @@ def i() -> None:
     
     
 def run_install() -> None:
+    """
+    Run the installation process for all dependencies.
+    """
     # Activate the virtual environment
     activate_script = activate_virtualenv()
     site_files = os.path.join(

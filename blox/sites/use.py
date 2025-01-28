@@ -1,6 +1,7 @@
 import json
 import os
 from datetime import datetime
+from typing import List, Optional, Dict, Any
 
 import click
 
@@ -11,8 +12,13 @@ from ..utils.file_operations import ensure_file_exists
 SITES_JSON_PATH = os.path.join(PROJECT_ROOT, "sites", "sites.json")
 
 
-# Function to read sites.json file
-def load_sites():
+def load_sites() -> Optional[List[Dict[str, Any]]]:
+    """
+    Reads the sites.json file and returns the list of sites.
+
+    Returns:
+        Optional[List[Dict[str, Any]]]: A list of dictionaries representing the sites, or None if no sites are found.
+    """
     ensure_file_exists(SITES_JSON_PATH, initial_data=[])
     if os.path.exists(SITES_JSON_PATH):
         with open(SITES_JSON_PATH, "r") as json_file:
@@ -23,8 +29,13 @@ def load_sites():
         return None
 
 
-# Function to set the default site within sites.json
-def set_default_site(site_name):
+def set_default_site(site_name: str) -> None:
+    """q
+    Sets the specified site as the default site in the sites.json file.
+
+    Args:
+        site_name (str): The name of the site to set as default.
+    """
     sites = load_sites()
 
     if not sites:
@@ -56,9 +67,13 @@ def set_default_site(site_name):
     click.echo(f"Installed apps: {', '.join(site['installed_apps'])}")
 
 
-# Define the `usesite` command using Click
 @click.command()
 @click.argument("sitename")
-def usesite(sitename):
-    """Sets the provided site as the default site."""
+def usesite(sitename: str) -> None:
+    """
+    Sets the provided site as the default site.
+
+    Args:
+        sitename (str): The name of the site to set as default.
+    """
     set_default_site(sitename)

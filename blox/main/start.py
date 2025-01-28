@@ -6,7 +6,7 @@ import threading
 import traceback
 import sys
 import click
-from typing import Optional
+from typing import Optional, List, Tuple
 
 from ..utils.config import (PROJECT_ROOT,
                             write_running_ports)
@@ -14,6 +14,15 @@ from ..utils.initialize_django import initialize_django_env
 from ..utils.run_process import get_python_executable, run_subprocess
 
 def find_free_port(start_port: int) -> int:
+    """
+    Find a free port starting from the given start_port.
+
+    Args:
+        start_port (int): The port number to start searching from.
+
+    Returns:
+        int: A free port number.
+    """
     port = start_port
     while True:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
@@ -22,8 +31,16 @@ def find_free_port(start_port: int) -> int:
             port += 1
 
 
-def stream_reader(stream, prefix: str = "", color: str ="black", first_line_only: bool = False) -> None:
-    """Reads from a stream and prints lines with a given color and optional prefix."""
+def stream_reader(stream, prefix: str = "", color: str = "black", first_line_only: bool = False) -> None:
+    """
+    Reads from a stream and prints lines with a given color and optional prefix.
+
+    Args:
+        stream (subprocess.PIPE): The stream to read from.
+        prefix (str, optional): The prefix to add to each line. Defaults to "".
+        color (str, optional): The color to print the lines in. Defaults to "black".
+        first_line_only (bool, optional): Whether to only print the prefix for the first line. Defaults to False.
+    """
     first_line = True
     for line in iter(stream.readline, ""):
         if line:
@@ -39,7 +56,12 @@ def stream_reader(stream, prefix: str = "", color: str ="black", first_line_only
 @click.command()
 @click.argument("mode", default="prod")
 def start(mode: str) -> None:
-    """Start Django and Next.js servers for the specified site."""
+    """
+    Start Django and Next.js servers for the specified site.
+
+    Args:
+        mode (str): The mode to run the servers in. Defaults to "prod".
+    """
     click.echo("Starting server")
 
     # Create Django and Next.js paths
@@ -61,7 +83,7 @@ def start(mode: str) -> None:
     try:
 
         # Determine Next.js command based on mode
-        nextjs_command = (
+        nextjs_command: List[str] = (
             ["npm", "run", "start"]
             if mode == "prod"
             else ["npm", "run", "dev", "--", "--port", str(nextjs_port)]

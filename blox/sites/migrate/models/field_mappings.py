@@ -1,5 +1,15 @@
-def get_field_type(field_type):
-    """Returns the corresponding Django model field type for a given Frappe field type."""
+from typing import List, Dict, Any
+
+def get_field_type(field_type: str) -> str:
+    """
+    Returns the corresponding Django model field type for a given Frappe field type.
+
+    Args:
+        field_type (str): The Frappe field type.
+
+    Returns:
+        str: The corresponding Django model field type.
+    """
     field_type_mapping = {
         "Select": "CharField",
         "Link": "ForeignKey",
@@ -40,13 +50,21 @@ def get_field_type(field_type):
     return field_type_mapping.get(field_type, "CharField")
 
 
-def process_fields(fields):
-    """Process fields, skipping any with the type 'Column Break' or 'Section Break'."""
+def process_fields(fields: List[Dict[str, Any]]) -> List[Dict[str, str]]:
+    """
+    Process fields, skipping any with the type 'Column Break', 'Section Break', or 'Tab Break'.
+
+    Args:
+        fields (List[Dict[str, Any]]): A list of field dictionaries to process.
+
+    Returns:
+        List[Dict[str, str]]: A list of processed field dictionaries with mapped Django field types.
+    """
     processed_fields = []
     for field in fields:
         raw_field_type = field.get("fieldtype")
 
-        # Skip fields with the type 'Column Break' or 'Section Break'
+        # Skip fields with the type 'Column Break', 'Section Break', or 'Tab Break'
         if raw_field_type in ["Column Break", "Section Break", "Tab Break"]:
             continue  # Skip this field and move to the next one
 

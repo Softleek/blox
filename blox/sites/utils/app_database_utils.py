@@ -1,15 +1,22 @@
 import json
 import os
 import sys
+from typing import Tuple, Any, List, Dict
 
 import django
+from django.db.models import Model
 
 from ...utils.config import DOCS_JSON_PATH
 from ...utils.file_operations import ensure_file_exists
 from .load_doc_config import get_all_sites
 
-def initialize_django_env(django_path):
-    """Initialize the Django environment based on django_path."""
+def initialize_django_env(django_path: str) -> None:
+    """
+    Initialize the Django environment based on the provided django_path.
+
+    Args:
+        django_path (str): The path to the Django project.
+    """
     os.environ.setdefault(
         "DJANGO_SETTINGS_MODULE", "backend.settings"
     )  # Update to your settings module
@@ -17,18 +24,19 @@ def initialize_django_env(django_path):
     django.setup()
 
 
-def update_or_create_entry(model, id_value, name_value, site, **kwargs):
+def update_or_create_entry(model: Model, id_value: Any, name_value: str, site: str, **kwargs: Any) -> Tuple[Model, bool]:
     """
     Update an existing entry's name if the ID exists, or create a new entry.
 
     Args:
-        model: The model class to query.
-        id_value: The ID to look for.
-        name_value: The name to set or update.
-        kwargs: Additional fields for creating a new entry.
+        model (Model): The model class to query.
+        id_value (Any): The ID to look for.
+        name_value (str): The name to set or update.
+        site (str): The database alias to use.
+        kwargs (Any): Additional fields for creating a new entry.
 
     Returns:
-        A tuple of (instance, created).
+        Tuple[Model, bool]: A tuple of (instance, created).
     """
     instance, created = model.objects.using(site).get_or_create(
         id=id_value, defaults={"name": name_value, **kwargs}
@@ -39,8 +47,14 @@ def update_or_create_entry(model, id_value, name_value, site, **kwargs):
     return instance, created
 
 
-def create_entries_from_config(django_path, site):
-    """Process the JSON configuration file and create/update database entries."""
+def create_entries_from_config(django_path: str, site: str) -> None:
+    """
+    Process the JSON configuration file and create/update database entries.
+
+    Args:
+        django_path (str): The path to the Django project.
+        site (str): The site name to filter the configuration.
+    """
     # Initialize Django environment
     initialize_django_env(django_path)
     # Import models after Django setup
@@ -61,9 +75,9 @@ def create_entries_from_config(django_path, site):
     existing_docs = {doc.id: doc for doc in Document.objects.using(site).all()}
 
     # Prepare lists for bulk operations
-    apps_to_create = []
-    modules_to_create = []
-    docs_to_create = []
+    apps_to_create: List[App] = []
+    modules_to_create: List[Module] = []
+    docs_to_create: List[Document] = []
 
     # Process each app and its modules/documents
     for app_data in config:

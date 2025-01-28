@@ -1,20 +1,27 @@
 import os
 import subprocess
 import sys
+import traceback
+from typing import NoReturn
 
 import click
-import traceback
 from ..utils.config import PROJECT_ROOT
 
 
 @click.command()
-def build() -> None:
-    venv_path = os.path.join(PROJECT_ROOT, "env")
+def build() -> NoReturn:
+    """
+    Build the project by collecting Django static files and building the Next.js project.
+
+    This function checks for the existence of a virtual environment, collects Django static files,
+    and builds the Next.js project. If any step fails, it prints an error message.
+    """
+    venv_path: str = os.path.join(PROJECT_ROOT, "env")
     if not os.path.exists(venv_path):
         click.echo("Virtual environment not found. Please run 'blox setup' first.")
         return
 
-    python_executable = os.path.join(venv_path, "bin", "python3")
+    python_executable: str = os.path.join(venv_path, "bin", "python3")
     if sys.platform.startswith("win"):
         python_executable = os.path.join(venv_path, "Scripts", "python.exe")
 

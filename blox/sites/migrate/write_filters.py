@@ -1,18 +1,35 @@
 import os
-
+from typing import List, Dict, Any, TextIO
 
 from .models.json_loader import load_json_file
 
 
-def write_filter_fields(module_file, folder_path, model_name, doc_name, django_path):
-    """Write filter fields for a given model, including only filterable fields."""
+def write_filter_fields(
+    module_file: TextIO, 
+    folder_path: str, 
+    model_name: str, 
+    doc_name: str, 
+    django_path: str
+) -> List[str]:
+    """
+    Write filter fields for a given model, including only filterable fields.
 
+    Args:
+        module_file (TextIO): The file object to write the filter fields to.
+        folder_path (str): The path to the folder containing the JSON files.
+        model_name (str): The name of the model.
+        doc_name (str): The name of the document (JSON file) containing model data.
+        django_path (str): The Django app path.
+
+    Returns:
+        List[str]: A list of filterable field names.
+    """
     fields_file_path = os.path.join(folder_path, "fields.json")
     model_file_path = os.path.join(folder_path, f"{doc_name}.json")
     settings_file_path = os.path.join(folder_path, "settings.json")
 
-    field_list = []
-    settings = {}
+    field_list: List[Dict[str, Any]] = []
+    settings: Dict[str, Any] = {}
 
     # Load fields from fields.json or doc_name.json
     if os.path.exists(fields_file_path):
@@ -37,7 +54,7 @@ def write_filter_fields(module_file, folder_path, model_name, doc_name, django_p
         return ["id"]
 
     # Always include 'id' as a filterable field
-    filter_fields = ["id"]
+    filter_fields: List[str] = ["id"]
 
     # Field types to exclude from filters (non-relevant fields)
     non_filterable_types = [
@@ -75,9 +92,24 @@ def write_filter_fields(module_file, folder_path, model_name, doc_name, django_p
 
 
 def write_filters(
-    module_file, app_name, module_name, model_name, doc_name, folder_path
-):
-    """Write the imports and class definition header for filters."""
+    module_file: TextIO, 
+    app_name: str, 
+    module_name: str, 
+    model_name: str, 
+    doc_name: str, 
+    folder_path: str
+) -> None:
+    """
+    Write the imports and class definition header for filters.
+
+    Args:
+        module_file (TextIO): The file object to write the filter class to.
+        app_name (str): The name of the Django app.
+        module_name (str): The name of the module.
+        model_name (str): The name of the model.
+        doc_name (str): The name of the document (JSON file) containing model data.
+        folder_path (str): The path to the folder containing the JSON files.
+    """
     # Write imports for django_filters and the model
     module_file.write(
         f"import django_filters as filters\n"

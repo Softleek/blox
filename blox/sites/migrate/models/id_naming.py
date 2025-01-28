@@ -1,13 +1,19 @@
 import re
-
+from typing import Union, List, Dict, TextIO
 import click
 
 
-def write_id_field(module_file, file_path, settings, model_name):
-    """Write the id field based on settings."""
+def write_id_field(module_file: TextIO, file_path: str, settings: Union[Dict, List[Dict]], model_name: str) -> None:
+    """
+    Write the id field based on settings.
+
+    Args:
+        module_file (TextIO): The file object of the module.
+        file_path (str): The path to the file.
+        settings (Union[Dict, List[Dict]]): The settings for id naming.
+        model_name (str): The name of the model.
+    """
     if isinstance(settings, list):
-        # If settings is a list, convert it to a dictionary or handle it as needed
-        # For now, I'll assume you want to use the first element as a dictionary
         settings = settings[0] if settings else {}
     id_naming_method = settings.get("idNamingMethod", "incrementalNaming")
     id_naming_rule = settings.get("idNamingRule", "")
@@ -51,15 +57,21 @@ def write_id_field(module_file, file_path, settings, model_name):
                 f"Warning: Unrecognized idNamingMethod '{id_naming_method}'. Defaulting to incrementalNaming."
             )
 
-        # print (new_save)
         merge_with_existing_save(module_file, new_save, model_name)
 
     except Exception as e:
         click.echo(f"Error writing id field: {e}")
 
 
-def merge_with_existing_save(module_file, new_save, model_name):
-    """Merge the new save logic with the existing save method in the model."""
+def merge_with_existing_save(module_file: TextIO, new_save: str, model_name: str) -> None:
+    """
+    Merge the new save logic with the existing save method in the model.
+
+    Args:
+        module_file (TextIO): The file object of the module.
+        new_save (str): The new save method to be merged.
+        model_name (str): The name of the model.
+    """
     try:
         module_file.seek(0)
         existing_lines = module_file.readlines()
@@ -111,9 +123,17 @@ def merge_with_existing_save(module_file, new_save, model_name):
         return new_save
 
 
-def merge_save_methods(existing_save, new_save):
-    """Merge existing save method with the new save logic."""
+def merge_save_methods(existing_save: str, new_save: str) -> str:
+    """
+    Merge existing save method with the new save logic.
 
+    Args:
+        existing_save (str): The existing save method.
+        new_save (str): The new save method to be merged.
+
+    Returns:
+        str: The combined save method.
+    """
     existing_save_lines = existing_save.strip().split("\n")[1:]
 
     new_save_lines = new_save.strip().split("\n")[:-1]

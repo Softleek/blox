@@ -1,9 +1,9 @@
 import os
 import shutil
-
 import click
 import sys
 import traceback
+from typing import List
 
 from ...utils.config import PROJECT_ROOT
 from ...sites.migrate.migrate import run_migration
@@ -12,9 +12,14 @@ from ...sites.migrate.migrate import run_migration
 @click.command()
 @click.argument("app_name")
 @click.argument("module_name")
-def dropmodule(app_name, module_name):
-    """Delete the specified module from the Django app and remove it from modules.txt."""
+def dropmodule(app_name: str, module_name: str) -> None:
+    """
+    Delete the specified module from the Django app and remove it from modules.txt.
 
+    Args:
+        app_name (str): The name of the Django app.
+        module_name (str): The name of the module to be deleted.
+    """
     # Path to the app's module directory
     app_path = os.path.join(PROJECT_ROOT, "apps", app_name)
     module_path = os.path.join(app_path, module_name)
@@ -40,7 +45,7 @@ def dropmodule(app_name, module_name):
     modules_txt_path = os.path.join(app_path, "modules.txt")
     try:
         with open(modules_txt_path, "r") as modules_file:
-            modules = modules_file.readlines()
+            modules: List[str] = modules_file.readlines()
 
         with open(modules_txt_path, "w") as modules_file:
             for line in modules:
@@ -52,4 +57,5 @@ def dropmodule(app_name, module_name):
         click.echo(f"Failed to update modules.txt: {e}")
         exc_type, exc_value, exc_tb = sys.exc_info()
         traceback.print_exception(exc_type, exc_value, exc_tb)
+    
     run_migration()

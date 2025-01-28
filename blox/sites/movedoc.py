@@ -1,6 +1,5 @@
 import os
 import shutil
-
 import click
 import sys
 import traceback
@@ -14,14 +13,23 @@ from ..utils.config import PROJECT_ROOT
 @click.argument("dest_app", type=str)
 @click.argument("dest_module", type=str)
 @click.argument("doc", type=str)
-def movedoc(source_app, source_module, dest_app, dest_module, doc):
-    """Move a doc from one app/module to another."""
+def movedoc(source_app: str, source_module: str, dest_app: str, dest_module: str, doc: str) -> None:
+    """
+    Move a doc from one app/module to another.
+
+    Args:
+        source_app (str): The source application name.
+        source_module (str): The source module name.
+        dest_app (str): The destination application name.
+        dest_module (str): The destination module name.
+        doc (str): The document name to be moved.
+    """
 
     # Define source and destination paths
-    source_app_path = os.path.join(
+    source_app_path: str = os.path.join(
         PROJECT_ROOT, "apps", source_app, source_app, source_module, "doctype", doc
     )
-    dest_app_path = os.path.join(PROJECT_ROOT, "apps", dest_app, dest_app, dest_module, "doctype")
+    dest_app_path: str = os.path.join(PROJECT_ROOT, "apps", dest_app, dest_app, dest_module, "doctype")
 
     # Validate the source document exists
     if not os.path.exists(source_app_path):
@@ -34,7 +42,7 @@ def movedoc(source_app, source_module, dest_app, dest_module, doc):
     os.makedirs(dest_app_path, exist_ok=True)
 
     # Define destination document path
-    dest_doc_path = os.path.join(dest_app_path, doc)
+    dest_doc_path: str = os.path.join(dest_app_path, doc)
 
     # Check if the document already exists in the destination
     if os.path.exists(dest_doc_path):
@@ -56,7 +64,7 @@ def movedoc(source_app, source_module, dest_app, dest_module, doc):
         return
 
     # Cleanup: Remove empty directories in the source path if necessary
-    source_module_path = os.path.join(PROJECT_ROOT, "apps", source_app, source_module)
+    source_module_path: str = os.path.join(PROJECT_ROOT, "apps", source_app, source_module)
     try:
         if not os.listdir(
             os.path.join(source_module_path, "doc")
@@ -66,7 +74,6 @@ def movedoc(source_app, source_module, dest_app, dest_module, doc):
             )  # Remove empty 'doc' folder
         if not os.listdir(source_module_path):  # If the module folder is empty
             os.rmdir(source_module_path)  # Remove empty module folder
-        
         
     except OSError as cleanup_error:
         click.echo(f"Cleanup error: {str(cleanup_error)}")

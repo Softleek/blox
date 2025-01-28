@@ -1,12 +1,19 @@
 import json
 import os
+from typing import Tuple, Optional
 
 from .config import DOCS_JSON_PATH
 
 
 def register_to_model_json(
-    app_id, app_name, module_id, module_name, doc_id, doc_name, django_path
-):
+    app_id: str,
+    app_name: str,
+    module_id: str,
+    module_name: str,
+    doc_id: str,
+    doc_name: str,
+    django_path: str
+) -> None:
     """
     Registers a model in config/models.json grouped by app and module with unique entries.
 
@@ -56,7 +63,7 @@ def register_to_model_json(
         json.dump(model_entries, file, indent=4)
 
 
-def get_app_module_for_model(doc_id, django_path):
+def get_app_module_for_model(doc_id: str, django_path: str) -> Tuple[Optional[str], Optional[str]]:
     """
     Retrieves the app and module names for a given model (doc_id).
 

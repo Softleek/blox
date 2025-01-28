@@ -1,9 +1,9 @@
 import os
 import shutil
-
 import click
 import sys
 import traceback
+from typing import List
 
 from ...utils.config import PROJECT_ROOT
 from ...sites.migrate.migrate import run_migration
@@ -12,12 +12,17 @@ from ...sites.migrate.migrate import run_migration
 @click.command()
 @click.argument("app_name")
 @click.argument("module_name")
-def newmodule(app_name, module_name):
-    """Create a new module within the specified Django app."""
+def newmodule(app_name: str, module_name: str) -> None:
+    """
+    Create a new module within the specified Django app.
 
+    Args:
+        app_name (str): The name of the Django app.
+        module_name (str): The name of the new module to create.
+    """
     # Path to the app's module directory
-    app_path = os.path.join(PROJECT_ROOT, "apps", app_name)
-    module_path = os.path.join(app_path, module_name)
+    app_path: str = os.path.join(PROJECT_ROOT, "apps", app_name)
+    module_path: str = os.path.join(app_path, module_name)
 
     # Check if the app folder exists
     if not os.path.exists(app_path):
@@ -33,11 +38,11 @@ def newmodule(app_name, module_name):
     os.makedirs(module_path, exist_ok=True)
 
     # Create an empty __init__.py file in the module folder
-    init_file_path = os.path.join(module_path, "__init__.py")
+    init_file_path: str = os.path.join(module_path, "__init__.py")
     open(init_file_path, "w").close()
 
     # Create necessary subfolders for the module
-    subfolders = [
+    subfolders: List[str] = [
         os.path.join("doc"),
         os.path.join("dashboard"),
         os.path.join("report"),
@@ -45,14 +50,14 @@ def newmodule(app_name, module_name):
     ]
 
     for subfolder in subfolders:
-        folder_path = os.path.join(module_path, subfolder)
+        folder_path: str = os.path.join(module_path, subfolder)
         os.makedirs(folder_path, exist_ok=True)
         # Create an empty __init__.py file in each subfolder
         init_file_path = os.path.join(folder_path, "__init__.py")
         open(init_file_path, "w").close()
 
     # Update modules.txt for the app
-    modules_txt_path = os.path.join(app_path, "modules.txt")
+    modules_txt_path: str = os.path.join(app_path, "modules.txt")
     try:
         with open(modules_txt_path, "a") as modules_file:
             modules_file.write(f"{module_name}\n")

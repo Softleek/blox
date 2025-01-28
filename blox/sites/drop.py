@@ -2,6 +2,7 @@ import json
 import os
 import platform
 import subprocess
+from typing import List, Dict, Any
 
 import click
 
@@ -11,15 +12,19 @@ from ..utils.file_operations import ensure_file_exists
 
 @click.command()
 @click.option("--site", type=str, help="The name of the site to delete.")
-def dropsite(site):
-    """Delete a site and remove its entry from sites.json."""
+def dropsite(site: str) -> None:
+    """
+    Delete a site and remove its entry from sites.json.
 
+    Args:
+        site (str): The name of the site to delete.
+    """
     # Load sites from sites.json
-    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
+    sites_json_path: str = os.path.join(PROJECT_ROOT, "sites", "sites.json")
     ensure_file_exists(sites_json_path, initial_data=[])
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:
-            sites = json.load(json_file)
+            sites: List[Dict[str, Any]] = json.load(json_file)
     else:
         click.echo("No sites found in sites.json.")
         return
@@ -30,13 +35,13 @@ def dropsite(site):
         for i, site_entry in enumerate(sites, 1):
             click.echo(f"{i}. {site_entry['site_name']}")
 
-        site_choice = click.prompt("Enter the number of the site to delete", type=int)
+        site_choice: int = click.prompt("Enter the number of the site to delete", type=int)
 
         if site_choice < 1 or site_choice > len(sites):
             click.echo("Invalid site selection.")
             return
 
-        selected_site = sites[site_choice - 1]
+        selected_site: Dict[str, Any] = sites[site_choice - 1]
     else:
         selected_site = next((s for s in sites if s["site_name"] == site), None)
         if not selected_site:
@@ -44,7 +49,7 @@ def dropsite(site):
             return
 
     # Confirm the deletion
-    confirm = click.confirm(
+    confirm: bool = click.confirm(
         f"Are you sure you want to delete the site '{selected_site['site_name']}'?",
         default=False,
     )
@@ -53,7 +58,7 @@ def dropsite(site):
         return
 
     # Delete the site folder with admin/superuser privileges
-    site_folder_path = os.path.join(PROJECT_ROOT, "sites", selected_site["site_name"])
+    site_folder_path: str = os.path.join(PROJECT_ROOT, "sites", selected_site["site_name"])
 
     try:
         if os.path.exists(site_folder_path):
@@ -63,7 +68,7 @@ def dropsite(site):
 
             if platform.system() == "Windows":
                 # Use PowerShell on Windows
-                powershell_command = f'Remove-Item -Recurse -Force "{site_folder_path}"'
+                powershell_command: str = f'Remove-Item -Recurse -Force "{site_folder_path}"'
                 subprocess.check_call(
                     ["powershell", "-Command", powershell_command], shell=True
                 )

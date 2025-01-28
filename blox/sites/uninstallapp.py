@@ -1,5 +1,6 @@
 import json
 import os
+from typing import List, Dict, Any, Optional
 
 import click
 
@@ -13,15 +14,19 @@ from ..utils.file_operations import ensure_file_exists
     "--site", type=str, help="The name of the site where the app will be uninstalled."
 )
 @click.argument("app")
-def uninstallapp(site, app):
-    """Uninstall an app from a selected site and update sites.json."""
+def uninstallapp(site: Optional[str], app: str) -> None:
+    """
+    Uninstall an app from a selected site and update sites.json.
 
+    :param site: The name of the site where the app will be uninstalled.
+    :param app: The name of the app to uninstall.
+    """
     # Load sites from sites.json
-    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
+    sites_json_path: str = os.path.join(PROJECT_ROOT, "sites", "sites.json")
     ensure_file_exists(sites_json_path, initial_data=[])
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:
-            sites = json.load(json_file)
+            sites: List[Dict[str, Any]] = json.load(json_file)
     else:
         click.echo("No sites found in sites.json.")
         return
@@ -32,13 +37,13 @@ def uninstallapp(site, app):
         for i, site_entry in enumerate(sites, 1):
             click.echo(f"{i}. {site_entry['site_name']}")
 
-        site_choice = click.prompt("Enter the number of the site", type=int)
+        site_choice: int = click.prompt("Enter the number of the site", type=int)
 
         if site_choice < 1 or site_choice > len(sites):
             click.echo("Invalid site selection.")
             return
 
-        selected_site = sites[site_choice - 1]
+        selected_site: Dict[str, Any] = sites[site_choice - 1]
     else:
         selected_site = next((s for s in sites if s["site_name"] == site), None)
         if not selected_site:
@@ -56,7 +61,7 @@ def uninstallapp(site, app):
         for i, app_entry in enumerate(selected_site["installed_apps"], 1):
             click.echo(f"{i}. {app_entry}")
 
-        app_choice = click.prompt(
+        app_choice: int = click.prompt(
             "Enter the number of the app you want to uninstall", type=int
         )
 
@@ -64,7 +69,7 @@ def uninstallapp(site, app):
             click.echo("Invalid app selection.")
             return
 
-        selected_app = selected_site["installed_apps"][app_choice - 1]
+        selected_app: str = selected_site["installed_apps"][app_choice - 1]
     else:
         selected_app = app
         if selected_app not in selected_site["installed_apps"]:

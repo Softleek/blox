@@ -1,9 +1,9 @@
-
+from typing import List, Optional, Tuple
 from ...utils.config import APPS_TXT_PATH, find_module_base_path
 from .load_doc_config import load_existing_data
 
 
-def update_apps_txt(app_name, remove=False):
+def update_apps_txt(app_name: str, remove: bool = False) -> None:
     """Update the apps.txt file by adding or removing an application name.
 
     Args:
@@ -23,13 +23,21 @@ def update_apps_txt(app_name, remove=False):
     with open(APPS_TXT_PATH, "w") as apps_file:
         for app in apps:
             apps_file.write(f"{app}\n")
-            
 
-def find_modules(app_name):
+
+def find_modules(app_name: str) -> Optional[List[str]]:
+    """Find modules for a given app name.
+
+    Args:
+        app_name (str): Name of the app to find modules for.
+
+    Returns:
+        Optional[List[str]]: List of module names if found, else None.
+    """
     modules_file_path, _ = find_module_base_path(app_name)
     if not modules_file_path:
         update_apps_txt(app_name, remove=True)
-        return
+        return None
 
     # Read modules from modules.txt
     with open(modules_file_path, "r") as modules_file:
@@ -41,17 +49,16 @@ def find_modules(app_name):
     return modules
 
 
-def get_name_by_id(entity_id, entity_type):
+def get_name_by_id(entity_id: str, entity_type: str) -> Optional[str]:
     """
     Retrieves the name of an app, module, or document by its ID.
 
-    Parameters:
+    Args:
         entity_id (str): The ID of the app, module, or document.
         entity_type (str): The type of entity ('app', 'module', or 'doc').
-        config_path (str): Path to the doctypes.json configuration file.
 
     Returns:
-        str: The name of the entity if found, else None.
+        Optional[str]: The name of the entity if found, else None.
     """
     if entity_type not in ["app", "module", "doc"]:
         raise ValueError("Invalid entity_type. Must be 'app', 'module', or 'doc'.")
@@ -71,20 +78,20 @@ def get_name_by_id(entity_id, entity_type):
                     for doc_entry in module_entry.get("docs", []):
                         if doc_entry["id"] == entity_id:
                             return doc_entry["name"]
-    return entity_id
+    return None
 
 
-def get_doc_details(doc_identifier):
+def get_doc_details(doc_identifier: str) -> Optional[Tuple[Optional[str], Optional[str], Optional[str]]]:
     """
     Retrieves the app ID, module ID, and doc ID associated with a given document name or ID.
 
-    Parameters:
+    Args:
         doc_identifier (str): The document name or ID to search for.
 
     Returns:
-        dict: A dictionary containing 'app_id', 'module_id', and 'doc_id' if found.
-              Example: {'app_id': 'app123', 'module_id': 'module456', 'doc_id': 'doc789'}
-        None: If no matching document is found.
+        Optional[Tuple[Optional[str], Optional[str], Optional[str]]]: A tuple containing 'app_id', 'module_id', and 'doc_id' if found.
+              Example: ('app123', 'module456', 'doc789')
+              None: If no matching document is found.
     """
     # Load existing data
     existing_data = load_existing_data()

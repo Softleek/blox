@@ -3,10 +3,20 @@ import subprocess
 import sys
 import click
 import socket
+from typing import List
 from ...utils.config import PROJECT_ROOT, write_running_ports
 
 
-def find_free_port(start_port=3000):
+def find_free_port(start_port: int = 3000) -> int:
+    """
+    Find a free port starting from the given start_port.
+
+    Args:
+        start_port (int): The port number to start searching from.
+
+    Returns:
+        int: A free port number.
+    """
     port = start_port
     while True:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
@@ -15,12 +25,26 @@ def find_free_port(start_port=3000):
             port += 1
 
 
-def run_with_sudo(command):
-    """Run a command with sudo privileges."""
+def run_with_sudo(command: List[str]) -> None:
+    """
+    Run a command with sudo privileges.
+
+    Args:
+        command (List[str]): The command to run with sudo.
+    """
     subprocess.run(["sudo"] + command, check=True)
 
 
-def setup_nginx(domain, appname, nextjs_port, django_port):
+def setup_nginx(domain: str, appname: str, nextjs_port: int, django_port: int) -> None:
+    """
+    Set up Nginx configuration for the given domain and app.
+
+    Args:
+        domain (str): The domain name.
+        appname (str): The application name.
+        nextjs_port (int): The port number for the Next.js application.
+        django_port (int): The port number for the Django application.
+    """
     nginx_conf = f"""
     server {{
         listen 80;
@@ -62,7 +86,15 @@ def setup_nginx(domain, appname, nextjs_port, django_port):
     click.echo(f"Nginx configuration for {appname} has been set up and reloaded.")
 
 
-def setup_supervisor(appname, django_port, nextjs_port):
+def setup_supervisor(appname: str, django_port: int, nextjs_port: int) -> None:
+    """
+    Set up Supervisor configuration for the given app.
+
+    Args:
+        appname (str): The application name.
+        django_port (int): The port number for the Django application.
+        nextjs_port (int): The port number for the Next.js application.
+    """
     # Create logs directory if it doesn't exist
     logs_dir = os.path.join(PROJECT_ROOT, "logs")
     os.makedirs(logs_dir, exist_ok=True)
@@ -115,7 +147,13 @@ def setup_supervisor(appname, django_port, nextjs_port):
     click.echo(f"Supervisor configuration for {appname} has been set up and started.")
 
 
-def setup_ssl(domain):
+def setup_ssl(domain: str) -> None:
+    """
+    Set up SSL using Let's Encrypt for the given domain.
+
+    Args:
+        domain (str): The domain name.
+    """
     click.echo("Setting up SSL with Let's Encrypt...")
     # Using sudo to install SSL certificates
     run_with_sudo(["certbot", "--nginx", "-d", domain, "-d", f"www.{domain}"])
@@ -124,7 +162,13 @@ def setup_ssl(domain):
 
 @click.command()
 @click.argument("mode", default="prod")
-def deploy(mode):
+def deploy(mode: str) -> None:
+    """
+    Deploy the application in the specified mode.
+
+    Args:
+        mode (str): The deployment mode (default is "prod").
+    """
     venv_path = os.path.join(PROJECT_ROOT, "env")
     if not os.path.exists(venv_path):
         click.echo("Virtual environment not found. Please run 'blox setup' first.")

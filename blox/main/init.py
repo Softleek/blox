@@ -4,32 +4,41 @@ import subprocess
 import click
 import tempfile
 import shutil
+from typing import List, Any
 
 from ..utils.file_operations import ensure_file_exists
 
 @click.command()
 @click.argument("name", required=False, default=".")
 def init(name: str) -> None:
-    """Initialize a new project similar to bench init."""
+    """
+    Initialize a new project similar to bench init.
+
+    :param name: The name of the project directory.
+    """
     perform_init(name)
     
-def perform_init(name):
-    """Initialize a new project similar to bench init."""
+def perform_init(name: str) -> None:
+    """
+    Initialize a new project similar to bench init.
+
+    :param name: The name of the project directory.
+    """
     
     # Determine project root
-    project_root = os.path.abspath(name)
+    project_root: str = os.path.abspath(name)
     if name != ".":
         os.makedirs(project_root, exist_ok=True)
     
     # Define necessary directories
-    directories = ["apps", "config", "logs", "sites",]
+    directories: List[str] = ["apps", "config", "logs", "sites"]
     for directory in directories:
         os.makedirs(os.path.join(project_root, directory), exist_ok=True)
     
     # Create necessary files
-    sites_json_path = os.path.join(project_root, "sites", "sites.json")
-    procfile_path = os.path.join(project_root, "Procfile") 
-    procfile_path = os.path.join(project_root, "blox.config") 
+    sites_json_path: str = os.path.join(project_root, "sites", "sites.json")
+    procfile_path: str = os.path.join(project_root, "Procfile") 
+    blox_config_path: str = os.path.join(project_root, "blox.config") 
     
     ensure_file_exists(sites_json_path, initial_data=[])
     
@@ -43,8 +52,8 @@ schedule: blox schedule
 """)
     
     # Clone mainsite into sites/default
-    site_path = os.path.join(project_root, "sites")
-    repo_url = "https://github.com/Softleek/mainsite.git"
+    site_path: str = os.path.join(project_root, "sites")
+    repo_url: str = "https://github.com/Softleek/mainsite.git"
     
     # Create a temporary directory
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -63,23 +72,23 @@ schedule: blox schedule
 
     try:
         with open(sites_json_path, "r") as json_file:
-            sites = json.load(json_file) or []
+            sites: List[dict[str, Any]] = json.load(json_file) or []
     except json.JSONDecodeError:
         sites = []
     
     # Assign available ports
-    django_ports = [site.get("django_port") for site in sites]
-    next_django_port = 8000
+    django_ports: List[int] = [site.get("django_port") for site in sites]
+    next_django_port: int = 8000
     while next_django_port in django_ports:
         next_django_port += 1
     
-    nextjs_ports = [site.get("nextjs_port") for site in sites]
-    next_nextjs_port = 3000
+    nextjs_ports: List[int] = [site.get("nextjs_port") for site in sites]
+    next_nextjs_port: int = 3000
     while next_nextjs_port in nextjs_ports:
         next_nextjs_port += 1
     
     # Update sites.json
-    site_info = {
+    site_info: dict[str, Any] = {
         "name": "default",
         "django_port": next_django_port,
         "nextjs_port": next_nextjs_port,

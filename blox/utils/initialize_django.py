@@ -3,7 +3,7 @@ import sys
 import django
 from .config import PROJECT_ROOT, DJANGO_PATH  # Ensure config.py is correctly configured with these paths
 
-def initialize_django_env():
+def initialize_django_env() -> None:
     """
     Initialize the Django environment from outside the project directory.
 

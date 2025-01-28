@@ -1,6 +1,7 @@
 import os
 import subprocess
 from urllib.parse import urlparse
+from typing import List
 
 import click
 
@@ -9,9 +10,10 @@ from ..utils.run_process import get_python_executable, run_subprocess
 from ..sites.utils.installdjangoapp import install_django_app
 
 
-def remove_hiredis_from_toml():
-    """Remove any lines containing 'hiredis' from any .toml files in the project."""
-
+def remove_hiredis_from_toml() -> None:
+    """
+    Remove any lines containing 'hiredis' from any .toml files in the project.
+    """
     # Recursively find all .toml files in the PROJECT_ROOT
     for root, _, files in os.walk(PROJECT_ROOT):
         for file in files:
@@ -21,7 +23,7 @@ def remove_hiredis_from_toml():
                     lines = toml_file.readlines()
 
                 # Filter out any lines containing 'hiredis'
-                filtered_lines = [line for line in lines if "hiredis" not in line]
+                filtered_lines: List[str] = [line for line in lines if "hiredis" not in line]
 
                 # If there were changes, overwrite the file
                 if len(filtered_lines) != len(lines):
@@ -32,9 +34,14 @@ def remove_hiredis_from_toml():
 @click.command()
 @click.argument("git_url")
 @click.argument("name")
-def getapp(git_url, name):
-    """Clone a Django app from a Git repository using the provided URL and optional app name."""
+def getapp(git_url: str, name: str) -> None:
+    """
+    Clone a Django app from a Git repository using the provided URL and optional app name.
 
+    Args:
+        git_url (str): The URL of the Git repository to clone.
+        name (str): The name of the app to be used. If not provided, it will be parsed from the git_url.
+    """
     # Parse the app name from the git URL if --name is not provided
     if name:
         app_name = name

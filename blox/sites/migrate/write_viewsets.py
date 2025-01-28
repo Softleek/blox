@@ -2,11 +2,20 @@ import ast
 import os
 import re
 from difflib import get_close_matches
+from typing import List, Optional, Union
 
 
+def find_matching_class(file_content: str, model_name: str) -> Union[str, List[str]]:
+    """
+    Check if the model_name matches a class in the Python file.
 
-def find_matching_class(file_content, model_name):
-    """Check if the model_name matches a class in the Python file."""
+    Args:
+        file_content (str): The content of the Python file.
+        model_name (str): The name of the model to find.
+
+    Returns:
+        Union[str, List[str]]: The exact match of the model name or a list of all class names.
+    """
     parsed_content = ast.parse(file_content)
     class_names = [
         node.name for node in parsed_content.body if isinstance(node, ast.ClassDef)
@@ -16,14 +25,37 @@ def find_matching_class(file_content, model_name):
     return class_names  # Return all available class names for further matching
 
 
-def find_nearest_class(model_name, class_names):
-    """Find the nearest match to model_name from a list of class names."""
+def find_nearest_class(model_name: str, class_names: List[str]) -> Optional[str]:
+    """
+    Find the nearest match to model_name from a list of class names.
+
+    Args:
+        model_name (str): The name of the model to find.
+        class_names (List[str]): A list of class names to match against.
+
+    Returns:
+        Optional[str]: The nearest matching class name or None if no match is found.
+    """
     matches = get_close_matches(model_name, class_names, n=1, cutoff=0.6)
     return matches[0] if matches else None
 
 
-def write_viewset(view_file, model_name, module_name, folder_path, doc_name):
-    """Write a viewset for a given model, skipping the import if the file is missing or empty."""
+def write_viewset(
+    view_file, model_name: str, module_name: str, folder_path: str, doc_name: str
+) -> None:
+    """
+    Write a viewset for a given model, skipping the import if the file is missing or empty.
+
+    Args:
+        view_file (TextIO): The file object to write the viewset to.
+        model_name (str): The name of the model.
+        module_name (str): The name of the module.
+        folder_path (str): The path to the folder containing the model file.
+        doc_name (str): The name of the document (model file) without extension.
+
+    Raises:
+        ValueError: If no matching or similar class is found for the model name.
+    """
     model_file_path = os.path.join(folder_path, f"{doc_name}.py")
 
     # Check if the file exists and is not empty
@@ -31,7 +63,6 @@ def write_viewset(view_file, model_name, module_name, folder_path, doc_name):
     if not os.path.exists(model_file_path) or os.path.getsize(model_file_path) == 0:
         pass
     else:
-
         # Load model file content
         with open(model_file_path, "r", encoding="utf-8") as f:
             model_data = f.read()

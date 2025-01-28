@@ -1,17 +1,18 @@
 import os
 import subprocess
 import sys
+from typing import Optional
 
 import click
 
 from .config import PROJECT_ROOT
 
 
-def get_python_executable():
+def get_python_executable() -> Optional[str]:
     venv_path = os.path.join(PROJECT_ROOT, "env")
     if not os.path.exists(venv_path):
         click.echo("Virtual environment not found. Please run 'blox setup' first.")
-        return
+        return None
 
     python_executable = os.path.join(venv_path, "bin", "python3")
     if sys.platform.startswith("win"):
@@ -19,7 +20,7 @@ def get_python_executable():
     return python_executable
 
 
-def run_subprocess(command, cwd=None):
+def run_subprocess(command: list[str], cwd: Optional[str] = None) -> subprocess.Popen:
     """Run a subprocess command, using cmd.exe on Windows."""
     if sys.platform.startswith("win"):
         return subprocess.Popen(

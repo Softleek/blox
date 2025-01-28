@@ -1,5 +1,6 @@
 import json
 import os
+from typing import List, Dict, Any, Optional
 
 import click
 
@@ -9,8 +10,16 @@ from .app_actions import find_modules
 from .load_doc_config import load_existing_data
 
 
-def process_docs(folder_path):
-    """Processes all documents in the specified folder and returns a list of document names."""
+def process_docs(folder_path: str) -> List[Dict[str, str]]:
+    """
+    Processes all documents in the specified folder and returns a list of document names.
+
+    Args:
+        folder_path (str): The path to the folder containing documents.
+
+    Returns:
+        List[Dict[str, str]]: A list of dictionaries containing document details.
+    """
     docs = []
     for item_name in os.listdir(folder_path):
         if item_name.startswith("_"):
@@ -34,21 +43,36 @@ def process_docs(folder_path):
 
             doc_data = {
                 "id": to_snake_case(item_name),  # Convert doc name to snake_case for ID
-                "model": to_titlecase_no_space(doc_name),  
-                "name": doc_name,  
+                "model": to_titlecase_no_space(doc_name),
+                "name": doc_name,
             }
             docs.append(doc_data)
     return docs
 
 
-def save_data_to_file(data):
-    """Saves the updated data back to the JSON file."""
+def save_data_to_file(data: List[Dict[str, Any]]) -> None:
+    """
+    Saves the updated data back to the JSON file.
+
+    Args:
+        data (List[Dict[str, Any]]): The data to be saved.
+    """
     with open(DOCS_JSON_PATH, "w") as json_file:
         json.dump(data, json_file, indent=4)
 
 
-def find_or_create_app_entry(existing_data, app_id, app_name):
-    """Finds an app entry by ID or creates a new one, always replacing the name if found."""
+def find_or_create_app_entry(existing_data: List[Dict[str, Any]], app_id: str, app_name: str) -> Dict[str, Any]:
+    """
+    Finds an app entry by ID or creates a new one, always replacing the name if found.
+
+    Args:
+        existing_data (List[Dict[str, Any]]): The existing data.
+        app_id (str): The ID of the app.
+        app_name (str): The name of the app.
+
+    Returns:
+        Dict[str, Any]: The app entry.
+    """
     app_entry = next((app for app in existing_data if app["id"] == app_id), None)
     if not app_entry:
         app_entry = {"id": app_id, "name": app_name, "modules": []}
@@ -58,8 +82,18 @@ def find_or_create_app_entry(existing_data, app_id, app_name):
     return app_entry
 
 
-def find_or_create_module_entry(app_entry, module_id, module_name):
-    """Finds a module entry by ID within an app or creates a new one, always replacing the name if found."""
+def find_or_create_module_entry(app_entry: Dict[str, Any], module_id: str, module_name: str) -> Dict[str, Any]:
+    """
+    Finds a module entry by ID within an app or creates a new one, always replacing the name if found.
+
+    Args:
+        app_entry (Dict[str, Any]): The app entry.
+        module_id (str): The ID of the module.
+        module_name (str): The name of the module.
+
+    Returns:
+        Dict[str, Any]: The module entry.
+    """
     module_entry = next(
         (mod for mod in app_entry["modules"] if mod["id"] == module_id), None
     )
@@ -71,8 +105,14 @@ def find_or_create_module_entry(app_entry, module_id, module_name):
     return module_entry
 
 
-def update_module_docs(module_entry, docs):
-    """Updates the documents in a module, replacing names if IDs match."""
+def update_module_docs(module_entry: Dict[str, Any], docs: List[Dict[str, str]]) -> None:
+    """
+    Updates the documents in a module, replacing names if IDs match.
+
+    Args:
+        module_entry (Dict[str, Any]): The module entry.
+        docs (List[Dict[str, str]]): The list of documents to update.
+    """
     existing_docs = {doc["id"]: doc for doc in module_entry["docs"]}
     for doc in docs:
         if doc["id"] in existing_docs:
@@ -81,8 +121,18 @@ def update_module_docs(module_entry, docs):
             module_entry["docs"].append(doc)
 
 
-def add_single_doc(app_id, app_name, module_id, module_name, doc_id, doc_name):
-    """Adds or updates a single document in the specified app and module."""
+def add_single_doc(app_id: str, app_name: str, module_id: str, module_name: str, doc_id: str, doc_name: str) -> None:
+    """
+    Adds or updates a single document in the specified app and module.
+
+    Args:
+        app_id (str): The ID of the app.
+        app_name (str): The name of the app.
+        module_id (str): The ID of the module.
+        module_name (str): The name of the module.
+        doc_id (str): The ID of the document.
+        doc_name (str): The name of the document.
+    """
     existing_data = load_existing_data()
 
     app_entry = find_or_create_app_entry(existing_data, app_id, app_name)
@@ -92,7 +142,7 @@ def add_single_doc(app_id, app_name, module_id, module_name, doc_id, doc_name):
     if doc_entry:
         doc_entry["name"] = doc_name
     else:
-        doc_entry = {"id": doc_id,  "model": to_titlecase_no_space(doc_name), "name": doc_name}
+        doc_entry = {"id": doc_id, "model": to_titlecase_no_space(doc_name), "name": doc_name}
         module_entry["docs"].append(doc_entry)
         click.echo(
             f"Document '{doc_name}' added to module '{module_name}' in app '{app_name}'."
@@ -101,8 +151,15 @@ def add_single_doc(app_id, app_name, module_id, module_name, doc_id, doc_name):
     save_data_to_file(existing_data)
 
 
-def process_module(app_name, module, app_entry):
-    """Processes a module, updates its docs, and appends it to the app entry."""
+def process_module(app_name: str, module: str, app_entry: Dict[str, Any]) -> None:
+    """
+    Processes a module, updates its docs, and appends it to the app entry.
+
+    Args:
+        app_name (str): The name of the app.
+        module (str): The name of the module.
+        app_entry (Dict[str, Any]): The app entry.
+    """
     module_id = to_snake_case(module)
     module_name = module
 
@@ -115,26 +172,31 @@ def process_module(app_name, module, app_entry):
     doc_path = os.path.join(module_path, "doc")
     doctype_path = os.path.join(module_path, "doctype")
 
-    docs = []
+    docs: List[Dict[str, str]] = []
     if os.path.isdir(doc_path):
         docs = process_docs(doc_path)
     elif os.path.isdir(doctype_path):
         docs = process_docs(doctype_path)
 
     module_entry = find_or_create_module_entry(app_entry, module_id, module_name)
-    update_module_docs(module_entry, docs) 
+    update_module_docs(module_entry, docs)
 
 
-def create_doctypes_json(app_name, module_name=None):
-    """Generates or updates the doctypes.json file for the app with its modules and docs."""
+def create_doctypes_json(app_name: str, module_name: Optional[str] = None) -> None:
+    """
+    Generates or updates the doctypes.json file for the app with its modules and docs.
+
+    Args:
+        app_name (str): The name of the app.
+        module_name (Optional[str]): The name of the module. If None, all modules will be processed.
+    """
     existing_data = load_existing_data()
 
     app_id = to_snake_case(app_name)
     app_entry = find_or_create_app_entry(existing_data, app_id, app_name)
-    
+
     if module_name:
         process_module(app_name, module_name, app_entry)
-        
     else:
         modules = find_modules(app_name)
         for module in modules:
@@ -143,8 +205,15 @@ def create_doctypes_json(app_name, module_name=None):
     save_data_to_file(existing_data)
 
 
-def add_single_entry(app_name=None, module_name=None, doc_name=None):
-    """Allows adding a single doc, module, or app."""
+def add_single_entry(app_name: Optional[str] = None, module_name: Optional[str] = None, doc_name: Optional[str] = None) -> None:
+    """
+    Allows adding a single doc, module, or app.
+
+    Args:
+        app_name (Optional[str]): The name of the app.
+        module_name (Optional[str]): The name of the module.
+        doc_name (Optional[str]): The name of the document.
+    """
     app_id = to_snake_case(app_name) if app_name else None
     module_id = to_snake_case(module_name) if module_name else None
     doc_id = to_snake_case(doc_name) if doc_name else None

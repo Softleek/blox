@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import subprocess
+from typing import List
 
 import click
 
@@ -11,18 +12,23 @@ from ..sites.utils.uninstalldjangoapp import uninstall_django_app
 
 @click.command()
 @click.argument("app")
-def dropapp(app):
-    """Delete the specified Django app, uninstall it from all sites using `blox uninstallapp`, and remove it from the configuration."""
+def dropapp(app: str) -> None:
+    """
+    Delete the specified Django app, uninstall it from all sites using `blox uninstallapp`, 
+    and remove it from the configuration.
 
+    Args:
+        app (str): The name of the app to delete.
+    """
     # Path to the custom app directory
-    apps_txt_path = os.path.join(PROJECT_ROOT, "config", "apps.txt")
+    apps_txt_path: str = os.path.join(PROJECT_ROOT, "config", "apps.txt")
     if not os.path.exists(apps_txt_path):
         click.echo("No apps found in apps.txt.")
         return
 
     # Load apps from apps.txt
     with open(apps_txt_path, "r") as settings_file:
-        apps = [
+        apps: List[str] = [
             line.strip()
             for line in settings_file.readlines()
             if line.strip() and not line.startswith("#")
@@ -34,13 +40,13 @@ def dropapp(app):
         for i, app_entry in enumerate(apps, 1):
             click.echo(f"{i}. {app_entry}")
 
-        app_choice = click.prompt("Enter the number of the app to delete", type=int)
+        app_choice: int = click.prompt("Enter the number of the app to delete", type=int)
 
         if app_choice < 1 or app_choice > len(apps):
             click.echo("Invalid app selection.")
             return
 
-        selected_app = apps[app_choice - 1]
+        selected_app: str = apps[app_choice - 1]
     else:
         selected_app = app
         if selected_app not in apps:
@@ -48,7 +54,7 @@ def dropapp(app):
             return
 
     # Confirm the deletion
-    confirm = click.confirm(
+    confirm: bool = click.confirm(
         f"Are you sure you want to delete the app '{selected_app}'?", default=False
     )
     if not confirm:
@@ -56,7 +62,7 @@ def dropapp(app):
         return
 
     # Uninstall the app from all sites using `blox uninstallapp`
-    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
+    sites_json_path: str = os.path.join(PROJECT_ROOT, "sites", "sites.json")
     if not os.path.exists(sites_json_path):
         click.echo("No sites.json configuration found.")
         return
@@ -66,7 +72,7 @@ def dropapp(app):
         json.load(sites_file)
 
     # Path to the app folder
-    custom_app_path = os.path.join(PROJECT_ROOT, "apps", selected_app)
+    custom_app_path: str = os.path.join(PROJECT_ROOT, "apps", selected_app)
 
     # Delete the app folder using PowerShell with admin privileges on Windows
     try:
@@ -76,7 +82,7 @@ def dropapp(app):
             )
 
             if os.name == "nt":  # Check if Windows
-                powershell_command = f'Remove-Item -Recurse -Force "{custom_app_path}"'
+                powershell_command: str = f'Remove-Item -Recurse -Force "{custom_app_path}"'
                 subprocess.check_call(
                     ["powershell", "-Command", powershell_command], shell=True
                 )
@@ -100,4 +106,3 @@ def dropapp(app):
                 settings_file.write(line + "\n")
 
     click.echo(f"The app '{selected_app}' has been removed from apps.txt.")
- 

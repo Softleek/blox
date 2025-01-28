@@ -1,8 +1,9 @@
 import os
 import json
 import click
+from typing import Any, Optional
 
-def ensure_file_exists(file_path, initial_data=None):
+def ensure_file_exists(file_path: str, initial_data: Optional[Any] = None) -> None:
     """
     Ensure the given file exists, creating the necessary directory and initializing the file with `initial_data` if not.
     

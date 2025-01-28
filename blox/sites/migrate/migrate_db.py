@@ -3,14 +3,15 @@ import platform
 import re
 import subprocess
 from getpass import getpass
+from typing import Tuple
 
 import click
 import pymysql
 
-from ...config import PROJECT_ROOT
+from ...utils.config import PROJECT_ROOT
 
 
-def run_django_migrations():
+def run_django_migrations() -> None:
     """Run Django makemigrations and migrate commands."""
     python_command = "python" if platform.system() == "Windows" else "python3"
 
@@ -28,10 +29,10 @@ def run_django_migrations():
     click.echo("Migration completed.")
 
 
-def createsuperuser():
+def createsuperuser() -> None:
+    """Run Django createsuperuser command non-interactively by prompting user for details."""
     run_django_migrations()
 
-    """Run Django createsuperuser command non-interactively by prompting user for details."""
     python_command = "python" if platform.system() == "Windows" else "python3"
 
     create_superuser_args = [python_command, "manage.py", "createsuperuser"]
@@ -48,7 +49,7 @@ def createsuperuser():
     click.echo("Superuser created successfully.")
 
 
-def install_database():
+def install_database() -> bool:
     """Install MariaDB or MySQL depending on the OS."""
     os_name = platform.system().lower()
 
@@ -88,8 +89,12 @@ def install_database():
     return True
 
 
-def create_database_user():
-    """Create a new database user or ensure the user exists with all privileges."""
+def create_database_user() -> Tuple[str, str, str]:
+    """Create a new database user or ensure the user exists with all privileges.
+
+    Returns:
+        Tuple[str, str, str]: The new user's username, password, and database name.
+    """
     root_password = getpass("Enter MySQL/MariaDB root password: ")
     new_user = input("Enter the new username: ")
     new_password = getpass(f"Enter password for {new_user}: ")
@@ -126,8 +131,15 @@ def create_database_user():
     return new_user, new_password, new_db
 
 
-def drop_existing_tables(db_name, user, password, host="localhost"):
-    """Drop all tables in the given database."""
+def drop_existing_tables(db_name: str, user: str, password: str, host: str = "localhost") -> None:
+    """Drop all tables in the given database.
+
+    Args:
+        db_name (str): The name of the database.
+        user (str): The database username.
+        password (str): The database password.
+        host (str, optional): The database host. Defaults to "localhost".
+    """
     conn = pymysql.connect(user=user, password=password, host=host, database=db_name)
     cursor = conn.cursor()
 
@@ -149,8 +161,15 @@ def drop_existing_tables(db_name, user, password, host="localhost"):
         conn.close()
 
 
-def update_app_settings(user, password, db_name, host="localhost"):
-    """Update settings.py to use MariaDB/MySQL."""
+def update_app_settings(user: str, password: str, db_name: str, host: str = "localhost") -> None:
+    """Update settings.py to use MariaDB/MySQL.
+
+    Args:
+        user (str): The database username.
+        password (str): The database password.
+        db_name (str): The name of the database.
+        host (str, optional): The database host. Defaults to "localhost".
+    """
     settings_file = "apps/core/django/backend/settings.py"
 
     with open(settings_file, "r") as file:
@@ -183,8 +202,12 @@ DATABASES = {{
 
 
 @click.command()
-def migratedb(sqlite_db_path=None):
-    """Main function to handle the entire migration process."""
+def migratedb(sqlite_db_path: str = None) -> None:
+    """Main function to handle the entire migration process.
+
+    Args:
+        sqlite_db_path (str, optional): Path to the SQLite database file. Defaults to None.
+    """
     install_database()
     user, password, db_name = create_database_user()
     drop_existing_tables(db_name, user, password)

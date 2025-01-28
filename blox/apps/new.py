@@ -1,6 +1,7 @@
 import os
 import shutil
 import subprocess
+from typing import Dict
 
 import click
 
@@ -52,9 +53,17 @@ LICENSE_CHOICES = [
     help="License for the app",
     show_default=True,
 )
-def newapp(app_name, title, description, publisher, email, license):
-    """Create a new Blox-style app with the specified name."""
+def newapp(app_name: str, title: str, description: str, publisher: str, email: str, license: str) -> None:
+    """
+    Create a new Blox-style app with the specified name.
 
+    :param app_name: Name of the app to be created.
+    :param title: Title of the app.
+    :param description: Description of the app.
+    :param publisher: Publisher of the app.
+    :param email: Email of the publisher.
+    :param license: License for the app.
+    """
     # Define paths
     temp_app_path = os.path.join(PROJECT_ROOT, "apps", f"temp_{app_name}")
     final_app_path = os.path.join(PROJECT_ROOT, "apps", app_name)
@@ -106,7 +115,7 @@ def newapp(app_name, title, description, publisher, email, license):
         os.makedirs(folder_path, exist_ok=True)
 
     # Prepare dynamic content to pass to the file creation function
-    dynamic_content = {}
+    dynamic_content: Dict[str, str] = {}
 
     if title:
         dynamic_content[
@@ -146,7 +155,6 @@ app_license = "{license}"
         shutil.move(temp_app_path, final_app_path)
         install_django_app(app_name, PROJECT_ROOT)
 
-
     except subprocess.CalledProcessError as e:
         click.echo(f"Failed to initialize Git repository: {e}")
         # Rollback: Remove the temporary directory if it was created
@@ -160,8 +168,19 @@ app_license = "{license}"
         click.echo(f"Failed to create the app '{app_name}'.")
 
 
-def create_readme(base_path, app_name, templates_folder, license, description, title, publisher, email):
-    """Create the README.md file with expanded content and advanced styling."""
+def create_readme(base_path: str, app_name: str, templates_folder: str, license: str, description: str, title: str, publisher: str, email: str) -> None:
+    """
+    Create the README.md file with expanded content and advanced styling.
+
+    :param base_path: Base path where the README.md file will be created.
+    :param app_name: Name of the app.
+    :param templates_folder: Path to the folder containing templates.
+    :param license: License for the app.
+    :param description: Description of the app.
+    :param title: Title of the app.
+    :param publisher: Publisher of the app.
+    :param email: Email of the publisher.
+    """
     readme_path = os.path.join(base_path, "README.md")
     template_path = os.path.join(templates_folder, "README.md")
 
@@ -206,8 +225,6 @@ Follow the steps below to get started with **{app_name}**:
     ```bash
     blox migrate --site [sitename]
     ```
-
-
 
 ## License
 

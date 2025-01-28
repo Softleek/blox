@@ -1,5 +1,5 @@
 import os
-
+from typing import Optional, Tuple, TextIO
 
 from ...utils.config import find_module_base_path
 from ...utils.text import to_snake_case, to_titlecase_no_space
@@ -19,12 +19,18 @@ STRUCTURE = {
 }
 
 
-def migrate_doc(app_name, module, doc=None, django_path=""):
-    """Migrate a specific document within a module and app."""
+def migrate_doc(app_name: str, module: str, doc: Optional[str] = None, django_path: str = "") -> None:
+    """Migrate a specific document within a module and app.
 
+    Args:
+        app_name (str): The name of the Django app.
+        module (str): The name of the module.
+        doc (Optional[str]): The name of the document to migrate.
+        django_path (str): The base path of the Django project.
+    """
     module_name = to_snake_case(module).lower()
-    doc_name = to_snake_case(doc).lower()
-    doctype_folder_name =  "doctype"
+    doc_name = to_snake_case(doc).lower() if doc else ""
+    doctype_folder_name = "doctype"
 
     modules_file_path, module_base_path = find_module_base_path(
         app_name=app_name, module_name=module_name
@@ -66,14 +72,23 @@ def migrate_doc(app_name, module, doc=None, django_path=""):
             )
 
 
-def ensure_directory(path):
-    """Ensure the directory exists."""
+def ensure_directory(path: str) -> None:
+    """Ensure the directory exists.
+
+    Args:
+        path (str): The path to the directory.
+    """
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)
 
 
-def ensure_init_file(module_file_path, doc_name):
-    """Ensure an __init__.py file exists in the module directory and imports the document."""
+def ensure_init_file(module_file_path: str, doc_name: str) -> None:
+    """Ensure an __init__.py file exists in the module directory and imports the document.
+
+    Args:
+        module_file_path (str): The path to the module directory.
+        doc_name (str): The name of the document.
+    """
     init_file_path = os.path.join(module_file_path, "__init__.py")
     if not os.path.exists(init_file_path):
         with open(init_file_path, "w") as init_file:
@@ -87,15 +102,25 @@ def ensure_init_file(module_file_path, doc_name):
 
 
 def write_module_content(
-    folder,
-    module_file_path,
-    app_name,
-    module_name,
-    doc_name,
-    doc_folder_path,
-    django_path,
-):
-    """Write appropriate content to the module file based on the folder type."""
+    folder: str,
+    module_file_path: str,
+    app_name: str,
+    module_name: str,
+    doc_name: str,
+    doc_folder_path: str,
+    django_path: str,
+) -> None:
+    """Write appropriate content to the module file based on the folder type.
+
+    Args:
+        folder (str): The type of folder (e.g., 'models', 'views').
+        module_file_path (str): The path to the module file.
+        app_name (str): The name of the Django app.
+        module_name (str): The name of the module.
+        doc_name (str): The name of the document.
+        doc_folder_path (str): The path to the document folder.
+        django_path (str): The base path of the Django project.
+    """
     model_name = to_titlecase_no_space(get_name_by_id(doc_name, "doc"))
 
     with open(module_file_path, "w+") as module_file:
@@ -134,8 +159,13 @@ def write_module_content(
             )
 
 
-def write_model_header(module_file, model_name):
-    """Write the imports and class definition header for models."""
+def write_model_header(module_file: TextIO, model_name: str) -> None:
+    """Write the imports and class definition header for models.
+
+    Args:
+        module_file (TextIO): The file object for the module file.
+        model_name (str): The name of the model class.
+    """
     module_file.write(
         "from django.db import models\n"
         "from multiselectfield import MultiSelectField\n"
@@ -145,8 +175,16 @@ def write_model_header(module_file, model_name):
     module_file.write(f"class {model_name}(BaseModel):\n")
 
 
-def write_views_header(module_file, app_name, module_name, model_name, doc_name):
-    """Write the imports and class definition header for views."""
+def write_views_header(module_file: TextIO, app_name: str, module_name: str, model_name: str, doc_name: str) -> None:
+    """Write the imports and class definition header for views.
+
+    Args:
+        module_file (TextIO): The file object for the module file.
+        app_name (str): The name of the Django app.
+        module_name (str): The name of the module.
+        model_name (str): The name of the model class.
+        doc_name (str): The name of the document.
+    """
     module_file.write(
         f"from rest_framework import viewsets\n"
         f"from core.views.template import GenericViewSet\n"

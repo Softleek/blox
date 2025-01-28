@@ -2,27 +2,53 @@ import json
 import os
 import subprocess
 import sys
+from typing import List
 
 from .module_structure import create_module_structure  # Importing the logic
 
 
-def activate_virtualenv(project_root):
-    """Return the path to the activate script of the virtual environment."""
+def activate_virtualenv(project_root: str) -> str:
+    """
+    Return the path to the activate script of the virtual environment.
+
+    Args:
+        project_root (str): The root directory of the project.
+
+    Returns:
+        str: The path to the activate script.
+    """
     if sys.platform.startswith("win"):
         return os.path.join(project_root, "env", "Scripts", "activate")
     return os.path.join(project_root, "env", "bin", "activate")
 
 
-def get_python_executable(project_root):
-    """Return the path to the Python executable in the virtual environment."""
+def get_python_executable(project_root: str) -> str:
+    """
+    Return the path to the Python executable in the virtual environment.
+
+    Args:
+        project_root (str): The root directory of the project.
+
+    Returns:
+        str: The path to the Python executable.
+    """
     venv_path = os.path.join(project_root, "env")
     if sys.platform.startswith("win"):
         return os.path.join(venv_path, "Scripts", "python.exe")
     return os.path.join(venv_path, "bin", "python")
 
 
-def install_django_app(app, project_root):
-    """Create a Django app in a selected site using the Django startapp command."""
+def install_django_app(app: str, project_root: str) -> None:
+    """
+    Create a Django app in a selected site using the Django startapp command.
+
+    Args:
+        app (str): The name of the app to create.
+        project_root (str): The root directory of the project.
+
+    Returns:
+        None
+    """
     app_name = f"{app}_app"
 
     # Define paths
@@ -33,7 +59,7 @@ def install_django_app(app, project_root):
     # Load app options from apps.txt
     apps_txt_path = os.path.join(project_root, "config", "apps.txt")
     with open(apps_txt_path, "r") as apps_file:
-        apps = [
+        apps: List[str] = [
             line.strip()
             for line in apps_file
             if line.strip() and not line.startswith("#")
@@ -90,7 +116,7 @@ def install_django_app(app, project_root):
             main_urls_file.write(f"    path('{app}/', include('{app_name}.urls')),\n")
             main_urls_file.write("]\n")
 
-        # **Modify apps.py to include the `ready` method**
+        # Modify apps.py to include the `ready` method
         apps_py_path = os.path.join(app_path, "apps.py")
         with open(apps_py_path, "r") as apps_file:
             apps_py_content = apps_file.readlines()

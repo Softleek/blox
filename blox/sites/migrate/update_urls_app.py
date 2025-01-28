@@ -1,15 +1,22 @@
 import os
+from typing import List
 
 import click
 
 from ...utils.config import find_module_base_path
-from ...utils.text import (to_snake_case, to_titlecase_no_space)
+from ...utils.text import to_snake_case, to_titlecase_no_space
 from ..utils.app_actions import get_name_by_id
 
 
-def update_urls_py(app_name, modules, django_path):
-    """Update urls.py to register ViewSets for models within an app."""
+def update_urls_py(app_name: str, modules: List[str], django_path: str) -> None:
+    """
+    Update urls.py to register ViewSets for models within an app.
 
+    Args:
+        app_name (str): The name of the Django app.
+        modules (List[str]): A list of module names to process.
+        django_path (str): The base path to the Django project.
+    """
     # Path to urls.py
     urls_path = os.path.join(django_path, f"{app_name}_app", "urls.py")
 
@@ -68,9 +75,17 @@ urlpatterns = [
         file.write(urls_content)
 
 
-def extract_model_names(folder_path):
-    """Extract model names based on folder contents, skipping directories
-    starting with '_' or 'pycache'."""
+def extract_model_names(folder_path: str) -> List[str]:
+    """
+    Extract model names based on folder contents, skipping directories
+    starting with '_' or 'pycache'.
+
+    Args:
+        folder_path (str): The path to the folder containing model directories.
+
+    Returns:
+        List[str]: A list of model names.
+    """
     models = []
     for item_name in os.listdir(folder_path):
         item_path = os.path.join(folder_path, item_name)

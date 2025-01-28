@@ -3,6 +3,7 @@
 /build
 /config
 /apps
+/.vscode
 /blox.egg-info
 
 # Ignore all __pycache__ directories and their contents anywhere in the project

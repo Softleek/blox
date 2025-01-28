@@ -5,28 +5,39 @@ import random
 import string
 import click
 import platform
+from typing import List, Dict, Any
 
 from ..utils.config import PROJECT_ROOT
 from ..utils.file_operations import ensure_file_exists
 
-def generate_random_password(length=12):
-    """Generate a random password with letters and digits only (avoids special character issues)."""
+def generate_random_password(length: int = 12) -> str:
+    """Generate a random password with letters and digits only (avoids special character issues).
+
+    Args:
+        length (int): The length of the password to generate. Defaults to 12.
+
+    Returns:
+        str: The generated random password.
+    """
     characters = string.ascii_letters + string.digits  # No special characters
     return ''.join(random.choice(characters) for _ in range(length))
 
 @click.command()
 @click.argument("site_name")
-def newsite(site_name):
-    """Clone the mainsite repository, create a database, and add it to sites.json."""
+def newsite(site_name: str) -> None:
+    """Clone the mainsite repository, create a database, and add it to sites.json.
 
+    Args:
+        site_name (str): The name of the new site to create.
+    """
     # Load existing sites.json or initialize an empty list
-    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
-    sites = []
+    sites_json_path: str = os.path.join(PROJECT_ROOT, "sites", "sites.json")
+    sites: List[Dict[str, Any]] = []
 
     ensure_file_exists(sites_json_path, initial_data=[])
     try:
         with open(sites_json_path, "r") as json_file:
-            content = json_file.read().strip()
+            content: str = json_file.read().strip()
             if content:
                 sites = json.loads(content)
     except json.JSONDecodeError:
@@ -35,10 +46,10 @@ def newsite(site_name):
         )
     
     # Prompt for root password
-    root_password = click.prompt("Enter database root password", hide_input=True)
+    root_password: str = click.prompt("Enter database root password", hide_input=True)
     
     # Create the database using Windows CMD
-    db_name = f"{site_name}_db"
+    db_name: str = f"{site_name}_db"
     
     try:
         # Create database
@@ -52,8 +63,8 @@ def newsite(site_name):
         return
     
     # Create a new MySQL user and grant them admin privileges
-    db_user = site_name
-    db_user_password = generate_random_password()
+    db_user: str = site_name
+    db_user_password: str = generate_random_password()
     try:
         # Create user and grant privileges
         subprocess.run(
@@ -83,7 +94,7 @@ def newsite(site_name):
         return
     
     # Prepare the site information
-    site_info = {
+    site_info: Dict[str, Any] = {
         "site_name": site_name,
         "database": {
             "ENGINE": "django.db.backends.mysql",

@@ -1,4 +1,5 @@
 import click
+from typing import Any
 
 from .apps import *
 from .main import *
@@ -6,7 +7,7 @@ from .sites import *
 
 
 @click.group()
-def cli():
+def cli() -> None:
     pass
 
 

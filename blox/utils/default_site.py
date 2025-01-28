@@ -1,15 +1,16 @@
 import json
 import os
+from typing import Optional, Tuple, Dict, Any
 
 import click
 
 
-def get_default_site_info(PROJECT_ROOT):
+def get_default_site_info(PROJECT_ROOT: str) -> Optional[Dict[str, Any]]:
     """
     Utility function to get the Django path and site name of the default site.
 
     :param PROJECT_ROOT: The root directory of the project
-    :return: A tuple (django_path, site_name) if a default site is found, otherwise None
+    :return: A dictionary with site information if a default site is found, otherwise None
     """
     sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
 

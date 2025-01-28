@@ -1,14 +1,20 @@
 import os
+from typing import Dict
 
 import click
 
 
-
-def convert_frappe_fields_to_django(file_content):
+def convert_frappe_fields_to_django(file_content: str) -> str:
     """
     Convert Frappe field types in a class to Django-compatible field definitions.
+
+    Args:
+        file_content (str): The content of the Frappe file.
+
+    Returns:
+        str: The content with Frappe fields converted to Django fields.
     """
-    field_mappings = {
+    field_mappings: Dict[str, str] = {
         "DF.Link": 'models.ForeignKey("{related_model}", on_delete=models.CASCADE, null=True, blank=True)',
         "DF.Currency": "models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)",
         "DF.Date": "models.DateField(null=True, blank=True)",
@@ -26,9 +32,13 @@ def convert_frappe_fields_to_django(file_content):
 @click.option(
     "--doc_name", required=True, help="Name of the DocType file (without .py extension)"
 )
-def convert_frappe_to_django(folder_path, doc_name):
+def convert_frappe_to_django(folder_path: str, doc_name: str) -> None:
     """
     Convert a Frappe-style Python file to a Django-compatible model file.
+
+    Args:
+        folder_path (str): The path to the folder containing the Frappe app.
+        doc_name (str): The name of the DocType file (without .py extension).
     """
     # Define paths for the source and target files
     model_file_path = os.path.join(folder_path, f"{doc_name}.py")

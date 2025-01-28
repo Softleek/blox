@@ -1,24 +1,23 @@
 import json
 import os
+from typing import Optional, Tuple
 
 import click
 
 from .default_site import get_default_site_info
 from ..utils.file_operations import ensure_file_exists
 
-def find_project_root(current_path):
+def find_project_root(current_path: str) -> str:
     while current_path != "/":
         if "blox.config" in os.listdir(current_path):
             return current_path
         current_path = os.path.dirname(current_path)
     raise FileNotFoundError("Project root with 'blox.config' not found.")
 
-
-def find_django_path(site):
+def find_django_path(site: str) -> str:
     return os.path.join(PROJECT_ROOT, f"sites/{site}/django")
 
-
-def write_running_ports(django_port, nextjs_port):
+def write_running_ports(django_port: int, nextjs_port: int) -> None:
     next_path = os.path.join(PROJECT_ROOT, "sites", "nextjs")
     env_file_path = os.path.join(next_path, ".env.local")
 
@@ -47,9 +46,7 @@ def write_running_ports(django_port, nextjs_port):
                 f.write(f"NEXT_PUBLIC_DJANGO_PORT={django_port}\n")
                 f.write(f"NEXT_PUBLIC_NEXTJS_PORT={nextjs_port}\n")
 
-
-
-def find_module_base_path(app_name=None, module_name=None, app_path=None):
+def find_module_base_path(app_name: str, module_name: Optional[str] = None, app_path: Optional[str] = None) -> Tuple[Optional[str], Optional[str]]:
     """Locate the modules.txt file and determine the base path for modules, searching specified directories.
 
     Args:
@@ -74,7 +71,6 @@ def find_module_base_path(app_name=None, module_name=None, app_path=None):
             return modules_file_path, base_path    
 
     return None, None
-
 
 PROJECT_ROOT = find_project_root(os.getcwd())
 SETTINGS_PATH = os.path.join(PROJECT_ROOT, "apps/core/django/backend/settings.py")

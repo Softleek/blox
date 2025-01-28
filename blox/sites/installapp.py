@@ -1,5 +1,6 @@
 import json
 import os
+from typing import List, Optional
 
 import click
 
@@ -12,15 +13,19 @@ from ..utils.file_operations import ensure_file_exists
     "--site", type=str, help="The name of the site where the app will be installed."
 )
 @click.argument("app")
-def installapp(site, app):
-    """Install an app into a selected site and update sites.json."""
+def installapp(site: Optional[str], app: str) -> None:
+    """
+    Install an app into a selected site and update sites.json.
 
+    :param site: The name of the site where the app will be installed.
+    :param app: The name of the app to install.
+    """
     # Load sites from sites.json
-    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
+    sites_json_path: str = os.path.join(PROJECT_ROOT, "sites", "sites.json")
     ensure_file_exists(sites_json_path, initial_data=[])
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:
-            sites = json.load(json_file)
+            sites: List[dict] = json.load(json_file)
     else:
         click.echo("No sites found in sites.json.")
         return
@@ -31,13 +36,13 @@ def installapp(site, app):
         for i, site_entry in enumerate(sites, 1):
             click.echo(f"{i}. {site_entry['site_name']}")
 
-        site_choice = click.prompt("Enter the number of the site", type=int)
+        site_choice: int = click.prompt("Enter the number of the site", type=int)
 
         if site_choice < 1 or site_choice > len(sites):
             click.echo("Invalid site selection.")
             return
 
-        selected_site = sites[site_choice - 1]
+        selected_site: dict = sites[site_choice - 1]
     else:
         selected_site = next((s for s in sites if s["site_name"] == site), None)
         if not selected_site:
@@ -45,10 +50,10 @@ def installapp(site, app):
             return
 
     # Load apps from apps.txt
-    apps_txt_path = os.path.join(PROJECT_ROOT, "config", "apps.txt")
+    apps_txt_path: str = os.path.join(PROJECT_ROOT, "config", "apps.txt")
     if os.path.exists(apps_txt_path):
         with open(apps_txt_path, "r") as apps_file:
-            apps = [
+            apps: List[str] = [
                 line.strip()
                 for line in apps_file
                 if line.strip() and not line.startswith("#")
@@ -67,7 +72,7 @@ def installapp(site, app):
         for i, app_entry in enumerate(apps, 1):
             click.echo(f"{i}. {app_entry}")
 
-        app_choice = click.prompt(
+        app_choice: int = click.prompt(
             "Enter the number of the app you want to install", type=int
         )
 
@@ -75,7 +80,7 @@ def installapp(site, app):
             click.echo("Invalid app selection.")
             return
 
-        selected_app = apps[app_choice - 1]
+        selected_app: str = apps[app_choice - 1]
     else:
         selected_app = app
         if selected_app not in apps:

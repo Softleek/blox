@@ -1,17 +1,19 @@
 import os
+from typing import List, Tuple
 
 from ...utils.config import find_module_base_path
 from ...utils.text import to_snake_case
 
 
-def get_modules_from_file(custom_app_path, app_name):
+def get_modules_from_file(custom_app_path: str, app_name: str) -> List[str]:
     """Retrieve modules from modules.txt, skipping lines that start with '#'.
 
     Args:
         custom_app_path (str): The path to the app directory.
+        app_name (str): The name of the app.
 
     Returns:
-        list: List of module names found in modules.txt.
+        List[str]: List of module names found in modules.txt.
 
     Raises:
         FileNotFoundError: If modules.txt is not found in the specified path.
@@ -35,15 +37,27 @@ def get_modules_from_file(custom_app_path, app_name):
     return modules
 
 
-def delete_associated_py_files(folder_path, structure):
-    """Delete specific .py files (e.g., views.py, models.py) in the specified folder and its subfolders."""
+def delete_associated_py_files(folder_path: str, structure: List[str]) -> None:
+    """Delete specific .py files (e.g., views.py, models.py) in the specified folder and its subfolders.
+
+    Args:
+        folder_path (str): The path to the folder where .py files should be deleted.
+        structure (List[str]): List of module names to be deleted.
+    """
     for root, dirs, files in os.walk(folder_path):
         for file in files:
             if file.endswith(".py") and file.replace(".py", "") in structure:
                 os.remove(os.path.join(root, file))
 
 
-def create_module_structure(app_path, custom_app_path, app_name):
+def create_module_structure(app_path: str, custom_app_path: str, app_name: str) -> None:
+    """Create the module structure for the given app.
+
+    Args:
+        app_path (str): The path to the app directory.
+        custom_app_path (str): The path to the custom app directory.
+        app_name (str): The name of the app.
+    """
     structure = ["views", "models", "tests", "serializers", "filters"]
     modules = get_modules_from_file(custom_app_path, app_name)
 

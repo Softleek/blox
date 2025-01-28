@@ -1,23 +1,46 @@
 import os
 import re
+from typing import List
 
 from ...utils.config import APPS_PATH
 from ...utils.text import to_titlecase_no_space
 from ..utils.app_actions import get_name_by_id
 
 
-def underscore_to_titlecase(underscore_str):
-    """Convert underscore string to title case."""
+def underscore_to_titlecase(underscore_str: str) -> str:
+    """Convert an underscore-separated string to title case.
+
+    Args:
+        underscore_str (str): The string to convert.
+
+    Returns:
+        str: The converted title case string.
+    """
     return re.sub(r"_(.)", lambda m: m.group(1).upper(), underscore_str.title())
 
 
-def write_urls(url_file, model_name, module_name):
-    """Generate a URL route for a given model."""
+def write_urls(url_file: str, model_name: str, module_name: str) -> str:
+    """Generate a URL route for a given model.
+
+    Args:
+        url_file (str): The URL file path.
+        model_name (str): The name of the model.
+        module_name (str): The name of the module.
+
+    Returns:
+        str: The URL route string.
+    """
     return f"router.register(r'{module_name}', {model_name}ViewSet)\n"
 
 
-def update_urls(app_name, module, django_path):
-    """Update the main urls.py file with new routes."""
+def update_urls(app_name: str, module: str, django_path: str) -> None:
+    """Update the main urls.py file with new routes.
+
+    Args:
+        app_name (str): The name of the application.
+        module (str): The module name.
+        django_path (str): The Django project path.
+    """
     url_file_path = os.path.join(django_path, f"{app_name}_app", "urls.py")
 
     # Prepare header lines
@@ -39,7 +62,7 @@ def update_urls(app_name, module, django_path):
     else:
         existing_content = ""
 
-    new_content = []
+    new_content: List[str] = []
 
     # Add header lines if not already in the file
     if header_lines not in existing_content:
@@ -75,7 +98,14 @@ def update_urls(app_name, module, django_path):
             url_file.write("\n" + urlpatterns_line)
 
 
-def is_invalid_model_name(name):
-    """Check if a model name is invalid."""
+def is_invalid_model_name(name: str) -> bool:
+    """Check if a model name is invalid.
+
+    Args:
+        name (str): The model name to check.
+
+    Returns:
+        bool: True if the model name is invalid, False otherwise.
+    """
     # Skip directories starting with '_' or 'pycache' and names starting or ending with underscores
     return name.startswith("_") or name.endswith("_") or name.lower() == "pycache"
