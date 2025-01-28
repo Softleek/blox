@@ -2,12 +2,18 @@ import json
 import os
 import subprocess
 import click
+import tempfile
+import shutil
 
 from ..utils.file_operations import ensure_file_exists
 
 @click.command()
 @click.argument("name", required=False, default=".")
-def init(name):
+def init(name: str) -> None:
+    """Initialize a new project similar to bench init."""
+    perform_init(name)
+    
+def perform_init(name):
     """Initialize a new project similar to bench init."""
     
     # Determine project root
@@ -37,16 +43,24 @@ schedule: blox schedule
 """)
     
     # Clone mainsite into sites/default
-    site_path = os.path.join(project_root, "sites", )
+    site_path = os.path.join(project_root, "sites")
     repo_url = "https://github.com/Softleek/mainsite.git"
     
-    try:
-        subprocess.check_call(["git", "clone", repo_url, site_path])
-    except subprocess.CalledProcessError as e:
-        click.echo(f"Failed to clone the repository: {e}")
-        return
-    
-    # Load sites.json
+    # Create a temporary directory
+    with tempfile.TemporaryDirectory() as temp_dir:
+        try:
+            subprocess.check_call(["git", "clone", repo_url, temp_dir])
+        except subprocess.CalledProcessError as e:
+            click.echo(f"Failed to clone the repository: {e}")
+            return
+
+        # Ensure the sites directory exists
+        os.makedirs(site_path, exist_ok=True)
+
+        # Move the cloned repository to the sites directory
+        for item in os.listdir(temp_dir):
+            shutil.move(os.path.join(temp_dir, item), site_path)
+
     try:
         with open(sites_json_path, "r") as json_file:
             sites = json.load(json_file) or []

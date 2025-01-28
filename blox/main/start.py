@@ -6,13 +6,14 @@ import threading
 import traceback
 import sys
 import click
+from typing import Optional
 
 from ..utils.config import (PROJECT_ROOT,
                             write_running_ports)
 from ..utils.initialize_django import initialize_django_env
 from ..utils.run_process import get_python_executable, run_subprocess
 
-def find_free_port(start_port=3000):
+def find_free_port(start_port: int) -> int:
     port = start_port
     while True:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
@@ -21,7 +22,7 @@ def find_free_port(start_port=3000):
             port += 1
 
 
-def stream_reader(stream, color, prefix="", first_line_only=False):
+def stream_reader(stream, prefix: str = "", color: str ="black", first_line_only: bool = False) -> None:
     """Reads from a stream and prints lines with a given color and optional prefix."""
     first_line = True
     for line in iter(stream.readline, ""):
@@ -37,7 +38,7 @@ def stream_reader(stream, color, prefix="", first_line_only=False):
 
 @click.command()
 @click.argument("mode", default="prod")
-def start(mode):
+def start(mode: str) -> None:
     """Start Django and Next.js servers for the specified site."""
     click.echo("Starting server")
 
@@ -54,8 +55,8 @@ def start(mode):
     django_port = find_free_port(8000)
     nextjs_port = find_free_port(3000)
 
-    django_process = None
-    nextjs_process = None
+    django_process: Optional[subprocess.Popen] = None
+    nextjs_process: Optional[subprocess.Popen] = None
 
     try:
 

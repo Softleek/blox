@@ -5,6 +5,7 @@ import subprocess
 import click
 
 from ..utils.config import APPS_PATH, PROJECT_ROOT
+from .init import perform_init
 
 
 def activate_virtualenv():
@@ -21,7 +22,7 @@ def activate_virtualenv():
     return activate_script
 
 
-def app_install_python_packages(app):
+def app_install_python_packages(app: str) -> None:
     requirements_file = os.path.join(APPS_PATH, app, "requirements.txt")
     if os.path.exists(requirements_file):
         click.echo(f"Installing packages from {requirements_file}...")
@@ -37,7 +38,7 @@ def install_python_packages():
         subprocess.check_call(["pip", "install", "-r", site_requirements])
 
 
-def app_install_npm_packages(app):
+def app_install_npm_packages(app: str) -> None:
     package_json_path = os.path.join(APPS_PATH, app, "package.json")
     if os.path.exists(package_json_path):
         click.echo(f"Installing packages from {package_json_path}...")
@@ -70,7 +71,7 @@ def app_install_npm_packages(app):
         click.echo(f"package.json not found for app '{app}'.")
 
 
-def install_npm_packages():
+def install_npm_packages() -> None:
     nextjs_path = os.path.join(PROJECT_ROOT, "sites", "nextjs")
 
     # Determine the command for the current operating system
@@ -87,13 +88,13 @@ def install_npm_packages():
         click.echo(f"Error installing libraries in core Next.js project: {e}")
 
 
-def install_dependencies():
+def install_dependencies() -> None:
     install_python_packages()
     install_npm_packages()
 
 
 @click.command()
-def install():
+def install() -> None:
     """
     Install all dependencies for the specified site.
     Usage: blox install --site <site_name>
@@ -102,7 +103,7 @@ def install():
     
     
 @click.command()
-def i():
+def i() -> None:
     """
     Install all dependencies for the specified site.
     Usage: blox i --site <site_name>
@@ -110,9 +111,15 @@ def i():
     run_install()
     
     
-def run_install():
+def run_install() -> None:
     # Activate the virtual environment
     activate_script = activate_virtualenv()
+    site_files = os.path.join(
+        PROJECT_ROOT, "sites", "django"
+    )
+    if not os.path.exists(site_files):
+        perform_init(".")
+        
     if activate_script:
         if os.name == "nt":
             os.system(activate_script)
@@ -120,7 +127,4 @@ def run_install():
             subprocess.call(["source", activate_script], shell=True)
 
     install_dependencies()
-    click.echo(f"Dependencies installed successfully.")
-
-
-
+    click.echo("Dependencies installed successfully.")

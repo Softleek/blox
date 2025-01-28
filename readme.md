@@ -61,6 +61,7 @@ Install Blox CLI in editable mode using pip. This allows you to make changes to 
 
 ```bash
 pip install -e .
+blox init .
 ```
 
 ### Setup Your Project
@@ -70,7 +71,7 @@ After installing Blox CLI, setup your project dependencies and configurations.
 #### Install Site & Dependencies
 
 ```bash
-blox newsite
+blox new-site [site_name]
 ```
 
 #### Apply Migrations
@@ -168,13 +169,13 @@ blox pip i --app appname  package1 package1
 Create and start a new application.
 
 ```bash
-blox newapp [appname]
+blox new-app [appname]
 ```
 
 Example:
 
 ```bash
-blox installapp myapp
+blox install-app myapp
 ```
 
 ### Command: blox deleteapp
@@ -182,13 +183,13 @@ blox installapp myapp
 Delete an application.
 
 ```bash
-blox unistallapp [appname]
+blox unistall-app [appname]
 ```
 
 Example:
 
 ```bash
-blox uninstallapp myapp
+blox uninstall-app myapp
 ```
 
 ### Command: blox addmodule
@@ -196,13 +197,13 @@ blox uninstallapp myapp
 Create and start a new module.
 
 ```bash
-blox newmodule [appname] [modulename]
+blox new-module [appname] [modulename]
 ```
 
 Example:
 
 ```bash
-blox addmodule myapp mymodule
+blox add-module myapp mymodule
 ```
 
 ### Command: blox deletemodule
@@ -210,13 +211,13 @@ blox addmodule myapp mymodule
 Delete a module.
 
 ```bash
-blox dropmodule [appname] [modulename]
+blox drop-module [appname] [modulename]
 ```
 
 Example:
 
 ```bash
-blox dropmodule myapp mymodule
+blox drop-module myapp mymodule
 ```
 
 ## Development

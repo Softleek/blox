@@ -8,7 +8,7 @@ from ..utils.config import PROJECT_ROOT
 
 
 @click.command()
-def build():
+def build() -> None:
     venv_path = os.path.join(PROJECT_ROOT, "env")
     if not os.path.exists(venv_path):
         click.echo("Virtual environment not found. Please run 'blox setup' first.")
