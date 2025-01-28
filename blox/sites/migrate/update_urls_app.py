@@ -54,7 +54,8 @@ def update_urls_py(app_name: str, modules: List[str], django_path: str) -> None:
             continue
 
         # Add import statement for the module
-        urls_content += f"from .views.{module_snake_case} import *\n"
+        if len(models) > 0:
+            urls_content += f"from .views.{module_snake_case} import *\n"
 
         # Generate ViewSet registrations for each model
         for model in models:

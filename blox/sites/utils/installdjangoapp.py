@@ -112,8 +112,8 @@ def install_django_app(app: str, project_root: str) -> None:
         # Add the new app's URL to project's urls.py
         main_urls_path = os.path.join(django_path, "core", "urls.py")
         with open(main_urls_path, "a") as main_urls_file:
-            main_urls_file.write("urlpatterns += [\n")
-            main_urls_file.write(f"    path('{app}/', include('{app_name}.urls')),\n")
+            main_urls_file.write("urlpatterns += [")
+            main_urls_file.write(f"    path('{app}/', include('{app_name}.urls')),")
             main_urls_file.write("]\n")
 
         # Modify apps.py to include the `ready` method
