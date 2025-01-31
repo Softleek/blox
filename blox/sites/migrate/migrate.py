@@ -52,6 +52,7 @@ def updatefiles(app: Optional[str] = None, module: Optional[str] = None, doc: Op
         all (bool): If True, migrate all sites.
     """
     sites = get_all_sites()
+    configure_app("core")
 
     if all:
         for site_entry in sites:

@@ -2,6 +2,7 @@ import os
 from typing import List, Tuple
 
 import click
+import shutil
 
 from ...utils.config import find_module_base_path
 from ...utils.text import to_snake_case
@@ -125,30 +126,16 @@ def process_folder_docs(app_name: str, module: str, folder_path: str, folder_typ
         for item_name in os.listdir(folder_path)
         if os.path.isdir(os.path.join(folder_path, item_name)) and not item_name.startswith(("_", "pycache"))
     ]
+    
+    module = to_snake_case(module)
 
-    # Iterate over the STRUCTURE and compare files in django_path
+    # Iterate over the STRUCTURE and delete all files in the module path
     for key, structure_item in STRUCTURE.items():
-        module_path = os.path.join(django_path, app_name, structure_item, module)
+        module_path = os.path.join(django_path, f"{app_name}_app", structure_item, module)
         
         if os.path.exists(module_path):
-            # List all files in the structure module path
-            module_files = os.listdir(module_path)
-            
-            for module_file in module_files:
-                # Skip files starting with an underscore
-                if module_file.startswith("_"):
-                    continue
-                
-                file_base_name, _ = os.path.splitext(module_file)  # Remove file extension
-                
-                # Remove the file if it is not in folder_docs
-                if file_base_name not in folder_docs:
-                    file_to_remove = os.path.join(module_path, module_file)
-                    try:
-                        os.remove(file_to_remove)
-                        print(f"Removed unused file: {file_to_remove}")
-                    except Exception as e:
-                        print(f"Error removing file {file_to_remove}: {e}")
+            shutil.rmtree(module_path)
+        os.makedirs(module_path, exist_ok=True)
 
     # Process each document in the folder
     for item_name in folder_docs:

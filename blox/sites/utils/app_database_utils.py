@@ -66,6 +66,7 @@ def create_entries_from_config(django_path: str, site: str) -> None:
     sites = get_all_sites()
     site_data = next((s for s in sites if s.get("site_name") == site), None)
     installed_apps = site_data.get("installed_apps", []) if site_data else []
+    installed_apps.append("core")
     with open(DOCS_JSON_PATH, "r") as file:
         config = json.load(file)
 
@@ -130,9 +131,9 @@ def create_entries_from_config(django_path: str, site: str) -> None:
 
                 if doc_id in existing_docs:
                     doc = existing_docs[doc_id]
-                    if doc.name != doc_name:
-                        doc.name = doc_name
-                        doc.save()
+                    # if doc.name != doc_name:
+                    #     doc.name = doc_name
+                    #     doc.save()
                 else:
                     docs_to_create.append(
                         Document(id=doc_id, name=doc_name, module_id=module_id, app_id=app_id)
