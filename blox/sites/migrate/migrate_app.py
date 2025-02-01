@@ -74,8 +74,9 @@ def migrate_app(app_name: str, django_path: str) -> None:
         add_init_files(module_folder_path, modules)
 
     update_urls_py(app_name, modules, django_path)
-    for module in modules:
-        migrate_module(app_name, module, django_path)
+    if modules:
+        for module in modules:
+            migrate_module(app_name, module, django_path)
 
     # create_manual_migrations(app_name, django_path)
 

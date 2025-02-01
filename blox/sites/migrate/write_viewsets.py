@@ -75,11 +75,12 @@ def write_viewset(
         class_names = find_matching_class(model_data, model_name)
         if isinstance(class_names, list):  # If no exact match, find the nearest
             nearest_class = find_nearest_class(model_name, class_names)
-            if not nearest_class:
-                raise ValueError(
-                    f"No matching or similar class found for {model_name} in {model_file_path}."
-                )
-            modelimport_name = nearest_class
+            if nearest_class:
+                modelimport_name = nearest_class
+                # raise ValueError(
+                #     f"No matching or similar class found for {model_name} in {model_file_path}."
+                # )
+            modelimport_name = model_name
         else:
             modelimport_name = model_name
 

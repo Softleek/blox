@@ -24,46 +24,47 @@ def update_urls_py(app_name: str, modules: List[str], django_path: str) -> None:
     urls_content = "from django.urls import path, include\n"
     urls_content += "from rest_framework.routers import DefaultRouter\nrouter = DefaultRouter()\n"
 
-    # Process each module
-    for module in modules:
-        module_snake_case = to_snake_case(module)
-        _, module_path = find_module_base_path(
-            app_name=app_name, module_name=module_snake_case
-        )
-
-        # Check if the module path exists
-        if not module_path or not os.path.exists(module_path):
-            click.echo(
-                f"Module '{module}' does not exist in app '{module_path}'. Skipping..."
+    if modules:
+        # Process each module
+        for module in modules:
+            module_snake_case = to_snake_case(module)
+            _, module_path = find_module_base_path(
+                app_name=app_name, module_name=module_snake_case
             )
-            continue
 
-        # Define paths for 'doc' and 'doctype' folders
-        doc_path = os.path.join(module_path, "doc")
-        doctype_path = os.path.join(module_path, "doctype")
+            # Check if the module path exists
+            if not module_path or not os.path.exists(module_path):
+                click.echo(
+                    f"Module '{module}' does not exist in app '{module_path}'. Skipping..."
+                )
+                continue
 
-        # Check for 'doc' or 'doctype' folders and process whichever exists
-        if os.path.isdir(doc_path):
-            models = extract_model_names(doc_path)
-        elif os.path.isdir(doctype_path):
-            models = extract_model_names(doctype_path)
-        else:
-            click.echo(
-                f"No 'doc' or 'doctype' folder found for module '{module}' in app '{app_name}'."
-            )
-            continue
+            # Define paths for 'doc' and 'doctype' folders
+            doc_path = os.path.join(module_path, "doc")
+            doctype_path = os.path.join(module_path, "doctype")
 
-        # Add import statement for the module
-        if len(models) > 0:
-            urls_content += f"from .views.{module_snake_case} import *\n"
+            # Check for 'doc' or 'doctype' folders and process whichever exists
+            if os.path.isdir(doc_path):
+                models = extract_model_names(doc_path)
+            elif os.path.isdir(doctype_path):
+                models = extract_model_names(doctype_path)
+            else:
+                click.echo(
+                    f"No 'doc' or 'doctype' folder found for module '{module}' in app '{app_name}'."
+                )
+                continue
 
-        # Generate ViewSet registrations for each model
-        for model in models:
-            model_name = to_titlecase_no_space(get_name_by_id(model, "doc"))
-            viewset_name = f"{model_name}ViewSet"
-            urls_content += f"router.register(r'{model}', {viewset_name})\n"
+            # Add import statement for the module
+            if len(models) > 0:
+                urls_content += f"from .views.{module_snake_case} import *\n"
 
-    # Add the router's URLs to urlpatterns
+            if models:
+                for model in models:
+                    model_name = to_titlecase_no_space(get_name_by_id(model, "doc"))
+                    viewset_name = f"{model_name}ViewSet"
+                    urls_content += f"router.register(r'{model}', {viewset_name})\n"
+
+        # Add the router's URLs to urlpatterns
     urls_content += """
 
 urlpatterns = [

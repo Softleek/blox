@@ -258,7 +258,9 @@ def write_link_field(module_file: TextIO, field: Dict[str, Any], model_name: str
         django_path (str): The Django app path.
     """
     field_id = rename_reserved_keywords(field.get("fieldname", ""))
-    related_model = field.get("options", "'self'")
+    related_model = field.get("options")
+    if not related_model:
+        return
 
     app_name, _ = get_app_module_for_model(to_snake_case(related_model), django_path)
     # Ensure related_model is formatted correctly
@@ -294,7 +296,9 @@ def write_table_field(module_file: TextIO, field: Dict[str, Any], model_name: st
         django_path (str): The Django app path.
     """
     field_id = rename_reserved_keywords(field.get("fieldname", ""))
-    related_model = field.get("options", "'self'")
+    related_model = field.get("options")
+    if not related_model:
+        return
 
     app_name, _ = get_app_module_for_model(to_snake_case(related_model), django_path)
     # Ensure related_model is formatted correctly

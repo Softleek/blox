@@ -199,8 +199,9 @@ def create_doctypes_json(app_name: str, module_name: Optional[str] = None) -> No
         process_module(app_name, module_name, app_entry)
     else:
         modules = find_modules(app_name)
-        for module in modules:
-            process_module(app_name, module, app_entry)
+        if modules:
+            for module in modules:
+                process_module(app_name, module, app_entry)
 
     save_data_to_file(existing_data)
 

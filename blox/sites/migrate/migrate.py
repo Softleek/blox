@@ -177,6 +177,7 @@ def run_migration(app: Optional[str] = None, module: Optional[str] = None, doc: 
                     run_migrate_django(site_entry.get("site_name"))
             else:
                 run_migrate_django(site)
+        run_migrate_django()
         click.echo("Migration completed successfully.")
     except Exception as e:
         click.echo(f"Migration failed: {e}")
