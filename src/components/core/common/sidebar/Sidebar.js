@@ -179,41 +179,6 @@ const Sidebar = () => {
               />
             ))} */}
 
-            <SidebarList
-              icon={faCashRegister}
-              text="New Sale"
-              link="/app/sales"
-              active={dashboardText === "New Sale"}
-            />
-
-            <SidebarList
-              icon={faFileInvoice}
-              text="Invoices"
-              link="/app/invoices"
-              active={dashboardText === "Invoices"}
-            />
-
-            <SidebarList
-              icon={faBox}
-              text="Products"
-              link="/app/products"
-              active={dashboardText === "Products"}
-            />
-
-            <SidebarList
-              icon={faBox}
-              text="Stock Entry"
-              link="/app/stock_entry"
-              active={dashboardText === "Stock Entry"}
-            />
-
-            <SidebarList
-              icon={faChartBar}
-              text="Sales Reports"
-              link="/report"
-              active={dashboardText === "Sales Reports"}
-            />
-
             <li className="w-full mb-2 mt-6 pr-2">
               <h6 className="pl-3 ml-2 text-xs font-bold leading-tight uppercase opacity-60">
                 Admin

@@ -43,7 +43,7 @@ def start(mode):
 
     # Create Django and Next.js paths
     django_path = os.path.join(
-        PROJECT_ROOT, "sites", "django"
+        PROJECT_ROOT, "backend"
     )
     nextjs_path = os.path.join(
         PROJECT_ROOT

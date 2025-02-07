@@ -15,7 +15,7 @@ def find_project_root(current_path: str) -> str:
     raise FileNotFoundError("Project root with 'blox.config' not found.")
 
 def find_django_path(site: str) -> str:
-    return os.path.join(PROJECT_ROOT, f"sites/{site}/django")
+    return os.path.join(PROJECT_ROOT, f"backend")
 
 def write_running_ports(django_port: int, nextjs_port: int) -> None:
     next_path = os.path.join(PROJECT_ROOT)
@@ -73,15 +73,10 @@ def find_module_base_path(app_name: str, module_name: Optional[str] = None, app_
     return None, None
 
 PROJECT_ROOT = find_project_root(os.getcwd())
-SETTINGS_PATH = os.path.join(PROJECT_ROOT, "apps/core/django/backend/settings.py")
-DB_PATH = os.path.join(PROJECT_ROOT, "apps/core/django/db.sqlite3")
-BASE_PATH = os.path.join(PROJECT_ROOT, "apps/core/django")
-JSON_FILE_PATH = os.path.join(PROJECT_ROOT, "apps/core/django/data.json")
-NEXTJS_PATH = os.path.join(PROJECT_ROOT, "apps/core/nextjs")
 APPS_TXT_PATH = os.path.join(PROJECT_ROOT, "config", "apps.txt")
 SITES_JSON_PATH = os.path.join(PROJECT_ROOT, "sites", "sites.json")
 DOCS_JSON_PATH = os.path.join(PROJECT_ROOT, "sites", "doctypes.json")
 APPS_PATH = os.path.join(PROJECT_ROOT, "apps")
-DJANGO_PATH =  os.path.join(PROJECT_ROOT, "sites", "django")
+DJANGO_PATH =  os.path.join(PROJECT_ROOT, "backend")
 DEFAULT_SITE = get_default_site_info(PROJECT_ROOT)
 SITES_PATH = os.path.join(PROJECT_ROOT, "sites")

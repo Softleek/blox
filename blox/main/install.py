@@ -47,7 +47,7 @@ def install_python_packages() -> None:
     Install Python packages for the site.
     """
     site_requirements = os.path.join(
-        PROJECT_ROOT, "sites", "django", "requirements.txt"
+        PROJECT_ROOT, "backend", "requirements.txt"
     )
     if os.path.exists(site_requirements):
         click.echo(f"Installing packages from {site_requirements}...")
@@ -65,7 +65,7 @@ def app_install_npm_packages(app: str) -> None:
     if os.path.exists(package_json_path):
         click.echo(f"Installing packages from {package_json_path}...")
 
-        nextjs_path = os.path.join(PROJECT_ROOT, "sites", "nextjs")
+        nextjs_path = os.path.join(PROJECT_ROOT)
 
         # Read package.json to get dependencies and devDependencies
         with open(package_json_path, "r") as f:
@@ -97,7 +97,7 @@ def install_npm_packages() -> None:
     """
     Install npm packages for the site.
     """
-    nextjs_path = os.path.join(PROJECT_ROOT, "sites", "nextjs")
+    nextjs_path = os.path.join(PROJECT_ROOT)
 
     # Determine the command for the current operating system
     npm_command = ["npm", "install"]
@@ -146,7 +146,7 @@ def run_install() -> None:
     # Activate the virtual environment
     activate_script = activate_virtualenv()
     site_files = os.path.join(
-        PROJECT_ROOT, "sites", "django"
+        PROJECT_ROOT, "backend"
     )
     if not os.path.exists(site_files):
         perform_init(".")

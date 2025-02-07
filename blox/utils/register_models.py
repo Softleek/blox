@@ -26,16 +26,9 @@ def register_to_model_json(
         doc_name (str): The document's display name.
         django_path (str): Path to the Django project, used to locate config/models.json.
     """
-    # Define the path to the models.json file in the config folder
-    config_folder_path = os.path.join(django_path, "..", "config")
-    models_json_path = os.path.join(config_folder_path, "models.json")
-
-    # Ensure the config folder exists
-    os.makedirs(config_folder_path, exist_ok=True)
-
     # Load existing data if models.json exists, otherwise start with an empty list
-    if os.path.exists(models_json_path):
-        with open(models_json_path, "r") as file:
+    if os.path.exists(DOCS_JSON_PATH):
+        with open(DOCS_JSON_PATH, "r") as file:
             model_entries = json.load(file)
     else:
         model_entries = []
@@ -59,7 +52,7 @@ def register_to_model_json(
         module_entry["docs"].append({"id": doc_id, "name": doc_name})
 
     # Write back to models.json
-    with open(models_json_path, "w") as file:
+    with open(DOCS_JSON_PATH, "w") as file:
         json.dump(model_entries, file, indent=4)
 
 
