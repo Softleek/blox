@@ -1,0 +1,83 @@
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useNavbar } from "@/contexts/NavbarContext";
+import { useSidebar } from "@/contexts/SidebarContext";
+import { toTitleCase } from "@/utils/textConvert";
+import Loading from "@/components/core/account/Loading";
+import { ConfigProvider } from "@/contexts/ConfigContext";
+import DoctypeListTable from "@/components/pages/list/doctype/DoctypeListTable";
+import { findDocDetails } from "@/utils/findDocDetails";
+import { importFile } from "@/utils/importFile";
+
+const DocumentDetail = () => {
+  const router = useRouter();
+  const { slug } = router.query;
+  const [config, setConfig] = useState(null);
+  const [appData, setAppData] = useState(null);
+  const [filePath, setFilePath] = useState(null);
+
+  const {
+    updateDashboardText,
+    updatePagesText,
+    updateTextColor,
+    updateIconColor,
+    updatePageInfo,
+    updateNavLinks,
+  } = useNavbar();
+  const { setSidebarHidden } = useSidebar();
+
+  useEffect(() => {
+    if (!slug) return;
+
+    const fetchDocumentData = async () => {
+      try {
+        // Fetch document details
+        const docData = findDocDetails(slug);
+        if (!docData) throw new Error("Failed to fetch document details");
+
+        setAppData({ ...docData, endpoint: `${docData.app_id}/${slug}` });
+        setFilePath(docData.docPath);
+
+        // Update UI elements
+        const title = toTitleCase(slug);
+        updateDashboardText(title);
+        updatePagesText(toTitleCase(docData.module));
+        updatePageInfo({ text: title, link: `${slug}` });
+        updateNavLinks([
+          { text: toTitleCase(docData.app), link: `/apps/${docData.app_id}` },
+          {
+            text: toTitleCase(docData.module),
+            link: `/modules/${docData.module_id}`,
+          },
+        ]);
+
+        // Fetch configuration data
+        const configData = await importFile(slug, `${slug}.json`);
+        if (!configData) throw new Error("Failed to load configuration");
+
+        setConfig(configData.content);
+
+        // Sidebar and UI customization
+        updateTextColor("text-gray-800");
+        updateIconColor("text-purple-800");
+        setSidebarHidden(false);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+
+    fetchDocumentData();
+  }, [slug]);
+
+  if (!config) {
+    return <Loading />;
+  }
+
+  return (
+    <ConfigProvider initialConfig={config} initialAppData={appData}>
+      <DoctypeListTable tableConfig={config} />
+    </ConfigProvider>
+  );
+};
+
+export default DocumentDetail;

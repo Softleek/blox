@@ -1,0 +1,139 @@
+import Select from "react-select";
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import { fetchData } from "@/utils/Api";
+import { toUnderscoreLowercase } from "@/utils/textConvert";
+import { useConfig } from "@/contexts/ConfigContext";
+import QuickEntryModal from "../pages/list/quickentry";
+import { findDocDetails } from "@/utils/findDocDetails";
+import { importFile } from "@/utils/importFile";
+
+const LinkSelectField = ({
+  value = "",
+  onChange,
+  onValueChange,
+  placeholder = "",
+  isMulti = false,
+  readOnly = false,
+  preview = false,
+  hidden = false,
+  field,
+}) => {
+  const [endpoint, setEndpoint] = useState(null);
+  const [appData, setAppData] = useState(null);
+  const [options, setOptions] = useState([]);
+  const [display, setDisplay] = useState(value);
+  const [isQuickEntryModalOpen, setIsQuickEntryModalOpen] = useState(false);
+  const { setSelectedItem } = useConfig();
+  const inputRef = useRef(null);
+
+  const initializeField = useCallback(async () => {
+    if (!field) return;
+
+    try {
+      const slug = toUnderscoreLowercase(field.options);
+      const docData = findDocDetails(slug);
+
+      if (!docData) {
+        setEndpoint(slug);
+        setAppData({
+          search_fields: field?.search_fields || "id",
+          title_field: field?.title_field || "id",
+        });
+      } else {
+        setEndpoint(`${docData.app}/${slug}`);
+
+        const configData = await importFile(slug, `${slug}.json`);
+
+        setAppData(configData.content);
+      }
+    } catch (error) {
+      console.error("Error initializing field", error);
+    }
+  }, [field, value]);
+
+  const fetchOptions = useCallback(
+    async (search = "") => {
+      if (!endpoint || readOnly || preview || hidden) return;
+
+      try {
+        const response = await fetchData({ page_length: 10, search }, endpoint);
+        const fetchedOptions =
+          response?.data?.data?.map((option) => ({
+            value: option.id,
+            label: option[appData?.title_field] || option.id,
+            fullData: option,
+          })) || [];
+
+        setOptions([
+          ...fetchedOptions,
+          { value: "add-new", label: "+ Add new", isAddNew: true },
+        ]);
+      } catch (error) {
+        console.error("Error fetching options", error);
+        setOptions([{ value: "add-new", label: "+ Add new", isAddNew: true }]);
+      }
+    },
+    [endpoint, appData, readOnly, preview, hidden]
+  );
+
+  useEffect(() => {
+    initializeField();
+  }, [initializeField]);
+
+  useEffect(() => {
+    fetchOptions();
+  }, [fetchOptions]);
+
+  const handleSelectionChange = (selectedOptions) => {
+    if (selectedOptions?.some((option) => option.isAddNew)) {
+      setIsQuickEntryModalOpen(true);
+    } else {
+      onChange(selectedOptions.map((option) => option.fullData));
+      onValueChange(selectedOptions);
+      setSelectedItem(null);
+    }
+  };
+
+  const handleClose = async (response) => {
+    setIsQuickEntryModalOpen(false);
+    if (response) {
+      await fetchOptions();
+    }
+  };
+
+  if (hidden || preview) return null;
+
+  useEffect(() => {
+    if (Array.isArray(value) && !!appData?.title_field) {
+      const updatedDisplay = value.map((val) => ({
+        ...val,
+        label: val.fullData[appData?.title_field] || val.fullData.id,
+      }));
+      setDisplay(updatedDisplay);
+    }
+  }, [value, appData]);
+
+  return (
+    <div className="relative w-full">
+      {isQuickEntryModalOpen && (
+        <QuickEntryModal
+          isOpen={isQuickEntryModalOpen}
+          onClose={handleClose}
+          doc={appData?.name}
+          configData={appData}
+          redirect={false}
+        />
+      )}
+      <Select
+        isMulti
+        options={options}
+        value={display}
+        onChange={handleSelectionChange}
+        placeholder={`Select ${field?.label || ""}`}
+        classNamePrefix="custom-select"
+      />
+    </div>
+  );
+};
+
+export default LinkSelectField;
