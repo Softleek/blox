@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import FieldInput from "./FieldInput";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faCopy } from "@fortawesome/free-solid-svg-icons";
@@ -16,7 +17,7 @@ const TableRow = ({
   handleRowEdit,
   handleRowSelect,
   handleDeleteRow,
-  handleDuplicateRow, // New prop for duplicating a row
+  handleDuplicateRow,
   getFieldDetails,
   configData,
 }) => {
@@ -28,9 +29,16 @@ const TableRow = ({
       );
     }
   };
+
   return (
-    <tr key={rowIndex}>
-      {/* Row selection checkbox */}
+    <motion.tr
+      key={rowIndex}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 5, ease: "easeInOut", delay: rowIndex * 0.5 }}
+      className="bg-white shadow-sm hover:bg-gray-100"
+    >
       <td className="px-2">
         <input
           type="checkbox"
@@ -39,19 +47,14 @@ const TableRow = ({
           className="form-checkbox text-center"
         />
       </td>
-      {/* Index Column (No Data Stored) */}
-      {/* <td className="p-1 text-center border-r-[1px] border-gray-200">
-        {rowIndex + 1} 
-      </td> */}
       <td className="text-center border-r-[1px] border-gray-200">
         <span
           onClick={openFullForm}
-          className={`px-2 text-purple-900 text-center border-r-[1px] cursor-pointer hover:text-purple-700 border-gray-200`}
+          className="px-2 text-purple-900 cursor-pointer hover:text-purple-700"
         >
           {row?.id}
         </span>
       </td>
-      {/* Row Data */}
       {columnsData.map((column) => (
         <td
           key={column.fieldname}
@@ -69,26 +72,19 @@ const TableRow = ({
           />
         </td>
       ))}
-      {/* Edit, Duplicate, and Delete Buttons */}
-      <td
-        className={`p-1 flex space-x-2 ${readOnly ? "hidden" : ""}`}
-        hidden={readOnly}
-      >
-        {/* Edit Button */}
+      <td className={`p-1 flex space-x-2 ${readOnly ? "hidden" : ""}`}>
         <button
           className="text-blue-500"
           onClick={() => handleRowEdit(rowIndex)}
         >
           <FontAwesomeIcon icon={faEdit} />
         </button>
-        {/* Duplicate Button */}
         <button
           className="text-green-500"
           onClick={() => handleDuplicateRow(rowIndex)}
         >
           <FontAwesomeIcon icon={faCopy} />
         </button>
-        {/* Delete Button */}
         <button
           className="text-red-500"
           onClick={() => handleDeleteRow(rowIndex)}
@@ -96,7 +92,7 @@ const TableRow = ({
           <FontAwesomeIcon icon={faTrash} />
         </button>
       </td>
-    </tr>
+    </motion.tr>
   );
 };
 

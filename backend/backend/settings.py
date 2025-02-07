@@ -23,7 +23,7 @@ pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-PROJECT_PATH = BASE_DIR.parent.parent
+PROJECT_PATH = BASE_DIR.parent
 CONFIG_PATH = os.path.join(PROJECT_PATH, "config")
 SITE_PATH = os.path.join(PROJECT_PATH, "sites")
 sys.path.append(str(PROJECT_PATH)) 

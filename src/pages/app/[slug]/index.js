@@ -8,11 +8,13 @@ import { ConfigProvider } from "@/contexts/ConfigContext";
 import DoctypeListTable from "@/components/pages/list/doctype/DoctypeListTable";
 import { findDocDetails } from "@/utils/findDocDetails";
 import { importFile } from "@/utils/importFile";
+import NotFoundPage from "@/components/core/common/NotFound";
 
 const DocumentDetail = () => {
   const router = useRouter();
   const { slug } = router.query;
   const [config, setConfig] = useState(null);
+  const [error, setError] = useState(false);
   const [appData, setAppData] = useState(null);
   const [filePath, setFilePath] = useState(null);
 
@@ -63,12 +65,16 @@ const DocumentDetail = () => {
         setSidebarHidden(false);
       } catch (error) {
         console.error(error.message);
+        setError(true);
       }
     };
 
     fetchDocumentData();
   }, [slug]);
 
+  if (error) {
+    return <NotFoundPage />;
+  }
   if (!config) {
     return <Loading />;
   }

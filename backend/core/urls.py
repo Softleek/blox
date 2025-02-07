@@ -12,7 +12,7 @@ from .views import (AppViewSet, BulkDeleteAPIView,  ReminderViewSet,
                     ModuleViewSet, OTPActivationView, PermissionViewSet,
                     ProfileView, ResendOTPView, SendEmailView, SendSmsView,
                     UserGetViewSet, UserGroupPermissions, UserIPAddressViewSet,
-                    UserViewSet, RoleViewSet,    UserListViewSet,)
+                    UserViewSet, RoleViewSet,)
 
 router = DefaultRouter()
 router.register(r"app", AppViewSet)
@@ -50,7 +50,6 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="logout"),
     path("profile/", ProfileView.as_view(), name="profile"),
     path("roles/", UserGroupPermissions.as_view(), name="roles"),
-    path("user/list/", UserListViewSet.as_view(), name="userlist"),
     path("sendsms/", SendSmsView.as_view(), name="sms"),
     path("dataimport/", DataImportAPIView.as_view(), name="dataimport"),
     path("bulkdelete/", BulkDeleteAPIView.as_view(), name="bulkdelete"),

@@ -42,7 +42,7 @@ def django(command: str, args: List[str], site: Optional[str] = None) -> None:
         site (Optional[str], optional): The site to run the command for. Defaults to None.
     """
     django_path = os.path.join(
-        PROJECT_ROOT, "sites", "django"
+        PROJECT_ROOT, "backend"
     )
 
     venv_path = os.path.join(PROJECT_ROOT, "env")

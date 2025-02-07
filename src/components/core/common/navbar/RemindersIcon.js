@@ -10,15 +10,15 @@ const RemindersIcon = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchReminders = async () => {
-    const responseData = await fetchData({}, "reminders");
+    const responseData = await fetchData({}, "core/reminder");
 
     if (responseData?.data) {
-      const data = responseData.data;
+      const data = responseData?.data;
 
       // Filter the reminders to get those within the next 2 weeks
       const twoWeeksFromNow = new Date();
       twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
-      const upcomingReminders = data.filter((reminder) => {
+      const upcomingReminders = data?.data?.filter((reminder) => {
         const nextRunDate = new Date(reminder.next_run);
         return nextRunDate <= twoWeeksFromNow && nextRunDate >= new Date();
       });

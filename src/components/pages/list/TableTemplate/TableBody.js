@@ -5,6 +5,7 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { timeAgo } from "@/utils/DateFormat";
 import handleDelete from "./DeleteHandler";
 import { useModal } from "@/contexts/ModalContext";
+import { motion } from "framer-motion";
 
 const TableBody = ({
   data,
@@ -34,25 +35,7 @@ const TableBody = ({
       case "boolean":
         return <span>{value ? "Yes" : "No"}</span>;
       case "options":
-        return (
-          <span
-            className={`${
-              field?.options.find((option) => option.value === value)?.style
-            }`}
-          >
-            {value}
-          </span>
-        );
       case "select":
-        return (
-          <span
-            className={`${
-              field?.options.find((option) => option.value === value)?.style
-            }`}
-          >
-            {value}
-          </span>
-        );
       case "status":
         return (
           <span
@@ -65,8 +48,8 @@ const TableBody = ({
         );
       case "link":
         return (
-          <Link href={value}>
-            <a className="text-blue-500 underline">{value}</a>
+          <Link href={value} className="text-blue-500 underline">
+            {value}
           </Link>
         );
       default:
@@ -77,10 +60,12 @@ const TableBody = ({
   return (
     <tbody>
       {data?.map((item, index) => (
-        <tr
+        <motion.tr
           key={index}
-          className={` ${index % 2 ? "bg-pink-50" : ""} hover:bg-purple-100`}
-          href={`${currentPathWithoutParams}/${item.id}`}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+          className={`${index % 2 ? "bg-pink-50" : ""} hover:bg-purple-100`}
         >
           <td className="items-start text-left">
             <input
@@ -96,7 +81,7 @@ const TableBody = ({
             return (
               <td
                 key={fieldIndex}
-                className="p-2 align-middle bg-transparent border-t shadow-transparent break-words"
+                className="p-2 align-middle bg-transparent shadow-transparent break-words"
               >
                 {field_id === "id" ? (
                   <Link href={`${currentPathWithoutParams}/${item.id}`}>
@@ -133,27 +118,15 @@ const TableBody = ({
                   </a>
                 ) : field.type === "multiselect" ? (
                   <div className="flex flex-wrap items-center text-center gap-1">
-                    {item[field_id]?.map((selectedOption) => {
-                      return (
-                        <span
-                          key={selectedOption}
-                          className="bg-purple-100 text-purple-700 py-[1px] px-[4px] rounded-md text-[9px] font-medium shadow-sm"
-                        >
-                          {selectedOption}
-                        </span>
-                      );
-                    })}
+                    {item[field_id]?.map((selectedOption) => (
+                      <span
+                        key={selectedOption}
+                        className="bg-purple-100 text-purple-700 py-[1px] px-[4px] rounded-md text-[9px] font-medium shadow-sm"
+                      >
+                        {selectedOption}
+                      </span>
+                    ))}
                   </div>
-                ) : field.type === "selec" ? (
-                  <span
-                    className={`font-semibold leading-tight bg-gradient-to-tl px-2.5 text-xs rounded-1.8 py-1.4 inline-block text-center align-baseline font-bold uppercase leading-none text-white ${
-                      field?.options?.find(
-                        (option) => option.value === item[field_id]
-                      )?.style
-                    }`}
-                  >
-                    {item[field_id]}
-                  </span>
                 ) : (
                   <span>{item[field_id]}</span>
                 )}
@@ -166,18 +139,17 @@ const TableBody = ({
               {timeAgo(new Date(item.modified))}
             </td>
           )}
-          <td className="align-middle bg-transparent border-t shadow-transparent">
+          <td className="align-middle bg-transparentshadow-transparent">
             <Link href={`${currentPathWithoutParams}/${item.id}`}>
               <div
                 onClick={() => onEdit(item)}
                 className="text-xs font-semibold leading-tight text-slate-400 cursor-pointer"
               >
                 <FontAwesomeIcon icon={faEdit} />
-                {/* <EditButton /> */}
               </div>
             </Link>
           </td>
-          <td className="align-middle bg-transparent border-t shadow-transparent">
+          <td className="align-middle bg-transparent shadow-transparent">
             <div className="text-xs w-4 h-4 font-semibold leading-tight text-slate-400 cursor-pointer">
               <button
                 className="text-red-500"
@@ -195,7 +167,7 @@ const TableBody = ({
               </button>
             </div>
           </td>
-        </tr>
+        </motion.tr>
       ))}
     </tbody>
   );

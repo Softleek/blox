@@ -116,7 +116,7 @@ def newsite(site_name: str, db_type: str) -> None:
         }
     else:
         # SQLite database setup
-        db_name = os.path.join(PROJECT_ROOT, "sites", "django", f"{site_name}.sqlite3")
+        db_name = os.path.join(PROJECT_ROOT, "backend", f"{site_name}.sqlite3")
         site_info: Dict[str, Any] = {
             "site_name": site_name,
             "database": {

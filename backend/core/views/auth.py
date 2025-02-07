@@ -401,18 +401,3 @@ class UserGetViewSet(APIView):
 
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        
-class UserListViewSet(APIView):
-    permission_classes = [AllowAny] 
-    
-    def get(self, request):
-        try:
-            # Fetch all users and only select the 'username' field
-            users = User.objects.using("pos").values('username')
-
-            # Return the list of usernames
-            return Response(users, status=status.HTTP_200_OK)
-
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

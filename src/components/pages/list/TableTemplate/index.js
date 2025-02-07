@@ -167,8 +167,8 @@ const TableTemplate = ({
           <div className="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-md bg-clip-border">
             {/* <TableHeader title={tableConfig?.name} /> */}
 
-            <div className="flex-auto px-0 pt-0 pb-1 text-[13px] bg-white">
-              <div className="px-4 mt-2 overflow-auto max-h-[72vh] min-h-[72vh]">
+            <div className="flex-auto px-0 pt-0 text-[13px] bg-white">
+              <div className="px-4 mt-2 overflow-auto max-h-[66vh] min-h-[66vh]">
                 <table className="items-center w-full mb-1 align-top border-gray-200 text-slate-500">
                   <TableHead
                     updatedFields={updatedFields}

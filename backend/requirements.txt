@@ -33,4 +33,3 @@ tzdata==2023.3
 urllib3==2.0.4
 unicode 
 escpos
-pywin32

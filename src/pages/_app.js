@@ -86,11 +86,11 @@ export default function App({ Component, pageProps }) {
             } flex flex-row relative items-center justify-center rounded-xl transition-all duration-200 w-full max-w-[1536px]`}
           >
             {!isAuthPage && (
-              <div className="h-[90vh] w-fit">
+              <div className="h-[88vh] w-fit">
                 <Sidebar />
               </div>
             )}
-            <div className="flex-grow h-[90vh] overflow-y-auto">
+            <div className="flex-grow h-[88vh] overflow-y-auto">
               <div className="relative flex-grow">
                 <Component {...pageProps} />
               </div>

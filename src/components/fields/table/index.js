@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import TableRow from "./TableRow";
 
 const Table = ({
@@ -18,11 +19,14 @@ const Table = ({
   configData,
   handleRowSelect,
 }) => {
-  // Ensure there is always at least one row
   const displayedTableData = tableData?.length > 0 ? tableData : [{}];
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 5, ease: "easeInOut" }}
+    >
       <table className="w-full table-condensed border border-gray-200 border-collapse text-xs text-center">
         <thead className="rounded-t-md bg-gray-200">
           <tr>
@@ -34,7 +38,6 @@ const Table = ({
                 className="form-checkbox"
               />
             </th>
-            {/* <th>No</th> */}
             <th>ID</th>
             {columnsData.map((column) => (
               <th key={column.fieldname} className="px-2">
@@ -65,7 +68,7 @@ const Table = ({
           ))}
         </tbody>
       </table>
-    </div>
+    </motion.div>
   );
 };
 
