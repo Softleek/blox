@@ -44,8 +44,6 @@ next-env.d.ts
 # Project-specific files
 /sites
 /apps
-/backend
-
 # Python-related
 /blox.egg-info
 **/__pycache__/
