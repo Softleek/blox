@@ -106,7 +106,7 @@ const ProfilePage = () => {
 
   return (
     <>
-      <div className="-mt-24">
+      <div className="-mt-2 overflow-auto max-h-[calc(100vh-10rem)]">
         <div className="w-full px-6 mx-auto">
           <div
             className="relative flex items-center p-0 mt-4 overflow-hidden bg-center bg-cover min-h-32 rounded-2xl"
@@ -171,7 +171,7 @@ const ProfilePage = () => {
           </div>
         </div>
         <div className="w-full p-6 mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 -mx-3 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 -mx-3 gap-2">
             {isEditing ? (
               <ProfileEditForm
                 ref={formRef}
@@ -183,14 +183,14 @@ const ProfilePage = () => {
             ) : (
               <>
                 <ProfileInfo userData={profileData} />
-                <ProfileSettings
+                {/* <ProfileSettings
                   isEditing={isEditing}
                   onEditClick={handleEditClick}
                   onSaveClick={handleSaveClick}
                   formRef={formRef}
                   onSubmit={handleFormSubmitSuccess}
                   profileData={profileData}
-                />
+                /> */}
                 <Messages profileData={profileData} />
               </>
             )}

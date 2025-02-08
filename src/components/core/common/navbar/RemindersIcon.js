@@ -3,17 +3,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { fetchData } from "@/utils/Api"; // Assuming your fetchData method is correctly implemented
 import NotificationModal from "./NotificationModal"; // Import the modal component
+import { useData } from "@/contexts/DataContext";
 
 const RemindersIcon = () => {
   const [remindersCount, setRemindersCount] = useState(0);
   const [reminders, setReminders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setNotifications } = useData();
 
   const fetchReminders = async () => {
-    const responseData = await fetchData({}, "core/reminder");
+    const responseData = await fetchData(
+      { _sort_field: "next_run", _sort_order: "asc", page_length: 150 },
+      "core/reminder"
+    );
 
     if (responseData?.data) {
       const data = responseData?.data;
+      setNotifications(data?.data);
 
       // Filter the reminders to get those within the next 2 weeks
       const twoWeeksFromNow = new Date();

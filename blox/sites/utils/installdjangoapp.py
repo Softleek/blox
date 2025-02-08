@@ -52,9 +52,7 @@ def install_django_app(app: str, project_root: str) -> None:
     app_name = f"{app}_app"
 
     # Define paths
-    sites_json_path = os.path.join(project_root, "sites", "sites.json")
-    site_path = os.path.join(project_root, "sites")
-    django_path = os.path.join(site_path, "django")
+    django_path = os.path.join(project_root, "backend")
 
     # Load app options from apps.txt
     apps_txt_path = os.path.join(project_root, "config", "apps.txt")

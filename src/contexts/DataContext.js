@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
+  const [notifications, setNotifications] = useState([]);
   const [data, setData] = useState({});
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(false);
@@ -26,7 +27,16 @@ export const DataProvider = ({ children }) => {
 
   return (
     <DataContext.Provider
-      value={{ data, setData, form, setForm, loading, setLoading }}
+      value={{
+        data,
+        setData,
+        form,
+        setForm,
+        loading,
+        setLoading,
+        notifications,
+        setNotifications,
+      }}
     >
       {children}
     </DataContext.Provider>

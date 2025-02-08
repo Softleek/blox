@@ -6,7 +6,7 @@ const NotificationModal = ({ isOpen, onClose, reminders }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} position="top" className="!pt-20">
-      <div className="p-4 w-[600px] overflow-y-auto">
+      <div className="py-2 px-5 w-[800px] overflow-y-auto">
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-xl font-semibold text-purple-900">
             Upcoming Reminders
@@ -24,18 +24,20 @@ const NotificationModal = ({ isOpen, onClose, reminders }) => {
             No upcoming reminders in the next 2 weeks.
           </p>
         ) : (
-          <ul className="space-y-6">
+          <ul className="space-y-3">
             {reminders.map((reminder, index) => (
               <li
                 key={index}
-                className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 p-5 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 transform hover:scale-105"
               >
                 <div className="flex justify-between items-start">
                   <div className="flex-1 pr-4">
                     <h3 className="text-lg font-bold text-pink-800 hover:text-indigo-900">
                       {reminder.name}
                     </h3>
-                    <p className="text-gray-900 mt-2">{reminder.message}</p>
+                    <p className="text-green-800 mt-2 text-xs">
+                      {reminder.message}
+                    </p>
                   </div>
                   <div className="text-right">
                     <span className="block text-sm font-medium text-gray-800">

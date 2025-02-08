@@ -3,7 +3,7 @@ export const handleDuplicate = (props) => {
 
   const removeIdAndRelatedFields = (data) => {
     const fieldsToRemove = [
-      "id",
+      // "id",
       "modified",
       "created",
       "created_by",
@@ -49,7 +49,7 @@ export const handleDuplicate = (props) => {
     );
   };
 
-  const cleanedForm = removeIdAndRelatedFields(form);
+  const cleanedForm = removeIdAndRelatedFields({ ...form, id: undefined });
 
   setForm(cleanedForm);
 

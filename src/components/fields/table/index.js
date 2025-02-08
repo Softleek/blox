@@ -25,7 +25,7 @@ const Table = ({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 5, ease: "easeInOut" }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
     >
       <table className="w-full table-condensed border border-gray-200 border-collapse text-xs text-center">
         <thead className="rounded-t-md bg-gray-200">

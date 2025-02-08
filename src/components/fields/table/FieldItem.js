@@ -14,7 +14,7 @@ const FieldItem = ({ form, item, handleInputChange }) => {
     handleInputChange(field?.fieldname, value);
   };
 
-  const fieldValue = form[item.fieldname] || null;
+  const fieldValue = form && form[item.fieldname] ? form[item.fieldname] : null;
   const handleSelect = (e) => {
     e.stopPropagation();
     setSelectedItem(item);

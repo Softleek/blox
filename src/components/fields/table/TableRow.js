@@ -36,7 +36,7 @@ const TableRow = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 5, ease: "easeInOut", delay: rowIndex * 0.5 }}
+      transition={{ duration: 0.5, ease: "easeInOut", delay: rowIndex * 0.5 }}
       className="bg-white shadow-sm hover:bg-gray-100"
     >
       <td className="px-2">

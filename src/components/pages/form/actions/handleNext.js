@@ -2,6 +2,7 @@ import ToastTemplates from "@/components/core/common/toast/ToastTemplates";
 
 export const handleNext = (props) => {
   const { router, data, setForm, setData } = props;
+  console.log("data", data);
 
   const currentPath = router.asPath;
   const newPath = currentPath.replace(/\/[^/]*$/, `/${data?._next}`);
