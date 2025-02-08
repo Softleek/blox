@@ -37,15 +37,21 @@ def generate_name_for_model(sender, instance, **kwargs):
             if format_value:
                 instance.__dict__[fieldname] = naming_manager.generate_code(fieldname, format_value)
 
-            if fieldtype in ["Barcode", "QR Code"]:
-                options = field.get("options", "{id}")
-                code = naming_manager.generate_code(fieldname, options)
-                instance.__dict__[fieldname] = code
-
     if not getattr(instance, "created", None):
         id = naming_manager.generate_name()
         if id:
             instance.id = id
+    # Check for fields with 'Barcode' or 'QR Code' and generate values
+    if doctype_config and doctype_config.get("fields"):
+        for field in doctype_config.get("fields", []):
+            fieldname = field.get("fieldname")
+            fieldtype = field.get("fieldtype")
+            format_value = field.get("format")
+
+            if fieldtype in ["Barcode", "QR Code"]:
+                options = field.get("options", "{id}")
+                code = naming_manager.generate_code(fieldname, options)
+                instance.__dict__[fieldname] = code
 
         
     if getattr(instance, "created", None) and doctype_config and doctype_config.get("track_changes") == (True or "1" ):

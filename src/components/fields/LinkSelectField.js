@@ -101,8 +101,6 @@ const LinkSelectField = ({
     }
   };
 
-  if (hidden || preview) return null;
-
   useEffect(() => {
     if (Array.isArray(value) && !!appData?.title_field) {
       const updatedDisplay = value.map((val) => ({
@@ -112,6 +110,8 @@ const LinkSelectField = ({
       setDisplay(updatedDisplay);
     }
   }, [value, appData]);
+
+  if (hidden || preview) return null;
 
   return (
     <div className="relative w-full">

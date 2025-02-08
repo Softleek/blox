@@ -82,7 +82,7 @@ const GeneralSettings = () => {
       />
 
       {/* Conditional Attributes */}
-      {["Link", "Table MultiSelect", "Table"].includes(
+      {["Link", "Table MultiSelect", "Table", "Connection"].includes(
         selectedItem?.fieldtype
       ) && (
         <LinkSelect
@@ -100,6 +100,15 @@ const GeneralSettings = () => {
             title_field: "name",
             search_fields: ["name", "id", "module", "app"],
           }}
+        />
+      )}
+      {["Connection"].includes(selectedItem?.fieldtype) && (
+        <TextInput
+          icon={faFilter}
+          label="Linked Field"
+          value={selectedItem?.linked_field}
+          onChange={(e) => handleChange("linked_field", e.target.value)}
+          placeholder="Enter the linked field"
         />
       )}
       {["Currency", "Float"].includes(selectedItem?.fieldtype) && (

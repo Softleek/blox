@@ -50,6 +50,7 @@ const fields = [
   { id: "7", name: "Code", icon: faCode },
   { id: "8", name: "Color", icon: faPalette },
   { id: "9", name: "Column Break", icon: faColumns },
+  { id: "44", name: "Connection", icon: faLink },
   { id: "10", name: "Currency", icon: faDollarSign },
   { id: "11", name: "Data", icon: faDatabase },
   { id: "12", name: "Date", icon: faCalendar },
@@ -71,6 +72,7 @@ const fields = [
   { id: "28", name: "Password", icon: faLock },
   { id: "29", name: "Percent", icon: faPercentage },
   { id: "30", name: "Phone", icon: faPhone },
+  { id: "43", name: "QR Code", icon: faQrcode },
   { id: "31", name: "Rating", icon: faStar },
   { id: "32", name: "Read Only", icon: faEyeSlash },
   { id: "33", name: "Section Break", icon: faBars },
@@ -83,7 +85,6 @@ const fields = [
   { id: "40", name: "Text", icon: faFont },
   { id: "41", name: "Text Editor", icon: faEdit },
   { id: "42", name: "Time", icon: faClock },
-  { id: "43", name: "QR Code", icon: faQrcode },
 ];
 
 export default fields;

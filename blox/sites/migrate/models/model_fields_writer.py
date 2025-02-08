@@ -171,6 +171,7 @@ def write_model(module_file: TextIO, fields: List[Dict[str, Any]], model_name: s
             "Section Break",
             "Column Break",
             "Tab Break",
+            "Connection"
         ]:  # Skip layout fields
             write_field_declaration(
                 module_file,
@@ -273,10 +274,11 @@ def write_link_field(module_file: TextIO, field: Dict[str, Any], model_name: str
 
     # Create a related_name based on the field's label and the model's name
     related_name = f"{model_name}{modela_name}"
-    if app_name:
+    if app_name == "core":
+        related_model = f"{app_name}.{related_model}"
+    elif app_name:
         related_model = f"{app_name}_app.{related_model}"
-    else:
-        pass
+
     write_field_declaration(
         module_file,
         field_id,
@@ -311,7 +313,9 @@ def write_table_field(module_file: TextIO, field: Dict[str, Any], model_name: st
 
     # Create a related_name based on the field's label and the model's name
     related_name = f"{model_name}{modela_name}"
-    if app_name:
+    if app_name == "core":
+        related_model = f"{app_name}.{related_model}"
+    elif app_name:
         related_model = f"{app_name}_app.{related_model}"
     else:
         pass

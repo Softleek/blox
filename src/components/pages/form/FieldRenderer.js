@@ -16,6 +16,7 @@ import {
   faHeading,
   faImage,
   faLink,
+  faLiraSign,
   faMapMarkerAlt,
   faPaintBrush,
   faPercentage,
@@ -52,6 +53,7 @@ import ReadOnlyField from "@/components/fields/ReadOnlyField";
 import DurationField from "@/components/fields/DurationField";
 import MultiSelectField from "@/components/fields/MultiSelectField";
 import PasswordField from "@/components/fields/PasswordField";
+import ConnectionField from "@/components/fields/ConnectionField";
 
 const FieldRenderer = ({
   fieldtype,
@@ -103,6 +105,7 @@ const FieldRenderer = ({
     Image: { type: "image", icon: faImage },
     JSON: { type: "json", icon: faFileAlt },
     Table: { type: "table", icon: faTable },
+    Connection: { type: "connection", icon: faLiraSign },
     Phone: { type: "tel", icon: faPhone }, // Added Phone as per the list
   };
 
@@ -287,6 +290,15 @@ const FieldRenderer = ({
               options={item.options ? item.options.split("\n") : []}
               multiple={true}
             />
+          </div>
+        </>
+      );
+    case "connection":
+      return (
+        <>
+          {renderLabel()}
+          <div className="text-right flex justify-between w-full">
+            <ConnectionField field={item} />
           </div>
         </>
       );
