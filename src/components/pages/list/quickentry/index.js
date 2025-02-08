@@ -28,6 +28,7 @@ const QuickEntryModal = ({
   const [selectedTab, setSelectedTab] = useState([]);
   const router = useRouter();
   const { loading, setLoading } = useData();
+  const { slug } = router.query;
 
   useEffect(() => {
     // Recompute tabs whenever `configData` changes

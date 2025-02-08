@@ -1,4 +1,3 @@
-// components/DocumentLogs.js
 import React, { useEffect, useState } from "react";
 import { fetchData } from "@/utils/Api";
 import { toast } from "react-toastify";
@@ -8,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faUser, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { findDocDetails } from "@/utils/findDocDetails";
+import { motion } from "framer-motion";
 
 const DocumentLogs = () => {
   const [logs, setLogs] = useState([]);
@@ -42,7 +42,12 @@ const DocumentLogs = () => {
   }, [id, slug]);
 
   return (
-    <div className="p-4 my-4 bg-white rounded-lg shadow-lg border border-gray-200">
+    <motion.div
+      className="p-4 my-4 bg-white rounded-lg shadow-lg border border-gray-200"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <h2 className="text-xl font-semibold text-gray-900 mb-2 flex items-center">
         <FontAwesomeIcon icon={faEdit} className="text-blue-500 mr-2" />
         Logs
@@ -50,11 +55,14 @@ const DocumentLogs = () => {
       <ul className="space-y-2">
         {logs?.length > 0 ? (
           logs?.map((log, index) => (
-            <li
+            <motion.li
               key={index}
               className={`p-4 border border-gray-300 rounded-lg shadow-sm ${
                 index % 2 === 0 ? "bg-pink-50" : "bg-slate-50"
               } hover:bg-gray-100 transition-colors`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
             >
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-gray-600 flex items-center">
@@ -89,7 +97,7 @@ const DocumentLogs = () => {
                   </div>
                 ))}
               </div>
-            </li>
+            </motion.li>
           ))
         ) : (
           <li className="text-gray-500 text-center py-2">
@@ -98,7 +106,7 @@ const DocumentLogs = () => {
           </li>
         )}
       </ul>
-    </div>
+    </motion.div>
   );
 };
 

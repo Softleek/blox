@@ -14,9 +14,9 @@ from rest_framework.views import APIView
 from .template import GenericViewSet, handle_errors
 
 from core.permissions import HasGroupPermission
-from core.models.auth import RoleType
-from core.filters import RoleFilter
-from core.serializers import RoleSerializer
+from core.models.auth import RoleType, Branch
+from core.filters import RoleFilter, BranchFilter
+from core.serializers import RoleSerializer, BranchSerializer
 # from apps.masafa.masafa.masafa.doctype.customer.customer import Customer as CustomCustomer
 
 class RoleViewSet(GenericViewSet):
@@ -24,6 +24,11 @@ class RoleViewSet(GenericViewSet):
     filterset_class = RoleFilter
     permission_classes = [HasGroupPermission]
     serializer_class = RoleSerializer
+class BranchViewSet(GenericViewSet):
+    queryset = Branch.objects.all()
+    filterset_class = BranchFilter
+    permission_classes = [HasGroupPermission]
+    serializer_class = BranchSerializer
 
 
 def run_subprocess(command, success_message, error_message):

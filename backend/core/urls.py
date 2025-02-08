@@ -12,7 +12,7 @@ from .views import (AppViewSet, BulkDeleteAPIView,  ReminderViewSet,
                     ModuleViewSet, OTPActivationView, PermissionViewSet,
                     ProfileView, ResendOTPView, SendEmailView, SendSmsView,
                     UserGetViewSet, UserGroupPermissions, UserIPAddressViewSet,
-                    UserViewSet, RoleViewSet,)
+                    UserViewSet, RoleViewSet, BranchViewSet)
 
 router = DefaultRouter()
 router.register(r"app", AppViewSet)
@@ -26,6 +26,7 @@ router.register(r"users", UserViewSet)
 router.register(r"core/user", UserViewSet)
 router.register(r'core/reminder', ReminderViewSet) 
 router.register(r'core/role_type', RoleViewSet) 
+router.register(r'core/branch', BranchViewSet) 
 router.register(r'core/rolegroup', GroupViewSet)
 router.register(r'core/permission', PermissionViewSet)
 router.register(r'user-ip-addresses', UserIPAddressViewSet, basename='user-ip-addresses')

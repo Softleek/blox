@@ -228,11 +228,11 @@ const FieldRenderer = ({
       return (
         <>
           {renderLabel()}
-          <div className="text-right flex justify-between w-full">
+          <div className="text-right flex justify-between items-center w-full">
             <SelectField
               field={item}
               value={value}
-              onChange={(e) => handleInputChange(item, e.target.value)}
+              onChange={(e) => handleInputChange(item, e)}
               options={item.options ? item.options.split("\n") : []}
               multiple={false}
               // placeholder={placeholder}

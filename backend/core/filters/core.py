@@ -4,7 +4,7 @@ from django_filters import rest_framework as filters
 
 from .template import DynamicFilterSet
 
-from core.models.auth import RoleType
+from core.models.auth import RoleType, Branch
 
 class AppFilter(DynamicFilterSet):
     class Meta:
@@ -65,4 +65,8 @@ class PermissionFilter(filters.FilterSet):
 class RoleFilter(filters.FilterSet):
     class Meta:
         model = RoleType
+        fields = "__all__"
+class BranchFilter(filters.FilterSet):
+    class Meta:
+        model = Branch
         fields = "__all__"

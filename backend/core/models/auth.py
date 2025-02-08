@@ -9,6 +9,9 @@ from .template import BaseModel
 class RoleType(BaseModel):
     name = models.CharField(max_length=255)
     
+class Branch(BaseModel):
+    name = models.CharField(max_length=255)
+    
     
 class User(AbstractUser):
     ROLE_CHOICES = (
@@ -20,7 +23,7 @@ class User(AbstractUser):
     role = models.CharField(max_length=200, choices=ROLE_CHOICES, default="Customer")
     groups = models.ManyToManyField(
         Group, related_name="api_user_groups", blank=True  # Add a unique related name
-    )
+    ) 
     user_permissions = models.ManyToManyField(
         Permission,
         related_name="api_user_permissions",  # Add a unique related name
@@ -30,13 +33,13 @@ class User(AbstractUser):
     bio = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
     birthdate = models.DateField(blank=True, null=True)
-
+    timezone = models.CharField(max_length=255, blank=True, null=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=150, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    last_activity = models.DateTimeField(default=timezone.now)
-    
+    last_activity = models.DateTimeField(auto_now=True)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, blank=True, null=True)
     
 
     def save(self, *args, **kwargs):

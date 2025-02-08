@@ -13,6 +13,8 @@ import { getFieldsForTab } from "@/components/studio/doctype/utils/getFieldsForT
 import Tab from "./Tab";
 import DocumentLogs from "./Logs";
 
+import { motion } from "framer-motion";
+
 const DetailForm = () => {
   const [tabs, setTabs] = useState([]);
   const [tabFields, setTabFields] = useState([]);
@@ -26,13 +28,10 @@ const DetailForm = () => {
   } = useConfig();
 
   useEffect(() => {
-    // Recompute tabs whenever `localConfig` changes
     const fetchTabs = async () => {
       const uniqueTabs = generateTabList(localConfig) || [];
-
       setTabs(uniqueTabs);
 
-      // Default to the first tab if none is selected
       if (!selectedTab && uniqueTabs.length > 0) {
         setSelectedTab(uniqueTabs[0]);
       }
@@ -41,47 +40,52 @@ const DetailForm = () => {
   }, [localConfig]);
 
   useEffect(() => {
-    // Update tabFields when the selected tab changes
     const fetchFields = async () => {
       const sectionFields = getFieldsForTab(localConfig, selectedTab);
-
       setTabFields(sectionFields);
     };
     fetchFields();
   }, [selectedTab, localConfig]);
 
-  const handleFocus = (id) => {
-    setSelectedItem(id);
-  };
-
-  const handleBlur = () => {
-    setSelectedItem(null);
-  };
-
-  const handleShowLogs = () => {
-    setShowLogs(true);
-  };
+  const handleFocus = (id) => setSelectedItem(id);
+  const handleBlur = () => setSelectedItem(null);
+  const handleShowLogs = () => setShowLogs(true);
 
   return (
-    <div className="w-full">
-      <div>
+    <motion.div
+      className="w-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+    >
+      <motion.div
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
         <div className="relative flex items-center justify-between px-4 pt-2 bg-gradient-to-tl from-purple-100 to-pink-100 text-white rounded-t-xl">
           <ul className="flex pt-2 gap-x-6 list-none bg-transparent">
             <Suspense fallback={<div>Loading Tabs...</div>}>
-              {tabs.map((tab) => (
-                <Tab
+              {tabs.map((tab, index) => (
+                <motion.li
                   key={tab.fieldname}
-                  tab={tab}
-                  handleFocus={handleFocus}
-                  setShowLogs={setShowLogs}
-                />
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                >
+                  <Tab
+                    tab={tab}
+                    handleFocus={handleFocus}
+                    setShowLogs={setShowLogs}
+                  />
+                </motion.li>
               ))}
             </Suspense>
           </ul>
           <div
-            className={`flex flex-row items-center font-medium text-base  cursor-pointer ${
+            className={`flex flex-row items-center font-medium text-base cursor-pointer ${
               showLogs
-                ? "border-b-[1px] border-slate-800  text-purple-700 "
+                ? "border-b-[1px] border-slate-800 text-purple-700"
                 : "text-slate-900"
             }`}
             onClick={handleShowLogs}
@@ -101,26 +105,36 @@ const DetailForm = () => {
             Activity Logs
           </div>
         </div>
-        <div className="px-2 py-4 h-[78vh] overflow-y-auto">
-          {showLogs ? (
-            <>
-              <DocumentLogs />
-            </>
-          ) : (
-            <Suspense fallback={<div>Loading Sections...</div>}>
-              {tabFields?.map((section, index) => (
+      </motion.div>
+
+      <motion.div
+        className="px-2 py-4 h-[75vh] overflow-y-auto"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
+      >
+        {showLogs ? (
+          <DocumentLogs />
+        ) : (
+          <Suspense fallback={<div>Loading Sections...</div>}>
+            {tabFields?.map((section, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: index * 0.5 }}
+              >
                 <Section
-                  key={index}
                   section={section}
                   handleFocus={handleFocus}
                   handleBlur={handleBlur}
                 />
-              ))}
-            </Suspense>
-          )}
-        </div>
-      </div>
-    </div>
+              </motion.div>
+            ))}
+          </Suspense>
+        )}
+      </motion.div>
+    </motion.div>
   );
 };
 

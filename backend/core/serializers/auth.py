@@ -1,5 +1,5 @@
 # serializers.py
-from core.models import OTP, User, UserIPAddress
+from core.models import OTP, User, UserIPAddress, Branch
 from django.contrib.auth.models import Group, Permission
 from rest_framework import serializers
 
@@ -28,4 +28,8 @@ class GroupSerializer(serializers.ModelSerializer):
 class PermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Permission
+        fields = "__all__"      
+class BranchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Branch
         fields = "__all__"
