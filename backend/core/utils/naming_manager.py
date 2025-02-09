@@ -50,7 +50,7 @@ class NamingManager:
 
             if naming_rule == "Autoincrement":
                 return self.generate_autoincrement()
-
+ 
             if naming_rule.startswith("By fieldname"):
                 fieldname = autoname.split(":", 1)[1].strip()
                 return self.generate_by_field(fieldname)
@@ -276,112 +276,87 @@ def generate_autoincrement(instance):
     return new_id
 
 
+def extract_field_and_index(token):
+    """
+    Extracts the field name and optional indexing/slicing from a token.
+    Example: "field[-1]" -> ("field", "[-1]")
+    """
+    match = re.match(r"(\w+)\[([\d:-]+)\]", token)
+    if match:
+        return match.group(1), match.group(2)
+    return token, None
+
+
+def apply_indexing(value, index_str):
+    """
+    Applies list indexing or slicing to a value.
+    """
+    try:
+        if isinstance(value, (list, str)):
+            return eval(f"value[{index_str}]")  # Safe because value is controlled
+    except (IndexError, SyntaxError, TypeError):
+        pass  # Return the original value if indexing fails
+    return value
+
+
 def generate_next_id(instance, format_pattern):
     """
     Generate the next ID by matching the last ID to the format pattern,
     replacing placeholders with current or incremented values.
-
-    Args:
-        instance: The model instance for which the ID is generated.
-        format_pattern: The format pattern defining the ID structure.
-
-    Returns:
-        str: The next ID based on the format pattern.
     """
-    import re
-    from django.core.exceptions import ObjectDoesNotExist
-
     model = instance._meta.model
-
     try:
-        # Fetch the latest entry in the database
-        last_entry = model.objects.latest('created')  # Adjust 'created' field as needed
-        last_id = str(getattr(last_entry, "id", ""))  # Adjust field name if needed
+        last_entry = model.objects.latest('created')  # Adjust 'created' field if needed
+        last_id = str(getattr(last_entry, "id", ""))
     except ObjectDoesNotExist:
-        # Start fresh if no entries exist
         last_id = ""
-
-    # Match tokens enclosed in `{}` (e.g., `{#####}`, `{from_time}`, etc.)
+    
     token_pattern = re.compile(r"{([^{}]+)}")
     tokens = token_pattern.findall(format_pattern)
-
-    # Escape the format pattern to prepare for regex generation
     escaped_pattern = re.escape(format_pattern)
-
-    # Replace `{tokens}` with regex patterns for matching
+    
     for token in tokens:
-        if token.startswith("#"):
-            token_length = len(token)
-            escaped_pattern = escaped_pattern.replace(
-                re.escape(f"{{{token}}}"), rf"(\d{{{token_length}}})"
-            )
-        elif any(c in token for c in ["Y", "m", "d", "H", "M", "S", "%"]):  # Date/Time format placeholders
-            escaped_pattern = escaped_pattern.replace(
-                re.escape(f"{{{token}}}"), r"(\d+)"
-            )
+        field_name, index_str = extract_field_and_index(token)
+        if field_name.startswith("#"):
+            token_length = len(field_name)
+            escaped_pattern = escaped_pattern.replace(re.escape(f"{{{token}}}"), rf"(\d{{{token_length}}})")
+        elif any(c in field_name for c in ["Y", "m", "d", "H", "M", "S", "%"]):
+            escaped_pattern = escaped_pattern.replace(re.escape(f"{{{token}}}"), r"(\d+)")
         else:
-            # Assume other tokens are dynamic fields or static placeholders
-            escaped_pattern = escaped_pattern.replace(
-                re.escape(f"{{{token}}}"), r"(.*?)"
-            )
-
-
-    # Match the last ID against the generated regex pattern
+            escaped_pattern = escaped_pattern.replace(re.escape(f"{{{token}}}"), r"(.*?)")
+    
     match = re.match(escaped_pattern, last_id)
-    if match:
-        # Extract matched values
-        matched_values = match.groups()
-    else:
-        # If no match, initialize default values
-        matched_values = ["_"] * len(tokens)
-
-
-    # Generate the next ID by replacing tokens with incremented/current values
+    matched_values = match.groups() if match else ["_"] * len(tokens)
+    
     result = format_pattern
     for i, token in enumerate(tokens):
-        if token.startswith("#"):
-            # Handle numeric tokens
+        field_name, index_str = extract_field_and_index(token)
+        
+        if field_name.startswith("#"):
             try:
-                # Try to convert matched_values[i] to an integer, defaulting to 0 if it fails
                 last_number = int(matched_values[i])
             except ValueError:
-                # If the value is not an integer, set it to 0
                 last_number = 0
-            replacement = str(last_number + 1).zfill(len(token))
-        elif hasattr(instance, token):
-            # Handle dynamic fields from the instance
-            value = getattr(instance, token, None)
-            
-            if value is not None:
-                # Check if the value is an instance (i.e., a related model or object)
-                if hasattr(value, 'id'):
-                    # Use the 'id' field of the related model if it exists
-                    replacement = str(value.id)
-                else:
-                    # Otherwise, use the value directly (for non-instance fields)
-                    replacement = str(value)
+            replacement = str(last_number + 1).zfill(len(field_name))
+        elif hasattr(instance, field_name):
+            value = getattr(instance, field_name, "")
+            if hasattr(value, 'id'):
+                value = str(value.id)
             else:
-                # If the value is None, just use an empty string
-                replacement = ""
-
-
-        elif any(c in token for c in ["Y", "m", "d", "H", "M", "S", "%"]):  # Handle extended date/time formats
+                value = str(value)
+            if index_str:
+                value = apply_indexing(value, index_str)
+            replacement = str(value)
+        elif any(c in field_name for c in ["Y", "m", "d", "H", "M", "S", "%"]):
             today = datetime.today()
-            # Replace the placeholders with their respective date format
             replacement = today.strftime(
-                token.replace("YYYY", "%Y")  # Full year
-                    .replace("YY", "%y")      # Two-digit year
-                    .replace("MM", "%m")      # Month (01 to 12)
-                    .replace("DD", "%d")      # Day of the month (01 to 31)
-                    .replace("hh", "%H")      # Hour (00 to 23)
-                    .replace("mm", "%M")      # Minute (00 to 59)
-                    .replace("ss", "%S")      # Second (00 to 59)
+                field_name.replace("YYYY", "%Y").replace("YY", "%y")
+                         .replace("MM", "%m").replace("DD", "%d")
+                         .replace("hh", "%H").replace("mm", "%M").replace("ss", "%S")
             )
         else:
-            # Default replacement for unmatched tokens
             replacement = matched_values[i] if matched_values[i] else f"{{{token}}}"
-
-        # Replace the token in the result
+        
         result = result.replace(f"{{{token}}}", replacement, 1)
-
+    
     return result

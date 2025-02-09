@@ -11,10 +11,11 @@ const formatDate = (date) => {
 
 const DateField = ({ value = "", onChange, placeholder, readOnly, hidden }) => {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" readOnly={readOnly}>
       <CustomDateSelector
         selectedDate={value}
         onChange={(date) => onChange(date)}
+        readOnly={readOnly}
       />
     </div>
   );

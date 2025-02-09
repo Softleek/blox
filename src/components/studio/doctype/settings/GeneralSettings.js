@@ -136,14 +136,6 @@ const GeneralSettings = () => {
         onChange={(e) => handleChange("description", e.target.value)}
         placeholder="Enter description"
       />
-      <TextareaInput
-        icon={faClipboardCheck}
-        label="Depends On"
-        value={selectedItem?.depends_on}
-        onChange={(e) => handleChange("depends_on", e.target.value)}
-        placeholder="Enter dependency"
-      />
-
       {/* Default Value */}
       <TextareaInput
         icon={faExclamation}
@@ -152,7 +144,21 @@ const GeneralSettings = () => {
         onChange={(e) => handleChange("default", e.target.value)}
         placeholder="Enter default value"
       />
+      <TextareaInput
+        icon={faClipboardCheck}
+        label="Depends On"
+        value={selectedItem?.depends_on}
+        onChange={(e) => handleChange("depends_on", e.target.value)}
+        placeholder="Enter dependency"
+      />
 
+      <TextareaInput
+        icon={faList}
+        label="Filter Format"
+        value={selectedItem?.filter_format}
+        onChange={(e) => handleChange("filter_format", e.target.value)}
+        description="Enter Expression format for filtering the value. Use eval() function to evaluate the expression"
+      />
       <TextareaInput
         icon={faList}
         label="Format"
@@ -261,6 +267,7 @@ const GeneralSettings = () => {
         { label: "Allow in Quick Entry", value: "allow_in_quick_entry" },
         { label: "Allow on Submit", value: "allow_on_submit" },
         { label: "Mandatory", value: "reqd" },
+        { label: "Hide Select", value: "hide_select" },
         { label: "Bold", value: "bold" },
         { label: "Hidden", value: "hidden" },
         { label: "Ignore User Permissions", value: "ignore_user_permissions" },

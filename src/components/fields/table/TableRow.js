@@ -39,11 +39,12 @@ const TableRow = ({
       transition={{ duration: 0.5, ease: "easeInOut", delay: rowIndex * 0.5 }}
       className="bg-white shadow-sm hover:bg-gray-100"
     >
-      <td className="px-2">
+      <td className={`px-2 ${readOnly ? "hidden" : ""}`}>
         <input
           type="checkbox"
           checked={selectedRows.includes(rowIndex)}
-          onChange={() => handleRowSelect(rowIndex)}
+          onChange={() => !readOnly && handleRowSelect(rowIndex)}
+          readOnly={readOnly}
           className="form-checkbox text-center"
         />
       </td>
@@ -64,7 +65,9 @@ const TableRow = ({
             fieldname={column.fieldname}
             value={row[column.fieldname] || ""}
             onChange={(field, newValue) => {
-              handleCellChange(rowIndex, field.fieldname, newValue);
+              if (!readOnly) {
+                handleCellChange(rowIndex, field.fieldname, newValue);
+              }
             }}
             readOnly={readOnly}
             preview={preview}

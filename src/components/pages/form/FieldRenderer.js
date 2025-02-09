@@ -389,7 +389,7 @@ const FieldRenderer = ({
               // placeholder={placeholder}
               hidden={item?.hidden}
             />
-            {renderIcon()}{" "}
+            {/* {renderIcon()}{" "} */}
           </div>
         </>
       );
@@ -406,7 +406,7 @@ const FieldRenderer = ({
               // placeholder={placeholder}
               hidden={item?.hidden}
             />
-            {renderIcon()}{" "}
+            {/* {renderIcon()}{" "} */}
           </div>
         </>
       );

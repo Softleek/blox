@@ -19,6 +19,7 @@ const FieldInput = ({
         "focus-within:border-yellow-500  focus-within:border"
       )}
       readOnly={readOnly}
+      tabIndex={readOnly ? -1 : 0}
     >
       <FieldRenderer
         fieldtype={item.fieldtype}

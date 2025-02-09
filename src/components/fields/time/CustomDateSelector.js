@@ -34,7 +34,7 @@ const parseDateInput = (inputStr) => {
   return null;
 };
 
-const CustomDateSelector = ({ selectedDate, onChange }) => {
+const CustomDateSelector = ({ selectedDate, onChange, readOnly }) => {
   const [value, setValue] = useState(selectedDate);
   const [inputValue, setInputValue] = useState(formatDateDisplay(value));
 
@@ -71,11 +71,12 @@ const CustomDateSelector = ({ selectedDate, onChange }) => {
         type="text"
         value={inputValue}
         onChange={handleInputChange}
+        readOnly={readOnly}
         onBlur={handleInputBlur}
         placeholder="DD-MM-YYYY"
         className="w-full focus:outline-none focus:ring-0 focus:border-none"
       />
-      <div className="w-6">
+      <div className={`w-6 ${readOnly ? "hidden" : ""}`}>
         <Datepicker
           value={{ startDate: value, endDate: value }}
           inputClassName="w-0"

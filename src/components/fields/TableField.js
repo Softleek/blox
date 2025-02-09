@@ -39,6 +39,16 @@ const TableField = ({
 
   const { setForm } = useData();
 
+  const [optionValue, setOptionValue] = useState(
+    tableData
+      ? tableData?.map((option) => ({
+          value: option?.id,
+          label: option?.id,
+          fullData: option,
+        }))
+      : null
+  );
+
   useEffect(() => {
     setForm((prevState) => ({
       ...prevState,
@@ -50,19 +60,9 @@ const TableField = ({
 
   if (hidden) return null;
 
-  const [optionValue, setOptionValue] = useState(
-    tableData
-      ? tableData?.map((option) => ({
-          value: option?.id,
-          label: option?.id,
-          fullData: option,
-        }))
-      : null
-  );
-
   return (
     <div className="flex flex-col space-y-2 w-full">
-      {!readOnly && (
+      {!readOnly && !field?.hide_select && (
         <div
           className={`relative flex flex-col w-full break-words rounded-md font-bold text-[14px]`}
         >

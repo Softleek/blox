@@ -217,6 +217,7 @@ const FieldRenderer = ({
             field={item}
             checked={value}
             onChange={(e) => handleInputChange(item, e.target.checked)}
+            readOnly={readOnly}
           />
           <span className="ml-2">{label}</span>
         </div>
@@ -228,6 +229,7 @@ const FieldRenderer = ({
             field={item}
             label={item.label}
             onClick={() => handleInputChange(item, null)}
+            readOnly={readOnly}
           />
         </>
       );
@@ -247,6 +249,7 @@ const FieldRenderer = ({
               field={item}
               value={value}
               onChange={(e) => handleInputChange(item, e)}
+              readOnly={readOnly}
             />
           </div>
         </>
@@ -259,6 +262,7 @@ const FieldRenderer = ({
               field={item}
               value={value}
               onChange={(location) => handleInputChange(item, location)}
+              readOnly={readOnly}
             />
           </div>
         </>
@@ -271,6 +275,7 @@ const FieldRenderer = ({
               field={item}
               value={value}
               onChange={(content) => handleInputChange(item, content)}
+              readOnly={readOnly}
             />
           </div>
         </>
@@ -284,6 +289,7 @@ const FieldRenderer = ({
             handleInputChange={(items) => handleInputChange(item, items)}
             options={item.options ? item.options.split("\n") : []}
             multiple={true}
+            readOnly={readOnly}
           />
         </>
       );
@@ -308,6 +314,7 @@ const FieldRenderer = ({
               field={item}
               value={value}
               onChange={(signature) => handleInputChange(item, signature)}
+              readOnly={readOnly}
             />
           </div>
         </>
@@ -319,6 +326,7 @@ const FieldRenderer = ({
             <JsonField
               value={value}
               onChange={(json) => handleInputChange(item, json)}
+              readOnly={readOnly}
             />
           </div>
         </>

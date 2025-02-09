@@ -30,9 +30,10 @@ const Table = ({
       <table className="w-full table-condensed border border-gray-200 border-collapse text-xs text-center">
         <thead className="rounded-t-md bg-gray-200">
           <tr>
-            <th>
+            <th className={`${readOnly ? "hidden" : ""}`}>
               <input
                 type="checkbox"
+                readOnly={readOnly}
                 checked={selectAll}
                 onChange={handleSelectAll}
                 className="form-checkbox"

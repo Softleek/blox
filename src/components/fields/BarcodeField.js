@@ -6,7 +6,7 @@ const BarcodeField = ({ value, onChange, readOnly }) => {
     : "";
 
   return (
-    <div className="p-4 bg-gray-100 rounded-md">
+    <div className="p-4 bg-gray-100 w-full rounded-md">
       {!readOnly && (
         <input
           type="text"
@@ -27,9 +27,9 @@ const BarcodeField = ({ value, onChange, readOnly }) => {
             href={barcodeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 text-purple-600 underline"
+            className="mt-2 text-purple-600"
           >
-            Open Barcode
+            Open Barcode Image
           </a>
         </div>
       )}
