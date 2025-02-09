@@ -30,6 +30,14 @@ const ModuleSettings = () => {
     title_field: "name",
   };
 
+  const print = {
+    name: "print_format",
+    label: "Print Format",
+    fieldtype: "Link",
+    options: "Print Format",
+    title_field: "name",
+  };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 p-4 border-b border-gray-100">
       {/* Module */}
@@ -40,6 +48,19 @@ const ModuleSettings = () => {
             field={item}
             value={toUnderscoreLowercase(config?.module) || ""}
             onChange={(e) => handleInputChange("module", e)}
+          />
+        </div>
+      </div>
+      {/* Print */}
+      <div className="flex flex-col">
+        <label className="text-sm font-medium text-gray-700">
+          Default Print Format
+        </label>
+        <div className="p-1 border border-gray-300 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out">
+          <LinkField
+            field={print}
+            value={toUnderscoreLowercase(config?.default_print_format) || ""}
+            onChange={(e) => handleInputChange("default_print_format", e)}
           />
         </div>
       </div>
