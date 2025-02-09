@@ -75,7 +75,7 @@ const TableRow = ({
           />
         </td>
       ))}
-      <td className={`p-1 flex space-x-2 ${readOnly ? "hidden" : ""}`}>
+      <td className={`p-1 text-lg flex space-x-4 ${readOnly ? "hidden" : ""}`}>
         <button
           className="text-blue-500"
           onClick={() => handleRowEdit(rowIndex)}
