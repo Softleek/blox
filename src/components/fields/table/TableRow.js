@@ -36,7 +36,7 @@ const TableRow = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5, ease: "easeInOut", delay: rowIndex * 0.5 }}
+      transition={{ duration: 0.1, ease: "easeInOut", delay: rowIndex * 0.1 }}
       className="bg-white shadow-sm hover:bg-gray-100"
     >
       <td className={`px-2 ${readOnly ? "hidden" : ""}`}>
@@ -48,7 +48,10 @@ const TableRow = ({
           className="form-checkbox text-center"
         />
       </td>
-      <td className="text-center border-r-[1px] border-gray-200">
+      <td className="text-center border-r-[1px] border-gray-200 border-b-[1px]">
+        <span className="px-2 text-purple-900 ">{rowIndex + 1}</span>
+      </td>
+      <td className="text-center border-r-[1px] border-gray-200 border-b-[1px]  ">
         <span
           onClick={openFullForm}
           className="px-2 text-purple-900 cursor-pointer hover:text-purple-700"

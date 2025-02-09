@@ -114,7 +114,7 @@ const FieldRenderer = ({
             <SelectField
               field={item}
               value={value}
-              onChange={(e) => handleInputChange(item, e.target.value)}
+              onChange={(e) => handleInputChange(item, e)}
               options={item.options ? item.options.split("\n") : []}
               multiple={false}
               readOnly={readOnly}
@@ -129,7 +129,7 @@ const FieldRenderer = ({
             <SelectField
               field={item}
               value={value}
-              onChange={(e) => handleInputChange(item, e.target.value)}
+              onChange={(e) => handleInputChange(item, e)}
               options={item.options ? item.options.split("\n") : []}
               autocomplete={true}
               readOnly={readOnly}

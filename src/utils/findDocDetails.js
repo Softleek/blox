@@ -1,7 +1,7 @@
 import doctypesData from "../../sites/doctypes.json"; // Directly import the JSON file
 
 // Utility function to find document details and simulate the logic from the original handler
-export const findDocDetails = (slug) => {
+export const findDocDetails = (slug, type = "doctype") => {
   try {
     // Iterate over the doctypesData (doctypes.json content)
     for (const app of doctypesData) {
@@ -10,7 +10,7 @@ export const findDocDetails = (slug) => {
         if (doc) {
           const appPathWithAppFolder = `/apps/${app.id}/${app.id}`;
 
-          const appDoctypePath = `${appPathWithAppFolder}/${module.id}/doctype`;
+          const appDoctypePath = `${appPathWithAppFolder}/${module.id}/${type}`;
 
           // Simulate the logic that would normally check the existence of files using fs
           const docPath =

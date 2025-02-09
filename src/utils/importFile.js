@@ -1,16 +1,16 @@
 import doctypesData from "../../sites/doctypes.json";
 
 // Utility function to find the document details from doctypes.json data
-export const importFile = async (name, filename) => {
+export const importFile = async (name, filename, type = "doctype") => {
   try {
     // Iterate over the doctypesData (doctypes.json content)
     for (const app of doctypesData) {
-      for (const module of app.modules) {
-        const doc = module.docs.find((doc) => doc.id === name);
+      for (const module1 of app.modules) {
+        const doc = module1.docs.find((doc) => doc.id === name);
         if (doc) {
           // Simulate document path logic without fs
           // Assuming docPath is a known structure without fs checks
-          const appDoctypePath = `./apps/${app.id}/${app.id}/${module.id}/doctype`;
+          const appDoctypePath = `./apps/${app.id}/${app.id}/${module1.id}/${type}`;
 
           // Simulate checking the file path structure and returning content
           const doctypeFilePath = `${appDoctypePath}/${name}/${filename}`;
@@ -23,7 +23,7 @@ export const importFile = async (name, filename) => {
 
           if (fileContent) {
             return {
-              content: fileContent?.data, // Returning the content of the file
+              content: fileContent?.data || fileContent, // Returning the content of the file
             };
           } else {
             return { message: "File not found" };

@@ -25,7 +25,7 @@ const Table = ({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
+      transition={{ duration: 0.1, ease: "easeInOut" }}
     >
       <table className="w-full table-condensed border border-gray-200 border-collapse text-xs text-center">
         <thead className="rounded-t-md bg-gray-200">
@@ -39,6 +39,7 @@ const Table = ({
                 className="form-checkbox"
               />
             </th>
+            <th></th>
             <th>ID</th>
             {columnsData.map((column) => (
               <th key={column.fieldname} className="px-2">
