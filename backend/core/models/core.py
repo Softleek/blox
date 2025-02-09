@@ -128,9 +128,9 @@ class Document(AbstractApp):
         return f"{self.name} - {self.module}"
 
 class PrintFormat(AbstractApp):
-    app = models.ForeignKey(App, on_delete=models.CASCADE, related_name="app")
+    app = models.ForeignKey(App, on_delete=models.CASCADE, related_name="print_formats")
 
-    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name="modules")
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name="print_formats")
     type = models.CharField(max_length=255, default="custom")
 
     def __str__(self):

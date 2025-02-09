@@ -104,21 +104,33 @@ def find_or_create_module_entry(app_entry: Dict[str, Any], module_id: str, modul
         module_entry["name"] = module_name  # Always replace the name
     return module_entry
 
-
-def update_module_docs(module_entry: Dict[str, Any], docs: List[Dict[str, str]]) -> None:
+def update_module_docs(module_entry: Dict[str, Any], docs: List[Dict[str, str]], prints: List[Dict[str, str]] = []) -> None:
     """
     Updates the documents in a module, replacing names if IDs match.
 
     Args:
         module_entry (Dict[str, Any]): The module entry.
         docs (List[Dict[str, str]]): The list of documents to update.
+        prints (List[Dict[str, str]]): The list of print formats to update.
     """
+    if "docs" not in module_entry:
+        module_entry["docs"] = []
+    if "print_formats" not in module_entry:
+        module_entry["print_formats"] = []
+
     existing_docs = {doc["id"]: doc for doc in module_entry["docs"]}
     for doc in docs:
         if doc["id"] in existing_docs:
             existing_docs[doc["id"]]["name"] = doc["name"]
         else:
             module_entry["docs"].append(doc)
+
+    existing_print_formats = {doc["id"]: doc for doc in module_entry["print_formats"]}
+    for doc in prints:
+        if doc["id"] in existing_print_formats:
+            existing_print_formats[doc["id"]]["name"] = doc["name"]
+        else:
+            module_entry["print_formats"].append(doc)
 
 
 def add_single_doc(app_id: str, app_name: str, module_id: str, module_name: str, doc_id: str, doc_name: str) -> None:
@@ -169,17 +181,18 @@ def process_module(app_name: str, module: str, app_entry: Dict[str, Any]) -> Non
         click.echo(f"Module '{module}' does not exist in app '{module_path}'. Skipping...")
         return
 
-    doc_path = os.path.join(module_path, "doc")
+    prints_path = os.path.join(module_path, "print_format")
     doctype_path = os.path.join(module_path, "doctype")
 
     docs: List[Dict[str, str]] = []
-    if os.path.isdir(doc_path):
-        docs = process_docs(doc_path)
-    elif os.path.isdir(doctype_path):
+    prints: List[Dict[str, str]] = []
+    if os.path.isdir(prints_path):
+        prints = process_docs(prints_path)
+    if os.path.isdir(doctype_path):
         docs = process_docs(doctype_path)
 
     module_entry = find_or_create_module_entry(app_entry, module_id, module_name)
-    update_module_docs(module_entry, docs)
+    update_module_docs(module_entry, docs, prints)
 
 
 def create_doctypes_json(app_name: str, module_name: Optional[str] = None) -> None:

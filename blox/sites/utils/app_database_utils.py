@@ -46,7 +46,6 @@ def update_or_create_entry(model: Model, id_value: Any, name_value: str, site: s
         instance.save()
     return instance, created
 
-
 def create_entries_from_config(django_path: str, site: str) -> None:
     """
     Process the JSON configuration file and create/update database entries.
@@ -58,8 +57,7 @@ def create_entries_from_config(django_path: str, site: str) -> None:
     # Initialize Django environment
     initialize_django_env(django_path)
     # Import models after Django setup
-    from core.models import (App,  # Update with actual path to models
-                                Document, Module)
+    from core.models import (App, Document, Module, PrintFormat)  # Update with actual path to models
 
     # Load JSON configuration file
     ensure_file_exists(DOCS_JSON_PATH, initial_data=[])
@@ -74,11 +72,13 @@ def create_entries_from_config(django_path: str, site: str) -> None:
     existing_apps = {app.id: app for app in App.objects.using(site).all()}
     existing_modules = {module.id: module for module in Module.objects.using(site).all()}
     existing_docs = {doc.id: doc for doc in Document.objects.using(site).all()}
+    existing_print_formats = {pf.id: pf for pf in PrintFormat.objects.using(site).all()}
 
     # Prepare lists for bulk operations
     apps_to_create: List[App] = []
     modules_to_create: List[Module] = []
     docs_to_create: List[Document] = []
+    print_formats_to_create: List[PrintFormat] = []
 
     # Process each app and its modules/documents
     for app_data in config:
@@ -139,6 +139,24 @@ def create_entries_from_config(django_path: str, site: str) -> None:
                         Document(id=doc_id, name=doc_name, module_id=module_id, app_id=app_id)
                     )
 
+            for pf_data in module_data.get("print_formats", []):
+                pf_id = pf_data.get("id")
+                pf_name = pf_data.get("name")
+
+                # Skip entries without id or name
+                if not pf_id or not pf_name:
+                    continue
+
+                if pf_id in existing_print_formats:
+                    pf = existing_print_formats[pf_id]
+                    if pf.name != pf_name:
+                        pf.name = pf_name
+                        pf.save()
+                else:
+                    print_formats_to_create.append(
+                        PrintFormat(id=pf_id, name=pf_name, module_id=module_id, app_id=app_id)
+                    )
+
     # Bulk create new entries 
     if apps_to_create:
         App.objects.using(site).bulk_create(apps_to_create)
@@ -146,3 +164,5 @@ def create_entries_from_config(django_path: str, site: str) -> None:
         Module.objects.using(site).bulk_create(modules_to_create)
     if docs_to_create:
         Document.objects.using(site).bulk_create(docs_to_create)
+    if print_formats_to_create:
+        PrintFormat.objects.using(site).bulk_create(print_formats_to_create)

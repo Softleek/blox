@@ -14,11 +14,16 @@ def cli() -> None:
 cli.add_command(newapp, name='new-app')
 cli.add_command(dropapp, name='drop-app')
 cli.add_command(getapp, name='get-app')
+
 cli.add_command(newmodule, name='new-module')
 cli.add_command(dropmodule, name='drop-module')
+
 cli.add_command(newdoc, name='new-doc')
 cli.add_command(dropdoc, name='drop-doc')
 cli.add_command(movedoc, name='move-doc')
+
+cli.add_command(newprintformat, name='new-print-format')
+cli.add_command(dropprintformat, name='drop-print-format')
 
 cli.add_command(newsite, name='new-site')
 cli.add_command(installapp, name='install-app')

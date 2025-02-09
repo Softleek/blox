@@ -2,6 +2,7 @@ import os
 from typing import List, Tuple
 
 from ...utils.register_models import register_to_model_json
+from ...utils.register_prints import register_to_print_json
 from ...utils.text import underscore_to_titlecase
 from .generate_json import create_doctypes_json, add_single_entry
 
@@ -57,6 +58,25 @@ def process_folder_docs(app_name: str, module: str, folder_path: str, django_pat
 
     import_statements: List[str] = []
     models_to_register: List[str] = []
+
+    # Use list comprehension for faster directory listing and processing
+    prints = [
+        item
+        for item in os.listdir(os.path.join(folder_path, "../print_formats"))
+        if os.path.isdir(os.path.join(folder_path, "../print_formats", item))
+    ]
+
+    for item_name in prints:
+        model_name = underscore_to_titlecase(item_name)
+
+        # Register model details
+        register_to_print_json(
+            app_name=app_name,
+            module_name=module,
+            doc_name=item_name,
+            django_path=django_path,
+        )
+
 
     # Use list comprehension for faster directory listing and processing
     items = [
