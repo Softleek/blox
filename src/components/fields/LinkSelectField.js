@@ -6,6 +6,7 @@ import { useConfig } from "@/contexts/ConfigContext";
 import QuickEntryModal from "../pages/list/quickentry";
 import { findDocDetails } from "@/utils/findDocDetails";
 import { importFile } from "@/utils/importFile";
+import { useData } from "@/contexts/DataContext";
 
 const LinkSelectField = ({
   value = "",
@@ -24,6 +25,7 @@ const LinkSelectField = ({
   const [display, setDisplay] = useState(value);
   const [isQuickEntryModalOpen, setIsQuickEntryModalOpen] = useState(false);
   const { setSelectedItem } = useConfig();
+  const { form } = useData();
   const inputRef = useRef(null);
 
   const initializeField = useCallback(async () => {
@@ -49,18 +51,42 @@ const LinkSelectField = ({
     } catch (error) {
       console.error("Error initializing field", error);
     }
-  }, [field, value]);
+  }, [field]);
 
   const fetchOptions = useCallback(
     async (search = "") => {
       if (!endpoint || readOnly || preview || hidden) return;
 
+      let filters = {};
+      if (field.filter_format) {
+        filters = field.filter_format.split("&&").reduce((acc, condition) => {
+          let [key, value] = condition.split("==").map((s) => s.trim());
+          // Remove quotes and replace placeholders with form values
+          value = value.replace(/^"|"$/g, ""); // Remove surrounding quotes if present
+          value = value.replace(/\{(.+?)\}/g, (_, match) => {
+            const formValue = form[match];
+            return formValue !== undefined
+              ? typeof formValue === "object" && formValue.id
+                ? formValue.id
+                : formValue
+              : `{${match}}`; // Keep placeholder if form value doesn't exist
+          });
+          acc[key] = value;
+          return acc;
+        }, {});
+      }
+
       try {
-        const response = await fetchData({ page_length: 10, search }, endpoint);
+        // Pass filters individually
+        const queryParams = { page_length: 10, search, ...filters };
+
+        const response = await fetchData(queryParams, endpoint);
+
         const fetchedOptions =
           response?.data?.data?.map((option) => ({
             value: option.id,
-            label: option[appData?.title_field] || option.id,
+            label:
+              `${option[appData?.title_field]} - ${option?.id}` || option.id,
             fullData: option,
           })) || [];
 
@@ -73,7 +99,7 @@ const LinkSelectField = ({
         setOptions([{ value: "add-new", label: "+ Add new", isAddNew: true }]);
       }
     },
-    [endpoint, appData, readOnly, preview, hidden]
+    [endpoint, appData, readOnly, preview, hidden, field, form]
   );
 
   useEffect(() => {
