@@ -27,9 +27,9 @@ const TableHeader = ({
           icon={faRefresh}
           onClick={refresh}
         />
-        {/* <button type="button" onClick={onPrint}>
+        <button type="button" onClick={onPrint}>
           <PrintButton />
-        </button> */}
+        </button>
         <button type="button" onClick={onImport}>
           <Upload />
         </button>

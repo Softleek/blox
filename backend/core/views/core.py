@@ -313,15 +313,19 @@ class DocumentViewSet(GenericViewSet):
 class CreatePrintFormatAPIView(APIView):
     @handle_errors
     def post(self, request, *args, **kwargs):
-        name = request.data.get("name")
-        app = request.data.get("app")
-        module = request.data.get("module") 
+        try:
+            name = request.data.get("name")
+            app = request.data.get("app")
+            module = request.data.get("module") 
+            print(name, app, module)
 
-        return run_subprocess(
-            ["blox", "new-print-format", "--app", app, "--module", module, name],
-            "PrintFormat created successfully",
-            "Failed to create PrintFormat",
-        )
+            return run_subprocess(
+                ["blox", "new-print-format", "--app", app, "--module", module, name],
+                "PrintFormat created successfully",
+                "Failed to create PrintFormat",
+            )
+        except Exception as e:
+            print(e)
 
 
 class PrintFormatViewSet(GenericViewSet):
@@ -372,44 +376,6 @@ class PrintFormatViewSet(GenericViewSet):
             "Failed to delete PrintFormat",
         )
 
-    @handle_errors
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop("partial", False)
-        instance = self.get_object()  # The existing PrintFormat instance
-        old_app = instance.app.id  # Store the old module ID
-        old_module = instance.module.id  # Store the old module ID
-        
-        # Update the serializer with the incoming request data
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        # Get updated values after the save
-        updated_instance = self.get_object()
-        new_module = updated_instance.module.id  
-
-        # Check if the module has changed
-        if old_module != new_module:
-            print_format_name = updated_instance.id
-            updated_instance.app.id
-
-            # Run the move command through the subprocess
-            move_command = [
-                "blox", 
-                "move-print-format", 
-                old_app, 
-                old_module, 
-                updated_instance.app.id, 
-                updated_instance.module.id, 
-                print_format_name
-            ]
-            return run_subprocess(
-                move_command,
-                "PrintFormat moved successfully",
-                "Failed to move document"
-            )
-
-        return Response(serializer.data)
 
 
 class MigrateAPIView(APIView):

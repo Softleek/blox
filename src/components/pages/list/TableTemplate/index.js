@@ -12,6 +12,7 @@ import ExportModal from "@/components/core/common/modal/ExportModal";
 import ImportDataModal from "@/components/core/common/modal/ImportDataModal";
 import { useData } from "@/contexts/DataContext";
 import ToastTemplates from "@/components/core/common/toast/ToastTemplates";
+import PrintModal from "@/components/functions/print/PrintModal";
 
 const TableTemplate = ({
   tableConfig,
@@ -25,10 +26,11 @@ const TableTemplate = ({
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectedRowsData, setSelectedRowsData] = useState([]);
+  const [form, setForm] = useState([]);
   const [isQuickEntryModalOpen, setIsQuickEntryModalOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
   const { openModal } = useModal();
   const { setLoading } = useData();
 
@@ -76,10 +78,10 @@ const TableTemplate = ({
     // Implement edit logic here
   };
 
-  const handlePrintTypeSelect = (type) => {
-    setPrintType(type);
-    setIsModalOpen(false);
-    // setModalIsOpen(true);
+  const handlePrint = () => {
+    const filteredData = data.filter((item) => selectedRows.includes(item.id));
+    setForm(filteredData);
+    setIsPrintModalOpen(true);
   };
 
   const handleExcelExport = () => {
@@ -148,7 +150,7 @@ const TableTemplate = ({
       <div className="flex flex-wrap bg-white">
         <TableHeader
           title={tableConfig?.name}
-          onPrint={() => setIsModalOpen(true)}
+          onPrint={handlePrint}
           onImport={() => setIsImportModalOpen(true)}
           onExport={handleExcelExport}
           onDelete={handleDelete}
@@ -209,6 +211,11 @@ const TableTemplate = ({
           isOpen={isImportModalOpen}
           onRequestClose={() => setIsImportModalOpen(false)}
           onSendData={(data) => uploadData(tableConfig, endpoint, data)}
+        />
+        <PrintModal
+          isOpen={isPrintModalOpen}
+          onClose={() => setIsPrintModalOpen(false)}
+          form={form}
         />
       </div>
     </>

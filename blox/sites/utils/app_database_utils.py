@@ -149,9 +149,9 @@ def create_entries_from_config(django_path: str, site: str) -> None:
 
                 if pf_id in existing_print_formats:
                     pf = existing_print_formats[pf_id]
-                    if pf.name != pf_name:
-                        pf.name = pf_name
-                        pf.save()
+                    # if pf.name != pf_name:
+                    #     pf.name = pf_name
+                    #     pf.save()
                 else:
                     print_formats_to_create.append(
                         PrintFormat(id=pf_id, name=pf_name, module_id=module_id, app_id=app_id)

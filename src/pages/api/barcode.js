@@ -11,7 +11,7 @@ export default function handler(req, res) {
   try {
     // High-resolution settings (double the default size for better quality)
     const width = 800; // Increased width for sharper lines
-    const height = 300; // Increased height for better readability
+    const height = 200; // Increased height for better readability
     const dpi = 600; // High DPI for print-quality output
 
     // Create high-resolution canvas
@@ -28,7 +28,7 @@ export default function handler(req, res) {
       background: "#ffffff",
       lineColor: "#000000",
       width: 4, // Increase line width for sharper bars
-      height: 200, // More height for better scanning
+      height: 100, // More height for better scanning
       fontSize: 48, // Larger text for clarity
       margin: 10, // Add margin for better spacing
     });

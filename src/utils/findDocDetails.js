@@ -5,27 +5,36 @@ export const findDocDetails = (slug, type = "doctype") => {
   try {
     // Iterate over the doctypesData (doctypes.json content)
     for (const app of doctypesData) {
-      for (const module of app.modules) {
-        const doc = module.docs.find((doc) => doc.id === slug);
+      for (const module1 of app.modules) {
+        const docs =
+          type === "doctype"
+            ? module1.docs
+            : type === "print_format"
+            ? module1.print_formats
+            : module1[type];
+
+        const doc = docs.find((doc) => doc.id === slug);
         if (doc) {
           const appPathWithAppFolder = `/apps/${app.id}/${app.id}`;
 
-          const appDoctypePath = `${appPathWithAppFolder}/${module.id}/${type}`;
+          const appDoctypePath = `${appPathWithAppFolder}/${module1.id}/${type}`;
 
           // Simulate the logic that would normally check the existence of files using fs
           const docPath =
-            [appDoctypePath].find((path) => path.includes(module.id)) || null;
+            [appDoctypePath].find((path) => path.includes(module1.id)) || null;
 
-          // Return document details as expected
-          return {
+          const values = {
             moduleRoot: appPathWithAppFolder,
             app: app.name,
             app_id: app.id,
-            module_id: module.id,
-            module: module.name,
+            module_id: module1.id,
+            module: module1.name,
             docPath: docPath ? `${docPath}/${slug}` : null,
             doc: doc,
           };
+
+          // Return document details as expected
+          return values;
         }
       }
     }

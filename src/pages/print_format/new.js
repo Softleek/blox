@@ -34,12 +34,12 @@ const Newdocument = () => {
 
       if (
         response.data.additional &&
-        response.data.additional.type === "newdoc"
+        response.data.additional.type === "newprintformat"
       ) {
         const documentname = response.data.id;
         const app = response.data.app.name;
         const module1 = response.data.module.name;
-        addDoc({ documentname, app, module1 }); // Don't wait for the response
+        addDoc({ name: documentname, app, module: module1 }); // Don't wait for the response
         router.push(`${router.pathname.replace("/new", "")}/${documentname}`);
       }
     } catch (error) {
