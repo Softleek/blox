@@ -127,6 +127,15 @@ class Document(AbstractApp):
     def __str__(self):
         return f"{self.name} - {self.module}"
 
+class PrintFormat(AbstractApp):
+    app = models.ForeignKey(App, on_delete=models.CASCADE, related_name="app")
+
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name="modules")
+    type = models.CharField(max_length=255, default="custom")
+
+    def __str__(self):
+        return f"{self.name} - {self.module}"
+
 class Tenant(models.Model):
     name = models.CharField(max_length=255, unique=True)
     database_name = models.CharField(max_length=255, unique=True)

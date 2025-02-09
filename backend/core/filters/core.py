@@ -1,4 +1,4 @@
-from core.models import App, ChangeLog, Document, Module, User, Reminder
+from core.models import App, ChangeLog, Document, Module, User, Reminder, PrintFormat
 from django.contrib.auth.models import Group
 from django_filters import rest_framework as filters
 
@@ -23,6 +23,11 @@ class ModuleFilter(DynamicFilterSet):
 class DocumentFilter(DynamicFilterSet):
     class Meta:
         model = Document
+        fields = "__all__"
+        exclude = ["edit_history"]
+class PrintFormatFilter(DynamicFilterSet):
+    class Meta:
+        model = PrintFormat
         fields = "__all__"
         exclude = ["edit_history"]
 

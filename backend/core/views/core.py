@@ -4,7 +4,7 @@ import threading
 
 from core.filters import (AppFilter, ChangeLogFilter, DocumentFilter,
                           ModuleFilter)
-from core.models import App, ChangeLog, Document, Module
+from core.models import App, ChangeLog, Document, Module, PrintFormat
 from core.serializers import (AppSerializer, ChangeLogSerializer,
                               DocumentSerializer, ModuleSerializer)
 from rest_framework import status
@@ -15,8 +15,8 @@ from .template import GenericViewSet, handle_errors
 
 from core.permissions import HasGroupPermission
 from core.models.auth import RoleType, Branch
-from core.filters import RoleFilter, BranchFilter
-from core.serializers import RoleSerializer, BranchSerializer
+from core.filters import RoleFilter, BranchFilter, PrintFormatFilter
+from core.serializers import RoleSerializer, BranchSerializer, PrintFormatSerializer
 # from apps.masafa.masafa.masafa.doctype.customer.customer import Customer as CustomCustomer
 
 class RoleViewSet(GenericViewSet):
@@ -303,6 +303,109 @@ class DocumentViewSet(GenericViewSet):
             return run_subprocess(
                 move_command,
                 "Document moved successfully",
+                "Failed to move document"
+            )
+
+        return Response(serializer.data)
+
+
+
+class CreatePrintFormatAPIView(APIView):
+    @handle_errors
+    def post(self, request, *args, **kwargs):
+        name = request.data.get("name")
+        app = request.data.get("app")
+        module = request.data.get("module") 
+
+        return run_subprocess(
+            ["blox", "new-print-format", "--app", app, "--module", module, name],
+            "PrintFormat created successfully",
+            "Failed to create PrintFormat",
+        )
+
+
+class PrintFormatViewSet(GenericViewSet):
+    queryset = PrintFormat.objects.all()
+    serializer_class = PrintFormatSerializer
+    filterset_class = PrintFormatFilter
+
+    @handle_errors
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        module_id = data.pop("module") 
+        module = Module.objects.get(pk=module_id)
+        data["app"] = App.objects.get(pk=module.app.id)
+        data["module"] = module
+        doc = PrintFormat.objects.create(**data)
+        
+        module_serializer = ModuleSerializer(module) 
+        app_serializer = AppSerializer(App.objects.get(pk=module.app.id)) 
+
+        response_data = self.get_serializer(doc).data
+        response_data["module"] = module_serializer.data
+        response_data["app"] = app_serializer.data
+        response_data["additional"] = {
+            "type": "newprintformat",
+            "info": {"message": "Print Format created and ready to be used."},
+        }
+
+        return Response(
+            response_data, status=status.HTTP_201_CREATED, headers=self.get_success_headers(response_data)
+        )
+
+    @handle_errors
+    def destroy(self, request, *args, **kwargs):
+        print_format = self.get_object()
+        print_format_name = print_format.id
+        app = print_format.app.id
+        module = print_format.module.id
+
+        if not print_format_name:
+            return Response(
+                {"error": "Missing print_format name"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        print_format.delete()
+        return run_subprocess(
+            ["blox", "drop-print-format", "--app", app, "--module", module, print_format_name],
+            "PrintFormat deleted successfully",
+            "Failed to delete PrintFormat",
+        )
+
+    @handle_errors
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()  # The existing PrintFormat instance
+        old_app = instance.app.id  # Store the old module ID
+        old_module = instance.module.id  # Store the old module ID
+        
+        # Update the serializer with the incoming request data
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        # Get updated values after the save
+        updated_instance = self.get_object()
+        new_module = updated_instance.module.id  
+
+        # Check if the module has changed
+        if old_module != new_module:
+            print_format_name = updated_instance.id
+            updated_instance.app.id
+
+            # Run the move command through the subprocess
+            move_command = [
+                "blox", 
+                "move-print-format", 
+                old_app, 
+                old_module, 
+                updated_instance.app.id, 
+                updated_instance.module.id, 
+                print_format_name
+            ]
+            return run_subprocess(
+                move_command,
+                "PrintFormat moved successfully",
                 "Failed to move document"
             )
 

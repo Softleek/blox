@@ -1,4 +1,4 @@
-from core.models import App, ChangeLog, Document, Module, Reminder
+from core.models import App, ChangeLog, Document, Module, Reminder, PrintFormat
 from core.models.core import (DEFAULT_LICENSE_CHOICES,
                               SUPPORTED_PLATFORMS_CHOICES)
 from rest_framework import serializers
@@ -74,6 +74,10 @@ class ModuleSerializer(serializers.ModelSerializer):
 class DocumentSerializer(RelationshipHandlerMixin, serializers.ModelSerializer):
     class Meta:
         model = Document
+        fields = "__all__"
+class PrintFormatSerializer(RelationshipHandlerMixin, serializers.ModelSerializer):
+    class Meta:
+        model = PrintFormat
         fields = "__all__"
 
 

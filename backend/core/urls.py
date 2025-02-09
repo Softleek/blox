@@ -12,12 +12,14 @@ from .views import (AppViewSet, BulkDeleteAPIView,  ReminderViewSet,
                     ModuleViewSet, OTPActivationView, PermissionViewSet,
                     ProfileView, ResendOTPView, SendEmailView, SendSmsView,
                     UserGetViewSet, UserGroupPermissions, UserIPAddressViewSet,
-                    UserViewSet, RoleViewSet, BranchViewSet)
+                    UserViewSet, RoleViewSet, BranchViewSet, PrintFormatViewSet, CreatePrintFormatAPIView)
 
 router = DefaultRouter()
 router.register(r"app", AppViewSet)
 router.register(r"module", ModuleViewSet) 
 router.register(r"document", DocumentViewSet)
+router.register(r"print_format", PrintFormatViewSet)
+router.register(r"print_formats", PrintFormatViewSet)
 router.register(r"apps", AppViewSet)
 router.register(r"modules", ModuleViewSet) 
 router.register(r"documents", DocumentViewSet)
@@ -43,6 +45,7 @@ urlpatterns = [
     path("newmodule/", CreateModuleAPIView.as_view(), name="create-module"),
     path("newapp/", CreateAppAPIView.as_view(), name="create-app"),
     path("newdoc/", CreateDocumentAPIView.as_view(), name="create-document"),
+    path("newprintformat/", CreatePrintFormatAPIView.as_view(), name="create-print-format"),
     path("migrate/", MigrateAPIView.as_view(), name="migrate"),
     path("login/", LoginView.as_view(), name="login"),
     path("getuser/", UserGetViewSet.as_view(), name="getuser"),
