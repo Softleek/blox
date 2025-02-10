@@ -3,6 +3,7 @@ import os
 import re
 from difflib import get_close_matches
 from typing import List, Optional, Union
+from ...utils.config import DJANGO_PATH
 
 
 def find_matching_class(file_content: str, model_name: str) -> Union[str, List[str]]:
@@ -97,3 +98,24 @@ def write_viewset(
     view_file.write(f"    filterset_class = {model_name}Filter\n")
     view_file.write(f"    permission_classes = [HasGroupPermission]\n")
     view_file.write(f"    serializer_class = {model_name}Serializer\n\n")
+
+def add_import_to_signals(app_name, module_name, doc_name):
+    signals_path = os.path.join(DJANGO_PATH, f"{app_name}_app", "signals.py")
+    import_statement = f"from {app_name}.{module_name}.doctype.{doc_name} import *"
+
+    # Ensure the file exists
+    if not os.path.exists(signals_path):
+        with open(signals_path, "w") as f:
+            f.write(f"{import_statement}\n")
+        return
+
+    # Read the existing lines to check for duplicates
+    with open(signals_path, "r") as f:
+        lines = f.readlines()
+
+    if import_statement in [line.strip() for line in lines]:
+        return
+
+    # Append the import if it does not exist
+    with open(signals_path, "a") as f:
+        f.write(f"\n{import_statement}")

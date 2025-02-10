@@ -125,7 +125,7 @@ def install_django_app(app: str, project_root: str) -> None:
                 insert_index = i + 4  # Insert after class definition
                 break
 
-        ready_method = """\n    def ready(self):\n        import core.signals\n"""
+        ready_method = f"""\n    def ready(self):\n        import core.signals\n        import {app_name}.signals\n"""
 
         apps_py_content.insert(insert_index, ready_method)
 

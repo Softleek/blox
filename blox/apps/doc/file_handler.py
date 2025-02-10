@@ -19,22 +19,9 @@ def create_files(base_path: str, doc_name: str, doc_id: str, module: str) -> str
     # Define the default files and their content
     default_files: Dict[str, str] = {
         f"{doc_id}.py": f"""
-# {doc_name} DocType
-
-import frappe
-from frappe.model.document import Document
-
-class {to_titlecase_no_space(doc_name)}(Document):
-    pass
         """,
         f"{doc_id}.js": f"""
-// {doc_name} JavaScript File
 
-frappe.ui.form.on('{doc_name}', {{
-    refresh: function (frm) {{
-        // Custom script logic here
-    }},
-}});
         """,
         f"{doc_id}.json": f"""
 {{
@@ -57,15 +44,7 @@ frappe.ui.form.on('{doc_name}', {{
 }}
         """,
         f"test_{doc_id}.py": f"""
-# Test for {doc_name}
 
-import frappe
-import unittest
-
-class Test{to_titlecase_no_space(doc_name)}(unittest.TestCase):
-    def test_example(self):
-        # Example test case
-        self.assertTrue(True)
         """,
     }
 

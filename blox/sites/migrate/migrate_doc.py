@@ -7,7 +7,7 @@ from ..utils.app_actions import get_name_by_id
 from .write_filters import write_filters
 from .write_models import write_model_fields
 from .write_serializers import write_serializer
-from .write_viewsets import write_viewset
+from .write_viewsets import write_viewset, add_import_to_signals
 import click
 
 STRUCTURE = {
@@ -31,6 +31,8 @@ def migrate_doc(app_name: str, module: str, doc: Optional[str] = None, django_pa
     module_name = to_snake_case(module).lower()
     doc_name = to_snake_case(doc).lower() if doc else ""
     doctype_folder_name = "doctype"
+    
+    add_import_to_signals(app_name, module_name, doc_name)
 
     modules_file_path, module_base_path = find_module_base_path(
         app_name=app_name, module_name=module_name
