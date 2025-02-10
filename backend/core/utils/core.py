@@ -1,5 +1,7 @@
 import logging
 import subprocess
+import random
+import string
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -28,4 +30,25 @@ def log_user_action(user_id, action):
     """
     logger.info(f"User {user_id} performed action: {action}")
 
+
+
+
+def generate_simple_password():
+    uppercase_letter = random.choice(string.ascii_uppercase)
+    lowercase_letter = random.choice(string.ascii_lowercase)
+    special_character = random.choice("!@#$%^&*()")
+    digits = "".join(random.choices(string.digits, k=3))
+
+    # Combine the characters
+    password_list = [uppercase_letter, lowercase_letter, special_character] + list(
+        digits
+    )
+
+    # Shuffle to ensure random order
+    random.shuffle(password_list)
+
+    # Convert list to string
+    password = "".join(password_list)
+
+    return password
 

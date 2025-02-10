@@ -1,10 +1,6 @@
 
-import json
-import random
-import string
 from datetime import timedelta
 
-import requests
 from core.filters import GroupFilter, PermissionFilter, UserFilter
 from core.models import OTP, User, UserIPAddress
 from core.permissions import HasGroupPermission, IsSuperUser
@@ -25,6 +21,8 @@ from rest_framework.views import APIView
 from core.models.auth import RoleType
 
 from .template import GenericViewSet
+from core.utils.sms import send_sms
+from core.utils import generate_simple_password
 
 
 class UserGroupPermissions(APIView):
@@ -235,29 +233,6 @@ class LogoutView(APIView):
         )
 
 
-def send_sms(phone_number, message):
-
-    api_url = "https://api.softleek.com/sms/send"
-
-    payload = {"phone": phone_number, "message": message, "sender_id": "SOFTLEEK"}
-
-    json_payload = json.dumps(payload)
-
-    headers = {"Content-Type": "application/json", "Accept": "application/json"}
-
-    response = requests.post(api_url, data=json_payload, headers=headers)
-
-    if response.status_code != 200:
-
-        try:
-            response_data = response.json()
-        except ValueError:
-            response_data = response.text
-
-        raise Exception(
-            f"Failed to send SMS. Status code: {response.status_code}, Response: {response_data}"
-        )
-
 
 class UserViewSet(GenericViewSet):
     queryset = User.objects.all()
@@ -304,13 +279,16 @@ class UserViewSet(GenericViewSet):
                 "email": user.email,
                 "password": password,
             }
-            recipient_list = [user.email]
-            # send_custom_email(subject, template_name, context, recipient_list)
+            try:
+                recipient_list = [user.email]
+                send_custom_email(subject, template_name, context, recipient_list)
 
-            # Send SMS if a phone number is provided
-            if user.phone:
-                message = f"Welcome, {user.first_name or user.username}! Your account has been created. Your login credentials are Username: {user.username}, Password: {password}"
-                # send_sms(user.phone, message)
+                # Send SMS if a phone number is provided
+                if user.phone:
+                    message = f"Welcome, {user.first_name or user.username}! Your account has been created. Your login credentials are Username: {user.username}, Password: {password}"
+                    send_sms(user.phone, message)
+            except Exception as e:
+                print(f"Failed to send email or SMS: {str(e)}")
 
             serializer = self.get_serializer(user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -337,45 +315,6 @@ class UserViewSet(GenericViewSet):
             print(e)
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-
-def generate_simple_password():
-    uppercase_letter = random.choice(string.ascii_uppercase)
-    lowercase_letter = random.choice(string.ascii_lowercase)
-    special_character = random.choice("!@#$%^&*()")
-    digits = "".join(random.choices(string.digits, k=3))
-
-    # Combine the characters
-    password_list = [uppercase_letter, lowercase_letter, special_character] + list(
-        digits
-    )
-
-    # Shuffle to ensure random order
-    random.shuffle(password_list)
-
-    # Convert list to string
-    password = "".join(password_list)
-
-    return password
-
-
-def generate_simple_password():
-    uppercase_letter = random.choice(string.ascii_uppercase)
-    lowercase_letter = random.choice(string.ascii_lowercase)
-    special_character = random.choice("!@#$%^&*()")
-    digits = "".join(random.choices(string.digits, k=3))
-
-    # Combine the characters
-    password_list = [uppercase_letter, lowercase_letter, special_character] + list(
-        digits
-    )
-
-    # Shuffle to ensure random order
-    random.shuffle(password_list)
-
-    # Convert list to string
-    password = "".join(password_list)
-
-    return password
 
 
 class UserIPAddressViewSet(viewsets.ReadOnlyModelViewSet):

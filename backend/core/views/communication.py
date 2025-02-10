@@ -16,6 +16,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from core.models import Reminder
 from core.serializers import ReminderSerializer
+from core.utils import send_sms
 
 class ReminderListAPIView(APIView):
     permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
@@ -91,7 +92,7 @@ class SendSmsView(APIView):
 
         try:
             for phone_number in phone_numbers:
-                self.send_sms(phone_number, message)
+                send_sms(phone_number, message)
             return Response(
                 {"message": "SMS sent successfully."}, status=status.HTTP_200_OK
             )
@@ -100,23 +101,6 @@ class SendSmsView(APIView):
                 {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-    def send_sms(self, phone_number, message):
-        api_url = "https://api.softleek.com/sms/send"
-        payload = {"phone": phone_number, "message": message, "sender_id": "SOFTLEEK"}
-        json_payload = json.dumps(payload)
-        headers = {"Content-Type": "application/json", "Accept": "application/json"}
-
-        response = requests.post(api_url, data=json_payload, headers=headers)
-
-        if response.status_code != 200:
-            try:
-                response_data = response.json()
-            except ValueError:
-                response_data = response.text
-
-            raise Exception(
-                f"Failed to send SMS. Status code: {response.status_code}, Response: {response_data}"
-            )
 
 class ReminderViewSet(GenericViewSet):
     queryset = Reminder.objects.all()

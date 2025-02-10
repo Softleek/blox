@@ -227,6 +227,13 @@ ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = (
 ACCOUNT_EMAIL_CONFIRMATION_SIGNUP_MESSAGE = "account/confirmation_signup_message.txt"
 
 
+SMS_API_KEY = config("SMS_API_KEY", default="")
+SMS_CLIENT_ID = config("SMS_CLIENT_ID", default="") 
+SMS_SENDER_ID = config("SMS_SENDER_ID", default="") 
+SMS_API_URL = config("SMS_API_URL", default="") 
+SMS_IS_UNICODE = True
+SMS_IS_FLASH = True
+
 # APPEND_SLASH = False
 
 # Define the logs directory within the api folder
@@ -263,9 +270,5 @@ for site in sites:
 
 DATABASE_ROUTERS = ['core.db_router.MultiTenantRouter']
 
-
-
-
-sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "pos")))
 
 sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "masafa")))
