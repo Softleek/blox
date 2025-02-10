@@ -12,16 +12,10 @@ const DocumentDetail = () => {
   const { slug, id } = router.query;
   const [config, setConfig] = useState(null);
   const { data, form, setData, setForm, loading, setLoading } = useData();
-  const [printComponents, setPrintComponents] = useState({});
-  const [customConfig, setCustomConfig] = useState({
-    lifecycleHooks: {},
-    customButtons: [],
-    customComponents: {},
-  });
-
   const { appData, setAppData } = useDocumentData(slug, id, setConfig);
+  const [customElements, setCustomElements] = useState(null);
 
-  const saveData = async (f) => {
+  const saveData = async () => {
     await handleSave({
       data,
       form,
@@ -40,46 +34,38 @@ const DocumentDetail = () => {
 
     const loadDynamicConfig = async () => {
       try {
-        setPrintComponents({});
-        setCustomConfig({
-          lifecycleHooks: {},
-          customButtons: [],
-          customComponents: {},
-        });
-
         const moduleImport = await import(
           `../../../../../apps/${appData?.app_id}/${appData?.app_id}/${appData?.module_id}/doctype/${appData?.doc?.id}/${appData?.doc?.id}.js`
         );
 
-        setPrintComponents(moduleImport); // Store all exports dynamically
+        if (moduleImport?.default) {
+          // Instantiate CustomElements with required parameters
+          const customInstance = new moduleImport.default(
+            form,
+            setForm,
+            data,
+            setData,
+            router,
+            () => {}, // Placeholder for reloadData function
+            setLoading
+          );
 
-        // Extract lifecycleHooks, customButtons, and customComponents if available
-        setCustomConfig({
-          lifecycleHooks: moduleImport.lifecycleHooks || {},
-          customButtons: moduleImport.customButtons || [],
-          customComponents: moduleImport.customComponents || {},
-        });
+          setCustomElements(customInstance);
+        }
       } catch (error) {
-        console.error("Failed to load print format or custom config:", error);
+        // console.error("Failed to load custom elements:", error)
       }
     };
 
     loadDynamicConfig();
   }, [appData]);
 
-  if (!config) {
-    return <Loading />;
-  }
-
   return (
     <ConfigProvider initialConfig={config} initialAppData={appData}>
       <DoctypeForm
         handleSave={saveData}
         config={config}
-        lifecycleHooks={customConfig.lifecycleHooks}
-        customButtons={customConfig.customButtons}
-        customComponents={customConfig.customComponents}
-        printComponents={printComponents} // Pass all imported exports
+        customElements={customElements} // Pass dynamically imported and instantiated class
       />
     </ConfigProvider>
   );

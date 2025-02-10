@@ -3,7 +3,8 @@ import { generateTabStructure } from "./utils/generateTabStructure";
 export const updateConfig = (config) => {
   const structure = generateTabStructure(config);
 
-  const updatedFields = [...config?.fields];
+  const updatedFields = [...(config?.fields || [])];
+
   const updatedFieldOrder = [];
 
   const addFieldToOrder = (field) => {

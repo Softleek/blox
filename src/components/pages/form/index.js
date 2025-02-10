@@ -8,23 +8,15 @@ import useKeyEvents from "@/hooks/useKeyEvents";
 import DetailForm from "./DetailForm";
 import * as buttonActions from "./actions";
 import { defaultButtons } from "./buttonConfig";
-import { applyLifecycleHooks } from "@/utils/customHooks";
-import { renderCustomComponents } from "@/utils/customComponents";
-import { executeAction } from "@/utils/customActions";
-import ToastTemplates from "@/components/core/common/toast/ToastTemplates";
-import { validateRequiredFields, cleanData } from "./utils/formUtils";
 import { wrapButtonProperties } from "./utils/buttonUtils";
 import { navigateUp, reloadData } from "./utils/navigationUtils";
 import _ from "lodash";
+import { toUnderscoreLowercase } from "@/utils/textConvert";
 
-const DoctypeForm = ({
-  handleSave,
-  config,
-  customButtons = [],
-  lifecycleHooks = {},
-  customComponents = [],
-  is_doc = true,
-}) => {
+import { validateRequiredFields, cleanData } from "./utils/formUtils";
+import ToastTemplates from "@/components/core/common/toast/ToastTemplates";
+
+const DoctypeForm = ({ handleSave, config, customElements, is_doc = true }) => {
   const { localConfig, localAppData } = useConfig();
   const { form, setForm, setLoading, data, setData } = useData();
   const [isEditing, setIsEditing] = useState(false);
@@ -44,14 +36,9 @@ const DoctypeForm = ({
     }
   }, [form, data]);
 
-  const { beforeSave, afterSave, onFieldChange } = applyLifecycleHooks(
-    form,
-    lifecycleHooks
-  );
-
   const handleSaveClick = async (event) => {
     event.preventDefault();
-
+    // const cleanedForm = customElements.lifecycleHooks.beforeSave(form);
     const missingFields = validateRequiredFields(form, localConfig);
     if (missingFields.length > 0) {
       ToastTemplates.warning(
@@ -60,9 +47,9 @@ const DoctypeForm = ({
       return;
     }
 
-    const cleanedForm = beforeSave(cleanData(form));
+    const cleanedForm = cleanData(form);
     await handleSave(cleanedForm);
-    afterSave(cleanedForm);
+    // customElements.lifecycleHooks.afterSave(cleanedForm);
   };
 
   useKeyEvents(
@@ -85,12 +72,17 @@ const DoctypeForm = ({
     slug,
     navigateUp: () => navigateUp(router),
     reloadData: () => reloadData(router),
-    onFieldChange,
+    onFieldChange: customElements?.lifecycleHooks?.onFieldChange,
   };
 
-  const buttons = [...defaultButtons, ...customButtons].map((button) =>
-    wrapButtonProperties(button, sharedProps)
-  );
+  const buttons = [
+    ...defaultButtons,
+    ...(customElements?.customButtons || []),
+  ].map((button) => wrapButtonProperties(button, sharedProps));
+
+  const link = is_doc
+    ? `/app/${toUnderscoreLowercase(localConfig?.name)}`
+    : `/${toUnderscoreLowercase(localConfig?.name)}`;
 
   return (
     <div className="flex flex-col">
@@ -102,11 +94,14 @@ const DoctypeForm = ({
         handleSaveClick={handleSaveClick}
         title={localConfig?.name}
         buttons={buttons}
+        link={link}
       />
       <div className="relative z-1 px-4 flex flex-col mt-2 w-full">
         <div className="h-full shadow-md shadow-slate-300">
-          {renderCustomComponents(customComponents, sharedProps)}
-          <DetailForm onFieldChange={onFieldChange} />
+          {(customElements?.customComponents || []).map((Component, index) => (
+            <Component key={index} />
+          ))}
+          <DetailForm onFieldChange={config?.onFieldChange} />
         </div>
       </div>
     </div>
