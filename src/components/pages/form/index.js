@@ -1,55 +1,98 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react"; // Import useRef
 import DocHeader from "@/components/core/common/header/DocHeader";
 import { useConfig } from "@/contexts/ConfigContext";
-import { useData } from "@/contexts/DataContext";
-import { useRouter } from "next/router";
-import { useModal } from "@/contexts/ModalContext";
 import useKeyEvents from "@/hooks/useKeyEvents";
+import { useRouter } from "next/router";
 import DetailForm from "./DetailForm";
+import { useData } from "@/contexts/DataContext";
+import { toUnderscoreLowercase } from "@/utils/textConvert";
 import * as buttonActions from "./actions";
 import { defaultButtons } from "./buttonConfig";
-import { wrapButtonProperties } from "./utils/buttonUtils";
-import { navigateUp, reloadData } from "./utils/navigationUtils";
-import _ from "lodash";
-import { toUnderscoreLowercase } from "@/utils/textConvert";
-
-import { validateRequiredFields, cleanData } from "./utils/formUtils";
+import { useModal } from "@/contexts/ModalContext";
 import ToastTemplates from "@/components/core/common/toast/ToastTemplates";
+import _ from "lodash";
 
-const DoctypeForm = ({ handleSave, config, customElements, is_doc = true }) => {
+const DoctypeForm = ({
+  handleSave,
+  config,
+  additionalButtons = [],
+  is_doc = true,
+}) => {
   const { localConfig, localAppData } = useConfig();
   const { form, setForm, setLoading, data, setData } = useData();
   const [isEditing, setIsEditing] = useState(false);
+  const [isListPage, setIsListPage] = useState(false);
   const router = useRouter();
   const { openModal } = useModal();
   const endpoint = localAppData?.endpoint;
   const { slug, id } = router.query;
-  const formRef = useRef(null);
+
+  const formRef = useRef(null); // Create a reference for the form
 
   useEffect(() => {
-    setIsEditing(!_.isEqual(form, data));
-  }, [form, data]);
+    setIsEditing(true);
+  }, [localConfig]);
 
-  useEffect(() => {
-    if (config?.onLoad) {
-      config.onLoad({ form, setForm, data, setData, router });
-    }
-  }, [form, data]);
+  const handleSaveClick = (event) => {
+    event.preventDefault(); // Prevent default form submission
 
-  const handleSaveClick = async (event) => {
-    event.preventDefault();
-    // const cleanedForm = customElements.lifecycleHooks.beforeSave(form);
-    const missingFields = validateRequiredFields(form, localConfig);
+    // Validate required fields
+    const missingFields = [];
+    localConfig?.field_order.forEach((fieldName) => {
+      const field = Object.values(localConfig?.fields || {}).find(
+        (f) => f.fieldname === fieldName
+      );
+
+      if (
+        field?.reqd &&
+        (!form[fieldName] || form[fieldName].toString().trim() === "")
+      ) {
+        missingFields.push(field.label || fieldName); // Use label if available, otherwise field name
+      }
+    });
+
     if (missingFields.length > 0) {
       ToastTemplates.warning(
         `Please fill in the required fields: ${missingFields.join(", ")}`
       );
-      return;
+      return; // Stop form submission
     }
 
+    // Function to clean form data
+    const cleanData = (data) => {
+      if (data instanceof Date) return data;
+
+      if (Array.isArray(data)) {
+        return data
+          .map(cleanData)
+          .filter(
+            (item) =>
+              item !== null &&
+              item !== undefined &&
+              item !== "" &&
+              (typeof item !== "object" || Object.keys(item).length > 0)
+          );
+      }
+
+      if (typeof data === "object" && data !== null) {
+        return Object.fromEntries(
+          Object.entries(data)
+            .map(([key, value]) => [key, cleanData(value)])
+            .filter(
+              ([_, value]) =>
+                value !== null &&
+                value !== undefined &&
+                value !== "" &&
+                (typeof value !== "object" || Object.keys(value).length > 0)
+            )
+        );
+      }
+
+      return data;
+    };
+
     const cleanedForm = cleanData(form);
-    await handleSave(cleanedForm);
-    // customElements.lifecycleHooks.afterSave(cleanedForm);
+    handleSave(cleanedForm);
   };
 
   useKeyEvents(
@@ -57,6 +100,33 @@ const DoctypeForm = ({ handleSave, config, customElements, is_doc = true }) => {
     handleSaveClick,
     (props) => buttonActions.handleDuplicate(props)
   );
+
+  const wrapButtonProperties = (button, additionalProps) => {
+    const wrappedButton = {
+      ...button,
+      ...additionalProps,
+    };
+    if (button.action) {
+      wrappedButton.action = (event) => {
+        button.action({ ...additionalProps, event });
+      };
+    }
+    return wrappedButton;
+  };
+
+  const navigateUp = () => {
+    const currentPath = router.asPath;
+    const segments = currentPath.split("/").filter(Boolean);
+    if (segments.length > 1) {
+      segments.pop();
+    }
+    const newPath = `/${segments.join("/")}`;
+    router.push(newPath);
+  };
+
+  const reloadData = () => {
+    router.reload();
+  };
 
   const sharedProps = {
     router,
@@ -67,23 +137,28 @@ const DoctypeForm = ({ handleSave, config, customElements, is_doc = true }) => {
     openModal,
     endpoint,
     setLoading,
-    setData,
+    navigateUp,
     data,
+    setData,
+    reloadData,
     slug,
-    navigateUp: () => navigateUp(router),
-    reloadData: () => reloadData(router),
-    onFieldChange: customElements?.lifecycleHooks?.onFieldChange,
   };
 
-  const buttons = [
-    ...defaultButtons,
-    ...(customElements?.customButtons || []),
-  ].map((button) => wrapButtonProperties(button, sharedProps));
+  const buttons = [...defaultButtons, ...additionalButtons].map((button) =>
+    wrapButtonProperties(button, sharedProps)
+  );
 
   const link = is_doc
     ? `/app/${toUnderscoreLowercase(localConfig?.name)}`
     : `/${toUnderscoreLowercase(localConfig?.name)}`;
 
+  useEffect(() => {
+    if (!_.isEqual(form, data)) {
+      setIsEditing(true);
+    } else {
+      setIsEditing(false);
+    }
+  }, [form, data]);
   return (
     <div className="flex flex-col">
       <DocHeader
@@ -96,12 +171,13 @@ const DoctypeForm = ({ handleSave, config, customElements, is_doc = true }) => {
         buttons={buttons}
         link={link}
       />
-      <div className="relative z-1 px-4 flex flex-col mt-2 w-full">
+      <div
+        // ref={formRef}
+        // onSubmit={handleFormSubmit}
+        className="relative z-1 px-4 flex flex-col mt-2 w-full"
+      >
         <div className="h-full shadow-md shadow-slate-300">
-          {(customElements?.customComponents || []).map((Component, index) => (
-            <Component key={index} />
-          ))}
-          <DetailForm onFieldChange={config?.onFieldChange} />
+          <DetailForm />
         </div>
       </div>
     </div>

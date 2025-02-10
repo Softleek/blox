@@ -12,10 +12,10 @@ const DocumentDetail = () => {
   const { slug, id } = router.query;
   const [config, setConfig] = useState(null);
   const { data, form, setData, setForm, loading, setLoading } = useData();
-  const { appData, setAppData } = useDocumentData(slug, id, setConfig);
-  const [customElements, setCustomElements] = useState(null);
 
-  const saveData = async () => {
+  const { appData, setAppData } = useDocumentData(slug, id, setConfig);
+
+  const saveData = async (f) => {
     await handleSave({
       data,
       form,
@@ -29,44 +29,13 @@ const DocumentDetail = () => {
     });
   };
 
-  useEffect(() => {
-    if (!appData) return;
-
-    const loadDynamicConfig = async () => {
-      try {
-        const moduleImport = await import(
-          `../../../../../apps/${appData?.app_id}/${appData?.app_id}/${appData?.module_id}/doctype/${appData?.doc?.id}/${appData?.doc?.id}.js`
-        );
-
-        if (moduleImport?.default) {
-          // Instantiate CustomElements with required parameters
-          const customInstance = new moduleImport.default(
-            form,
-            setForm,
-            data,
-            setData,
-            router,
-            () => {}, // Placeholder for reloadData function
-            setLoading
-          );
-
-          setCustomElements(customInstance);
-        }
-      } catch (error) {
-        // console.error("Failed to load custom elements:", error)
-      }
-    };
-
-    loadDynamicConfig();
-  }, [appData]);
+  if (!config) {
+    return <Loading />;
+  }
 
   return (
     <ConfigProvider initialConfig={config} initialAppData={appData}>
-      <DoctypeForm
-        handleSave={saveData}
-        config={config}
-        customElements={customElements} // Pass dynamically imported and instantiated class
-      />
+      <DoctypeForm handleSave={saveData} config={config} />
     </ConfigProvider>
   );
 };
