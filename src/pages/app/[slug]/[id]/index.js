@@ -6,6 +6,11 @@ import DoctypeForm from "@/components/pages/form";
 import { useDocumentData } from "@/hooks/useDocumentData";
 import { handleSave } from "@/utils/handleSave";
 import { useData } from "@/contexts/DataContext";
+import {
+  lifecycleHooks,
+  customButtons,
+  customComponents,
+} from "@/custom/customConfig";
 
 const DocumentDetail = () => {
   const router = useRouter();
@@ -35,7 +40,13 @@ const DocumentDetail = () => {
 
   return (
     <ConfigProvider initialConfig={config} initialAppData={appData}>
-      <DoctypeForm handleSave={saveData} config={config} />
+      <DoctypeForm
+        handleSave={saveData}
+        config={config}
+        lifecycleHooks={lifecycleHooks}
+        customButtons={customButtons}
+        customComponents={customComponents}
+      />
     </ConfigProvider>
   );
 };

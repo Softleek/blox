@@ -20,7 +20,7 @@ import _ from "lodash";
 const DoctypeForm = ({
   handleSave,
   config,
-  additionalButtons = [],
+  customButtons = [],
   lifecycleHooks = {},
   customComponents = [],
   is_doc = true,
@@ -88,7 +88,7 @@ const DoctypeForm = ({
     onFieldChange,
   };
 
-  const buttons = [...defaultButtons, ...additionalButtons].map((button) =>
+  const buttons = [...defaultButtons, ...customButtons].map((button) =>
     wrapButtonProperties(button, sharedProps)
   );
 
