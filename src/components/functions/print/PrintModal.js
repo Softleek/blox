@@ -92,7 +92,13 @@ const PrintModal = ({ form, onClose, isOpen }) => {
         }`}
         style={{ top: 0, left: 0, width: "100%", height: "100%", zIndex: 9999 }}
       ></div>
-      <div className="p-6 bg-white shadow-lg min-h-[85vh] w-full rounded-lg">
+      <div
+        className={` ${
+          isOpen
+            ? "p-6 bg-white shadow-lg min-h-[85vh] w-full rounded-lg"
+            : "hidden"
+        }`}
+      >
         <Modal isOpen={isOpen} onClose={onClose} position={"top"}>
           <div className="!w-[70vw] mx-auto">
             <h1 className="text-2xl font-bold mb-6 text-center">
