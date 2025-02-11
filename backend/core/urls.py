@@ -37,6 +37,7 @@ router.register(r'core/reminder', ReminderViewSet)
 router.register(r'core/role_type', RoleViewSet) 
 router.register(r'core/branch', BranchViewSet) 
 router.register(r'core/rolegroup', GroupViewSet)
+router.register(r'core/group', GroupViewSet)
 router.register(r'core/permission', PermissionViewSet)
 router.register(r'user-ip-addresses', UserIPAddressViewSet, basename='user-ip-addresses')
 

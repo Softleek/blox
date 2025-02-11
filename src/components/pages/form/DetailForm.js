@@ -108,7 +108,7 @@ const DetailForm = () => {
       </motion.div>
 
       <motion.div
-        className="px-2 py-4 h-[75vh] overflow-y-auto"
+        className="px-2 py-4 h-[72vh] overflow-y-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}

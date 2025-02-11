@@ -321,19 +321,17 @@ class GenericViewSet(viewsets.ModelViewSet):
     @handle_errors
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        queryset = self.get_queryset().order_by("modified")  # Ensure consistent ordering by `modified`
-        sort_field = "modified"
-        
+        model_fields = [field.name for field in self.queryset.model._meta.fields]
+        sort_field = "modified" if "modified" in model_fields else "id"
+        queryset = self.get_queryset().order_by(sort_field)
+
         next_instance = queryset.filter(**{f"{sort_field}__lt": getattr(instance, sort_field)}).last()
         prev_instance = queryset.filter(**{f"{sort_field}__gt": getattr(instance, sort_field)}).first()
 
         prev_id = prev_instance.id if prev_instance else None
         next_id = next_instance.id if next_instance else None
 
-        # Serialize the current instance
         data = self._serialize_retrieve_instance(instance)
-
-        # Add `_prev` and `_next` to the response
         data["_prev"] = prev_id
         data["_next"] = next_id
 
