@@ -16,7 +16,19 @@ import {
   faCashRegister,
   faFileInvoice,
   faBox,
-  faChartBar, // Add a tools icon for the settings
+  faChartBar,
+  faTruckPickup,
+  faTruckLoading,
+  faDriversLicense,
+  faCar,
+  faCartShopping,
+  faPerson,
+  faQuoteLeft,
+  faMoneyBillTransfer,
+  faBell,
+  faSailboat,
+  faUserGroup,
+  faUserCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -92,7 +104,7 @@ const Sidebar = () => {
       )}
 
       <div
-        className={`w-fit ease-nav-brand block -translate-x-full flex-wrap flex-grow items-center justify-between border-0 p-1 antialiased transition-transform duration-200 left-0 translate-x-0 ${
+        className={`w-fit max-h-[92vh] overflow-auto ease-nav-brand block -translate-x-full flex-wrap flex-grow items-center justify-between border-0 p-1 antialiased transition-transform duration-200 left-0 translate-x-0 ${
           !isCollapsed ? "" : "hidden"
         }`}
       >
@@ -133,6 +145,111 @@ const Sidebar = () => {
               text="Home"
               link="/"
               active={dashboardText === "Home"}
+            />
+            <SidebarList
+              icon={faDashboard}
+              text="Dashboard"
+              link="/"
+              active={dashboardText === "Dashboard"}
+            />
+            <SidebarList
+              icon={faCartShopping}
+              text="Item"
+              link="/app/item"
+              permission="view_item"
+              active={dashboardText === "Item"}
+            />
+            <SidebarList
+              icon={faTruckLoading}
+              text="Crossborder"
+              link="/app/crossborder"
+              permission="view_crossborder"
+              active={dashboardText === "Crossborder"}
+            />
+            <SidebarList
+              icon={faPerson}
+              text="Customer"
+              link="/app/customer"
+              permission="view_customer"
+              active={dashboardText === "Customer"}
+            />
+            <SidebarList
+              icon={faSailboat}
+              text="Supplier"
+              link="/app/supplier"
+              permission="view_supplier"
+              active={dashboardText === "Supplier"}
+            />
+            <SidebarList
+              icon={faFileInvoice}
+              text="Invoice"
+              link="/app/invoice?type=Invoice"
+              permission="view_invoice"
+              active={dashboardText === "Invoice"}
+            />
+            <SidebarList
+              icon={faFileInvoice}
+              text="Add Invoice"
+              link="/createinvoice"
+              permission="view_invoice"
+              active={dashboardText === "Add Invoice"}
+            />
+
+            <SidebarList
+              icon={faQuoteLeft}
+              text="Quote"
+              link="/app/invoice?type=Quote"
+              permission="view_invoice"
+              active={dashboardText === "Quote"}
+            />
+            <SidebarList
+              icon={faMoneyBillTransfer}
+              text="Payment"
+              link="/app/payment"
+              permission="view_payment"
+              active={dashboardText === "Payment"}
+            />
+            <SidebarList
+              icon={faMoneyBillTransfer}
+              text="Paymentdetails"
+              link="/app/paymentdetail"
+              permission="view_paymentdetails"
+              active={dashboardText === "Paymentdetails"}
+            />
+            <SidebarList
+              icon={faTruckPickup}
+              text="Dispatch"
+              link="/app/dispatch"
+              permission="view_dispatch"
+              active={dashboardText === "Dispatch"}
+            />
+            <SidebarList
+              icon={faDriversLicense}
+              text="Driver"
+              link="/app/driver"
+              permission="view_driver"
+              active={dashboardText === "Driver"}
+            />
+            <SidebarList
+              icon={faUserCheck}
+              text="Employee"
+              link="/app/employee"
+              permission="view_employee"
+              active={dashboardText === "Employee"}
+            />
+            <SidebarList
+              icon={faCar}
+              text="Vehicle"
+              link="/app/vehicle"
+              permission="view_vehicle"
+              active={dashboardText === "Vehicle"}
+            />
+            <SidebarList
+              icon={faBell}
+              text="Reminder"
+              link="/core/reminder"
+              permission="view_reminder"
+              active={dashboardText === "Reminder"}
             />
 
             {/* Dynamically add links from sidebar.json */}
@@ -193,21 +310,21 @@ const Sidebar = () => {
             <SidebarList
               icon={faUserFriends}
               text="Users"
-              link="/users"
+              link="/app/user"
               permission="view_user"
-              active={dashboardText === "Users"}
+              active={dashboardText === "User"}
             />
             <SidebarList
               icon={faCogs}
               text="Rolegroup"
-              link="/core/rolegroup"
+              link="/app/group"
               permission="view_rolegroup"
-              active={dashboardText === "Rolegroup"}
+              active={dashboardText === "Group"}
             />
             <SidebarList
               icon={faDiagnoses}
               text="Permissions"
-              link="/core/permission"
+              link="/app/permission"
               permission="view_permission"
               active={dashboardText === "Permission"}
             />

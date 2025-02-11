@@ -13,7 +13,7 @@ const DoctypeListTable = ({ tableConfig }) => {
   const { data: contextData, setData } = useData();
   const { localAppData } = useConfig();
   const router = useRouter();
-  const { slug } = router.query;
+  const { query, pathname } = router;
 
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,17 +26,13 @@ const DoctypeListTable = ({ tableConfig }) => {
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(false);
 
-  const pathname = window.location.pathname;
-
   const extendedFilters = useMemo(() => {
     return {
       ...Object.fromEntries(
         Object.entries(activeFilters).flatMap(([key, { value, matchType }]) => {
-          // Skip appending matchType for "equals" and "search"
           if (matchType === "equals" || key === "search") {
             return [[key, value]];
           }
-
           return [[`${key}${matchType}`, value]];
         })
       ),
@@ -53,9 +49,7 @@ const DoctypeListTable = ({ tableConfig }) => {
         settings,
       } = extractFiltersAndFields(tableConfig);
 
-      // Add 'id' and 'search' directly to extractedFilters
       extractedFilters.id = { value: "", matchType: "equals" };
-      // extractedFilters.search = { value: "", matchType: "__icontains" };
 
       setFilters(extractedFilters);
       setSettings(settings);
@@ -63,14 +57,20 @@ const DoctypeListTable = ({ tableConfig }) => {
       try {
         const storedFilters = await getFromDB(pathname);
 
-        // Initialize active filters with the stored filters or defaults
+        // Merge query params, stored filters, and default filters
         const initializedFilters = Object.keys(extractedFilters).reduce(
           (acc, key) => {
-            acc[key] = storedFilters?.[key] ||
-              extractedFilters[key] || {
-                value: "",
-                matchType: "__icontains",
-              };
+            acc[key] = {
+              value:
+                query[key] ||
+                storedFilters?.[key]?.value ||
+                extractedFilters[key]?.value ||
+                "",
+              matchType:
+                storedFilters?.[key]?.matchType ||
+                extractedFilters[key]?.matchType ||
+                "__icontains",
+            };
             return acc;
           },
           {}
@@ -82,31 +82,29 @@ const DoctypeListTable = ({ tableConfig }) => {
       }
 
       setFilteredData(fields);
-      setLoading(false); // Mark initialization as complete
+      setLoading(false);
     };
 
     if (tableConfig) {
       initializeData();
     }
-  }, [tableConfig, pathname, slug]);
+  }, [tableConfig, pathname, query]);
 
-  // Fetch data when extendedFilters are ready (after initialization)
   useEffect(() => {
-    const endpoint = slug
-      ? `${localAppData?.app}/${slug}`
+    const endpoint = query.slug
+      ? `${localAppData?.app}/${query.slug}`
       : localAppData?.endpoint || null;
 
-    if (loading) return; // Skip fetching if initialization is not complete
+    if (loading) return;
 
     const fetchDataAsync = async () => {
       try {
         const response = await fetchData(extendedFilters, endpoint);
-
         if (response?.data?.data) {
-          setData(response?.data?.data);
-          setFilteredData(response?.data?.data);
-          setTotalEntries(response?.data?.total);
-          setTotalPages(response?.data?.total_pages);
+          setData(response.data.data);
+          setFilteredData(response.data.data);
+          setTotalEntries(response.data.total);
+          setTotalPages(response.data.total_pages);
         }
       } catch (error) {
         toast.error(`Failed to fetch data: ${error.message || error}`);
@@ -116,9 +114,8 @@ const DoctypeListTable = ({ tableConfig }) => {
     if (endpoint && !loading) {
       fetchDataAsync();
     }
-  }, [extendedFilters, slug, currentPage, itemsPerPage, reload]);
+  }, [extendedFilters, query.slug, currentPage, itemsPerPage, reload]);
 
-  // Save filters to IndexedDB whenever activeFilters change
   useEffect(() => {
     if (pathname && Object.keys(activeFilters).length) {
       saveToDB(pathname, activeFilters).catch((error) =>
@@ -130,10 +127,11 @@ const DoctypeListTable = ({ tableConfig }) => {
   const handleFilterChange = (name, type, value) => {
     setActiveFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: { ...prevFilters[name], value, matchType: type },
+      [name]: { value, matchType: type },
     }));
     setCurrentPage(1);
   };
+
   const applyAllFilters = (filterList) => {
     filterList.forEach((filter) => {
       handleFilterChange(filter.field, filter.matchOption, filter.value);
@@ -143,7 +141,6 @@ const DoctypeListTable = ({ tableConfig }) => {
   const handleClearFilters = async () => {
     try {
       await deleteFromDB(pathname);
-
       setActiveFilters(
         Object.keys(filters).reduce((acc, key) => {
           acc[key] = { value: "", matchType: "__icontains" };
@@ -157,16 +154,11 @@ const DoctypeListTable = ({ tableConfig }) => {
   };
 
   const handlePageChange = (page) => setCurrentPage(page);
-
   const handleItemsPerPageChange = (items) => {
     setItemsPerPage(items);
     setCurrentPage(1);
   };
-
-  const handleEdit = (item) => {
-    // Add edit logic here
-  };
-
+  const handleEdit = (item) => {};
   const refresh = () => {
     setReload((prev) => !prev);
   };
