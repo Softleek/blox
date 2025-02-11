@@ -12,7 +12,14 @@ from .views import (AppViewSet, BulkDeleteAPIView,  ReminderViewSet,
                     ModuleViewSet, OTPActivationView, PermissionViewSet,
                     ProfileView, ResendOTPView, SendEmailView, SendSmsView,
                     UserGetViewSet, UserGroupPermissions, UserIPAddressViewSet,
-                    UserViewSet, RoleViewSet, BranchViewSet, PrintFormatViewSet, CreatePrintFormatAPIView)
+                    UserViewSet, RoleViewSet, BranchViewSet, PrintFormatViewSet, CreatePrintFormatAPIView,
+                     AddItemToCrossborderAPIView,
+    AddItemToDispatchAPIView,
+    TransitCrossborderAPIView,
+    ItemDispatchAPIView,
+    TrackItemsView,
+    CreateInvoiceView,
+                    )
 
 router = DefaultRouter()
 router.register(r"app", AppViewSet)
@@ -59,6 +66,34 @@ urlpatterns = [
     path("bulkdelete/", BulkDeleteAPIView.as_view(), name="bulkdelete"),
     path("sendemail/", SendEmailView.as_view(), name="email"),
     path("admin/", admin.site.urls),
+    
+    path("track/", TrackItemsView.as_view(), name="track"),
+    path("", include(static_urlpatterns)),
+    path(
+        "crossborder/add-item/",
+        AddItemToCrossborderAPIView.as_view(),
+        name="add-item-to-crossborder",
+    ),
+    path(
+        "crossborder/update-status/",
+        TransitCrossborderAPIView.as_view(),
+        name="crossborder/update-status",
+    ),
+    path(
+        "dispatch/add-item/",
+        AddItemToDispatchAPIView.as_view(),
+        name="add-item-to-dispatch",
+    ),
+    path(
+        "item/dispatch/",
+        ItemDispatchAPIView.as_view(),
+        name="item/dispatch/",
+    ),
+    path(
+        "createinvoice/",
+        CreateInvoiceView.as_view(),
+        name="createinvoice",
+    ),
     path("", include(static_urlpatterns)),
  ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

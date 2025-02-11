@@ -39,6 +39,7 @@ def generate_name_for_model(sender, instance, **kwargs):
 
     if not getattr(instance, "created", None):
         id = naming_manager.generate_name()
+        print("ID: ", id)
         if id:
             instance.id = id
     # Check for fields with 'Barcode' or 'QR Code' and generate values

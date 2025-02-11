@@ -1,3 +1,4 @@
-export const handleSendSMS = () => {
-  // Implement your send SMS logic here
+export const handleSendSMS = (props) => {
+  const { setSmsModalOpen } = props;
+  setSmsModalOpen(true);
 };

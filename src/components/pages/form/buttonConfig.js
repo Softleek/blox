@@ -31,13 +31,20 @@ import { handleNext } from "./actions/handleNext";
 import { handlePrevious } from "./actions/handlePrevious";
 
 export const defaultButtons = [
-  // {
-  //   type: "primary",
-  //   text: "Send SMS",
-  //   action: (props) => handleSendSMS(props),
-  //   icon: faSms,
-  //   group: "Common",
-  // },
+  {
+    type: "primary",
+    text: "Send SMS",
+    action: (props) => handleSendSMS(props),
+    icon: faSms,
+    group: "Common",
+  },
+  {
+    type: "primary",
+    text: "Send Email",
+    action: (props) => handleEmail(props),
+    icon: faSms,
+    group: "Common",
+  },
   // {
   //   type: "primary",
   //   text: "Undo",
@@ -52,20 +59,20 @@ export const defaultButtons = [
   //   icon: faRedo,
   //   group: "Common",
   // },
-  {
-    type: "primary",
-    text: "Edit DocType",
-    action: (props) => handleEditDocType(props),
-    icon: faEdit,
-    group: "Common",
-  },
-  {
-    type: "primary",
-    text: "Email",
-    action: (props) => handleEmail(props),
-    icon: faEnvelope,
-    group: "Common",
-  },
+  // {
+  //   type: "primary",
+  //   text: "Edit DocType",
+  //   action: (props) => handleEditDocType(props),
+  //   icon: faEdit,
+  //   group: "Common",
+  // },
+  // {
+  //   type: "primary",
+  //   text: "Email",
+  //   action: (props) => handleEmail(props),
+  //   icon: faEnvelope,
+  //   group: "Common",
+  // },
   {
     type: "primary",
     text: "Duplicate",
@@ -80,13 +87,13 @@ export const defaultButtons = [
     icon: faPlus,
     group: "Common",
   },
-  {
-    type: "primary",
-    text: "Copy to Clipboard",
-    action: (props) => handleCopyToClipboard(props),
-    icon: faClipboard,
-    group: "Common",
-  },
+  // {
+  //   type: "primary",
+  //   text: "Copy to Clipboard",
+  //   action: (props) => handleCopyToClipboard(props),
+  //   icon: faClipboard,
+  //   group: "Common",
+  // },
   {
     type: "primary",
     text: "Delete",

@@ -13,6 +13,8 @@ import { toTitleCase } from "@/utils/textConvert";
 import { useRouter as useRt } from "next/router";
 import { toast } from "react-toastify";
 import { postData } from "@/utils/Api";
+import { useStatusHandler } from "@/custom/masafa";
+import useLoadingOffloadingKeyEvents from "@/hooks/useLoadingOffloadingKeyEvents";
 
 const DocHeader = ({
   title,
@@ -38,6 +40,8 @@ const DocHeader = ({
 
   const { slug, id } = rt?.query;
 
+  const { errorModal, currentStatus, action, updateStatus, handleScannedCode } =
+    useStatusHandler(dashboardText);
   const [canEdit, setCanEdit] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
 
@@ -60,13 +64,7 @@ const DocHeader = ({
     }
   }, [perms, dashboardText]);
 
-  const handlePrintReceipt = async () => {
-    try {
-      const response = await postData({ id }, "core/sale/print");
-    } catch (error) {
-      toast.error(`Print failed: ${error.message || error}`);
-    }
-  };
+  useLoadingOffloadingKeyEvents("Loading", handleScannedCode);
 
   return (
     <>
@@ -134,17 +132,9 @@ const DocHeader = ({
                 ))}
               </ul>
               <div className="flex flex-row space-x-2 items-center">
-                {/* {actions?.map((ActionComponent, index) => (
-                  <div key={index}>{ActionComponent}</div>
-                ))} */}
-                {slug && slug == "sales_invoice" && (
-                  <button type="button" onClick={handlePrintReceipt}>
-                    <PrimaryButton
-                      text="Print Receipt"
-                      className="flex items-center justify-center"
-                    />
-                  </button>
-                )}{" "}
+                {action && (
+                  <PrimaryButton text={action} onClick={updateStatus} />
+                )}
                 {/* Pass buttons array to ButtonGroup */}
                 <ButtonGroup buttons={buttons} />
                 {isEditing && handleSaveClick && (

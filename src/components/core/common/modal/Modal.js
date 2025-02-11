@@ -58,8 +58,8 @@ const Modal = ({
         >
           <motion.div
             id="modal"
-            className="bg-white p-4 shadow-lg relative max-h-[90vh] overflow-auto rounded-md"
-            style={{ width: "fit-content", height: "fit-content" }}
+            className="bg-white p-4 shadow-lg relative max-h-[90vh] !min-w-[40vw]  overflow-auto rounded-md"
+            style={{ height: "fit-content" }}
             initial={{
               x: isClosing ? 0 : mousePosition.x - 200,
               y: isClosing ? 0 : mousePosition.y - 150,

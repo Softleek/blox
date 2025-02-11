@@ -1,3 +1,4 @@
-export const handleEmail = () => {
-  // Implement your email logic here
+export const handleEmail = (props) => {
+  const { setEmailModalOpen } = props;
+  setEmailModalOpen(true);
 };

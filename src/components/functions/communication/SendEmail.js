@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Modal from "react-modal";
-import axios from "axios";
 import { postData } from "@/utils/Api";
 import { toast } from "react-toastify";
+import Modal from "@/components/core/common/modal/Modal";
 
 // Custom styles for the modal
 const customStyles = {
@@ -76,12 +75,7 @@ const SendEmail = ({
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      style={customStyles}
-      contentLabel="Send Email Modal"
-    >
+    <Modal isOpen={isOpen} onClose={onRequestClose}>
       <h2 className="text-2xl font-semibold mb-6">Send Email</h2>
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">Email Address</label>

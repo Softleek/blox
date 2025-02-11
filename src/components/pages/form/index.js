@@ -11,6 +11,8 @@ import { defaultButtons } from "./buttonConfig";
 import { useModal } from "@/contexts/ModalContext";
 import ToastTemplates from "@/components/core/common/toast/ToastTemplates";
 import _ from "lodash";
+import SendEmail from "@/components/functions/communication/SendEmail";
+import SendSms from "@/components/functions/communication/SendSms";
 
 const DoctypeForm = ({
   handleSave,
@@ -21,7 +23,8 @@ const DoctypeForm = ({
   const { localConfig, localAppData } = useConfig();
   const { form, setForm, setLoading, data, setData } = useData();
   const [isEditing, setIsEditing] = useState(false);
-  const [isListPage, setIsListPage] = useState(false);
+  const [smsModalOpen, setSmsModalOpen] = useState(false);
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
   const router = useRouter();
   const { openModal } = useModal();
   const endpoint = localAppData?.endpoint;
@@ -142,6 +145,8 @@ const DoctypeForm = ({
     setData,
     reloadData,
     slug,
+    setSmsModalOpen,
+    setEmailModalOpen,
   };
 
   const buttons = [...defaultButtons, ...additionalButtons].map((button) =>
@@ -180,6 +185,19 @@ const DoctypeForm = ({
           <DetailForm />
         </div>
       </div>
+      <SendEmail
+        isOpen={emailModalOpen}
+        msg={"Hi, "}
+        email={form?.email || form?.user?.email || form?.customer?.email}
+        onRequestClose={() => setEmailModalOpen(false)}
+      />
+      <SendSms
+        isOpen={smsModalOpen}
+        msg={"Hi, "}
+        phone={form?.phone || form?.user?.phone || form?.customer?.phone}
+        onRequestClose={() => setSmsModalOpen(false)}
+      />
+      ;
     </div>
   );
 };
