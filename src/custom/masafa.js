@@ -6,6 +6,7 @@ import useLoadingOffloadingKeyEvents from "@/hooks/useLoadingOffloadingKeyEvents
 import { useConfig } from "@/contexts/ConfigContext";
 import { useData } from "@/contexts/DataContext";
 import { useRouter } from "next/router";
+import PrimaryButton1 from "@/components/core/common/buttons/Primary1";
 
 export const useStatusHandler = (dashboardText) => {
   const router = useRouter();
@@ -36,13 +37,71 @@ export const useStatusHandler = (dashboardText) => {
   const action = currentStatusConfig?.actions[0];
 
   const handleErrorResponse = (res) => {
+    console.log("res", res);
+
     if (res?.error) {
       const list = res?.message?.data;
-      if (list) setIsLoading(false);
-      toast.error(res?.message?.error);
-      return false;
+      if (list) {
+        setIsLoading(false);
+      }
+      console.log("list", list);
+
+      const tailwindList = (
+        <ul className="list-inside space-y-1.5 w-full">
+          {list?.map((item, index) => (
+            <li
+              key={index}
+              className="flex items-center justify-between bg-purple-50 border-l-4 border-pink-500 text-green-700 p-1 text-xs rounded-md shadow-sm"
+            >
+              <div>
+                {item.id} - <span className="text-purple-900">{item.name}</span>
+              </div>
+              <div
+                onClick={(e) => {
+                  e.currentTarget.style.display = "none"; // Hide the div on click
+                  handleScannedCode(item.id);
+                }}
+              >
+                <PrimaryButton1 text={`+ Add`} />
+              </div>
+            </li>
+          ))}
+        </ul>
+      );
+
+      return new Promise((resolve) => {
+        const handleModalClose = () => {
+          setErrorModal({
+            isOpen: false,
+            onRequestClose: handleModalClose,
+            message: tailwindList,
+            title: res?.message?.error,
+            onProceed: handleProceedAnyway,
+          });
+          resolve(true); // Resolves with true when the modal is closed
+        };
+
+        const handleProceedAnyway = () => {
+          setErrorModal({
+            isOpen: false,
+            onRequestClose: handleModalClose,
+            message: tailwindList,
+            title: res?.message?.error,
+            onProceed: handleProceedAnyway,
+          });
+          resolve(false); // Resolves with false when proceeding anyway
+        };
+
+        setErrorModal({
+          isOpen: true,
+          onRequestClose: handleModalClose,
+          message: tailwindList,
+          title: res?.message?.error,
+          onProceed: handleProceedAnyway,
+        });
+      });
     }
-    return true;
+    return Promise.resolve(false); // Return false if no error
   };
 
   const updateStatus = async () => {
@@ -65,7 +124,11 @@ export const useStatusHandler = (dashboardText) => {
 
       if (endpoint) {
         const res = await postData(postDataPayload, endpoint);
-        if (!handleErrorResponse(res)) return;
+        const shouldProceed = await handleErrorResponse(res);
+
+        if (shouldProceed) {
+          return shouldProceed;
+        }
       }
 
       const response = await updateData(
@@ -106,9 +169,8 @@ export const useStatusHandler = (dashboardText) => {
       }
       if (response?.data)
         toast.success(`${extractedCode} - ${response.data.message}`);
-      else toast.error(`${extractedCode} - ${response?.message?.error}`);
     } catch (error) {
-      toast.error(`Error: ${error.message}`);
+      // toast.error(`Error: ${error.message}`);
     }
   };
 

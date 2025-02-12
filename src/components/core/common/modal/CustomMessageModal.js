@@ -1,5 +1,5 @@
 import React from "react";
-import Modal from "react-modal";
+import Modal from "./Modal";
 
 // Custom styles for the modal
 const customStyles = {
@@ -50,12 +50,7 @@ const CustomMessageModal = ({
   onProceed,
 }) => {
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      style={customStyles}
-      contentLabel="Error Message"
-    >
+    <Modal isOpen={isOpen} onClose={onRequestClose}>
       <div style={customStyles.header}>
         <h2 className="text-lg font-medium text-red-600">{title}</h2>
       </div>

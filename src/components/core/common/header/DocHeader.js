@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { postData } from "@/utils/Api";
 import { useStatusHandler } from "@/custom/masafa";
 import useLoadingOffloadingKeyEvents from "@/hooks/useLoadingOffloadingKeyEvents";
+import CustomMessageModal from "../modal/CustomMessageModal";
 
 const DocHeader = ({
   title,
@@ -150,6 +151,15 @@ const DocHeader = ({
           </div>
         </div>
       </div>
+      {errorModal.isOpen && (
+        <CustomMessageModal
+          isOpen={errorModal.isOpen}
+          onRequestClose={errorModal.onRequestClose}
+          message={errorModal.message}
+          title={errorModal.title}
+          onProceed={errorModal.onProceed}
+        />
+      )}
     </>
   );
 };
