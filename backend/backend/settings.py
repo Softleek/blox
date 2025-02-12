@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     "django_filters",
     "django_crontab",
     "core",      
-    'masafa_app',
+   
 ]
 
 MIDDLEWARE = [
