@@ -165,7 +165,7 @@ const LinkField = ({
   // Handle quick entry modal close
   const handleClose = async (response) => {
     setIsQuickEntryModalOpen(false);
-    if (response) {
+    if (response?.id) {
       const newLabel = response[appData.title_field] || response.id;
       setSearchTerm(newLabel);
       onChange(response);

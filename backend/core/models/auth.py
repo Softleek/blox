@@ -43,18 +43,9 @@ class User(AbstractUser):
     
 
     def save(self, *args, **kwargs):
-        # Check the role and set is_superuser and is_staff accordingly
-        if self.role == 'Admin':
-            self.is_superuser = True
-            self.is_staff = True
-        elif self.role == 'Staff':
-            self.is_superuser = False
-            self.is_staff = True
-        else:  # customer or any other role
-            self.is_superuser = False
-            self.is_staff = False
-
-        # Call the parent class's save method to save the changes
+        self.role = "Admin" if self.is_superuser else "Staff" if self.is_staff else "Customer"
+        self.is_superuser = (self.role == "Admin")
+        self.is_staff = (self.role in ["Admin", "Staff"])
         super(User, self).save(*args, **kwargs)
 
     def __str__(self):

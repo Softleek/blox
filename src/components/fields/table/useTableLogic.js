@@ -38,7 +38,14 @@ export const useTableLogic = ({ value, field, handleInputChange }) => {
     setIsModalOpen(true);
   };
 
-  const handleAddRow = () => setTableData([...tableData, {}]);
+  const handleAddRow = () => {
+    const newData = [...tableData, {}];
+    setTableData(newData);
+    const newIndex = newData.length - 1;
+    setSelectedRows([newIndex]);
+    setEditRowIndex(newIndex);
+    setIsModalOpen(true);
+  };
 
   const handleDeleteRows = () => {
     const newTableData = tableData.filter(

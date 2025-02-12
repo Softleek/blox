@@ -19,7 +19,7 @@ const Table = ({
   configData,
   handleRowSelect,
 }) => {
-  const displayedTableData = tableData?.length > 0 ? tableData : [{}];
+  const displayedTableData = tableData?.length > 0 ? tableData : [];
 
   return (
     <motion.div
@@ -50,6 +50,16 @@ const Table = ({
           </tr>
         </thead>
         <tbody>
+          {displayedTableData.length === 0 && (
+            <tr>
+              <td
+                colSpan={columnsData.length + 3}
+                className="text-center py-4 text-gray-500 font-regular"
+              >
+                No data available
+              </td>
+            </tr>
+          )}
           {displayedTableData.map((row, rowIndex) => (
             <TableRow
               key={rowIndex}

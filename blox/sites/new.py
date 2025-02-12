@@ -53,6 +53,7 @@ def newsite(site_name: str, db_type: str) -> None:
             f"Invalid JSON in {sites_json_path}. Initializing an empty list."
         )
     
+    domains = [f"{site_name}.localhost", f"{site_name}.127.0.0.1"]
     if db_type == 'mysql':
         # Prompt for root password
         root_password = click.prompt("Enter database root password", hide_input=True)
@@ -113,6 +114,7 @@ def newsite(site_name: str, db_type: str) -> None:
                 "HOST": "localhost",
             },
             "installed_apps": [],
+            "domains": domains,
         }
     else:
         # SQLite database setup
@@ -124,6 +126,7 @@ def newsite(site_name: str, db_type: str) -> None:
                 "NAME":  db_name,
             },
             "installed_apps": [],
+            "domains": domains,
         }
         click.echo(click.style(f"SQLite database '{site_name}' created successfully.", fg="green"))
     

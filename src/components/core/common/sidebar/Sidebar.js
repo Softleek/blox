@@ -190,7 +190,7 @@ const Sidebar = () => {
             <SidebarList
               icon={faFileInvoice}
               text="Add Invoice"
-              link="/createinvoice"
+              link="/app/invoice/new"
               permission="view_invoice"
               active={dashboardText === "Add Invoice"}
             />
