@@ -269,6 +269,3 @@ for site in sites:
 
 
 DATABASE_ROUTERS = ['core.db_router.MultiTenantRouter']
-
-
-sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "masafa")))
