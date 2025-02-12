@@ -89,12 +89,7 @@ schedule: blox schedule
         next_nextjs_port += 1
     
     # Update sites.json
-    site_info: dict[str, Any] = {
-        "name": "default",
-        "django_port": next_django_port,
-        "nextjs_port": next_nextjs_port,
-        "developer_mode": True,
-    }
+    site_info: dict[str, Any] = []
     
     sites.append(site_info)
     with open(sites_json_path, "w") as json_file:
