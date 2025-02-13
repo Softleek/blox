@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "django_crontab",
     "core",      
    
+    'masafa_app',
 ]
 
 MIDDLEWARE = [
@@ -244,7 +245,7 @@ SMS_IS_FLASH = True
 
 CRONJOBS = [
     (
-        "*/1 * * * *",
+        "0 * * * *",
         "core.crons.send_reminder_notifications",
         f">> {os.path.join(BASE_DIR, 'core', 'logs','send_upcoming_event_notifications.log')} 2>&1",
     ),
@@ -269,3 +270,5 @@ for site in sites:
 
 
 DATABASE_ROUTERS = ['core.db_router.MultiTenantRouter']
+
+sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "masafa")))

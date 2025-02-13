@@ -11,15 +11,42 @@ from django.utils import timezone
 
 def send_reminder_notifications():
     now = timezone.now()
+    two_weeks_later = now + timedelta(weeks=2)
+    reminders = Reminder.objects.filter(enabled=True, next_run__isnull=False, next_run__lte=two_weeks_later)
+
+    for reminder in reminders:
+        pre_reminder_time = reminder.get_pre_reminder_datetime()
+
+        # Handle pre-reminder
+        if pre_reminder_time and not reminder.prereminder_ran and pre_reminder_time <= now:
+            for user in reminder.users.all():
+                    notify_user(reminder, user)
+            
+            reminder.prereminder_ran = True
+            reminder.save()
+
+        # Handle actual reminder execution
+        if reminder.next_run.date() == now.date():
+            for user in reminder.users.all():
+                    notify_user(reminder, user)
+            
+            reminder.update_next_run()
+            reminder.save()
+
+    
+    now = timezone.now()
     ten_minutes = timedelta(minutes=10)
     
     # Filter reminders that are enabled and have a next_run in the future
     reminders = Reminder.objects.filter(enabled=True)
+    
+    
 
     logger.info(f"Running cron job. Found {reminders.count()} reminders to process.")
 
     for reminder in reminders:
         try:
+            
             # Calculate prereminder time
             prereminder_time = reminder.next_run - reminder.prereminder
 
@@ -66,5 +93,8 @@ def notify_user(reminder, user):
     if user.phone:
         logger.info(f"Sending SMS to {user.phone}")
         send_sms(user.phone, f"Reminder Notification - {reminder.name} \n{reminder.message}")
+
+
+
 
 

@@ -39,7 +39,7 @@ def generate_name_for_model(sender, instance, **kwargs):
 
     if not getattr(instance, "created", None):
         id = naming_manager.generate_name()
-        print("ID: ", id)
+    
         if id:
             instance.id = id
     # Check for fields with 'Barcode' or 'QR Code' and generate values
@@ -79,10 +79,17 @@ def track_changes_after_save(sender, instance, **kwargs):
             if old_value != new_value:
                 changes[field] = {'old': str(old_value), 'new': str(new_value)}
     if changes:
+       
         from core.models import ChangeLog
+
         ChangeLog.objects.create(
+            id=generate_uuid(),
             model_name=model_name,
             object_id=object_id,
             changes=changes,
             user=get_current_user() or 'system'
         )
+
+def generate_uuid():
+    import uuid
+    return str(uuid.uuid4())

@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "../modal/Modal";
+import Link from "next/link";
 
 const NotificationModal = ({ isOpen, onClose, reminders }) => {
   if (!isOpen) return null;
@@ -33,7 +34,9 @@ const NotificationModal = ({ isOpen, onClose, reminders }) => {
                 <div className="flex justify-between items-start">
                   <div className="flex-1 pr-4">
                     <h3 className="text-lg font-bold text-pink-800 hover:text-indigo-900">
-                      {reminder.name}
+                      <a href={`/app/reminder/${reminder.id}`}>
+                        {reminder.name}
+                      </a>
                     </h3>
                     <p className="text-green-800 mt-2 text-xs">
                       {reminder.message}

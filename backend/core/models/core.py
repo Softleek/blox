@@ -5,6 +5,7 @@ from django.db import models
 from multiselectfield import MultiSelectField
 
 from .template import BaseModel
+import uuid
 
 RESERVED_KEYNAMES = ["admin", "system"]
 
@@ -33,6 +34,7 @@ SUPPORTED_PLATFORMS_CHOICES = [
 ]
 
 class ChangeLog(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     model_name = models.CharField(max_length=255)
     object_id = models.CharField(max_length=255)
     changes = models.JSONField(null=True, blank=True)  # Stores all changes as JSON
@@ -41,7 +43,6 @@ class ChangeLog(models.Model):
 
     def __str__(self):
         return f"ChangeLog for {self.model_name} {self.object_id} at {self.timestamp}"
-
 
 class AbstractApp(BaseModel):
     status = models.CharField(max_length=255, default="Active")

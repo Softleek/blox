@@ -134,7 +134,9 @@ class Reminder(BaseModel):
     def get_timezone(self):
         """Returns the timezone object based on the `timezone` field from given options."""
         try:
-            tz_name = self.timezone.strip()
+            if self.timezone is None:
+                return pytz.UTC
+            tz_name = self.timezone.strip() or "UTC"
 
             # Handle UTC offsets
             if re.match(r'UTC[+-]\d+$', tz_name):
