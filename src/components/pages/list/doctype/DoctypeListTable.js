@@ -8,10 +8,12 @@ import { useRouter } from "next/router";
 import { extractFiltersAndFields } from "../utils/extractTableConfig";
 import { useConfig } from "@/contexts/ConfigContext";
 import { saveToDB, getFromDB, deleteFromDB } from "@/utils/indexedDB";
+import { findDocDetails } from "@/utils/findDocDetails";
+import { importFile } from "@/utils/importFile";
 
 const DoctypeListTable = ({ tableConfig }) => {
   const { data: contextData, setData } = useData();
-  const { localAppData } = useConfig();
+  const { localAppData, setLocalAppData, setLocalConfig } = useConfig();
   const router = useRouter();
   const { query, pathname } = router;
 
@@ -25,6 +27,34 @@ const DoctypeListTable = ({ tableConfig }) => {
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(false);
+
+
+    useEffect(() => {
+      
+      if (!query?.slug) return;
+  
+      const fetchDocumentData = async () => {
+        try {
+          // Fetch document details
+          const docData = findDocDetails(query?.slug);
+          if (!docData) throw new Error("Failed to fetch document details");
+  
+          setLocalAppData({ ...docData, endpoint: `${docData.app_id}/${query?.slug}` });
+  
+          // Fetch configuration data
+          const configData = await importFile(query?.slug, `${query?.slug}.json`);
+          if (!configData) throw new Error("Failed to load configuration");
+  
+          setLocalConfig(configData.content);
+
+        } catch (error) {
+          console.error(error.message);
+        }
+      };
+  
+      fetchDocumentData();
+    }, [query]);
+  
 
   const extendedFilters = useMemo(() => {
     return {
@@ -94,7 +124,7 @@ const DoctypeListTable = ({ tableConfig }) => {
     const endpoint = query.slug
       ? `${localAppData?.app}/${query.slug}`
       : localAppData?.endpoint || null;
-
+      
     if (loading) return;
 
     const fetchDataAsync = async () => {

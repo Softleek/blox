@@ -15,7 +15,7 @@ if (typeof window !== "undefined") {
     apiUrl = `${nextJsRootUrl.replace(window.location.port, djangoPort)}/apis`;
   } else {
     const protocol = nextJsRootUrl.startsWith("https://") ? "https" : "http";
-    const domain = nextJsRootUrl.replace(/^https?:\/\//, "").split("/")[0];
+    const domain = nextJsRootUrl.replace(/^https?:\/\//, "").split("/")[0];getTenant
     apiUrl = `${protocol}://${domain}/apis`;
   }
 } else {

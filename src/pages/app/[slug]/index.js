@@ -79,6 +79,7 @@ const DocumentDetail = () => {
     return <Loading />;
   }
 
+  
   return (
     <ConfigProvider initialConfig={config} initialAppData={appData}>
       <DoctypeListTable tableConfig={config} />

@@ -3,6 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
+
+
 
 const SidebarList = ({ icon, text, link, active, permission }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -10,7 +13,8 @@ const SidebarList = ({ icon, text, link, active, permission }) => {
   const [perms, setPerms] = useState([]);
 
   // Generate a unique ID for each list item
-  const uniqueId = crypto.randomUUID();
+  
+const uniqueId = uuidv4();
 
   useEffect(() => {
     const checkAuth = async () => {

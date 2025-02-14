@@ -6,7 +6,7 @@ const isValidId = (id) => id && !id.startsWith("__");
 
 // Function to extract all installed apps and associated modules
 export const generateSidebarData = () => {
-  const installedApps = getSiteConfigByHostname().installed_apps || []; // Extract installed apps
+  const installedApps =  []; // Extract installed apps
   const apps = [];
   const modules = [];
 

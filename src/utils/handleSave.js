@@ -71,7 +71,7 @@ export const handleSave = async ({
     );
     if (response.data) {
       setData(response?.data);
-      // setForm(response?.data);
+      setForm(response?.data);
     }
 
     ToastTemplates.success("Saved successfully.");
