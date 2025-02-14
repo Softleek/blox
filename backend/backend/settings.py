@@ -45,22 +45,33 @@ ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
-INSTALLED_APPS = [
+# Default Django and third-party apps
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+]
+
+THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
     "django_filters",
     "django_crontab",
-    "core",      
-   
-    'masafa_app',
 ]
+
+# Custom Apps – Only these will be exposed via API
+CUSTOM_APPS = [
+    "core",    
+    "masafa_app",
+]
+
+# Final Installed Apps List
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
+
 
 MIDDLEWARE = [
     'core.middleware.TenantMiddleware',

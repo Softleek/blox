@@ -15,7 +15,7 @@ def generate_name_for_model(sender, instance, **kwargs):
     Pre-save signal to generate a name for models.
     Skips certain models like 'Token' that don't require name generation.
     """
-    SKIP_MODELS = {"Token", "Session", "LogEntry", "Group", "Permission", "UserIPAddress", "OTP", "ChangeLog"}
+    SKIP_MODELS = {"Token", "Session", "LogEntry", "Group", "Permission", "UserIPAddress", "OTP", "User", "ChangeLog"}
 
     # if sender.__name__ in SKIP_MODELS or sender._meta.app_label == 'core':  # Skip these models and all models from 'core' app
     if sender.__name__ in SKIP_MODELS:  # Skip these models and all models from 'core' app

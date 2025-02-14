@@ -78,7 +78,7 @@ def install_django_app(app: str, project_root: str) -> None:
 
         installed_apps_index = None
         for i, line in enumerate(settings_content):
-            if "INSTALLED_APPS = [" in line:
+            if "CUSTOM_APPS = [" in line:
                 installed_apps_index = i
                 break
 

@@ -9,6 +9,7 @@ import DoctypeListTable from "@/components/pages/list/doctype/DoctypeListTable";
 import { findDocDetails } from "@/utils/findDocDetails";
 import { importFile } from "@/utils/importFile";
 import NotFoundPage from "@/components/core/common/NotFound";
+import { useData } from "@/contexts/DataContext";
 
 const DocumentDetail = () => {
   const router = useRouter();
@@ -28,8 +29,15 @@ const DocumentDetail = () => {
   } = useNavbar();
   const { setSidebarHidden } = useSidebar();
 
+  const { setForm, setData } = useData();
+
   useEffect(() => {
-    if (!slug) return;
+    if (!slug) {
+      setAppData(null);
+      setForm(null);
+      setData(null);
+      return;
+    }
 
     const fetchDocumentData = async () => {
       try {

@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import SampleTable from "./Sample";
 import { useConfig } from "@/contexts/ConfigContext";
 import Select from "react-select";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCopy, faTrash } from "@fortawesome/free-solid-svg-icons";
 import TableActions from "@/components/fields/table/TableActions";
 
 // Helper function to find the closest match from headers
@@ -31,20 +29,39 @@ const ImportFieldMapping = ({
   const formattedOptions = headers.map((header) => ({
     label: header,
     value: header,
+    setRows,
   }));
 
-  // Auto-select the closest match for each field name when the component mounts
   useEffect(() => {
-    if (rows) {
-      rows.forEach((field) => {
-        const closestMatch = getBestMatch(field.fieldname, headers);
-        setSelectedColumns((prevState) => ({
-          ...prevState,
-          [field.fieldname]: closestMatch,
-        }));
-      });
-    }
-  }, [headers, rows]);
+    if (!rows) return;
+
+    rows.forEach((field) => {
+      const closestMatch = getBestMatch(field.fieldname, headers);
+      setSelectedColumns((prevState) => ({
+        ...prevState,
+        [field.fieldname]: closestMatch,
+      }));
+    });
+
+    setRows((prevRows) => {
+      if (
+        headers.includes("id") &&
+        !prevRows.some((row) => row.fieldname === "id")
+      ) {
+        return [
+          {
+            fieldname: "id",
+            fieldtype: "Data",
+            label: "ID",
+            oldfieldname: "id",
+            oldfieldtype: "Data",
+          },
+          ...prevRows,
+        ];
+      }
+      return prevRows;
+    });
+  }, [headers]); // Removed rows from dependencies to prevent unnecessary reruns
 
   const handleSelectRow = (fieldname) => {
     setSelectedRows((prevSelectedRows) => {
