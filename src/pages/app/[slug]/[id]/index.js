@@ -13,6 +13,13 @@ const DocumentDetail = () => {
   const [config, setConfig] = useState(null);
   const { data, form, setData, setForm, loading, setLoading } = useData();
 
+  useEffect(() => {
+    if (!slug && !id) {
+      setData(null); // Reset data before fetching new document details
+      setForm(null); // Reset form to avoid stale data
+    }
+  }, [slug, id]);
+
   const { appData, setAppData } = useDocumentData(slug, id, setConfig);
 
   const saveData = async (f) => {

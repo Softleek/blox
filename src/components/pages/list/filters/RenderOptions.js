@@ -71,7 +71,7 @@ export const RenderValueInput = (
 
     // Negations
     { value: "__not_equals", label: "Not Equals" }, // Simulated with ~Q in Django
-    { value: "__is_set", label: "Is Set" }, // Simulated with a custom implementation
+    { value: "__is_set", label: "Is" }, // Simulated with a custom implementation
   ];
 
   // if (!field) return null;

@@ -8,10 +8,11 @@ import { useRouter } from "next/router";
 import { extractFiltersAndFields } from "../utils/extractTableConfig";
 import { useConfig } from "@/contexts/ConfigContext";
 import { saveToDB, getFromDB, deleteFromDB } from "@/utils/indexedDB";
+import { findDocDetails } from "@/utils/findDocDetails";
 
 const DoctypeListTable = ({ tableConfig }) => {
   const { data: contextData, setData } = useData();
-  const { localAppData } = useConfig();
+  const { localAppData, setLocalAppData } = useConfig();
   const router = useRouter();
   const { query, pathname } = router;
 
@@ -90,11 +91,16 @@ const DoctypeListTable = ({ tableConfig }) => {
     }
   }, [tableConfig, pathname, query]);
 
-  useEffect(() => {
-    const endpoint = query.slug
-      ? `${localAppData?.app}/${query.slug}`
-      : localAppData?.endpoint || null;
+  const docData = findDocDetails(query?.slug);
 
+  const endpoint = query.slug
+    ? `${docData?.app_id}/${query.slug}`
+    : localAppData?.endpoint || null;
+
+  // if (docData && endpoint) {
+  //   setLocalAppData({ ...docData, endpoint });
+  // }
+  useEffect(() => {
     if (loading) return;
 
     const fetchDataAsync = async () => {

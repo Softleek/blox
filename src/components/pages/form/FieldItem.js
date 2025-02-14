@@ -13,7 +13,8 @@ const FieldItem = ({ item, handleFocus, placeholder = false }) => {
     return null;
   }
 
-  const fieldValue = form[item.fieldname] || null;
+  const fieldValue =
+    form && form[item?.fieldname] ? form[item?.fieldname] : null;
 
   const handleSelect = (e) => {
     e.stopPropagation();

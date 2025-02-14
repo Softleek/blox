@@ -32,6 +32,12 @@ const DocumentDetail = () => {
   const { setForm, setData } = useData();
 
   useEffect(() => {
+    setData(null); // Reset data before fetching new document details
+    setForm(null); // Reset form to avoid stale data
+    setAppData(null);
+  }, [slug]);
+
+  useEffect(() => {
     if (!slug) {
       setAppData(null);
       setForm(null);
