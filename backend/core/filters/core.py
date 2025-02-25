@@ -1,5 +1,5 @@
 from core.models import App, ChangeLog, Document, Module, User, Reminder, PrintFormat
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 from django_filters import rest_framework as filters
 
 from .template import DynamicFilterSet
@@ -63,7 +63,7 @@ class GroupFilter(filters.FilterSet):
         
 class PermissionFilter(filters.FilterSet):
     class Meta:
-        model = Group
+        model = Permission
         fields = "__all__"     
         
            

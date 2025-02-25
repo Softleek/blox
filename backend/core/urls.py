@@ -15,7 +15,7 @@ from .views import (AppViewSet, BulkDeleteAPIView,  ReminderViewSet,
                     UserGetViewSet, UserGroupPermissions, UserIPAddressViewSet,
                     UserViewSet, RoleViewSet, BranchViewSet, PrintFormatViewSet, CreatePrintFormatAPIView,
                     )
-
+from core.views.report import DetailedReportView
 router = DefaultRouter()
 router.register(r"app", AppViewSet)
 router.register(r"module", ModuleViewSet) 
@@ -64,6 +64,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(static_urlpatterns)),
     re_path(r"^method/(?P<module_path>[\w/]+)/(?P<callable_name>[\w]+)/$", DynamicAPIView.as_view()),
+     path('reports/detailed/', DetailedReportView.as_view(), name='detailed-report'),
 
  ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -11,10 +11,10 @@ export function useFormEvents(form, setForm, doc, setDoc) {
       if (!docData) throw new Error("Failed to fetch document details");
       // setUrl(docData);
 
-      const { default: setup } = await import(
+      const { default: Setup } = await import(
         `../../apps/${docData?.app_id}/${docData?.app_id}/${docData?.module_id}/doctype/${slug}/${slug}.js`
       );
-      setup(form, registerEvent);
+      Setup(form, registerEvent);
 
       await triggerEvent("refresh", form, setForm, doc, setDoc);
     } catch (error) {

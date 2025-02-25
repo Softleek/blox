@@ -44,18 +44,19 @@ const DoctypeForm = ({ handleSave, config }) => {
     setDoc
   );
 
-  // console.log(buttons, doc);
-
   useEffect(() => {
     if (slug) {
-      // setForm(null);
-      // setData(null);
       initializeFormEvents(slug);
     }
   }, [slug]);
+
   if (!slug || !localConfig) {
-    return;
+    return null;
   }
+
+  const ComponentBefore = doc?.componentBefore || null;
+  const ComponentAfter = doc?.componentAfter || null;
+  const ComponentReplace = doc?.componentReplace || null;
 
   return (
     <div className="flex flex-col">
@@ -66,9 +67,11 @@ const DoctypeForm = ({ handleSave, config }) => {
         buttons={buttons}
       />
       <div className="relative z-1 px-4 flex flex-col mt-2 w-full">
+        {ComponentBefore && <ComponentBefore />}
         <div className="h-full shadow-md shadow-slate-300">
-          <DetailForm />
+          {ComponentReplace ? <ComponentReplace /> : <DetailForm />}
         </div>
+        {ComponentAfter && <ComponentAfter />}
       </div>
       <SendEmail
         isOpen={emailModalOpen}

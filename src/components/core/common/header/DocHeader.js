@@ -11,10 +11,11 @@ import PrimaryButton from "../buttons/Primary";
 import Link from "next/link";
 import { toTitleCase } from "@/utils/textConvert";
 import { useRouter as useRt } from "next/router";
+import { toast } from "react-toastify";
+import { postData } from "@/utils/Api";
 import { useStatusHandler } from "@/custom/masafa";
 import useLoadingOffloadingKeyEvents from "@/hooks/useLoadingOffloadingKeyEvents";
 import CustomMessageModal from "../modal/CustomMessageModal";
-import { useData } from "@/contexts/DataContext";
 
 const DocHeader = ({
   title,
@@ -35,9 +36,10 @@ const DocHeader = ({
   const [perms, setPerms] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { form, doc } = useData();
 
   const rt = useRt();
+
+  const { slug, id } = rt?.query;
 
   const { errorModal, currentStatus, action, updateStatus, handleScannedCode } =
     useStatusHandler(dashboardText);
@@ -135,7 +137,7 @@ const DocHeader = ({
                   <PrimaryButton text={action} onClick={updateStatus} />
                 )}
                 {/* Pass buttons array to ButtonGroup */}
-                <ButtonGroup buttons={[...(doc?.buttons || []), ...buttons]} />
+                <ButtonGroup buttons={buttons} />
                 {isEditing && handleSaveClick && (
                   <button type="button" onClick={handleSaveClick}>
                     <PrimaryButton

@@ -23,6 +23,7 @@ const LinkSelectField = ({
   const [appData, setAppData] = useState(null);
   const [options, setOptions] = useState([]);
   const [display, setDisplay] = useState(value);
+  const [filterValue, setFilterValue] = useState(value);
   const [isQuickEntryModalOpen, setIsQuickEntryModalOpen] = useState(false);
   const { setSelectedItem } = useConfig();
   const { form } = useData();
@@ -78,7 +79,12 @@ const LinkSelectField = ({
 
       try {
         // Pass filters individually
-        const queryParams = { page_length: 10, search, ...filters };
+        const queryParams = {
+          page_length: 10,
+          search,
+          ...filters,
+          search: filterValue,
+        };
 
         const response = await fetchData(queryParams, endpoint);
 
@@ -99,7 +105,7 @@ const LinkSelectField = ({
         setOptions([{ value: "add-new", label: "+ Add new", isAddNew: true }]);
       }
     },
-    [endpoint, appData, readOnly, preview, hidden, field, form]
+    [endpoint, appData, readOnly, preview, hidden, field, form, filterValue]
   );
 
   useEffect(() => {
@@ -108,7 +114,7 @@ const LinkSelectField = ({
 
   useEffect(() => {
     fetchOptions();
-  }, [fetchOptions]);
+  }, [fetchOptions, filterValue]);
 
   const handleSelectionChange = (selectedOptions) => {
     if (selectedOptions?.some((option) => option.isAddNew)) {
@@ -157,6 +163,7 @@ const LinkSelectField = ({
         onChange={handleSelectionChange}
         placeholder={`Select ${field?.label || ""}`}
         classNamePrefix="custom-select"
+        onInputChange={(input) => setFilterValue(input)}
       />
     </div>
   );

@@ -1,13 +1,17 @@
+import { useNavbar } from "@/contexts/NavbarContext";
 import { getFromDB } from "@/utils/indexedDB";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const SidebarList = ({ icon, text, link, active, permission }) => {
+const SidebarList = ({ icon, text, link, permission }) => {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
   const [perms, setPerms] = useState([]);
+
+  const { dashboardText } = useNavbar();
+  const active = dashboardText == text;
 
   // Generate a unique ID for each list item
   const uniqueId = crypto.randomUUID();

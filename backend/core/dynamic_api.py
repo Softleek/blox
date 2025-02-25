@@ -42,6 +42,7 @@ class DynamicAPIView(APIView):
         """
         module_path = kwargs.get("module_path")
         callable_name = kwargs.get("callable_name")
+        print(module_path, callable_name)
         obj = resolve_callable(module_path, callable_name)
 
         if obj is None:

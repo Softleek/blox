@@ -1,51 +1,44 @@
-export default class CustomElements {
-  constructor(form, setForm, data, setData, router, reloadData, setLoading) {
-    this.form = form;
-    this.setForm = setForm;
-    this.data = data;
-    this.setData = setData;
-    this.router = router;
-    this.reloadData = reloadData;
-    this.setLoading = setLoading;
-  }
+export default function setup(frm, registerEvent) {
+  // Refresh event to dynamically set button type
+  registerEvent("refresh", async (frm, updateForm, doc, updateDoc) => {
+    const newButtons = [];
 
-  // Lifecycle hooks
-  lifecycleHooks = {
-    beforeSave: (form) => {
-      console.log("Before Save Hook Executed", form);
-      // return cleanData(form);
-    },
-    afterSave: (form) => {
-      console.log("After Save Hook Executed");
-    },
-    onFieldChange: (field, value) => {
-      console.log(`Field Changed: ${field} => ${value}`);
-      this.setForm((prev) => ({ ...prev, [field]: value }));
-    },
-  };
+    if (frm.type === "Invoice") {
+      newButtons.push({
+        text: "Offload",
+        action: () => {
+          updateForm({
+            ...frm,
+            type: "Quote",
+          });
+        },
+      });
+    } else {
+      newButtons.push({
+        text: "Load",
+        action: () => {
+          updateForm({
+            ...frm,
+            type: "Invoice",
+          });
+        },
+      });
+    }
 
-  // Custom Buttons
-  customButtons = [
-    {
-      label: "Custom Action",
-      type: "primary",
-      text: "⚡",
-      action: () => console.log("Custom Action Executed"),
-    },
-    {
-      label: "Refresh",
-      text: "🔄",
-      action: () => this.reloadData(this.router),
-    },
-  ];
+    const item = () => {
+      return <div>item</div>;
+    };
 
-  // Custom Components
-  customComponents = [
-    ({ form }) => (
-      <div className="bg-blue-100 p-2 rounded-md">
-        <p>Custom Component Loaded</p>
-        <p>Form Data: {JSON.stringify(form, null, 2)}</p>
-      </div>
-    ),
-  ];
+    updateDoc({ ...doc, buttons: newButtons, componentBefore: item });
+  });
+
+  registerEvent("before_save", async (frm) => {
+    console.log("Before Save Triggered for", frm);
+  });
+
+  registerEvent("after_save", async (frm) => {
+    console.log("Order saved:", frm);
+  });
 }
+
+import React from "react";

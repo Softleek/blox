@@ -20,7 +20,7 @@ const DocumentDetail = () => {
     }
   }, [slug, id]);
 
-  const { appData, setAppData } = useDocumentData(slug, id, setConfig);
+  const { appData } = useDocumentData(slug, id, setConfig);
 
   const saveData = async (f) => {
     await handleSave({
