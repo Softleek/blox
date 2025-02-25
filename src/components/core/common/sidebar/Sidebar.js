@@ -212,7 +212,7 @@ const Sidebar = () => {
             <SidebarList
               icon={faMoneyBillTransfer}
               text="Paymentdetails"
-              link="/app/paymentdetail"
+              link="/app/paymentdetails"
               permission="view_paymentdetails"
               active={dashboardText === "Paymentdetails"}
             />
@@ -247,7 +247,7 @@ const Sidebar = () => {
             <SidebarList
               icon={faBell}
               text="Reminder"
-              link="/core/reminder"
+              link="/app/reminder"
               permission="view_reminder"
               active={dashboardText === "Reminder"}
             />

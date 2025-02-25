@@ -37,8 +37,6 @@ export const useStatusHandler = (dashboardText) => {
   const action = currentStatusConfig?.actions[0];
 
   const handleErrorResponse = (res) => {
-    console.log("res", res);
-
     if (res?.error) {
       const list = res?.message?.data;
       if (list) {
@@ -112,14 +110,14 @@ export const useStatusHandler = (dashboardText) => {
       if (nextStatus === "In Transit") {
         await postData(
           { crossborder_id: id, action: "Transit" },
-          "crossborder/update-status"
+          "method/masafa/api/masafa/TransitCrossborder/"
         );
       } else if (nextStatus === "Offloaded") {
         postDataPayload = { crossborder_id: id, action: "Offload" };
-        endpoint = "crossborder/update-status";
+        endpoint = "method/masafa/api/masafa/TransitCrossborder/";
       } else if (nextStatus === "Dispatched") {
         postDataPayload = { item_id: id };
-        endpoint = "item/dispatch";
+        endpoint = "method/masafa/api/masafa/ItemDispatch";
       }
 
       if (endpoint) {
@@ -150,20 +148,28 @@ export const useStatusHandler = (dashboardText) => {
       switch (currentStatus) {
         case "Loading":
           response = await postData(
-            { item_id: extractedCode, crossborder_id: id, action: "Load" },
-            "crossborder/add-item"
+            {
+              item_id: extractedCode,
+              crossborder_id: id,
+              action: "Load",
+            },
+            "method/masafa/api/masafa/AddItemToCrossborder"
           );
           break;
         case "Offloading":
           response = await postData(
-            { item_id: extractedCode, crossborder_id: id, action: "Offload" },
-            "crossborder/add-item"
+            {
+              item_id: extractedCode,
+              crossborder_id: id,
+              action: "Offload",
+            },
+            "method/masafa/api/masafa/AddItemToCrossborder"
           );
           break;
         case "Adding Items":
           response = await postData(
             { item_id: extractedCode, dispatch_id: id },
-            "dispatch/add-item"
+            "method/masafa/api/masafa/AddItemToCrossborder"
           );
           break;
       }

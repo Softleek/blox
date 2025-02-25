@@ -36,7 +36,7 @@ def remove_app_from_installed_apps(app: str, app_name: str, settings_path: str) 
     # Find the installed apps section
     installed_apps_index: Optional[int] = None
     for i, line in enumerate(settings_content):
-        if "INSTALLED_APPS = [" in line:
+        if "CUSTOM_APPS = [" in line:
             installed_apps_index = i
             break
 

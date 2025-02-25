@@ -4,7 +4,6 @@ import { useDocumentData } from "@/hooks/useDocumentData";
 import { useData } from "@/contexts/DataContext";
 import { findDocDetails } from "@/utils/findDocDetails";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
-import PrimaryButton from "@/components/core/common/buttons/Primary";
 import { fetchData } from "@/utils/Api";
 import Select from "react-select";
 import SecondaryButton from "@/components/core/common/buttons/Secondary";

@@ -83,6 +83,8 @@ const ImportDataModal = ({ isOpen, onRequestClose, onSendData }) => {
 
       setHeaders(headerRow);
       setData(rows); // Store the complete data set as objects
+      // console.log(rows);
+
       setDisplayedData(rows.slice(0, 5)); // Display only the first 5 rows for preview
     } else {
       console.error("File data is empty.");

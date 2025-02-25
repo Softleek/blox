@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import DocDetail from "@/components/pages/detail/DocDetail";
 import { useNavbar } from "@/contexts/NavbarContext";
 import { useSidebar } from "@/contexts/SidebarContext";
 import { toTitleCase } from "@/utils/textConvert";
 import Loading from "@/components/core/account/Loading";
-import DoctypeStudio from "@/components/studio/doctype/DocStudio";
 import { ConfigProvider } from "@/contexts/ConfigContext";
-import ToastTemplates from "@/components/core/common/toast/ToastTemplates";
 import DoctypeForm from "@/components/pages/form";
 import { postData } from "@/utils/Api";
 import { useData } from "@/contexts/DataContext";
@@ -30,16 +27,22 @@ const DocumentDetail = () => {
     updateNavLinks,
   } = useNavbar();
   const { setSidebarHidden, setSidebarWidth } = useSidebar();
-  const { loading, setLoading } = useData();
+  const { loading, setLoading, setData, setForm } = useData();
 
   useEffect(() => {
-    if (!slug) return;
+    if (!slug) {
+      setData(null); // Reset data before fetching new document details
+      setForm(null);
+      return;
+    }
 
     const fetchDocumentData = async () => {
       try {
         // Fetch document details
         const docData = findDocDetails(slug);
-        if (!docData) throw new Error("Failed to fetch document details");
+        if (!docData) {
+          throw new Error("Failed to fetch document details");
+        }
 
         setAppData(docData);
         setFilePath(docData.docPath);

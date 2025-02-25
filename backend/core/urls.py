@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.static import serve
 from rest_framework.routers import DefaultRouter
+from .dynamic_api import DynamicAPIView
 
 from .views import (AppViewSet, BulkDeleteAPIView,  ReminderViewSet,
                     ChangeLogViewSet, CreateAppAPIView, CreateDocumentAPIView,
@@ -13,14 +14,8 @@ from .views import (AppViewSet, BulkDeleteAPIView,  ReminderViewSet,
                     ProfileView, ResendOTPView, SendEmailView, SendSmsView,
                     UserGetViewSet, UserGroupPermissions, UserIPAddressViewSet,
                     UserViewSet, RoleViewSet, BranchViewSet, PrintFormatViewSet, CreatePrintFormatAPIView,
-                     AddItemToCrossborderAPIView,
-    AddItemToDispatchAPIView,
-    TransitCrossborderAPIView,
-    ItemDispatchAPIView,
-    TrackItemsView,
-    CreateInvoiceView,
                     )
-
+from core.views.report import DetailedReportView
 router = DefaultRouter()
 router.register(r"app", AppViewSet)
 router.register(r"module", ModuleViewSet) 
@@ -67,35 +62,10 @@ urlpatterns = [
     path("bulkdelete/", BulkDeleteAPIView.as_view(), name="bulkdelete"),
     path("sendemail/", SendEmailView.as_view(), name="email"),
     path("admin/", admin.site.urls),
-    
-    path("track/", TrackItemsView.as_view(), name="track"),
     path("", include(static_urlpatterns)),
-    path(
-        "crossborder/add-item/",
-        AddItemToCrossborderAPIView.as_view(),
-        name="add-item-to-crossborder",
-    ),
-    path(
-        "crossborder/update-status/",
-        TransitCrossborderAPIView.as_view(),
-        name="crossborder/update-status",
-    ),
-    path(
-        "dispatch/add-item/",
-        AddItemToDispatchAPIView.as_view(),
-        name="add-item-to-dispatch",
-    ),
-    path(
-        "item/dispatch/",
-        ItemDispatchAPIView.as_view(),
-        name="item/dispatch/",
-    ),
-    path(
-        "createinvoice/",
-        CreateInvoiceView.as_view(),
-        name="createinvoice",
-    ),
-    path("", include(static_urlpatterns)),
+    re_path(r"^method/(?P<module_path>[\w/]+)/(?P<callable_name>[\w]+)/$", DynamicAPIView.as_view()),
+     path('reports/detailed/', DetailedReportView.as_view(), name='detailed-report'),
+
  ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
