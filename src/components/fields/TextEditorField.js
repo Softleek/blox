@@ -24,7 +24,7 @@ const TextEditorField = ({
         rows={8}
         readOnly={readOnly || preview} // Make input readOnly in both readOnly and preview mode
         disabled={readOnly || preview}
-        className="w-full p-3 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800"
+        className="w-full p-3 text-sm border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500 bg-white text-gray-800"
         placeholder="Start typing your text here..."
       />
     </div>

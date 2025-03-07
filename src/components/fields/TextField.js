@@ -18,7 +18,7 @@ const DataField = ({
       placeholder={placeholder}
       hidden={hidden}
       required={required}
-      className="px-1 w-full focus:outline-none focus:ring-0 focus:border-none"
+      className="px-1 w-full focus:outline-hidden focus:ring-0 focus:border-none"
     />
   );
 };

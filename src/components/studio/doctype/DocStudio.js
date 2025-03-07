@@ -128,7 +128,7 @@ const DoctypeStudio = ({ handleSave, config }) => {
                 </div>
               ) : (
                 <>
-                  <div className="w-3/4 bg-white rounded max-h-[100vh]">
+                  <div className="w-3/4 bg-white rounded-sm max-h-[100vh]">
                     {selectedTab === "form" && (
                       <div className="h-full overflow-y-auto">
                         <Canvas />
@@ -143,7 +143,7 @@ const DoctypeStudio = ({ handleSave, config }) => {
 
                   {/* Settings Section */}
                   {selectedTab !== "settings" && (
-                    <div className="w-1/4 p-2 ml-4 shadow-md shadow-gray-400 bg-white rounded max-h-[100vh] border border-gray-300 rounded-lg">
+                    <div className="w-1/4 p-2 ml-4 shadow-md shadow-gray-400 bg-white rounded-sm max-h-[100vh] border border-gray-300 rounded-lg">
                       <div className="h-full overflow-y-auto shadow-inner">
                         <FieldSettings />
                       </div>

@@ -27,11 +27,11 @@ const PasswordField = ({
         onChange={onChange}
         placeholder={placeholder}
         hidden={hidden}
-        className="px-1 w-full focus:outline-none focus:ring-0 focus:border-none"
+        className="px-1 w-full focus:outline-hidden focus:ring-0 focus:border-none"
       />
       <div className="px-1 text-right flex justify-end">
         <div
-          className="flex items-center justify-center w-5 h-5 text-center rounded-md bg-gradient-to-tl from-purple-700 to-pink-500 cursor-pointer"
+          className="flex items-center justify-center w-5 h-5 text-center rounded-md bg-linear-to-tl from-purple-700 to-pink-500 cursor-pointer"
           onClick={togglePasswordVisibility}
         >
           <FontAwesomeIcon

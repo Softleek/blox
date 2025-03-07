@@ -61,7 +61,7 @@ const ListDefaultPrint = React.forwardRef(
               </tr>
             </thead>
             {/* Watermark */}
-            <div className="fixed bottom-0 z-1 top-0 w-full flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+            <div className="fixed bottom-0 z-1 top-0 w-full flex items-center justify-center bg-linear-to-br from-blue-50 via-purple-50 to-pink-50">
               <span className="text-8xl font-medium text-gray-200 opacity-60 rotate-[-30deg]">
                 Masafa Logistics
               </span>
@@ -119,7 +119,7 @@ const ListDefaultPrint = React.forwardRef(
                     .map(([key, value]) => (
                       <div
                         key={key}
-                        className="flex flex-row justify-between bg-purple-50 w-full rounded px-1 py-1 my-1"
+                        className="flex flex-row justify-between bg-purple-50 w-full rounded-sm px-1 py-1 my-1"
                       >
                         <div className="flex-none w-full px-1 text-xs">
                           <div>
@@ -135,9 +135,9 @@ const ListDefaultPrint = React.forwardRef(
                     ))}
                 </div>
               )}
-              <div className="relative z-8 overflow-hidden shadow-lg rounded-sm">
+              <div className="relative z-8 overflow-hidden shadow-lg rounded-xs">
                 <table className="min-w-full divide-y divide-darkblack-300">
-                  <thead className="bg-gradient-to-r from-blue-400 to-purple-500 text-black">
+                  <thead className="bg-linear-to-r from-blue-400 to-purple-500 text-black">
                     <tr className="bg-purple-50 border-b-[1px] border-purple-100 text-xs justify-center">
                       <th className="px-1.5 py-1.5 text-left text-xs font-bold uppercase tracking-wider">
                         No

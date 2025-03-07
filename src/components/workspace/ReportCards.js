@@ -64,7 +64,7 @@ const ReportCards = ({ data }) => {
       {cardData.map((card, index) => (
         <div
           key={index}
-          className={`p-3 rounded-md shadow-sm flex items-center ${card.color}`}
+          className={`p-3 rounded-md shadow-xs flex items-center ${card.color}`}
         >
           <div className="text-lg mr-3">{card.icon}</div>
           <div>

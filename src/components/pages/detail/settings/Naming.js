@@ -20,7 +20,7 @@ const Naming = ({ settings, handleChange, initialData }) => {
                     name="idNamingMethod"
                     value={settings.idNamingMethod}
                     onChange={handleChange}
-                    className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
                   >
                     <option value="fieldNaming">Use Field</option>
                     <option value="functionNaming">Use Function</option>
@@ -30,7 +30,7 @@ const Naming = ({ settings, handleChange, initialData }) => {
                   </select>
                 </TableTooltip>
                 <div className="text-right flex justify-end">
-                  <div className="flex items-center justify-center w-10 h-10 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
+                  <div className="flex items-center justify-center w-10 h-10 text-center rounded-lg bg-linear-to-tl from-purple-700 to-pink-500">
                     <FontAwesomeIcon
                       icon={faIdCard}
                       className="h-6 w-6 text-white"
@@ -68,7 +68,7 @@ const Naming = ({ settings, handleChange, initialData }) => {
                         name="fieldForIdNaming"
                         value={settings.fieldForIdNaming}
                         onChange={handleChange}
-                        className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
                       >
                         <option value="">Select Field</option>
                         {initialData &&
@@ -88,7 +88,7 @@ const Naming = ({ settings, handleChange, initialData }) => {
                         name="functionForIdNaming"
                         value={settings.functionForIdNaming}
                         onChange={handleChange}
-                        className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
                         placeholder="Enter function name"
                       />
                     )}
@@ -101,7 +101,7 @@ const Naming = ({ settings, handleChange, initialData }) => {
                         name="lengthForIncrementalNaming"
                         value={settings.lengthForIncrementalNaming}
                         onChange={handleChange}
-                        className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
                         placeholder="Enter length (e.g., 5)"
                       />
                     )}
@@ -114,7 +114,7 @@ const Naming = ({ settings, handleChange, initialData }) => {
                         name="idNamingRule"
                         value={settings.idNamingRule}
                         onChange={handleChange}
-                        className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
                         placeholder="Enter custom naming rule"
                       />
                     )}

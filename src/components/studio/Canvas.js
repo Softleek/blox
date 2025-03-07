@@ -62,7 +62,7 @@ const Canvas = ({
               </a>
               {/* <button
                 onClick={() => deleteField(tab, "tab")}
-                className="flex items-center justify-center z-40 -mt-2 shadow shadow-lg bg-white rounded-full h-4 w-4 shadow-black text-red-500 hover:text-red-700"
+                className="flex items-center justify-center z-40 -mt-2 shadow-sm shadow-lg bg-white rounded-full h-4 w-4 shadow-black text-red-500 hover:text-red-700"
               >
                 <FontAwesomeIcon icon={faTimes} className="w-3 h-3 " />
               </button> */}

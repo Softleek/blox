@@ -37,17 +37,17 @@ const MetaInfoSettings = () => {
         value={metaInfo.title}
         onChange={(e) => handleInputChange("title", e.target.value)}
         placeholder="Site Title"
-        className="border p-2 rounded mb-2"
+        className="border p-2 rounded-sm mb-2"
       />
       <textarea
         value={metaInfo.description}
         onChange={(e) => handleInputChange("description", e.target.value)}
         placeholder="Site Description"
-        className="border p-2 rounded mb-2"
+        className="border p-2 rounded-sm mb-2"
       />
       <button
         onClick={handleSaveMetaInfo}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
+        className="bg-blue-500 text-white px-4 py-2 rounded-sm"
       >
         Save Meta Info
       </button>

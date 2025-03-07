@@ -88,7 +88,7 @@ const Sidebar = () => {
       {isCollapsed && (
         <button
           onClick={toggleSidebar}
-          className="w-fit fixed z-100 text-slate-700 py-2 px-2 group text-sm md:text-xl top-16 bg-gray-50 rounded" // Use group class for managing hover effect
+          className="w-fit fixed z-100 text-slate-700 py-2 px-2 group text-sm md:text-xl top-16 bg-gray-50 rounded-sm" // Use group class for managing hover effect
         >
           {/* Default icon (faBars) */}
           <FontAwesomeIcon
@@ -104,7 +104,7 @@ const Sidebar = () => {
       )}
 
       <div
-        className={`w-fit max-h-[92vh] overflow-auto ease-nav-brand block -translate-x-full flex-wrap flex-grow items-center justify-between border-0 p-1 antialiased transition-transform duration-200 left-0 translate-x-0 ${
+        className={`w-fit max-h-[92vh] overflow-auto ease-nav-brand block -translate-x-full flex-wrap grow items-center justify-between border-0 p-1 antialiased transition-transform duration-200 left-0 translate-x-0 ${
           !isCollapsed ? "" : "hidden"
         }`}
       >
@@ -136,7 +136,7 @@ const Sidebar = () => {
           </a>
         </div>
 
-        <hr className="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
+        <hr className="h-px mt-0 bg-transparent bg-linear-to-r from-transparent via-black/40 to-transparent" />
 
         <div className="items-center block w-auto h-fit grow basis-full scrollbar scrollbar-thin scrollbar-thumb-slate-50 scrollbar-track-slate-100 pr-2">
           <ul className="flex flex-col mb-4">

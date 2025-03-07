@@ -127,6 +127,6 @@ export const defaultButtons = [
     toooltip: "Print",
     action: (props) => handlePrint(props),
     icon: faPrint,
-    className: "!text-green-700 !border-green-500",
+    className: "text-green-700! border-green-500!",
   },
 ];

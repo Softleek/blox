@@ -180,7 +180,7 @@ const DocStudio = ({ initialData, handleSave }) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="px-6 flex">
-        <div className="w-1/5 p-4 bg-white rounded mr-4 max-h-[75vh] overflow-y-auto">
+        <div className="w-1/5 p-4 bg-white rounded-sm mr-4 max-h-[75vh] overflow-y-auto">
           <h2 className="text-xl font-semibold mb-4">Fields</h2>
           {fields?.map((field) => (
             <Field key={field.id} field={field} addToCanvas={addToCanvas} />
@@ -190,7 +190,7 @@ const DocStudio = ({ initialData, handleSave }) => {
         <div className="w-4/5 flex flex-col">
           <div
             onClick={saveCanvas}
-            className="flex cursor-pointer bg-white p-2 mb-2 rounded items-end justify-end"
+            className="flex cursor-pointer bg-white p-2 mb-2 rounded-sm items-end justify-end"
           >
             <SecondaryButton
               text="Save"

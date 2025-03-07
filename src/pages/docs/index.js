@@ -70,7 +70,7 @@ const Docs = () => {
             {visibleSections[index] && (
               <div className="space-y-6 mt-4">
                 {section.steps.map((stepData, stepIndex) => (
-                  <div key={stepIndex} className="p-4 border-l-4 border-pink-500 bg-white rounded-lg shadow-sm">
+                  <div key={stepIndex} className="p-4 border-l-4 border-pink-500 bg-white rounded-lg shadow-xs">
                     <h3 className="text-xl font-medium text-purple-700">
                       {stepData.step}: {stepData.title}
                     </h3>

@@ -144,7 +144,7 @@ const Navbar = () => {
             </ul>
           </div>
         </div>
-        <hr className="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
+        <hr className="h-px mt-0 bg-transparent bg-linear-to-r from-transparent via-black/40 to-transparent" />
       </div>
 
       <LogoutModal

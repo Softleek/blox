@@ -20,10 +20,10 @@ const ProfileMessages = () => {
               {notifications.map((notification) => (
                 <li
                   key={notification.id}
-                  className="relative flex items-center px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg shadow-sm"
+                  className="relative flex items-center px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg shadow-xs"
                 >
                   <div
-                    className="flex-shrink-0 w-12 h-12 mr-4 rounded-full flex items-center justify-center text-white font-bold text-lg"
+                    className="shrink-0 w-12 h-12 mr-4 rounded-full flex items-center justify-center text-white font-bold text-lg"
                     style={{
                       backgroundColor: getNotificationColor(notification),
                     }}
@@ -32,7 +32,7 @@ const ProfileMessages = () => {
                       ? notification.name.charAt(0).toUpperCase()
                       : "N"}
                   </div>
-                  <div className="flex flex-col flex-grow">
+                  <div className="flex flex-col grow">
                     <h6 className="mb-1 text-base font-medium text-blue-700">
                       {notification.name || "Notification"}
                     </h6>

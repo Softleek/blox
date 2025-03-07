@@ -97,7 +97,7 @@ const ColorPrint = React.forwardRef(({ data, title, load }, ref) => {
            ${itemsToProcess
              .map(
                (item) => `
-              <div class="flex flex-row justify-between bg-slate-50 w-[80%] rounded px-2 py-1 my-1">
+              <div class="flex flex-row justify-between bg-slate-50 w-[80%] rounded-sm px-2 py-1 my-1">
                 <div class="flex-none w-full px-1">
                   <div>
                     <p class="mb-0 font-sans text-xs font-medium text-gray-800 leading-normal">
@@ -107,7 +107,7 @@ const ColorPrint = React.forwardRef(({ data, title, load }, ref) => {
                   </div>
                 </div>
                 <div class="px-1 text-right flex justify-end">
-                  <div class="flex items-center justify-center w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
+                  <div class="flex items-center justify-center w-12 h-12 text-center rounded-lg bg-linear-to-tl from-purple-700 to-pink-500">
                     <i class="fas ${item.iconClass} text-lg text-white"></i>
                   </div>
                 </div>

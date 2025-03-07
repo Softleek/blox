@@ -43,13 +43,13 @@ const FieldSettingsModal = ({
 
         {/* Header Section */}
         <div className="mb-4 flex items-center h-4">
-          {/* <div className="text-xl font-semibold flex-grow">Field Settings</div> */}
+          {/* <div className="text-xl font-semibold grow">Field Settings</div> */}
         </div>
         <div className="grid grid-cols-1 gap-y-4">
           {/* Main Content */}
           <div className="grid grid-cols-1 gap-4">
             {/* General Settings Section */}
-            <div className="p-4 bg-gray-50 border border-gray-300 rounded-lg grid grid-cols-2 gap-x-4 gap-y-2 shadow-sm">
+            <div className="p-4 bg-gray-50 border border-gray-300 rounded-lg grid grid-cols-2 gap-x-4 gap-y-2 shadow-xs">
               <h3 className="text-lg font-medium mb-2 text-gray-800">
                 General Settings
               </h3>
@@ -57,7 +57,7 @@ const FieldSettingsModal = ({
               {/* ID */}
               <div className="relative mb-2">
                 <label className="block text-sm font-medium mb-1 flex items-center">
-                  <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                  <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                     <FontAwesomeIcon
                       icon={faIdBadge}
                       className="text-white h-3 w-3"
@@ -71,14 +71,14 @@ const FieldSettingsModal = ({
                   onChange={(e) =>
                     handleInputChange("id1", e.target.value, item, "field")
                   }
-                  className="mt-1 block w-full p-2 text-sm border border-gray-300 rounded pl-4"
+                  className="mt-1 block w-full p-2 text-sm border border-gray-300 rounded-sm pl-4"
                 />
               </div>
 
               {/* Name */}
               <div className="relative mb-2">
                 <label className="block text-sm font-medium mb-1 flex items-center">
-                  <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                  <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                     <FontAwesomeIcon
                       icon={faTag}
                       className="text-white h-3 w-3"
@@ -92,14 +92,14 @@ const FieldSettingsModal = ({
                   onChange={(e) =>
                     handleInputChange("name", e.target.value, item, "field")
                   }
-                  className="mt-1 block w-full p-2 text-sm border border-gray-300 rounded pl-4"
+                  className="mt-1 block w-full p-2 text-sm border border-gray-300 rounded-sm pl-4"
                 />
               </div>
 
               {/* Type */}
               <div className="relative mb-2">
                 <label className="block text-sm font-medium mb-1 flex items-center">
-                  <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                  <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                     <FontAwesomeIcon
                       icon={faKey}
                       className="text-white h-3 w-3"
@@ -112,7 +112,7 @@ const FieldSettingsModal = ({
                   onChange={(e) =>
                     handleInputChange("type", e.target.value, item, "field")
                   }
-                  className="mt-1 block w-full p-2 text-sm border border-gray-300 rounded pl-4"
+                  className="mt-1 block w-full p-2 text-sm border border-gray-300 rounded-sm pl-4"
                 >
                   {fields?.map((field) => (
                     <option key={field.id} value={field.name}>
@@ -127,7 +127,7 @@ const FieldSettingsModal = ({
               {(type === "SelectField" || type === "MultiSelectField") && (
                 <div className="relative mb-2 col-span-1">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faList}
                         className="text-white h-3 w-3"
@@ -145,7 +145,7 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="block w-full h-28 p-2 text-sm border border-gray-300 rounded"
+                    className="block w-full h-28 p-2 text-sm border border-gray-300 rounded-sm"
                     placeholder="Enter one option per line"
                   />
                 </div>
@@ -156,7 +156,7 @@ const FieldSettingsModal = ({
                 <>
                   <div className="relative mb-2 col-span-1">
                     <label className="block text-sm font-medium mb-1 flex items-center">
-                      <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                      <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                         <FontAwesomeIcon
                           icon={faBarcode}
                           className="text-white h-3 w-3"
@@ -175,12 +175,12 @@ const FieldSettingsModal = ({
                           "field"
                         )
                       }
-                      className="mt-1 block w-6 h-6 p-2 text-sm border border-gray-300 rounded"
+                      className="mt-1 block w-6 h-6 p-2 text-sm border border-gray-300 rounded-sm"
                     />
                   </div>
                   <div className="relative mb-2 col-span-1">
                     <label className="block text-sm font-medium mb-1 flex items-center">
-                      <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                      <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                         <FontAwesomeIcon
                           icon={faQrcode}
                           className="text-white h-3 w-3"
@@ -199,13 +199,13 @@ const FieldSettingsModal = ({
                           "field"
                         )
                       }
-                      className="mt-1 block w-6 h-6 p-2 text-sm border border-gray-300 rounded"
+                      className="mt-1 block w-6 h-6 p-2 text-sm border border-gray-300 rounded-sm"
                     />
                   </div>
 
                   <div className="relative mb-2 col-span-1">
                     <label className="block text-sm font-medium mb-1 flex items-center">
-                      <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                      <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                         <FontAwesomeIcon
                           icon={faLink}
                           className="text-white h-3 w-3"
@@ -223,7 +223,7 @@ const FieldSettingsModal = ({
                           "field"
                         )
                       }
-                      className="mt-1 block w-full h-28 p-2 text-sm border border-gray-300 rounded"
+                      className="mt-1 block w-full h-28 p-2 text-sm border border-gray-300 rounded-sm"
                     />
                   </div>
                 </>
@@ -233,7 +233,7 @@ const FieldSettingsModal = ({
               {type === "BarcodeField" && (
                 <div className="relative mb-2 col-span-1">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faList}
                         className="text-white h-3 w-3"
@@ -251,7 +251,7 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="mt-1 block w-full h-28 p-2 text-sm border border-gray-300 rounded"
+                    className="mt-1 block w-full h-28 p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
               )}
@@ -261,7 +261,7 @@ const FieldSettingsModal = ({
                 type == "ManyToManyField") && (
                 <div className="relative mb-2 col-span-1">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faList}
                         className="text-white h-3 w-3"
@@ -286,7 +286,7 @@ const FieldSettingsModal = ({
               {type == "ManyToManyField" && readonly && (
                 <div className="relative mb-2 col-span-1">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faList}
                         className="text-white h-3 w-3"
@@ -305,7 +305,7 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="mt-1 block w-full p-2 text-sm border border-gray-300 rounded"
+                    className="mt-1 block w-full p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
               )}
@@ -314,7 +314,7 @@ const FieldSettingsModal = ({
                 type == "ManyToManyField") && (
                 <div className="relative mb-2 col-span-1">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faList}
                         className="text-white h-3 w-3"
@@ -328,7 +328,7 @@ const FieldSettingsModal = ({
                     onChange={(e) =>
                       handleInputChange("label", e.target.value, item, "field")
                     }
-                    className="mt-1 block w-full p-2 text-sm border border-gray-300 rounded"
+                    className="mt-1 block w-full p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
               )}
@@ -338,7 +338,7 @@ const FieldSettingsModal = ({
                 type == "ManyToManyField") && (
                 <div className="relative mb-2 col-span-1">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faTag}
                         className="text-white h-3 w-3"
@@ -356,7 +356,7 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="mt-1 block w-full h-28 p-2 text-sm border border-gray-300 rounded"
+                    className="mt-1 block w-full h-28 p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
               )}
@@ -366,7 +366,7 @@ const FieldSettingsModal = ({
                 type == "ManyToManyField") && (
                 <div className="relative mb-2 col-span-1">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faTag}
                         className="text-white h-3 w-3"
@@ -384,14 +384,14 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="mt-1 block w-full h-28 p-2 text-sm border border-gray-300 rounded"
+                    className="mt-1 block w-full h-28 p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
               )}
               {/* Default */}
               <div className="relative mb-2 col-span-1">
                 <label className="block text-sm font-medium mb-1 flex items-center">
-                  <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                  <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                     <FontAwesomeIcon
                       icon={faTag}
                       className="text-white h-3 w-3"
@@ -404,13 +404,13 @@ const FieldSettingsModal = ({
                   onChange={(e) =>
                     handleInputChange("default", e.target.value, item, "field")
                   }
-                  className="mt-1 block w-full h-28 p-2 text-sm border border-gray-300 rounded"
+                  className="mt-1 block w-full h-28 p-2 text-sm border border-gray-300 rounded-sm"
                 />
               </div>
             </div>
 
             {/* Advanced Settings Section */}
-            <div className="p-4 bg-gray-50 border border-gray-300 rounded-lg shadow-sm">
+            <div className="p-4 bg-gray-50 border border-gray-300 rounded-lg shadow-xs">
               <h3 className="text-lg font-medium mb-2 text-gray-800">
                 Advanced Settings
               </h3>
@@ -419,7 +419,7 @@ const FieldSettingsModal = ({
                 {/* Display On */}
                 <div className="relative">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faEye}
                         className="text-white h-3 w-3"
@@ -438,13 +438,13 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="block w-full p-2 text-sm border border-gray-300 rounded"
+                    className="block w-full p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
                 {/* Required On */}
                 <div className="relative">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faCircleQuestion}
                         className="text-white h-3 w-3"
@@ -463,13 +463,13 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="block w-full p-2 text-sm border border-gray-300 rounded"
+                    className="block w-full p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
                 {/* Filter On */}
                 <div className="relative">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faFilter}
                         className="text-white h-3 w-3"
@@ -488,13 +488,13 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="block w-full p-2 text-sm border border-gray-300 rounded"
+                    className="block w-full p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
                 {/* Placeholder */}
                 <div className="relative">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faInfoCircle}
                         className="text-white h-3 w-3"
@@ -513,14 +513,14 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="block w-full p-2 text-sm border border-gray-300 rounded"
+                    className="block w-full p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
 
                 {/* Max Length */}
                 <div className="relative">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faFont}
                         className="text-white h-3 w-3"
@@ -539,14 +539,14 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="block w-full p-2 text-sm border border-gray-300 rounded"
+                    className="block w-full p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
 
                 {/* Min Length */}
                 <div className="relative">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faFont}
                         className="text-white h-3 w-3"
@@ -565,14 +565,14 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="block w-full p-2 text-sm border border-gray-300 rounded"
+                    className="block w-full p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
 
                 {/* Pattern */}
                 <div className="relative">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faCheckCircle}
                         className="text-white h-3 w-3"
@@ -591,14 +591,14 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="block w-full p-2 text-sm border border-gray-300 rounded"
+                    className="block w-full p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
 
                 {/* Validation Message */}
                 <div className="relative">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faInfoCircle}
                         className="text-white h-3 w-3"
@@ -617,14 +617,14 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="block w-full p-2 text-sm border border-gray-300 rounded"
+                    className="block w-full p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
 
                 {/* Format */}
                 <div className="relative">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faCalendar}
                         className="text-white h-3 w-3"
@@ -638,14 +638,14 @@ const FieldSettingsModal = ({
                     onChange={(e) =>
                       handleInputChange("format", e.target.value, item, "field")
                     }
-                    className="block w-full p-2 text-sm border border-gray-300 rounded"
+                    className="block w-full p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
 
                 {/* Help Text */}
                 <div className="relative">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faInfoCircle}
                         className="text-white h-3 w-3"
@@ -664,14 +664,14 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="block w-full p-2 text-sm border border-gray-300 rounded"
+                    className="block w-full p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
 
                 {/* Tooltip */}
                 <div className="relative">
                   <label className="block text-sm font-medium mb-1 flex items-center">
-                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tr from-green-400 to-blue-500 mr-2">
+                    <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tr from-green-400 to-blue-500 mr-2">
                       <FontAwesomeIcon
                         icon={faInfoCircle}
                         className="text-white h-3 w-3"
@@ -690,7 +690,7 @@ const FieldSettingsModal = ({
                         "field"
                       )
                     }
-                    className="block w-full p-2 text-sm border border-gray-300 rounded"
+                    className="block w-full p-2 text-sm border border-gray-300 rounded-sm"
                   />
                 </div>
               </div>

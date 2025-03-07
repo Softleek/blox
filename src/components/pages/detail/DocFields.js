@@ -34,7 +34,7 @@ const DocFields = ({ config, data }) => (
                 </div>
               </div>
               <div className="px-3 text-right flex justify-end">
-                <div className="flex items-center justify-center w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
+                <div className="flex items-center justify-center w-12 h-12 text-center rounded-lg bg-linear-to-tl from-purple-700 to-pink-500">
                   <FontAwesomeIcon
                     icon={item.icon}
                     className="h-8 w-8 text-white"

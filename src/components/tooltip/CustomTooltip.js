@@ -36,7 +36,7 @@ const CustomTooltip = ({ children, content }) => {
         <div
           ref={tooltipRef}
           style={tooltipStyles}
-          className="shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102 text-white text-xs font-medium py-2 px-4 rounded-lg shadow-lg relative"
+          className="shadow-soft-md bg-150 bg-x-25 leading-pro bg-linear-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102 text-white text-xs font-medium py-2 px-4 rounded-lg shadow-lg relative"
         >
           {content}
           <div className="absolute w-3 h-3 bg-purple-700 transform rotate-45 -bottom-1 right-1"></div>

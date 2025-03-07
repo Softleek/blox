@@ -100,7 +100,7 @@ const PrintModal = ({ form, onClose, isOpen }) => {
         }`}
       >
         <Modal isOpen={isOpen} onClose={onClose} position={"top"}>
-          <div className="!w-[70vw] mx-auto">
+          <div className="w-[70vw]! mx-auto">
             <h1 className="text-2xl font-bold mb-6 text-center">
               Print Preview
             </h1>
@@ -124,7 +124,7 @@ const PrintModal = ({ form, onClose, isOpen }) => {
             </div>
             <div className="flex gap-4 mb-6">
               <SecondaryButton
-                className={"!px-6 !text-xl"}
+                className={"px-6! text-xl!"}
                 onClick={handlePrintClick}
                 text="Print"
               />

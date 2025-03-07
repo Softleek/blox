@@ -23,7 +23,7 @@ const IconSelector = ({ onSelect, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-900 flex justify-center items-center bg-gray-800 bg-opacity-50">
-      <div className="bg-white p-6 rounded shadow-lg max-h-[80vh] overflow-y-auto w-full md:w-3/4">
+      <div className="bg-white p-6 rounded-sm shadow-lg max-h-[80vh] overflow-y-auto w-full md:w-3/4">
         {/* Close Button */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Select an Icon</h2>
@@ -38,7 +38,7 @@ const IconSelector = ({ onSelect, onClose }) => {
           placeholder="Search icons..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="border rounded p-2 w-full mb-4"
+          className="border rounded-sm p-2 w-full mb-4"
         />
 
         <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">

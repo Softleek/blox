@@ -44,7 +44,7 @@ const ModuleDashboard = () => {
           links={generateDocLinks(coreDocs)} // Us to build links
           bgColor="bg-gray-100"
           textColor="text-gray-900"
-          className="rounded-lg p-4 shadow-sm bg-white"
+          className="rounded-lg p-4 shadow-xs bg-white"
           cols={6}
         />
       </div>

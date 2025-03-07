@@ -149,7 +149,7 @@ const CustomDateTimePicker = ({
           ref={pickerRef} // Attach the ref to the modal container
           className="bg-white rounded-lg p-5 shadow-lg w-[350px] sm:w-[400px]"
         >
-          <div className="p-1 mb-2 w-full border border-gray-400 rounded focus:outline-none focus:ring-0 focus:border-yellow-500">
+          <div className="p-1 mb-2 w-full border border-gray-400 rounded-sm focus:outline-hidden focus:ring-0 focus:border-yellow-500">
             {includeDate && (
               <CustomDateSelector
                 selectedDate={selectedDate}
@@ -157,7 +157,7 @@ const CustomDateTimePicker = ({
               />
             )}
           </div>
-          <header className="flex justify-between items-center bg-gray-100 p-1 rounded shadow-md">
+          <header className="flex justify-between items-center bg-gray-100 p-1 rounded-sm shadow-md">
             <div className="flex items-center jstify-center text-center space-x-1">
               <input
                 className={`text-base text-center rounded cursor-pointer w-10 ${
@@ -251,7 +251,7 @@ const CustomDateTimePicker = ({
       hidden={hidden}
     >
       <input
-        className="!w-full px-2 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus:border-none focus:ring-0 bg-transparent"
+        className="w-full! px-2 text-gray-900 sm:text-sm rounded-lg focus:outline-hidden focus:border-none focus:ring-0 bg-transparent"
         value={value ? formatDateTimeDisplay(selectedDate) : dateDisplay}
         onChange={handleInputChange}
         onFocus={handleIconClick}

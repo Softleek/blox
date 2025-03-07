@@ -23,7 +23,7 @@ const TextInput = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`mt-1 p-2 border rounded focus:ring-0 text-sm ${className}`}
+        className={`mt-1 p-2 border rounded-sm focus:ring-0 text-sm ${className}`}
         {...props}
       />
       {description && (

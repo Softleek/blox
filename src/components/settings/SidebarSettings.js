@@ -99,7 +99,7 @@ const SidebarSettings = () => {
       <div className="mb-4 flex justify-end">
         <button
           onClick={handleEditToggle}
-          className="bg-purple-600 text-white px-4 py-2 rounded-lg transition duration-200 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400"
+          className="bg-purple-600 text-white px-4 py-2 rounded-lg transition duration-200 hover:bg-purple-700 focus:outline-hidden focus:ring-2 focus:ring-purple-400"
         >
           <FontAwesomeIcon icon={editMode ? faSave : faEdit} className="mr-2" />
           {editMode ? "Save Settings" : "Edit Sidebar"}
@@ -117,14 +117,14 @@ const SidebarSettings = () => {
               placeholder="Text"
               value={newItem.text}
               onChange={(e) => handleNewItemChange("text", e.target.value)}
-              className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="border border-slate-300 p-2 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
             />
             <input
               type="text"
               placeholder="Link"
               value={newItem.link}
               onChange={(e) => handleNewItemChange("link", e.target.value)}
-              className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="border border-slate-300 p-2 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
             />
             <div className="relative flex flex-row space-x-4">
               {newItem.icon ? (
@@ -137,7 +137,7 @@ const SidebarSettings = () => {
               ) : (
                 <button
                   onClick={openIconSelectorForNew}
-                  className="border border-slate-300 p-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="border border-slate-300 p-2 rounded-lg w-full focus:outline-hidden focus:ring-2 focus:ring-purple-500"
                 >
                   <FontAwesomeIcon icon={faIcons} /> Select Icon
                 </button>
@@ -176,7 +176,7 @@ const SidebarSettings = () => {
                       onChange={(e) =>
                         handleInputChange(index, "text", e.target.value)
                       }
-                      className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="border border-slate-300 p-2 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
                     />
                   ) : (
                     <span className="text-purple-600 font-semibold">
@@ -193,7 +193,7 @@ const SidebarSettings = () => {
                       onChange={(e) =>
                         handleInputChange(index, "link", e.target.value)
                       }
-                      className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="border border-slate-300 p-2 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
                     />
                   ) : (
                     <span className="text-slate-600">{item.link}</span>

@@ -6,7 +6,7 @@ const NotificationModal = ({ isOpen, onClose, reminders }) => {
   if (!isOpen) return null;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} position="top" className="!pt-20">
+    <Modal isOpen={isOpen} onClose={onClose} position="top" className="pt-20!">
       <div className="py-2 px-5 w-[800px] overflow-y-auto">
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-xl font-semibold text-purple-900">
@@ -14,7 +14,7 @@ const NotificationModal = ({ isOpen, onClose, reminders }) => {
           </h2>
           {/* <button
             onClick={onClose}
-            className="text-gray-600 hover:text-gray-900 font-bold focus:outline-none transition duration-300 ease-in-out"
+            className="text-gray-600 hover:text-gray-900 font-bold focus:outline-hidden transition duration-300 ease-in-out"
           >
             &times;
           </button> */}
@@ -29,7 +29,7 @@ const NotificationModal = ({ isOpen, onClose, reminders }) => {
             {reminders.map((reminder, index) => (
               <li
                 key={index}
-                className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 transform hover:scale-105"
+                className="bg-linear-to-r from-blue-50 via-indigo-50 to-purple-50 py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 transform hover:scale-105"
               >
                 <div className="flex justify-between items-start">
                   <div className="flex-1 pr-4">

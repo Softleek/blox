@@ -39,14 +39,14 @@ const Sort = ({
         value={sortField || null}
         onChange={handleSortFieldChange}
         placeholder="Select Sort Field"
-        className="w-full text-xs focus:outline-none focus:ring-0"
+        className="w-full text-xs focus:outline-hidden focus:ring-0"
         classNamePrefix="custom-select"
       />
 
       {/* Button to toggle between ascending and descending order */}
       <button
         onClick={handleSortOrderToggle}
-        className="flex items-center p-2 border rounded"
+        className="flex items-center p-2 border rounded-sm"
       >
         <FontAwesomeIcon
           icon={sortOrder === "asc" ? faArrowUp : faArrowDown}

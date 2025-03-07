@@ -88,7 +88,7 @@ const Filters = ({
     switch (fieldConfig.fieldtype) {
       case "Link":
         return (
-          <div className="py-[0.4rem] px-2 border rounded">
+          <div className="py-[0.4rem] px-2 border rounded-sm">
             <LinkField
               field={fieldConfig}
               value={filter.value}

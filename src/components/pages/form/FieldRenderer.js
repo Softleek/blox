@@ -145,7 +145,7 @@ const FieldRenderer = ({
     if (minimal) return null;
     return (
       <div className="px-1 text-right flex justify-end">
-        <div className="flex items-center justify-center w-5 h-5 text-center rounded-md bg-gradient-to-tl from-purple-700 to-pink-500">
+        <div className="flex items-center justify-center w-5 h-5 text-center rounded-md bg-linear-to-tl from-purple-700 to-pink-500">
           <FontAwesomeIcon icon={icon} className="h-3 w-3 text-white" />
         </div>
       </div>

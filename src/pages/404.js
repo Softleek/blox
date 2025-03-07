@@ -14,7 +14,7 @@ export default function Custom404() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-slate-500 via-blue-500 to-purple-500 text-white">
+    <div className="flex flex-col items-center justify-center h-screen bg-linear-to-r from-slate-500 via-blue-500 to-purple-500 text-white">
       <h1 className="text-6xl font-bold mb-4">404</h1>
       <p className="text-2xl mb-8">Oops! The page you’re looking for doesn’t exist.</p>
       <button

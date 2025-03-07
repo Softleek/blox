@@ -74,7 +74,7 @@ export default function App({ Component, pageProps }) {
             <div className="flex items-center justify-center">
               <Navbar />
             </div>
-            <hr className="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/90 to-transparent" />
+            <hr className="h-px mt-0 bg-transparent bg-linear-to-r from-transparent via-black/90 to-transparent" />
           </div>
         )}
 
@@ -90,8 +90,8 @@ export default function App({ Component, pageProps }) {
                 <Sidebar />
               </div>
             )}
-            <div className="flex-grow h-[88vh] overflow-y-auto">
-              <div className="relative flex-grow">
+            <div className="grow h-[88vh] overflow-y-auto">
+              <div className="relative grow">
                 <Component {...pageProps} />
               </div>
             </div>

@@ -28,8 +28,8 @@ const LinkSection = ({
               icon={link.icon}
               href={link.href}
               tooltipContent={link.tooltipContent}
-              iconBg="bg-gradient-to-tl from-purple-700 to-pink-500"
-              arrowClassName="bg-gradient-to-tl from-green-500 to-blue-500"
+              iconBg="bg-linear-to-tl from-purple-700 to-pink-500"
+              arrowClassName="bg-linear-to-tl from-green-500 to-blue-500"
               bgColor="bg-gray-100"
               textClassNameOverride="text-xs font-semibold text-gray-800 text-left"
             />

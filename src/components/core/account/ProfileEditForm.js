@@ -52,7 +52,7 @@ const ProfileEditForm = forwardRef(
         onSubmit={handleSubmit}
         className="p-2 space-y-6 md:col-span-3"
       >
-        <div className="bg-white border border-4 my-8 p-8 rounded-lg shadow relative">
+        <div className="bg-white border border-4 my-8 p-8 rounded-lg shadow-sm relative">
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
               <label
@@ -65,7 +65,7 @@ const ProfileEditForm = forwardRef(
                 type="text"
                 id="first_name"
                 name="first_name"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
+                className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
                 placeholder="First Name"
                 required
                 onChange={(e) =>
@@ -86,7 +86,7 @@ const ProfileEditForm = forwardRef(
                 type="text"
                 id="last_name"
                 name="last_name"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
+                className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
                 placeholder="Last Name"
                 required
                 onChange={(e) => handleInputChange("last_name", e.target.value)}
@@ -105,7 +105,7 @@ const ProfileEditForm = forwardRef(
                 type="email"
                 id="email"
                 name="email"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
+                className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
                 placeholder="Email"
                 required
                 onChange={(e) => handleInputChange("email", e.target.value)}
@@ -124,7 +124,7 @@ const ProfileEditForm = forwardRef(
                 type="text"
                 id="phone"
                 name="phone"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
+                className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
                 placeholder="Phone"
                 onChange={(e) => handleInputChange("phone", e.target.value)}
                 value={formData.phone}
@@ -142,7 +142,7 @@ const ProfileEditForm = forwardRef(
                 type="text"
                 id="location"
                 name="location"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
+                className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
                 placeholder="Location"
                 onChange={(e) => handleInputChange("location", e.target.value)}
                 value={formData.location}
@@ -160,7 +160,7 @@ const ProfileEditForm = forwardRef(
                 type="password"
                 id="password"
                 name="password"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
+                className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
                 placeholder="Password"
                 onChange={(e) => handleInputChange("password", e.target.value)}
                 value={formData.password}

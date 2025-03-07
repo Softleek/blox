@@ -18,7 +18,7 @@ const TableTooltip = ({ children, content }) => {
         {children}
         {isVisible && content && (
           <div
-            className="absolute !z-10 bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-[11px] font-medium py-1 px-2 rounded-lg shadow-lg flex flex-col items-center"
+            className="absolute z-10! bg-linear-to-tl from-purple-700 to-pink-500 text-white text-[11px] font-medium py-1 px-2 rounded-lg shadow-lg flex flex-col items-center"
             style={{
               top: "100%",
               left: "50%",

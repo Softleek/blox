@@ -17,7 +17,7 @@ const DEFAULT_ARROW_ICON_CLASSES = "text-white text-sm";
 const DEFAULT_LINK_CARD_CONTAINER_CLASSES =
   "shadow-soft-xl rounded-2xl bg-clip-border text-center";
 
-const DEFAULT_ICON_BG = "bg-gradient-to-tl from-purple-700 to-pink-500";
+const DEFAULT_ICON_BG = "bg-linear-to-tl from-purple-700 to-pink-500";
 const DEFAULT_BG_COLOR = "bg-white";
 
 const LinkCard = ({

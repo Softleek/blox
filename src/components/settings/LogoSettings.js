@@ -33,11 +33,11 @@ const LogoSettings = () => {
         value={logoUrl}
         onChange={(e) => setLogoUrl(e.target.value)}
         placeholder="Logo URL"
-        className="border p-2 rounded mb-2"
+        className="border p-2 rounded-sm mb-2"
       />
       <button
         onClick={handleSaveLogo}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
+        className="bg-blue-500 text-white px-4 py-2 rounded-sm"
       >
         Save Logo
       </button>

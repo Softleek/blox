@@ -51,7 +51,7 @@ const ForbiddenModal = ({ isOpen = true }) => {
       <div className="flex justify-center space-x-4">
         <button
           onClick={handleClose}
-          className="uppercase align-middle transition-all border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 bg-gray-500 text-xl text-white font-bold px-4 py-2 rounded-lg shadow"
+          className="uppercase align-middle transition-all border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 bg-gray-500 text-xl text-white font-bold px-4 py-2 rounded-lg shadow-sm"
         >
           Close
         </button>

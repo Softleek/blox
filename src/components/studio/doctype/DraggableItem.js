@@ -115,7 +115,7 @@ const DraggableItem = ({ item, handleFocus, placeholder = false }) => {
             type="text"
             value={item.label}
             onChange={(e) => handleChange("label", e.target.value)}
-            className="block w-full py-1 text-sm border-none focus:outline-none bg-transparent"
+            className="block w-full py-1 text-sm border-none focus:outline-hidden bg-transparent"
             placeholder="Edit label"
           />
           <div

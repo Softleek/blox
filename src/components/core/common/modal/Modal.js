@@ -49,7 +49,7 @@ const Modal = ({
         <motion.div
           id="backdrop"
           onClick={handleBackdropClick}
-          className={`fixed inset-0 p-4 flex items-${position} justify-${justify} bg-gray-600 bg-opacity-50 backdrop-blur-sm h-screen !z-500 rounded-md ${className}`}
+          className={`fixed inset-0 p-4 flex items-${position} justify-${justify} bg-gray-600 bg-opacity-50 backdrop-blur-xs h-screen z-500! rounded-md ${className}`}
           style={{ backdropFilter: "blur(0.5px)", zIndex: 90000000 }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -58,7 +58,7 @@ const Modal = ({
         >
           <motion.div
             id="modal"
-            className="bg-white p-4 shadow-lg relative max-h-[90vh] !min-w-[40vw]  overflow-auto rounded-md"
+            className="bg-white p-4 shadow-lg relative max-h-[90vh] min-w-[40vw]!  overflow-auto rounded-md"
             style={{ height: "fit-content" }}
             initial={{
               x: isClosing ? 0 : mousePosition.x - 200,
@@ -84,7 +84,7 @@ const Modal = ({
             {/* Close Button */}
             {/* <button
               onClick={() => setIsClosing(true)}
-              className="fixed top-2 right-4 text-gray-700 hover:text-gray-600 focus:outline-none rounded-full bg-white p-1 z-10"
+              className="fixed top-2 right-4 text-gray-700 hover:text-gray-600 focus:outline-hidden rounded-full bg-white p-1 z-10"
             >
               <FaTimes size={20} />
             </button> */}

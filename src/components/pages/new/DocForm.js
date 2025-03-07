@@ -46,7 +46,7 @@ const DocForm = forwardRef(({ config, initialData, onSubmit }, ref) => {
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="p-2 space-y-6">
-      <div className="bg-white border border-4 my-8 p-8 rounded-lg shadow relative">
+      <div className="bg-white border border-4 my-8 p-8 rounded-lg shadow-sm relative">
         <div className="grid grid-cols-6 gap-6">
           {config?.fields?.map((field, index) => (
             <div key={index} className="col-span-6 sm:col-span-3">
@@ -73,7 +73,7 @@ const DocForm = forwardRef(({ config, initialData, onSubmit }, ref) => {
                 <select
                   id={field.id}
                   name={field.id}
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
+                  className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
                   required={field.required}
                   onChange={(e) =>
                     handleInputChange(e.target.name, e.target.value)
@@ -126,7 +126,7 @@ const DocForm = forwardRef(({ config, initialData, onSubmit }, ref) => {
                   type={field.type}
                   id={field.id}
                   name={field.id}
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
+                  className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
                   placeholder={field.name}
                   required={field.required}
                   onChange={(e) =>

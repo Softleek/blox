@@ -107,7 +107,7 @@ const DocumentPrint = React.forwardRef(({ fields, data }, ref) => {
   const renderSectionContent = (section) => (
     <div key={section.id} className="mb-4">
       <h3 className="text-xl font-semibold mb-2">{section.name}</h3>
-      <div className="grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-4 mb-2">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-4 mb-2">
         {section?.columns?.map((column, columnIndex) => (
           <div key={columnIndex} className="flex flex-col gap-x-4 mb-2">
             {column?.fields?.map((field, fieldIndex) => (

@@ -69,7 +69,7 @@ const DefaultPrint = React.forwardRef(({ data, title, load }, ref) => {
            ${itemsToProcess
              .map(
                (item) => `
-              <div class="flex flex-row justify-between w-full rounded px-1 py-1 my-1">
+              <div class="flex flex-row justify-between w-full rounded-sm px-1 py-1 my-1">
                 <div class="flex-none w-full px-1">
                   <div>
                     <p class="mb-0 font-sans text-xs font-medium leading-normal">

@@ -34,7 +34,7 @@ const ExportModal = ({ data, fields, fileName, isOpen, onClose }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} position="top" className="!pt-20">
+    <Modal isOpen={isOpen} onClose={onClose} position="top" className="pt-20!">
       <div className="max-w-5xl">
         <h3 className="text-xl font-semibold text-gray-900 mb-4">
           Select Fields to Export
@@ -46,7 +46,7 @@ const ExportModal = ({ data, fields, fileName, isOpen, onClose }) => {
                 type="checkbox"
                 checked={selectedFields.includes(field.fieldname)}
                 onChange={() => handleFieldChange(field.fieldname)}
-                className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-4 h-4 text-blue-500 border-gray-300 rounded-sm focus:ring-2 focus:ring-blue-500"
               />
               <span className="text-gray-700">{field.label}</span>
             </li>
@@ -56,12 +56,12 @@ const ExportModal = ({ data, fields, fileName, isOpen, onClose }) => {
           <CustomButton
             onClick={onClose}
             text={"Cancel"}
-            className={"!text-lg !px-6"}
+            className={"text-lg! px-6!"}
           />
           <SecondaryButton
             onClick={handleExport}
             text={"Export"}
-            className={"!text-base !py-2 !px-6"}
+            className={"text-base! py-2! px-6!"}
           />
         </div>
       </div>

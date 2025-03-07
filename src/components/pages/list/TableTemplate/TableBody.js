@@ -121,7 +121,7 @@ const TableBody = ({
                     {item[field_id]?.map((selectedOption) => (
                       <span
                         key={selectedOption}
-                        className="bg-purple-100 text-purple-700 py-[1px] px-[4px] rounded-md text-[9px] font-medium shadow-sm"
+                        className="bg-purple-100 text-purple-700 py-[1px] px-[4px] rounded-md text-[9px] font-medium shadow-xs"
                       >
                         {selectedOption}
                       </span>
