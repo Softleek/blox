@@ -92,15 +92,12 @@ class DynamicFilterSet(django_filters.FilterSet):
 
         # Add filters for first and last entries
         dynamic_keys.extend(["first", "last"])
-        self.filters["first"] = django_filters.NumberFilter(
-            method=self.filter_first)
-        self.filters["last"] = django_filters.NumberFilter(
-            method=self.filter_last)
+        self.filters["first"] = django_filters.NumberFilter(method=self.filter_first)
+        self.filters["last"] = django_filters.NumberFilter(method=self.filter_last)
 
         # Add filters for page
         dynamic_keys.extend(["page"])
-        self.filters["page"] = django_filters.CharFilter(
-            method=self.filter_page)
+        self.filters["page"] = django_filters.CharFilter(method=self.filter_page)
 
         # Store the page_length value, defaulting to 5
         self.page_length_value = 5
@@ -120,14 +117,13 @@ class DynamicFilterSet(django_filters.FilterSet):
 
     def filter_last(self, queryset, name, value):
         count = queryset.count()
-        return queryset[count - int(value):] if count > int(value) else queryset
+        return queryset[count - int(value) :] if count > int(value) else queryset
 
     def filter_page(self, queryset, name, value):
         total_items = queryset.count()
         page = int(value.split("-")[0])
         page_length = (
-            int(value.split("-")
-                [1]) if value.split("-")[1] else self.page_length_value
+            int(value.split("-")[1]) if value.split("-")[1] else self.page_length_value
         )
         self.total_pages = (
             total_items + page_length - 1

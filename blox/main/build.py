@@ -5,6 +5,7 @@ import traceback
 from typing import NoReturn
 
 import click
+
 from ..utils.config import PROJECT_ROOT
 
 

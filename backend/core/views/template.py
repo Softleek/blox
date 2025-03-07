@@ -1,5 +1,6 @@
 import ast
 
+from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
@@ -7,15 +8,15 @@ from rest_framework import status, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from ..utils.get_model_details import get_file_content
 from ..utils.data_validation import validate_serializer_data
-from django.conf import settings
+from ..utils.get_model_details import get_file_content
 
 
 def handle_errors(func):
     """
     Decorator to handle exceptions in viewset methods.
     """
+
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
@@ -25,6 +26,7 @@ def handle_errors(func):
                 {"error": f"An error occurred: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
     return wrapper
 
 
@@ -33,9 +35,9 @@ class GenericViewSet(viewsets.ModelViewSet):
     A generic viewset with enhanced error handling, flexible filtering, search functionality,
     and reusable helpers.
     """
+
     permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend]
-
 
     def load_model_config(self):
         """
@@ -43,7 +45,9 @@ class GenericViewSet(viewsets.ModelViewSet):
         """
         model_name = self.queryset.model.__name__.lower()  # Get the model name
         try:
-            config_data = get_file_content(model_name)  # Assuming config is stored in 'configs/'
+            config_data = get_file_content(
+                model_name
+            )  # Assuming config is stored in 'configs/'
             return config_data
         except Exception as e:
             print(f"Error loading config for {model_name}: {e}")
@@ -64,6 +68,7 @@ class GenericViewSet(viewsets.ModelViewSet):
                     pass
             processed_kwargs[key] = value
         return processed_kwargs
+
     def paginate_queryset(self, queryset, page, page_length):
         """
         Handles pagination for the given queryset.
@@ -91,12 +96,14 @@ class GenericViewSet(viewsets.ModelViewSet):
 
         # Apply filters
         filtered_queryset = self.apply_filters(self.get_queryset(), query_params)
-        
+
         if sort_field or sort_order:
             try:
                 if sort_field:
                     # Validate the sort field
-                    if sort_field not in [field.name for field in self.queryset.model._meta.fields]:
+                    if sort_field not in [
+                        field.name for field in self.queryset.model._meta.fields
+                    ]:
                         sort_field = "id"
                 else:
                     # Default sorting if no sort field is provided
@@ -104,7 +111,9 @@ class GenericViewSet(viewsets.ModelViewSet):
 
                 # Apply sorting
                 sort_prefix = "-" if sort_order.lower() == "desc" else ""
-                filtered_queryset = filtered_queryset.order_by(f"{sort_prefix}{sort_field}")
+                filtered_queryset = filtered_queryset.order_by(
+                    f"{sort_prefix}{sort_field}"
+                )
 
             except Exception as e:
                 return Response(
@@ -144,7 +153,7 @@ class GenericViewSet(viewsets.ModelViewSet):
                 "current_page": current_page,
             }
         )
-        
+
     def apply_filters(self, queryset, query_params):
         """
         Applies dynamic filters to the queryset based on query parameters.
@@ -155,13 +164,19 @@ class GenericViewSet(viewsets.ModelViewSet):
         search_query = filter_kwargs.pop("search", None)
 
         # Handle __is_set filters
-        is_set_filters = {k: v for k, v in filter_kwargs.items() if k.endswith("__is_set")}
+        is_set_filters = {
+            k: v for k, v in filter_kwargs.items() if k.endswith("__is_set")
+        }
         for key, value in is_set_filters.items():
             field = key[:-8]  # Remove '__is_set' from the field name
-            if value.lower() in ['true', '1', 'yes']:
-                queryset = queryset.exclude(**{f"{field}": None}).exclude(**{f"{field}": ""})
+            if value.lower() in ["true", "1", "yes"]:
+                queryset = queryset.exclude(**{f"{field}": None}).exclude(
+                    **{f"{field}": ""}
+                )
             else:
-                queryset = queryset.filter(Q(**{f"{field}": None}) | Q(**{f"{field}": ""}))
+                queryset = queryset.filter(
+                    Q(**{f"{field}": None}) | Q(**{f"{field}": ""})
+                )
             del filter_kwargs[key]
 
         if search_query:
@@ -183,7 +198,9 @@ class GenericViewSet(viewsets.ModelViewSet):
                 for field in search_fields:
                     if field:  # Ensure that field is not empty
                         # Check if the field is a ForeignKey and adjust the lookup
-                        if 'ForeignKey' in str(self.queryset.model._meta.get_field(field).__class__):
+                        if "ForeignKey" in str(
+                            self.queryset.model._meta.get_field(field).__class__
+                        ):
                             field = f"{field}__id"
                         search_conditions |= Q(**{f"{field}__icontains": search_query})
                 queryset = queryset.filter(search_conditions)
@@ -193,7 +210,7 @@ class GenericViewSet(viewsets.ModelViewSet):
         except Exception as e:
             print(f"Filter error: {e}")
             return queryset
-    
+
     @handle_errors
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -217,56 +234,64 @@ class GenericViewSet(viewsets.ModelViewSet):
         created_instance = self._create_instance(data)
         return Response(created_instance, status=status.HTTP_201_CREATED)
 
-    
     def _create_instance(self, data):
-        pk_fields = self._extract_pk_fields(data)  
-        m2m_fields = self._extract_m2m_fields(data) 
-        
-        serializer_data = data.copy()  
-        self._handle_pk_fields(serializer_data, pk_fields)  
-        
-        serializer = self.get_serializer(data=serializer_data) 
+        pk_fields = self._extract_pk_fields(data)
+        m2m_fields = self._extract_m2m_fields(data)
+
+        serializer_data = data.copy()
+        self._handle_pk_fields(serializer_data, pk_fields)
+
+        serializer = self.get_serializer(data=serializer_data)
         updated_serializer = validate_serializer_data(serializer, serializer_data)
-        
+
         updated_serializer.is_valid(raise_exception=True)
-        
-        instance = updated_serializer.save()  # Create the instance with the related fields already set
-        
+
+        instance = (
+            updated_serializer.save()
+        )  # Create the instance with the related fields already set
+
         self._handle_m2m_fields(instance, m2m_fields)  # Handle many-to-many fields
         instance.save()
-        
+
         return updated_serializer.data
 
     def _extract_pk_fields(self, data):
         pk_fields = {}
-        
+
         for field in self.queryset.model._meta.get_fields():
             field_name = field.name
 
-            if isinstance(field, (models.ForeignKey, models.OneToOneField)) and field_name in data:
+            if (
+                isinstance(field, (models.ForeignKey, models.OneToOneField))
+                and field_name in data
+            ):
                 pk_fields[field_name] = data.pop(field_name)
-        
+
         return pk_fields
 
     def _handle_pk_fields(self, data, pk_fields):
         for field_name, related_data in pk_fields.items():
-            related_model = self.queryset.model._meta.get_field(field_name).related_model
+            related_model = self.queryset.model._meta.get_field(
+                field_name
+            ).related_model
 
             if isinstance(related_data, dict):
-                if 'id' in related_data:
-                    related_instance = related_model.objects.get(pk=related_data['id'])
+                if "id" in related_data:
+                    related_instance = related_model.objects.get(pk=related_data["id"])
                 else:
-                    serialized_data = self._serialize_nested_data(related_model, related_data)
+                    serialized_data = self._serialize_nested_data(
+                        related_model, related_data
+                    )
                     related_instance = related_model.objects.create(**serialized_data)
-            
+
             else:
                 related_instance = related_model.objects.get(pk=str(related_data))
-            
+
             # Set the related instance in the data before creating the main instance
-            data[field_name] = related_instance  # Replace the related field data with the actual instance
+            data[field_name] = (
+                related_instance  # Replace the related field data with the actual instance
+            )
 
-
-    
     def _extract_m2m_fields(self, data):
         m2m_fields = {}
         for field in self.queryset.model._meta.get_fields():
@@ -278,22 +303,28 @@ class GenericViewSet(viewsets.ModelViewSet):
         for field_name, related_data in m2m_fields.items():
             related_field = getattr(instance, field_name)
             related_model = related_field.model
-            
+
             if isinstance(related_data, list):
                 processed_instances = []
                 for item in related_data:
                     if isinstance(item, dict):
-                        if 'id' in item:
-                            related_instance = related_model.objects.get(pk=item['id'])
+                        if "id" in item:
+                            related_instance = related_model.objects.get(pk=item["id"])
                         else:
-                            serialized_data = self._serialize_nested_data(related_model, item)
-                            related_instance = related_model.objects.create(**serialized_data)
+                            serialized_data = self._serialize_nested_data(
+                                related_model, item
+                            )
+                            related_instance = related_model.objects.create(
+                                **serialized_data
+                            )
                     else:
                         related_instance = related_model.objects.get(pk=item)
                     processed_instances.append(related_instance)
                 related_field.set(processed_instances)
             else:
-                raise ValueError(f"Invalid data type for field '{field_name}': {related_data}")
+                raise ValueError(
+                    f"Invalid data type for field '{field_name}': {related_data}"
+                )
 
     def _serialize_nested_data(self, model, data):
         serialized_data = {}
@@ -302,11 +333,16 @@ class GenericViewSet(viewsets.ModelViewSet):
             if field.is_relation:
                 related_model = field.related_model
                 if isinstance(value, dict):
-                    serialized_data[key] = self._serialize_nested_data(related_model, value)
+                    serialized_data[key] = self._serialize_nested_data(
+                        related_model, value
+                    )
                 elif isinstance(value, list) and field.many_to_many:
                     serialized_data[key] = [
-                        related_model.objects.get_or_create(**item)[0] if isinstance(item, dict)
-                        else related_model.objects.get(pk=item)
+                        (
+                            related_model.objects.get_or_create(**item)[0]
+                            if isinstance(item, dict)
+                            else related_model.objects.get(pk=item)
+                        )
                         for item in value
                     ]
                 else:
@@ -315,8 +351,7 @@ class GenericViewSet(viewsets.ModelViewSet):
                 #     raise ValueError(f"Invalid value for relational field '{key}': {value}")
             else:
                 serialized_data[key] = value
-        return serialized_data 
-
+        return serialized_data
 
     @handle_errors
     def retrieve(self, request, *args, **kwargs):
@@ -325,8 +360,12 @@ class GenericViewSet(viewsets.ModelViewSet):
         sort_field = "modified" if "modified" in model_fields else "id"
         queryset = self.get_queryset().order_by(sort_field)
 
-        next_instance = queryset.filter(**{f"{sort_field}__lt": getattr(instance, sort_field)}).last()
-        prev_instance = queryset.filter(**{f"{sort_field}__gt": getattr(instance, sort_field)}).first()
+        next_instance = queryset.filter(
+            **{f"{sort_field}__lt": getattr(instance, sort_field)}
+        ).last()
+        prev_instance = queryset.filter(
+            **{f"{sort_field}__gt": getattr(instance, sort_field)}
+        ).first()
 
         prev_id = prev_instance.id if prev_instance else None
         next_id = next_instance.id if next_instance else None
@@ -346,8 +385,7 @@ class GenericViewSet(viewsets.ModelViewSet):
 
         # Extract relational fields
         relational_fields = [
-            field for field in instance._meta.get_fields() 
-            if field.is_relation
+            field for field in instance._meta.get_fields() if field.is_relation
         ]
 
         for field in relational_fields:
@@ -361,8 +399,10 @@ class GenericViewSet(viewsets.ModelViewSet):
                 # Serialize ForeignKey fields with all fields from the related instance
                 related_instance = getattr(instance, field_name, None)
                 if related_instance:
-                    serialized_data[field_name] = self._serialize_retrieve_related_instance(related_instance)
-                    
+                    serialized_data[field_name] = (
+                        self._serialize_retrieve_related_instance(related_instance)
+                    )
+
             elif isinstance(field, models.ManyToManyField):
                 # Serialize ManyToMany fields with all fields from related instances
                 related_instances = getattr(instance, field_name).all()
@@ -372,7 +412,7 @@ class GenericViewSet(viewsets.ModelViewSet):
                 ]
 
         return serialized_data
-    
+
     def _serialize_retrieve_related_instance(self, related_instance):
         """
         Serializes all fields of a related instance, including 'id' for nested relations.
@@ -393,8 +433,10 @@ class GenericViewSet(viewsets.ModelViewSet):
 
                 # Include only the 'id' for nested relations
                 if isinstance(value, models.Model):
-                    serialized_value = value.id  # Serialize related model with only its 'id'
-                elif hasattr(value, 'all'):  # Handle ManyToMany or reverse relations
+                    serialized_value = (
+                        value.id
+                    )  # Serialize related model with only its 'id'
+                elif hasattr(value, "all"):  # Handle ManyToMany or reverse relations
                     serialized_value = None
                 else:
                     serialized_value = None
@@ -405,12 +447,10 @@ class GenericViewSet(viewsets.ModelViewSet):
                     serialized_value = value
 
             # Only include non-null and non-empty values
-            if serialized_value not in [None, '', [], {}, ()]:
+            if serialized_value not in [None, "", [], {}, ()]:
                 related_data[field_name] = serialized_value
 
         return related_data
-
-
 
     @handle_errors
     def update(self, request, *args, **kwargs):
@@ -432,9 +472,11 @@ class GenericViewSet(viewsets.ModelViewSet):
         serializer_data = data.copy()
         self._handle_update_pk_fields(serializer_data, pk_fields)
 
-        serializer = self.get_serializer(instance, data=serializer_data, partial=partial)
-        updated_serializer = validate_serializer_data(serializer, serializer_data)    
-        
+        serializer = self.get_serializer(
+            instance, data=serializer_data, partial=partial
+        )
+        updated_serializer = validate_serializer_data(serializer, serializer_data)
+
         updated_serializer.is_valid(raise_exception=True)
 
         updated_instance = updated_serializer.save()
@@ -452,7 +494,10 @@ class GenericViewSet(viewsets.ModelViewSet):
         for field in self.queryset.model._meta.get_fields():
             field_name = field.name
 
-            if isinstance(field, (models.ForeignKey, models.OneToOneField)) and field_name in data:
+            if (
+                isinstance(field, (models.ForeignKey, models.OneToOneField))
+                and field_name in data
+            ):
                 pk_fields[field_name] = data.pop(field_name)
 
         return pk_fields
@@ -462,13 +507,17 @@ class GenericViewSet(viewsets.ModelViewSet):
         Handles ForeignKey or OneToOneField updates by resolving or creating related instances.
         """
         for field_name, related_data in pk_fields.items():
-            related_model = self.queryset.model._meta.get_field(field_name).related_model
+            related_model = self.queryset.model._meta.get_field(
+                field_name
+            ).related_model
 
             if isinstance(related_data, dict):
-                if 'id' in related_data:
-                    related_instance = related_model.objects.get(pk=related_data['id'])
+                if "id" in related_data:
+                    related_instance = related_model.objects.get(pk=related_data["id"])
                 else:
-                    serialized_data = self._serialize_update_nested_data(related_model, related_data)
+                    serialized_data = self._serialize_update_nested_data(
+                        related_model, related_data
+                    )
                     related_instance = related_model.objects.create(**serialized_data)
 
             else:
@@ -499,17 +548,23 @@ class GenericViewSet(viewsets.ModelViewSet):
                 processed_instances = []
                 for item in related_data:
                     if isinstance(item, dict):
-                        if 'id' in item:
-                            related_instance = related_model.objects.get(pk=item['id'])
+                        if "id" in item:
+                            related_instance = related_model.objects.get(pk=item["id"])
                         else:
-                            serialized_data = self._serialize_update_nested_data(related_model, item)
-                            related_instance = related_model.objects.create(**serialized_data)
+                            serialized_data = self._serialize_update_nested_data(
+                                related_model, item
+                            )
+                            related_instance = related_model.objects.create(
+                                **serialized_data
+                            )
                     else:
                         related_instance = related_model.objects.get(pk=item)
                     processed_instances.append(related_instance)
                 related_field.set(processed_instances)
             else:
-                raise ValueError(f"Invalid data type for field '{field_name}': {related_data}")
+                raise ValueError(
+                    f"Invalid data type for field '{field_name}': {related_data}"
+                )
 
     def _serialize_update_nested_data(self, model, data):
         """
@@ -521,19 +576,22 @@ class GenericViewSet(viewsets.ModelViewSet):
             if field.is_relation:
                 related_model = field.related_model
                 if isinstance(value, dict):
-                    serialized_data[key] = self._serialize_update_nested_data(related_model, value)
+                    serialized_data[key] = self._serialize_update_nested_data(
+                        related_model, value
+                    )
                 elif isinstance(value, list) and field.many_to_many:
                     serialized_data[key] = [
-                        related_model.objects.get_or_create(**item)[0] if isinstance(item, dict)
-                        else related_model.objects.get(pk=item)
+                        (
+                            related_model.objects.get_or_create(**item)[0]
+                            if isinstance(item, dict)
+                            else related_model.objects.get(pk=item)
+                        )
                         for item in value
                     ]
                 else:
                     serialized_data[key] = related_model.objects.get(pk=value)
                 # else:
-                    # raise ValueError(f"Invalid value for relational field '{key}': {value}")
+                # raise ValueError(f"Invalid value for relational field '{key}': {value}")
             else:
                 serialized_data[key] = value
         return serialized_data
-
-

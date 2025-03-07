@@ -1,9 +1,10 @@
 import json
 import os
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 from ...utils.config import DOCS_JSON_PATH, PROJECT_ROOT
 from ...utils.file_operations import ensure_file_exists
+
 
 def load_existing_data() -> List[Dict[str, Any]]:
     """
@@ -23,6 +24,7 @@ def load_existing_data() -> List[Dict[str, Any]]:
         except json.JSONDecodeError:
             return []
     return []
+
 
 def get_all_sites() -> List[Dict[str, Any]]:
     """

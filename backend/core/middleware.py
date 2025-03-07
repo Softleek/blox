@@ -1,16 +1,19 @@
+from threading import local
+
+from django.conf import settings
+from django.core.cache import cache
+from django.db import connections
 from django.utils import timezone
-from rest_framework.authentication import (BasicAuthentication,
-                                           SessionAuthentication,
-                                           TokenAuthentication)
+from django.utils.deprecation import MiddlewareMixin
+from rest_framework.authentication import (
+    BasicAuthentication,
+    SessionAuthentication,
+    TokenAuthentication,
+)
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.request import Request
 
 from .models import UserIPAddress
-from django.utils.deprecation import MiddlewareMixin
-from django.conf import settings
-from django.core.cache import cache
-from django.db import connections
-from threading import local
 
 _request_local = local()
 
@@ -42,14 +45,18 @@ class UserActivityMiddleware:
 
         # Proceed with the response
         response = self.get_response(request)
-        
+
         return response
 
     def authenticate_user(self, request):
         """Attempt to authenticate the user using DRF's authentication classes."""
         user = None
         # Use DRF authentication methods to attempt authentication
-        auth_classes = [BasicAuthentication(), SessionAuthentication(), TokenAuthentication()]
+        auth_classes = [
+            BasicAuthentication(),
+            SessionAuthentication(),
+            TokenAuthentication(),
+        ]
         for auth_class in auth_classes:
             try:
                 user_auth_tuple = auth_class.authenticate(request)
@@ -62,11 +69,11 @@ class UserActivityMiddleware:
 
     def get_client_ip(self, request):
         """Extract the client's IP address from the request."""
-        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
         if x_forwarded_for:
-            ip = x_forwarded_for.split(',')[0]
+            ip = x_forwarded_for.split(",")[0]
         else:
-            ip = request.META.get('REMOTE_ADDR')
+            ip = request.META.get("REMOTE_ADDR")
         return ip
 
     def log_user_ip(self, user, ip_address):
@@ -95,5 +102,5 @@ class TenantMiddleware(MiddlewareMixin):
         cache.set(f"tenant_db", tenant_name, timeout=300)  # Cache for 5 minutes
 
         # Switch to the tenant's database connection
-        connections['default'].close()
+        connections["default"].close()
         connections[tenant_name] = connections[tenant_name]

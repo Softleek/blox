@@ -1,12 +1,14 @@
-import os
 import json
-import click
+import os
 from typing import Any, Optional
+
+import click
+
 
 def ensure_file_exists(file_path: str, initial_data: Optional[Any] = None) -> None:
     """
     Ensure the given file exists, creating the necessary directory and initializing the file with `initial_data` if not.
-    
+
     :param file_path: The path of the file to ensure exists.
     :param initial_data: The data to initialize the file with (default is an empty list).
     """

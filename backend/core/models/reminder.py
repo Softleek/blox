@@ -11,7 +11,7 @@
 #         ('months', 'Months'),
 #         ('years', 'Years'),
 #     ]
-    
+
 #     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 #     message = models.TextField()
 #     email = models.EmailField(null=True, blank=True)
@@ -22,7 +22,7 @@
 
 #     def __str__(self):
 #         return f'Reminder for {self.user} - {self.message[:20]}'
-    
+
 #     def calculate_next_run(self):
 #         if self.interval_type == 'minutes':
 #             self.next_run += timezone.timedelta(minutes=self.interval_value)
@@ -36,7 +36,7 @@
 #             self.next_run = self._add_months(self.next_run, self.interval_value)
 #         elif self.interval_type == 'years':
 #             self.next_run = self._add_years(self.next_run, self.interval_value)
-        
+
 #         self.save()
 
 #     def _add_months(self, date, months):

@@ -1,5 +1,6 @@
 import json
 import os
+
 from django.conf import settings
 
 
@@ -12,7 +13,7 @@ def normalize_name(name):
 
 def find_matching_doc(module, name):
     """
-    Find a document in the module by matching either the exact 'id' 
+    Find a document in the module by matching either the exact 'id'
     or by removing spaces and ignoring case in both the name and the doc ID.
 
     Args:
@@ -24,11 +25,7 @@ def find_matching_doc(module, name):
     """
     normalized_name = normalize_name(name)
     return next(
-        (
-            doc
-            for doc in module["docs"]
-            if normalize_name(doc["id"]) == normalized_name
-        ),
+        (doc for doc in module["docs"] if normalize_name(doc["id"]) == normalized_name),
         None,
     )
 
@@ -80,8 +77,10 @@ def get_file_content(name, filename=None):
                 doc = find_matching_doc(module, name)
                 if doc:
                     # Build the file path
-                    file_path = build_file_path(base_path, app["id"], module["id"], doc["id"], filename)
-                    
+                    file_path = build_file_path(
+                        base_path, app["id"], module["id"], doc["id"], filename
+                    )
+
                     # Load the file content if it exists
                     if os.path.exists(file_path):
                         with open(file_path, "r", encoding="utf-8") as file:
@@ -106,7 +105,7 @@ def get_model_doctype_json(model_name):
         model_name (str): The name of the model.
 
     Returns:
-        dict: The settings dictionary for the model including doctype data and settings file path, 
+        dict: The settings dictionary for the model including doctype data and settings file path,
               or an empty dictionary if not found.
     """
     # Define the directory where JSON files are stored
@@ -132,7 +131,7 @@ def get_model_doctype_json(model_name):
                             module.get("id"),
                             "doctype",
                             doc.get("id"),
-                            f"{doc.get('id')}.json"
+                            f"{doc.get('id')}.json",
                         )
                         result = {
                             "app_id": app.get("id"),
@@ -141,7 +140,7 @@ def get_model_doctype_json(model_name):
                             "module_name": module.get("name"),
                             "doc_id": doc.get("id"),
                             "doc_name": doc.get("name"),
-                            "settings_file_path": settings_file_path
+                            "settings_file_path": settings_file_path,
                         }
 
                         # Load the JSON file for the specific doctype
@@ -150,4 +149,3 @@ def get_model_doctype_json(model_name):
                                 return json.load(settings_file)
 
     return None
-

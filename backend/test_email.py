@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 # Load environment variables from .env
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = config("EMAIL_HOST")
 EMAIL_PORT = config("EMAIL_PORT", cast=int)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
@@ -33,10 +33,10 @@ settings.configure(
 # Attempt to send a test email
 try:
     send_mail(
-        'Test Email',
-        'This is a test email.',
-        'Arifahub <blog@arifahub.com>',  # Update sender name here
-        ['vadesdakey@gmail.com'],
+        "Test Email",
+        "This is a test email.",
+        "Arifahub <blog@arifahub.com>",  # Update sender name here
+        ["vadesdakey@gmail.com"],
         fail_silently=False,
     )
     print("Test email sent successfully!")

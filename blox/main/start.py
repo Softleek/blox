@@ -2,15 +2,16 @@ import json
 import os
 import socket
 import subprocess
+import sys
 import threading
 import traceback
-import sys
+
 import click
 
-from ..utils.config import (PROJECT_ROOT, SITES_JSON_PATH,
-                            write_running_ports)
+from ..utils.config import PROJECT_ROOT, SITES_JSON_PATH, write_running_ports
 from ..utils.initialize_django import initialize_django_env
 from ..utils.run_process import get_python_executable, run_subprocess
+
 
 def find_free_port(start_port=3000):
     port = start_port
@@ -42,12 +43,8 @@ def start(mode):
     click.echo("Starting server")
 
     # Create Django and Next.js paths
-    django_path = os.path.join(
-        PROJECT_ROOT, "backend"
-    )
-    nextjs_path = os.path.join(
-        PROJECT_ROOT
-    )
+    django_path = os.path.join(PROJECT_ROOT, "backend")
+    nextjs_path = os.path.join(PROJECT_ROOT)
 
     python_executable = get_python_executable()
 
@@ -101,15 +98,18 @@ def start(mode):
         django_stderr_thread.start()
 
         # Load site names from SITES_JSON_PATH
-        with open(SITES_JSON_PATH, 'r') as f:
+        with open(SITES_JSON_PATH, "r") as f:
             sites = json.load(f)
 
         # Generate and display links for all sites
         for site in sites:
-            site_name = site.get('site_name', '')
+            site_name = site.get("site_name", "")
             if site_name:
                 click.echo(
-                    click.style(f"Open {site_name} at: http://{site_name}.localhost:{nextjs_port}\n", fg="green")
+                    click.style(
+                        f"Open {site_name} at: http://{site_name}.localhost:{nextjs_port}\n",
+                        fg="green",
+                    )
                 )
 
         try:
@@ -138,7 +138,7 @@ def start(mode):
         click.echo(click.style(f"Exception: {str(e)}", fg="red"))
         exc_type, exc_value, exc_tb = sys.exc_info()
         traceback.print_exception(exc_type, exc_value, exc_tb)
-        
+
     finally:
         if django_process and django_process.poll() is None:
             django_process.terminate()

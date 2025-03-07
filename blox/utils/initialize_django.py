@@ -1,7 +1,13 @@
 import os
 import sys
+
 import django
-from .config import PROJECT_ROOT, DJANGO_PATH  # Ensure config.py is correctly configured with these paths
+
+from .config import (  # Ensure config.py is correctly configured with these paths
+    DJANGO_PATH,
+    PROJECT_ROOT,
+)
+
 
 def initialize_django_env() -> None:
     """
@@ -17,14 +23,14 @@ def initialize_django_env() -> None:
         raise ValueError(f"Invalid DJANGO_PATH: {DJANGO_PATH} does not exist.")
 
     # Set the Django settings module
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
 
     # Add project root and Django path to Python path
     sys.path.insert(0, PROJECT_ROOT)
     sys.path.insert(0, DJANGO_PATH)
 
     # Optionally add the `apps` directory explicitly to sys.path
-    apps_path = os.path.join(PROJECT_ROOT, 'apps')
+    apps_path = os.path.join(PROJECT_ROOT, "apps")
     if apps_path not in sys.path:
         sys.path.insert(0, apps_path)
 

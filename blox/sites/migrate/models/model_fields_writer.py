@@ -1,11 +1,16 @@
-from typing import List, Dict, Any, TextIO
 import os
+from typing import Any, Dict, List, TextIO
+
 from django.conf import settings
+
 from ....utils.register_models import get_app_module_for_model
 from ....utils.text import to_snake_case
 from .reserved_keywords import reserved_keywords
 
-def write_model(module_file: TextIO, fields: List[Dict[str, Any]], model_name: str, django_path: str) -> None:
+
+def write_model(
+    module_file: TextIO, fields: List[Dict[str, Any]], model_name: str, django_path: str
+) -> None:
     """Main function to generate Django model fields from Frappe fields.
 
     Args:
@@ -183,7 +188,12 @@ def write_model(module_file: TextIO, fields: List[Dict[str, Any]], model_name: s
                 field_name=field.get("label", ""),
                 default_value=field.get("default"),
             )
-        elif field_type not in ["Section Break", "Column Break", "Tab Break", "Connection"]:
+        elif field_type not in [
+            "Section Break",
+            "Column Break",
+            "Tab Break",
+            "Connection",
+        ]:
             write_field_declaration(
                 module_file,
                 field_id,
@@ -205,7 +215,7 @@ def write_field_declaration(
     field_type: str,
     extra_params: str = "",
     field_name: str = "",
-    default_value: Any = None
+    default_value: Any = None,
 ) -> None:
     """Writes a field declaration with optional default."""
     module_file.write(f"    {field_id} = {field_type}(")
@@ -218,7 +228,9 @@ def write_field_declaration(
     module_file.write(")\n")
 
 
-def write_choices_field(module_file: TextIO, field: Dict[str, Any], field_type: str, max_length: int = None) -> None:
+def write_choices_field(
+    module_file: TextIO, field: Dict[str, Any], field_type: str, max_length: int = None
+) -> None:
     """Handles Select fields with choices."""
     field_id = rename_reserved_keywords(field.get("fieldname", ""))
     choices = field.get("options", "").strip().split("\n")
@@ -228,7 +240,9 @@ def write_choices_field(module_file: TextIO, field: Dict[str, Any], field_type: 
         module_file.write(f"    {options_var} = [\n")
         for choice in choices:
             sanitized_choice = choice.replace('"', "'")
-            module_file.write(f'        ("{sanitized_choice}", "{sanitized_choice}"),\n')
+            module_file.write(
+                f'        ("{sanitized_choice}", "{sanitized_choice}"),\n'
+            )
         module_file.write("    ]\n")
 
         max_length_param = f", max_length={max_length}" if max_length else ""
@@ -242,7 +256,9 @@ def write_choices_field(module_file: TextIO, field: Dict[str, Any], field_type: 
         )
 
 
-def write_link_field(module_file: TextIO, field: Dict[str, Any], model_name: str, django_path: str) -> None:
+def write_link_field(
+    module_file: TextIO, field: Dict[str, Any], model_name: str, django_path: str
+) -> None:
     """Handles Link fields (ForeignKey)."""
     field_id = rename_reserved_keywords(field.get("fieldname", ""))
     related_model = field.get("options")
@@ -250,8 +266,12 @@ def write_link_field(module_file: TextIO, field: Dict[str, Any], model_name: str
         return
 
     app_name, _ = get_app_module_for_model(to_snake_case(related_model), django_path)
-    related_model = "".join(part.capitalize() for part in related_model.replace("_", " ").split())
-    modela_name = "".join(part.capitalize() for part in field_id.replace("_", " ").split())
+    related_model = "".join(
+        part.capitalize() for part in related_model.replace("_", " ").split()
+    )
+    modela_name = "".join(
+        part.capitalize() for part in field_id.replace("_", " ").split()
+    )
 
     related_name = f"{model_name}{modela_name}"
     if app_name == "core":
@@ -269,7 +289,9 @@ def write_link_field(module_file: TextIO, field: Dict[str, Any], model_name: str
     )
 
 
-def write_table_field(module_file: TextIO, field: Dict[str, Any], model_name: str, django_path: str) -> None:
+def write_table_field(
+    module_file: TextIO, field: Dict[str, Any], model_name: str, django_path: str
+) -> None:
     """Handles Table fields (ManyToMany)."""
     field_id = rename_reserved_keywords(field.get("fieldname", ""))
     related_model = field.get("options")
@@ -277,8 +299,12 @@ def write_table_field(module_file: TextIO, field: Dict[str, Any], model_name: st
         return
 
     app_name, _ = get_app_module_for_model(to_snake_case(related_model), django_path)
-    related_model = "".join(part.capitalize() for part in related_model.replace("_", " ").split())
-    modela_name = "".join(part.capitalize() for part in field_id.replace("_", " ").split())
+    related_model = "".join(
+        part.capitalize() for part in related_model.replace("_", " ").split()
+    )
+    modela_name = "".join(
+        part.capitalize() for part in field_id.replace("_", " ").split()
+    )
 
     related_name = f"{model_name}{modela_name}"
     if app_name == "core":
@@ -305,5 +331,7 @@ def write_save_method(module_file: TextIO, fields: List[Dict[str, Any]]) -> None
             module_file.write(
                 f"        if not self.{field_id} or not os.path.exists(os.path.join(settings.MEDIA_ROOT, self.{field_id}.name)):\n"
             )
-            module_file.write(f"            self = write_barcode(self, self.{field_id})\n")
+            module_file.write(
+                f"            self = write_barcode(self, self.{field_id})\n"
+            )
     module_file.write("        super().save(*args, **kwargs)\n\n")

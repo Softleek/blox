@@ -1,13 +1,14 @@
 import json
 import os
-from typing import List, Dict, Any, Optional
+from typing import Any, Dict, List, Optional
 
 import click
 
-from ..utils.config import PROJECT_ROOT
-from .utils.uninstalldjangoapp import uninstall_django_app
 from ..sites.migrate.migrate import run_migration
+from ..utils.config import PROJECT_ROOT
 from ..utils.file_operations import ensure_file_exists
+from .utils.uninstalldjangoapp import uninstall_django_app
+
 
 @click.command()
 @click.option(

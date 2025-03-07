@@ -1,7 +1,7 @@
 import json
 import os
 import sys
-from typing import Tuple, Any, List, Dict
+from typing import Any, Dict, List, Tuple
 
 import django
 from django.db.models import Model
@@ -9,6 +9,7 @@ from django.db.models import Model
 from ...utils.config import DOCS_JSON_PATH
 from ...utils.file_operations import ensure_file_exists
 from .load_doc_config import get_all_sites
+
 
 def initialize_django_env(django_path: str) -> None:
     """
@@ -24,7 +25,9 @@ def initialize_django_env(django_path: str) -> None:
     django.setup()
 
 
-def update_or_create_entry(model: Model, id_value: Any, name_value: str, site: str, **kwargs: Any) -> Tuple[Model, bool]:
+def update_or_create_entry(
+    model: Model, id_value: Any, name_value: str, site: str, **kwargs: Any
+) -> Tuple[Model, bool]:
     """
     Update an existing entry's name if the ID exists, or create a new entry.
 
@@ -46,6 +49,7 @@ def update_or_create_entry(model: Model, id_value: Any, name_value: str, site: s
         instance.save()
     return instance, created
 
+
 def create_entries_from_config(django_path: str, site: str) -> None:
     """
     Process the JSON configuration file and create/update database entries.
@@ -57,7 +61,8 @@ def create_entries_from_config(django_path: str, site: str) -> None:
     # Initialize Django environment
     initialize_django_env(django_path)
     # Import models after Django setup
-    from core.models import (App, Document, Module, PrintFormat)  # Update with actual path to models
+    from core.models import App  # Update with actual path to models
+    from core.models import Document, Module, PrintFormat
 
     # Load JSON configuration file
     ensure_file_exists(DOCS_JSON_PATH, initial_data=[])
@@ -70,7 +75,9 @@ def create_entries_from_config(django_path: str, site: str) -> None:
 
     # Cache existing entries to reduce redundant queries
     existing_apps = {app.id: app for app in App.objects.using(site).all()}
-    existing_modules = {module.id: module for module in Module.objects.using(site).all()}
+    existing_modules = {
+        module.id: module for module in Module.objects.using(site).all()
+    }
     existing_docs = {doc.id: doc for doc in Document.objects.using(site).all()}
     existing_print_formats = {pf.id: pf for pf in PrintFormat.objects.using(site).all()}
 
@@ -136,7 +143,9 @@ def create_entries_from_config(django_path: str, site: str) -> None:
                     #     doc.save()
                 else:
                     docs_to_create.append(
-                        Document(id=doc_id, name=doc_name, module_id=module_id, app_id=app_id)
+                        Document(
+                            id=doc_id, name=doc_name, module_id=module_id, app_id=app_id
+                        )
                     )
 
             for pf_data in module_data.get("print_formats", []):
@@ -154,10 +163,12 @@ def create_entries_from_config(django_path: str, site: str) -> None:
                     #     pf.save()
                 else:
                     print_formats_to_create.append(
-                        PrintFormat(id=pf_id, name=pf_name, module_id=module_id, app_id=app_id)
+                        PrintFormat(
+                            id=pf_id, name=pf_name, module_id=module_id, app_id=app_id
+                        )
                     )
 
-    # Bulk create new entries 
+    # Bulk create new entries
     if apps_to_create:
         App.objects.using(site).bulk_create(apps_to_create)
     if modules_to_create:

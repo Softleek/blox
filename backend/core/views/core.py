@@ -2,28 +2,43 @@ import os
 import subprocess
 import threading
 
-from core.filters import (AppFilter, ChangeLogFilter, DocumentFilter,
-                          ModuleFilter)
+from core.filters import (
+    AppFilter,
+    BranchFilter,
+    ChangeLogFilter,
+    DocumentFilter,
+    ModuleFilter,
+    PrintFormatFilter,
+    RoleFilter,
+)
 from core.models import App, ChangeLog, Document, Module, PrintFormat
-from core.serializers import (AppSerializer, ChangeLogSerializer,
-                              DocumentSerializer, ModuleSerializer)
+from core.models.auth import Branch, RoleType
+from core.permissions import HasGroupPermission
+from core.serializers import (
+    AppSerializer,
+    BranchSerializer,
+    ChangeLogSerializer,
+    DocumentSerializer,
+    ModuleSerializer,
+    PrintFormatSerializer,
+    RoleSerializer,
+)
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .template import GenericViewSet, handle_errors
 
-from core.permissions import HasGroupPermission
-from core.models.auth import RoleType, Branch
-from core.filters import RoleFilter, BranchFilter, PrintFormatFilter
-from core.serializers import RoleSerializer, BranchSerializer, PrintFormatSerializer
 # from apps.masafa.masafa.masafa.doctype.customer.customer import Customer as CustomCustomer
+
 
 class RoleViewSet(GenericViewSet):
     queryset = RoleType.objects.all()
     filterset_class = RoleFilter
     permission_classes = [HasGroupPermission]
     serializer_class = RoleSerializer
+
+
 class BranchViewSet(GenericViewSet):
     queryset = Branch.objects.all()
     filterset_class = BranchFilter
@@ -34,7 +49,7 @@ class BranchViewSet(GenericViewSet):
 def run_subprocess(command, success_message, error_message):
     try:
         # Check if running on Windows
-        if os.name == 'nt':
+        if os.name == "nt":
             # For Windows, use PowerShell to pipe the 'y' response
             full_command = f'echo y | {" ".join(command)}'
         else:
@@ -49,13 +64,13 @@ def run_subprocess(command, success_message, error_message):
         return Response(
             {"error": error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
-        
-        
+
+
 class ChangeLogViewSet(GenericViewSet):
     queryset = ChangeLog.objects.all()
     serializer_class = ChangeLogSerializer
     filterset_class = ChangeLogFilter
-    
+
 
 class CreateAppAPIView(APIView):
     @handle_errors
@@ -80,16 +95,17 @@ class CreateAppAPIView(APIView):
         # Collect the data from the App instance
         options = {
             "--title": app.name,
-            "--description": app.description or "This is a Blox app.",  # Default if null
-            "--publisher": app.publisher or "Blox Technologies",       # Default if null
-            "--email": app.email or "contact@example.io",              # Default if null
-            "--license": app.license or "MIT",                         # Default if null
+            "--description": app.description
+            or "This is a Blox app.",  # Default if null
+            "--publisher": app.publisher or "Blox Technologies",  # Default if null
+            "--email": app.email or "contact@example.io",  # Default if null
+            "--license": app.license or "MIT",  # Default if null
         }
 
         # Build the command with appname and options
         # Wrap option values in quotes if they contain spaces
         command = ["blox", "new-app", appname] + [
-            f"{key} \"{value}\"" if " " in value else f"{key} {value}"
+            f'{key} "{value}"' if " " in value else f"{key} {value}"
             for key, value in options.items()
         ]
 
@@ -212,7 +228,7 @@ class CreateDocumentAPIView(APIView):
     def post(self, request, *args, **kwargs):
         documentname = request.data.get("documentname")
         app = request.data.get("app")
-        module = request.data.get("module") 
+        module = request.data.get("module")
 
         return run_subprocess(
             ["blox", "new-doc", "--app", app, "--module", module, documentname],
@@ -229,14 +245,14 @@ class DocumentViewSet(GenericViewSet):
     @handle_errors
     def create(self, request, *args, **kwargs):
         data = request.data
-        module_id = data.pop("module") 
+        module_id = data.pop("module")
         module = Module.objects.get(pk=module_id)
         data["app"] = App.objects.get(pk=module.app.id)
         data["module"] = module
         doc = Document.objects.create(**data)
-        
-        module_serializer = ModuleSerializer(module) 
-        app_serializer = AppSerializer(App.objects.get(pk=module.app.id)) 
+
+        module_serializer = ModuleSerializer(module)
+        app_serializer = AppSerializer(App.objects.get(pk=module.app.id))
 
         response_data = self.get_serializer(doc).data
         response_data["module"] = module_serializer.data
@@ -247,7 +263,9 @@ class DocumentViewSet(GenericViewSet):
         }
 
         return Response(
-            response_data, status=status.HTTP_201_CREATED, headers=self.get_success_headers(response_data)
+            response_data,
+            status=status.HTTP_201_CREATED,
+            headers=self.get_success_headers(response_data),
         )
 
     @handle_errors
@@ -275,7 +293,7 @@ class DocumentViewSet(GenericViewSet):
         instance = self.get_object()  # The existing document instance
         old_app = instance.app.id  # Store the old module ID
         old_module = instance.module.id  # Store the old module ID
-        
+
         # Update the serializer with the incoming request data
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
@@ -283,7 +301,7 @@ class DocumentViewSet(GenericViewSet):
 
         # Get updated values after the save
         updated_instance = self.get_object()
-        new_module = updated_instance.module.id  
+        new_module = updated_instance.module.id
 
         # Check if the module has changed
         if old_module != new_module:
@@ -292,22 +310,19 @@ class DocumentViewSet(GenericViewSet):
 
             # Run the move command through the subprocess
             move_command = [
-                "blox", 
-                "move-doc", 
-                old_app, 
-                old_module, 
-                updated_instance.app.id, 
-                updated_instance.module.id, 
-                document_name
+                "blox",
+                "move-doc",
+                old_app,
+                old_module,
+                updated_instance.app.id,
+                updated_instance.module.id,
+                document_name,
             ]
             return run_subprocess(
-                move_command,
-                "Document moved successfully",
-                "Failed to move document"
+                move_command, "Document moved successfully", "Failed to move document"
             )
 
         return Response(serializer.data)
-
 
 
 class CreatePrintFormatAPIView(APIView):
@@ -316,7 +331,7 @@ class CreatePrintFormatAPIView(APIView):
         try:
             name = request.data.get("name")
             app = request.data.get("app")
-            module = request.data.get("module") 
+            module = request.data.get("module")
             print(name, app, module)
 
             return run_subprocess(
@@ -336,14 +351,14 @@ class PrintFormatViewSet(GenericViewSet):
     @handle_errors
     def create(self, request, *args, **kwargs):
         data = request.data
-        module_id = data.pop("module") 
+        module_id = data.pop("module")
         module = Module.objects.get(pk=module_id)
         data["app"] = App.objects.get(pk=module.app.id)
         data["module"] = module
         doc = PrintFormat.objects.create(**data)
-        
-        module_serializer = ModuleSerializer(module) 
-        app_serializer = AppSerializer(App.objects.get(pk=module.app.id)) 
+
+        module_serializer = ModuleSerializer(module)
+        app_serializer = AppSerializer(App.objects.get(pk=module.app.id))
 
         response_data = self.get_serializer(doc).data
         response_data["module"] = module_serializer.data
@@ -354,7 +369,9 @@ class PrintFormatViewSet(GenericViewSet):
         }
 
         return Response(
-            response_data, status=status.HTTP_201_CREATED, headers=self.get_success_headers(response_data)
+            response_data,
+            status=status.HTTP_201_CREATED,
+            headers=self.get_success_headers(response_data),
         )
 
     @handle_errors
@@ -366,16 +383,24 @@ class PrintFormatViewSet(GenericViewSet):
 
         if not print_format_name:
             return Response(
-                {"error": "Missing print_format name"}, status=status.HTTP_400_BAD_REQUEST
+                {"error": "Missing print_format name"},
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         print_format.delete()
         return run_subprocess(
-            ["blox", "drop-print-format", "--app", app, "--module", module, print_format_name],
+            [
+                "blox",
+                "drop-print-format",
+                "--app",
+                app,
+                "--module",
+                module,
+                print_format_name,
+            ],
             "PrintFormat deleted successfully",
             "Failed to delete PrintFormat",
         )
-
 
 
 class MigrateAPIView(APIView):
@@ -393,7 +418,7 @@ class MigrateAPIView(APIView):
             command.append("--module")
             command.append(doc.module.id)
             command.append("--doc")
-            command.append(doc.id)            
+            command.append(doc.id)
         elif module_name:
             module = Module.objects.get(pk=module_name)
             command.append("--app")
@@ -418,4 +443,3 @@ class MigrateAPIView(APIView):
         ).start()
 
         return response
-

@@ -22,7 +22,9 @@ def update_urls_py(app_name: str, modules: List[str], django_path: str) -> None:
 
     # Initialize content for urls.py
     urls_content = "from django.urls import path, include\n"
-    urls_content += "from rest_framework.routers import DefaultRouter\nrouter = DefaultRouter()\n"
+    urls_content += (
+        "from rest_framework.routers import DefaultRouter\nrouter = DefaultRouter()\n"
+    )
 
     if modules:
         # Process each module

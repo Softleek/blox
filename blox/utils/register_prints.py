@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 from .config import DOCS_JSON_PATH
 
@@ -12,7 +12,7 @@ def register_to_print_json(
     module_name: str,
     doc_id: str,
     doc_name: str,
-    django_path: str
+    django_path: str,
 ) -> None:
     """
     Registers a print in config/prints.json grouped by app and module with unique entries.
@@ -56,7 +56,9 @@ def register_to_print_json(
         json.dump(print_entries, file, indent=4)
 
 
-def get_app_module_for_print(doc_id: str, django_path: str) -> Tuple[Optional[str], Optional[str]]:
+def get_app_module_for_print(
+    doc_id: str, django_path: str
+) -> Tuple[Optional[str], Optional[str]]:
     """
     Retrieves the app and module names for a given print (doc_id).
 

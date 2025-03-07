@@ -1,12 +1,13 @@
 import json
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 import click
 
-from ..utils.config import DEFAULT_SITE, DJANGO_PATH, PROJECT_ROOT
 from ..sites.migrate.migrate import run_migration
+from ..utils.config import DEFAULT_SITE, DJANGO_PATH, PROJECT_ROOT
 from ..utils.file_operations import ensure_file_exists
+
 
 @click.command()
 @click.option(
@@ -15,7 +16,9 @@ from ..utils.file_operations import ensure_file_exists
 @click.option("--app", type=str, help="The name of the app containing the module.")
 @click.option("--module", type=str, help="The name of the module to install.")
 @click.option("--doc", type=str, help="The name of the doc to install.")
-def installdoc(site: Optional[str], app: Optional[str], module: Optional[str], doc: Optional[str]) -> None:
+def installdoc(
+    site: Optional[str], app: Optional[str], module: Optional[str], doc: Optional[str]
+) -> None:
     """
     Install a doc into a selected app without modifying sites.json.
 

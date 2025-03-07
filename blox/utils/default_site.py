@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Optional, Tuple, Dict, Any
+from typing import Any, Dict, Optional, Tuple
 
 import click
 

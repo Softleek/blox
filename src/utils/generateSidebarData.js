@@ -1,5 +1,20 @@
-import siteConfig from "../../sites/sites.json"; // Import site.json
 import appsConfig from "../../sites/doctypes.json"; // Import doctypes.json
+
+export const getSiteConfigByHostname = async () => {
+  if (typeof window === "undefined") return null;
+
+  const hostname = window.location.hostname;
+
+  try {
+    const response = await fetch("/api/loadSiteConfigs");
+    const siteConfigs = await response.json();
+
+    return siteConfigs.find((site) => site.domains.includes(hostname)) || null;
+  } catch (error) {
+    console.error("Error fetching site configurations:", error);
+    return null;
+  }
+};
 
 // Helper function to check if an ID is valid (does not start with '__')
 const isValidId = (id) => id && !id.startsWith("__");
@@ -37,7 +52,11 @@ export const generateSidebarData = () => {
     }
   });
 
-  return { apps, modules, developerMode: siteConfig?.developer_mode };
+  return {
+    apps,
+    modules,
+    developerMode: getSiteConfigByHostname()?.developer_mode,
+  };
 };
 
 // Function to get modules of a specific app
@@ -149,14 +168,3 @@ export const getDocDetail = (identifier) => {
 // Helper function to capitalize text
 const capitalize = (text) =>
   text ? text.charAt(0).toUpperCase() + text.slice(1) : "";
-
-// Function to get site configuration based on the current hostname
-export const getSiteConfigByHostname = () => {
-  const hostname = window.location.hostname;
-
-  const matchingSite = siteConfig?.find((site) =>
-    site.domains.includes(hostname)
-  );
-
-  return matchingSite || null;
-};
