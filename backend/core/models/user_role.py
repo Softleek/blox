@@ -4,12 +4,14 @@ from django.db import models
 
 User = get_user_model()  # Get the user model
 
+
 class Role(models.Model):
     name = models.CharField(max_length=250, unique=True)
     description = models.TextField(blank=True)
 
     def __str__(self):
         return self.name
+
 
 class UserRole(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -18,6 +20,7 @@ class UserRole(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.role.name}"
+
 
 class Permission(models.Model):
     role = models.ForeignKey(Role, on_delete=models.CASCADE)

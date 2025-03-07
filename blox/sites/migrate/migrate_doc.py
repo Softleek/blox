@@ -1,5 +1,7 @@
 import os
-from typing import Optional, Tuple, TextIO
+from typing import Optional, TextIO, Tuple
+
+import click
 
 from ...utils.config import find_module_base_path
 from ...utils.text import to_snake_case, to_titlecase_no_space
@@ -7,8 +9,7 @@ from ..utils.app_actions import get_name_by_id
 from .write_filters import write_filters
 from .write_models import write_model_fields
 from .write_serializers import write_serializer
-from .write_viewsets import write_viewset, add_import_to_signals
-import click
+from .write_viewsets import add_import_to_signals, write_viewset
 
 STRUCTURE = {
     "views": "views",
@@ -19,7 +20,9 @@ STRUCTURE = {
 }
 
 
-def migrate_doc(app_name: str, module: str, doc: Optional[str] = None, django_path: str = "") -> None:
+def migrate_doc(
+    app_name: str, module: str, doc: Optional[str] = None, django_path: str = ""
+) -> None:
     """Migrate a specific document within a module and app.
 
     Args:
@@ -31,7 +34,7 @@ def migrate_doc(app_name: str, module: str, doc: Optional[str] = None, django_pa
     module_name = to_snake_case(module).lower()
     doc_name = to_snake_case(doc).lower() if doc else ""
     doctype_folder_name = "doctype"
-    
+
     add_import_to_signals(app_name, module_name, doc_name)
 
     modules_file_path, module_base_path = find_module_base_path(
@@ -40,9 +43,7 @@ def migrate_doc(app_name: str, module: str, doc: Optional[str] = None, django_pa
     if not module_base_path:
         return  # Exit if no valid path is found
 
-    doc_folder_path = os.path.join(
-        module_base_path, doctype_folder_name, doc_name
-    )
+    doc_folder_path = os.path.join(module_base_path, doctype_folder_name, doc_name)
 
     for folder, structure_name in STRUCTURE.items():
         module_file_path = os.path.join(
@@ -177,7 +178,9 @@ def write_model_header(module_file: TextIO, model_name: str) -> None:
     module_file.write(f"class {model_name}(BaseModel):\n")
 
 
-def write_views_header(module_file: TextIO, app_name: str, module_name: str, model_name: str, doc_name: str) -> None:
+def write_views_header(
+    module_file: TextIO, app_name: str, module_name: str, model_name: str, doc_name: str
+) -> None:
     """Write the imports and class definition header for views.
 
     Args:

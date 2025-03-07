@@ -1,22 +1,17 @@
 import json
 
 import requests
-from core.utils import send_custom_email
+from core.filters import ReminderFilter
+from core.models import Reminder
+from core.models.communication import Reminder
+from core.serializers import ReminderSerializer
+from core.utils import send_custom_email, send_sms
 from core.views.template import GenericViewSet
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core.filters import ReminderFilter
-from core.serializers import ReminderSerializer
-from core.models.communication import Reminder
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
-from core.models import Reminder
-from core.serializers import ReminderSerializer
-from core.utils import send_sms
 
 class ReminderListAPIView(APIView):
     permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
@@ -30,7 +25,7 @@ class ReminderListAPIView(APIView):
 
         # Serialize the reminders
         serializer = ReminderSerializer(reminders, many=True)
-        
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -106,7 +101,7 @@ class ReminderViewSet(GenericViewSet):
     queryset = Reminder.objects.all()
     filterset_class = ReminderFilter
     serializer_class = ReminderSerializer
- 
+
 
 #     def list(self, request, *args, **kwargs):
 #         try:
@@ -153,7 +148,7 @@ class ReminderViewSet(GenericViewSet):
 
 #             return Response(li)
 #         except Exception as e:
-#             print(e) 
+#             print(e)
 #             return Response(
 #                 {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
 #             )

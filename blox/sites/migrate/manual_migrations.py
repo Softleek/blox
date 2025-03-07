@@ -1,7 +1,7 @@
 import os
 import re
 from collections import defaultdict
-from typing import List, Dict, Set
+from typing import Dict, List, Set
 
 import click
 
@@ -57,7 +57,7 @@ def handle_foreignkey(field_name: str, field_params: str, app_name: str) -> str:
     cleaned_params = clean_field_params(field_params)
 
     first_comma_index = cleaned_params.find(",")
-    if (first_comma_index != -1):
+    if first_comma_index != -1:
         before_comma = cleaned_params[:first_comma_index].lower()
         after_comma = cleaned_params[first_comma_index:]
         cleaned_params = f"{before_comma}{after_comma}"

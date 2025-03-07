@@ -46,9 +46,7 @@ def install_python_packages() -> None:
     """
     Install Python packages for the site.
     """
-    site_requirements = os.path.join(
-        PROJECT_ROOT, "backend", "requirements.txt"
-    )
+    site_requirements = os.path.join(PROJECT_ROOT, "backend", "requirements.txt")
     if os.path.exists(site_requirements):
         click.echo(f"Installing packages from {site_requirements}...")
         subprocess.check_call(["pip", "install", "-r", site_requirements])
@@ -128,29 +126,27 @@ def install() -> None:
     Usage: blox install --site <site_name>
     """
     run_install()
-    
-    
+
+
 @click.command()
 def i() -> None:
     """
     Install all dependencies for the specified site.
     Usage: blox i --site <site_name>
-    """   
+    """
     run_install()
-    
-    
+
+
 def run_install() -> None:
     """
     Run the installation process for all dependencies.
     """
     # Activate the virtual environment
     activate_script = activate_virtualenv()
-    site_files = os.path.join(
-        PROJECT_ROOT, "backend"
-    )
+    site_files = os.path.join(PROJECT_ROOT, "backend")
     if not os.path.exists(site_files):
         perform_init(".")
-        
+
     if activate_script:
         if os.name == "nt":
             os.system(activate_script)

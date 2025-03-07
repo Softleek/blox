@@ -1,15 +1,15 @@
 import os
-from typing import List, Dict, Any, TextIO
+from typing import Any, Dict, List, TextIO
 
 from .models.json_loader import load_json_file
 
 
 def write_filter_fields(
-    module_file: TextIO, 
-    folder_path: str, 
-    model_name: str, 
-    doc_name: str, 
-    django_path: str
+    module_file: TextIO,
+    folder_path: str,
+    model_name: str,
+    doc_name: str,
+    django_path: str,
 ) -> List[str]:
     """
     Write filter fields for a given model, including only filterable fields.
@@ -92,12 +92,12 @@ def write_filter_fields(
 
 
 def write_filters(
-    module_file: TextIO, 
-    app_name: str, 
-    module_name: str, 
-    model_name: str, 
-    doc_name: str, 
-    folder_path: str
+    module_file: TextIO,
+    app_name: str,
+    module_name: str,
+    model_name: str,
+    doc_name: str,
+    folder_path: str,
 ) -> None:
     """
     Write the imports and class definition header for filters.

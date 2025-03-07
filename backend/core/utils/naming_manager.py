@@ -1,10 +1,11 @@
 import re
 import uuid
 from datetime import datetime
-from django.db import transaction
-from ..models import Series
-from datetime import datetime
+
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
+
+from ..models import Series
 
 NAMING_SERIES_PATTERN = re.compile(r"^[\w\- \/.#{}]+$", re.UNICODE)
 
@@ -23,8 +24,6 @@ class NamingManager:
         """
         self.instance = instance
         self.config = doctype_config
-        
-        
 
     def generate_code(self, _, field_options):
         """
@@ -44,28 +43,41 @@ class NamingManager:
         if self.config:
             naming_rule = self.config.get("naming_rule", "Random")
             autoname = self.config.get("autoname", "hash")
-            
+
             if naming_rule == "Set by user":
                 return self.instance.id
 
             if naming_rule == "Autoincrement":
                 return self.generate_autoincrement()
- 
+
             if naming_rule.startswith("By fieldname"):
                 fieldname = autoname.split(":", 1)[1].strip()
                 return self.generate_by_field(fieldname)
 
             if naming_rule == 'By "Naming Series" field':
                 # Retrieve the series field from the instance dynamically
-                fieldname = autoname.split(":", 1)[1].strip() or getattr(self.instance, 'naming_series', None) or getattr(self.instance, 'series', None)
+                fieldname = (
+                    autoname.split(":", 1)[1].strip()
+                    or getattr(self.instance, "naming_series", None)
+                    or getattr(self.instance, "series", None)
+                )
 
                 if not fieldname:
                     # Load from docconfig fields if no series field is found
                     docconfig_fields = self.config.get("fields", [])
-                    series_field = next((field for field in docconfig_fields if field.get("fieldname") in {"series", "naming_series"}), None)
+                    series_field = next(
+                        (
+                            field
+                            for field in docconfig_fields
+                            if field.get("fieldname") in {"series", "naming_series"}
+                        ),
+                        None,
+                    )
 
                     if not series_field or not series_field.get("options"):
-                        raise ValueError("No naming series field or options found in docconfig.")
+                        raise ValueError(
+                            "No naming series field or options found in docconfig."
+                        )
 
                     # Use the first value in the options
                     series = series_field["options"].split("\n")[0]
@@ -73,9 +85,10 @@ class NamingManager:
                     series = str(getattr(self.instance, fieldname))
                 return self.generate_by_naming_series(series)
 
-
             if naming_rule == "Expression":
-                return self.generate_by_format(autoname[autoname.index(":") + 1:].strip())
+                return self.generate_by_format(
+                    autoname[autoname.index(":") + 1 :].strip()
+                )
 
             if naming_rule == "Expression (old style)":
                 return self.generate_by_old_style_expression(autoname)
@@ -106,7 +119,7 @@ class NamingManager:
         """Generate a name using a naming series."""
         naming_series = NamingSeries()
         return naming_series.generate_next_name(series, self.instance)
-    
+
     def generate_by_format(self, format_pattern):
         """
         Generate a name using a flexible format pattern.
@@ -115,13 +128,12 @@ class NamingManager:
         """
         return generate_next_id(self.instance, format_pattern)
 
-
     def generate_by_old_style_expression(self, expression):
         """
         Generate name using an old-style expression.
         Supports format like 'PREFIX-.#####' where prefix and series are separated by a dot.
         """
-        parts = expression.split('.')
+        parts = expression.split(".")
         if len(parts) != 2 or not parts[1].startswith("#"):
             raise ValueError(
                 "Invalid old-style expression format. Expected 'PREFIX-.#####'."
@@ -141,9 +153,7 @@ class NamingManager:
         Ensures unique numbering for each prefix.
         """
         with transaction.atomic():
-            obj, _ = Series.objects.get_or_create(
-                name=prefix, defaults={"current": 0}
-            )
+            obj, _ = Series.objects.get_or_create(name=prefix, defaults={"current": 0})
             obj.current += 1
             obj.save()
             return str(obj.current).zfill(digits)
@@ -183,7 +193,9 @@ class NamingSeries:
             InvalidNamingSeriesError: If the series is invalid.
         """
         if "." not in series:
-            raise InvalidNamingSeriesError(f"Invalid naming series {series}: dot (.) missing")
+            raise InvalidNamingSeriesError(
+                f"Invalid naming series {series}: dot (.) missing"
+            )
 
         if not NAMING_SERIES_PATTERN.match(series):
             raise InvalidNamingSeriesError(
@@ -225,18 +237,17 @@ def parse_naming_series(parts, instance, series, number_generator=None):
 
     # Get the model name (doctype) to ensure uniqueness per doctype
     doctype = instance._meta.model_name  # This gets the model name (lowercase)
-    
+
     for part in parts:
         if part.startswith("#"):
             digits = len(part)
-            name += number_generator(doctype, digits, series)  # Pass the doctype to the number generator
+            name += number_generator(
+                doctype, digits, series
+            )  # Pass the doctype to the number generator
         elif part in ["YY", "MM", "DD", "YYYY"]:
-            name += today.strftime({
-                "YY": "%y",
-                "MM": "%m",
-                "DD": "%d",
-                "YYYY": "%Y"
-            }[part])
+            name += today.strftime(
+                {"YY": "%y", "MM": "%m", "DD": "%d", "YYYY": "%Y"}[part]
+            )
         else:
             name += str(getattr(instance, part, part))
 
@@ -247,17 +258,21 @@ def get_series(doctype, digits, series):
     """
     Get the next series number for a given doctype, ensuring uniqueness,
     but still keeping the original series name.
-    
+
     Args:
         doctype (str): The name of the doctype (model).
         digits (int): The number of digits to pad the series number.
-    
+
     Returns:
         str: The next series number with padding, keeping original name.
     """
     with transaction.atomic():
         # Keep the original series name, but make it unique by adding the doctype
-        obj, _ = Series.objects.get_or_create(id=f"{doctype}_{series}_series", name=f"{doctype}_{series}_series", defaults={"current": 0})
+        obj, _ = Series.objects.get_or_create(
+            id=f"{doctype}_{series}_series",
+            name=f"{doctype}_{series}_series",
+            defaults={"current": 0},
+        )
         obj.current += 1
         obj.save()
         return str(obj.current).zfill(digits)
@@ -267,12 +282,12 @@ def generate_autoincrement(instance):
     model = instance._meta.model
     try:
         # Get the last entry in the table based on the primary key
-        last_entry = model.objects.latest('id')
+        last_entry = model.objects.latest("id")
         new_id = int(last_entry.id) + 1
     except ObjectDoesNotExist:
         # If there are no entries in the table, start with ID 1
         new_id = 1
-    
+
     return new_id
 
 
@@ -306,32 +321,38 @@ def generate_next_id(instance, format_pattern):
     """
     model = instance._meta.model
     try:
-        last_entry = model.objects.latest('created')  # Adjust 'created' field if needed
+        last_entry = model.objects.latest("created")  # Adjust 'created' field if needed
         last_id = str(getattr(last_entry, "id", ""))
     except ObjectDoesNotExist:
         last_id = ""
-    
+
     token_pattern = re.compile(r"{([^{}]+)}")
     tokens = token_pattern.findall(format_pattern)
     escaped_pattern = re.escape(format_pattern)
-    
+
     for token in tokens:
         field_name, index_str = extract_field_and_index(token)
         if field_name.startswith("#"):
             token_length = len(field_name)
-            escaped_pattern = escaped_pattern.replace(re.escape(f"{{{token}}}"), rf"(\d{{{token_length}}})")
+            escaped_pattern = escaped_pattern.replace(
+                re.escape(f"{{{token}}}"), rf"(\d{{{token_length}}})"
+            )
         elif any(c in field_name for c in ["Y", "m", "d", "H", "M", "S", "%"]):
-            escaped_pattern = escaped_pattern.replace(re.escape(f"{{{token}}}"), r"(\d+)")
+            escaped_pattern = escaped_pattern.replace(
+                re.escape(f"{{{token}}}"), r"(\d+)"
+            )
         else:
-            escaped_pattern = escaped_pattern.replace(re.escape(f"{{{token}}}"), r"(.*?)")
-    
+            escaped_pattern = escaped_pattern.replace(
+                re.escape(f"{{{token}}}"), r"(.*?)"
+            )
+
     match = re.match(escaped_pattern, last_id)
     matched_values = match.groups() if match else ["_"] * len(tokens)
-    
+
     result = format_pattern
     for i, token in enumerate(tokens):
         field_name, index_str = extract_field_and_index(token)
-        
+
         if field_name.startswith("#"):
             try:
                 last_number = int(matched_values[i])
@@ -340,7 +361,7 @@ def generate_next_id(instance, format_pattern):
             replacement = str(last_number + 1).zfill(len(field_name))
         elif hasattr(instance, field_name):
             value = getattr(instance, field_name, "")
-            if hasattr(value, 'id'):
+            if hasattr(value, "id"):
                 value = str(value.id)
             else:
                 value = str(value)
@@ -350,13 +371,17 @@ def generate_next_id(instance, format_pattern):
         elif any(c in field_name for c in ["Y", "m", "d", "H", "M", "S", "%"]):
             today = datetime.today()
             replacement = today.strftime(
-                field_name.replace("YYYY", "%Y").replace("YY", "%y")
-                         .replace("MM", "%m").replace("DD", "%d")
-                         .replace("hh", "%H").replace("mm", "%M").replace("ss", "%S")
+                field_name.replace("YYYY", "%Y")
+                .replace("YY", "%y")
+                .replace("MM", "%m")
+                .replace("DD", "%d")
+                .replace("hh", "%H")
+                .replace("mm", "%M")
+                .replace("ss", "%S")
             )
         else:
             replacement = matched_values[i] if matched_values[i] else f"{{{token}}}"
-        
+
         result = result.replace(f"{{{token}}}", replacement, 1)
-    
+
     return result

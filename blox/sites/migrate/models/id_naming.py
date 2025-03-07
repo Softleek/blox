@@ -1,9 +1,15 @@
 import re
-from typing import Union, List, Dict, TextIO
+from typing import Dict, List, TextIO, Union
+
 import click
 
 
-def write_id_field(module_file: TextIO, file_path: str, settings: Union[Dict, List[Dict]], model_name: str) -> None:
+def write_id_field(
+    module_file: TextIO,
+    file_path: str,
+    settings: Union[Dict, List[Dict]],
+    model_name: str,
+) -> None:
     """
     Write the id field based on settings.
 
@@ -63,7 +69,9 @@ def write_id_field(module_file: TextIO, file_path: str, settings: Union[Dict, Li
         click.echo(f"Error writing id field: {e}")
 
 
-def merge_with_existing_save(module_file: TextIO, new_save: str, model_name: str) -> None:
+def merge_with_existing_save(
+    module_file: TextIO, new_save: str, model_name: str
+) -> None:
     """
     Merge the new save logic with the existing save method in the model.
 

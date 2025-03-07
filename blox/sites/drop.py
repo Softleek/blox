@@ -2,13 +2,14 @@ import json
 import os
 import platform
 import subprocess
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 import click
 
-from ..utils.config import PROJECT_ROOT
 from ..sites.migrate.migrate import run_migration
+from ..utils.config import PROJECT_ROOT
 from ..utils.file_operations import ensure_file_exists
+
 
 @click.command()
 @click.option("--site", type=str, help="The name of the site to delete.")
@@ -35,7 +36,9 @@ def dropsite(site: str) -> None:
         for i, site_entry in enumerate(sites, 1):
             click.echo(f"{i}. {site_entry['site_name']}")
 
-        site_choice: int = click.prompt("Enter the number of the site to delete", type=int)
+        site_choice: int = click.prompt(
+            "Enter the number of the site to delete", type=int
+        )
 
         if site_choice < 1 or site_choice > len(sites):
             click.echo("Invalid site selection.")
@@ -58,7 +61,9 @@ def dropsite(site: str) -> None:
         return
 
     # Delete the site folder with admin/superuser privileges
-    site_folder_path: str = os.path.join(PROJECT_ROOT, "sites", selected_site["site_name"])
+    site_folder_path: str = os.path.join(
+        PROJECT_ROOT, "sites", selected_site["site_name"]
+    )
 
     try:
         if os.path.exists(site_folder_path):
@@ -68,7 +73,9 @@ def dropsite(site: str) -> None:
 
             if platform.system() == "Windows":
                 # Use PowerShell on Windows
-                powershell_command: str = f'Remove-Item -Recurse -Force "{site_folder_path}"'
+                powershell_command: str = (
+                    f'Remove-Item -Recurse -Force "{site_folder_path}"'
+                )
                 subprocess.check_call(
                     ["powershell", "-Command", powershell_command], shell=True
                 )
@@ -92,5 +99,5 @@ def dropsite(site: str) -> None:
     click.echo(
         f"Site '{selected_site['site_name']}' has been successfully removed from sites.json."
     )
-    
+
     run_migration()

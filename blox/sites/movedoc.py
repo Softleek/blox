@@ -1,8 +1,10 @@
 import os
 import shutil
-import click
 import sys
 import traceback
+
+import click
+
 from ..sites.migrate.migrate import run_migration
 from ..utils.config import PROJECT_ROOT
 
@@ -13,7 +15,9 @@ from ..utils.config import PROJECT_ROOT
 @click.argument("dest_app", type=str)
 @click.argument("dest_module", type=str)
 @click.argument("doc", type=str)
-def movedoc(source_app: str, source_module: str, dest_app: str, dest_module: str, doc: str) -> None:
+def movedoc(
+    source_app: str, source_module: str, dest_app: str, dest_module: str, doc: str
+) -> None:
     """
     Move a doc from one app/module to another.
 
@@ -29,7 +33,9 @@ def movedoc(source_app: str, source_module: str, dest_app: str, dest_module: str
     source_app_path: str = os.path.join(
         PROJECT_ROOT, "apps", source_app, source_app, source_module, "doctype", doc
     )
-    dest_app_path: str = os.path.join(PROJECT_ROOT, "apps", dest_app, dest_app, dest_module, "doctype")
+    dest_app_path: str = os.path.join(
+        PROJECT_ROOT, "apps", dest_app, dest_app, dest_module, "doctype"
+    )
 
     # Validate the source document exists
     if not os.path.exists(source_app_path):
@@ -64,7 +70,9 @@ def movedoc(source_app: str, source_module: str, dest_app: str, dest_module: str
         return
 
     # Cleanup: Remove empty directories in the source path if necessary
-    source_module_path: str = os.path.join(PROJECT_ROOT, "apps", source_app, source_module)
+    source_module_path: str = os.path.join(
+        PROJECT_ROOT, "apps", source_app, source_module
+    )
     try:
         if not os.listdir(
             os.path.join(source_module_path, "doc")
@@ -74,10 +82,10 @@ def movedoc(source_app: str, source_module: str, dest_app: str, dest_module: str
             )  # Remove empty 'doc' folder
         if not os.listdir(source_module_path):  # If the module folder is empty
             os.rmdir(source_module_path)  # Remove empty module folder
-        
+
     except OSError as cleanup_error:
         click.echo(f"Cleanup error: {str(cleanup_error)}")
-        
+
     run_migration()
 
 

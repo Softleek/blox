@@ -1,4 +1,3 @@
-
 import os
 from io import BytesIO
 
@@ -12,26 +11,36 @@ from PIL import Image
 
 def write_barcode(self, field, ref):
     # Create the file name
-    file_name = f"{self.id}.png" 
+    file_name = f"{self.id}.png"
 
     # Check if the file already exists in the designated location
     file_path = os.path.join(settings.MEDIA_ROOT, field.field.upload_to, file_name)
-    
+
     if os.path.exists(file_path):
         print(f"File {file_name} already exists, skipping barcode generation.")
         return self  # Skip saving if the file already exists
 
     # Parse help_text to determine whether to generate QR code and/or barcode
-    help_text = self._meta.get_field('barcode').help_text if self._meta.get_field('barcode').help_text else 'False, False'
-    has_qr, has_barcode = map(lambda x: x.strip().lower() == 'true', help_text.split(','))
+    help_text = (
+        self._meta.get_field("barcode").help_text
+        if self._meta.get_field("barcode").help_text
+        else "False, False"
+    )
+    has_qr, has_barcode = map(
+        lambda x: x.strip().lower() == "true", help_text.split(",")
+    )
 
     # Initialize images list
     images = []
 
     if has_qr:
         # Generate QR code
-        base_url = self._meta.get_field('barcode').verbose_name
-        qr_data = f"{base_url.rsplit('/', 1)[0]}/{ref}" if '/' in base_url else f"{base_url}/{ref}"
+        base_url = self._meta.get_field("barcode").verbose_name
+        qr_data = (
+            f"{base_url.rsplit('/', 1)[0]}/{ref}"
+            if "/" in base_url
+            else f"{base_url}/{ref}"
+        )
 
         qr = qrcode.QRCode(
             version=1,
@@ -51,8 +60,8 @@ def write_barcode(self, field, ref):
         code128 = CODE128(spaced_ref, writer=ImageWriter())
 
         options = {
-            'module_height': 10.0,  # Height of the barcode
-            'module_width': 0.2,    # Width of each barcode module
+            "module_height": 10.0,  # Height of the barcode
+            "module_width": 0.2,  # Width of each barcode module
         }
 
         barcode_buffer = BytesIO()

@@ -9,6 +9,7 @@ import click
 from ...utils.config import PROJECT_ROOT
 from ...utils.file_operations import ensure_file_exists
 
+
 def get_python_executable() -> str:
     """Get the path to the Python executable in the virtual environment.
 
@@ -41,9 +42,7 @@ def django(command: str, args: List[str], site: Optional[str] = None) -> None:
         args (List[str]): Additional arguments for the command.
         site (Optional[str], optional): The site to run the command for. Defaults to None.
     """
-    django_path = os.path.join(
-        PROJECT_ROOT, "backend"
-    )
+    django_path = os.path.join(PROJECT_ROOT, "backend")
 
     venv_path = os.path.join(PROJECT_ROOT, "env")
     if not os.path.exists(venv_path):

@@ -1,13 +1,13 @@
 import os
 import subprocess
-from urllib.parse import urlparse
 from typing import List
+from urllib.parse import urlparse
 
 import click
 
+from ..sites.utils.installdjangoapp import install_django_app
 from ..utils.config import PROJECT_ROOT
 from ..utils.run_process import get_python_executable, run_subprocess
-from ..sites.utils.installdjangoapp import install_django_app
 
 
 def remove_hiredis_from_toml() -> None:
@@ -23,7 +23,9 @@ def remove_hiredis_from_toml() -> None:
                     lines = toml_file.readlines()
 
                 # Filter out any lines containing 'hiredis'
-                filtered_lines: List[str] = [line for line in lines if "hiredis" not in line]
+                filtered_lines: List[str] = [
+                    line for line in lines if "hiredis" not in line
+                ]
 
                 # If there were changes, overwrite the file
                 if len(filtered_lines) != len(lines):
@@ -79,5 +81,5 @@ def getapp(git_url: str, name: str) -> None:
         [get_python_executable(), "pip", "install", f"apps/{app_name}"],
         cwd=PROJECT_ROOT,
     )
-    
+
     install_django_app(app_name, PROJECT_ROOT)

@@ -5,15 +5,31 @@ from typing import Dict
 
 import click
 
+from ..sites.utils.installdjangoapp import install_django_app
 from ..utils.config import PROJECT_ROOT
 from .utils.file_creater import create_files_from_templates
-from ..sites.utils.installdjangoapp import install_django_app
 
 LICENSE_CHOICES = [
-    "MIT", "GPL-3.0", "GPL-2.0", "LGPL-3.0", "LGPL-2.1", "AGPL-3.0",
-    "Apache-2.0", "BSD-3-Clause", "BSD-2-Clause", "MPL-2.0", "EPL-2.0",
-    "CC0-1.0", "CC-BY-4.0", "CC-BY-SA-4.0", "Unlicense", "Zlib", "BSL-1.0", "WTFPL"
+    "MIT",
+    "GPL-3.0",
+    "GPL-2.0",
+    "LGPL-3.0",
+    "LGPL-2.1",
+    "AGPL-3.0",
+    "Apache-2.0",
+    "BSD-3-Clause",
+    "BSD-2-Clause",
+    "MPL-2.0",
+    "EPL-2.0",
+    "CC0-1.0",
+    "CC-BY-4.0",
+    "CC-BY-SA-4.0",
+    "Unlicense",
+    "Zlib",
+    "BSL-1.0",
+    "WTFPL",
 ]
+
 
 @click.command()
 @click.argument("app_name")
@@ -53,7 +69,14 @@ LICENSE_CHOICES = [
     help="License for the app",
     show_default=True,
 )
-def newapp(app_name: str, title: str, description: str, publisher: str, email: str, license: str) -> None:
+def newapp(
+    app_name: str,
+    title: str,
+    description: str,
+    publisher: str,
+    email: str,
+    license: str,
+) -> None:
     """
     Create a new Blox-style app with the specified name.
 
@@ -137,9 +160,18 @@ app_license = "{license}"
     create_files_from_templates(
         temp_app_path, app_name, templates_folder, license, dynamic_content
     )
-    
+
     # Create special files first
-    create_readme(temp_app_path, app_name, templates_folder, license, description, title, publisher, email)
+    create_readme(
+        temp_app_path,
+        app_name,
+        templates_folder,
+        license,
+        description,
+        title,
+        publisher,
+        email,
+    )
 
     # Add the app to the apps.txt configuration
     apps_txt_path = os.path.join(PROJECT_ROOT, "config", "apps.txt")
@@ -168,7 +200,16 @@ app_license = "{license}"
         click.echo(f"Failed to create the app '{app_name}'.")
 
 
-def create_readme(base_path: str, app_name: str, templates_folder: str, license: str, description: str, title: str, publisher: str, email: str) -> None:
+def create_readme(
+    base_path: str,
+    app_name: str,
+    templates_folder: str,
+    license: str,
+    description: str,
+    title: str,
+    publisher: str,
+    email: str,
+) -> None:
     """
     Create the README.md file with expanded content and advanced styling.
 

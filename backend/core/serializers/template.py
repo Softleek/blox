@@ -1,8 +1,7 @@
 from datetime import date, datetime, time
 
 from django.db.models import Model
-from django.db.models.fields.related import (ForeignKey, ManyToManyField,
-                                             OneToOneField)
+from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
 from django.forms.models import model_to_dict
 from django.utils.dateparse import parse_date, parse_datetime, parse_time
 from rest_framework import serializers
@@ -37,42 +36,50 @@ class RelationshipHandlerMixin(serializers.ModelSerializer):
         Fetch or create related objects based on the input data.
         Handles both dictionaries with 'id' and direct integer IDs, as well as nested dictionaries and lists of related objects.
         """
-        # If it's a Many-to-Many relationship, ensure the data is a 
+        # If it's a Many-to-Many relationship, ensure the data is a
         if many:
             for field_name, field_value in data.items():
                 if not isinstance(field_value, list):
                     raise serializers.ValidationError(
                         f"Expected a list for field '{model.__name__}', but got {type(field_value).__name__}."
                     )
-                return [self._get_or_create_related_objects({field_name:item}, model) for item in field_value]
+                return [
+                    self._get_or_create_related_objects({field_name: item}, model)
+                    for item in field_value
+                ]
 
         for field_name, field_value in data.items():
-            if isinstance(field_value, dict): 
+            if isinstance(field_value, dict):
                 related_model = self._get_related_model_for_field(model, field_name)
 
                 if related_model:
                     # If related object has an ID, handle it as update, else create
                     if "id" in field_value:
                         # Update existing related object
-                        data[field_name] = self._get_or_create_related_objects(field_value, related_model)
+                        data[field_name] = self._get_or_create_related_objects(
+                            field_value, related_model
+                        )
                     else:
                         # Create a new related object
-                        data[field_name] = self._get_or_create_related_objects(field_value, related_model)
-                    
-            elif isinstance(field_value, list):  
+                        data[field_name] = self._get_or_create_related_objects(
+                            field_value, related_model
+                        )
+
+            elif isinstance(field_value, list):
                 related_model = self._get_related_model_for_field(model, field_name)
 
                 if related_model:
                     data[field_name] = [
-                        self._get_or_create_related_objects(item, related_model) for item in field_value
+                        self._get_or_create_related_objects(item, related_model)
+                        for item in field_value
                     ]
             else:
                 related_model = self._get_related_model_for_field(model, field_name)
                 if related_model:
                     obj = related_model.objects.get(pk=field_value)
                     return obj
-                
-        if hasattr(self, 'instance') and self.instance:
+
+        if hasattr(self, "instance") and self.instance:
             # Update the instance if it's an existing instance (update operation)
             return self._update_instance(data, model)
         else:
@@ -92,7 +99,9 @@ class RelationshipHandlerMixin(serializers.ModelSerializer):
             if isinstance(field, (ForeignKey, OneToOneField, ManyToManyField)):
                 return field.related_model
         except Exception as e:
-            raise serializers.ValidationError(f"Error while getting related model for field '{field_name}': {str(e)}")
+            raise serializers.ValidationError(
+                f"Error while getting related model for field '{field_name}': {str(e)}"
+            )
 
         return None  # Return None if no related model is found
 
@@ -110,14 +119,17 @@ class RelationshipHandlerMixin(serializers.ModelSerializer):
                     return obj
                 else:
                     # If the object doesn't exist, raise an error
-                    raise serializers.ValidationError(f"{model.__name__} with ID {data['id']} does not exist.")
-            
+                    raise serializers.ValidationError(
+                        f"{model.__name__} with ID {data['id']} does not exist."
+                    )
+
             # If no 'id' field, create a new instance
             return model.objects.create(**data)
 
         except Exception as e:
-            raise serializers.ValidationError(f"Error creating or fetching {model.__name__} instance: {str(e)}")
-
+            raise serializers.ValidationError(
+                f"Error creating or fetching {model.__name__} instance: {str(e)}"
+            )
 
     def _update_instance(self, data, model):
         """
@@ -130,14 +142,15 @@ class RelationshipHandlerMixin(serializers.ModelSerializer):
             self.instance.save()
             return self.instance
         except Exception as e:
-            raise serializers.ValidationError(f"Error updating {model.__name__} instance: {str(e)}")
-
+            raise serializers.ValidationError(
+                f"Error updating {model.__name__} instance: {str(e)}"
+            )
 
     def handle_related_fields(self, validated_data):
         """
         Handle creation or retrieval of related fields dynamically.
         """
-        related_fields = getattr(self.Meta, 'related_fields', {})
+        related_fields = getattr(self.Meta, "related_fields", {})
         related_instances = {}
 
         for field_name, model_config in related_fields.items():
@@ -146,15 +159,16 @@ class RelationshipHandlerMixin(serializers.ModelSerializer):
                 continue
 
             # model = model_config['model']
-            model = getattr(self.Meta, 'model')
-            many = model_config.get('many', False)
+            model = getattr(self.Meta, "model")
+            many = model_config.get("many", False)
 
             field_data = {field_name: field_data}
 
-            related_instances[field_name] = self._get_or_create_related_objects(field_data, model, many)
+            related_instances[field_name] = self._get_or_create_related_objects(
+                field_data, model, many
+            )
 
         return validated_data, related_instances
-
 
     def clean_field_types(self, data):
         """
@@ -197,7 +211,9 @@ class RelationshipHandlerMixin(serializers.ModelSerializer):
             if not parsed_value:
                 raise serializers.ValidationError(f"Invalid datetime format: '{value}'")
             return parsed_value
-        raise serializers.ValidationError(f"Unexpected type for datetime: {type(value).__name__}")
+        raise serializers.ValidationError(
+            f"Unexpected type for datetime: {type(value).__name__}"
+        )
 
     def _parse_date(self, value):
         """
@@ -210,7 +226,9 @@ class RelationshipHandlerMixin(serializers.ModelSerializer):
             if not parsed_value:
                 raise serializers.ValidationError(f"Invalid date format: '{value}'")
             return parsed_value
-        raise serializers.ValidationError(f"Unexpected type for date: {type(value).__name__}")
+        raise serializers.ValidationError(
+            f"Unexpected type for date: {type(value).__name__}"
+        )
 
     def _parse_time(self, value):
         """
@@ -223,8 +241,9 @@ class RelationshipHandlerMixin(serializers.ModelSerializer):
             if not parsed_value:
                 raise serializers.ValidationError(f"Invalid time format: '{value}'")
             return parsed_value
-        raise serializers.ValidationError(f"Unexpected type for time: {type(value).__name__}")
-
+        raise serializers.ValidationError(
+            f"Unexpected type for time: {type(value).__name__}"
+        )
 
     def create(self, validated_data):
         validated_data = self.clean_field_types(validated_data)
@@ -241,44 +260,53 @@ class RelationshipHandlerMixin(serializers.ModelSerializer):
         instance.save()
         return instance
 
-
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        related_fields = getattr(self.Meta, 'related_fields', {})
-        is_list_view = self.context.get('is_list_view', False)
+        related_fields = getattr(self.Meta, "related_fields", {})
+        is_list_view = self.context.get("is_list_view", False)
 
         for field_name, field_config in related_fields.items():
             if field_name in ret:
                 value = getattr(instance, field_name, None)
-                model = field_config['model']
-                many = field_config.get('many', False)
+                model = field_config["model"]
+                many = field_config.get("many", False)
 
                 if value is None:
                     ret[field_name] = [] if many else None
                 elif is_list_view:
                     if many:
-                        ret[field_name] = [obj.id for obj in value.all()] if value else []
+                        ret[field_name] = (
+                            [obj.id for obj in value.all()] if value else []
+                        )
                     else:
                         ret[field_name] = value.id if value else None
                 else:
                     if many:
-                        ret[field_name] = self._serialize_model_objects(value.all(), model) if value else []
+                        ret[field_name] = (
+                            self._serialize_model_objects(value.all(), model)
+                            if value
+                            else []
+                        )
                     else:
-                        ret[field_name] = self._serialize_model_object(value, model) if value else None
+                        ret[field_name] = (
+                            self._serialize_model_object(value, model)
+                            if value
+                            else None
+                        )
 
         return ret
 
     def _serialize_model_object(self, obj, model):
         if isinstance(obj, Model):
             obj_dict = model_to_dict(obj)
-            obj_dict = {key: value for key, value in obj_dict.items() if value not in [None, ""]}
+            obj_dict = {
+                key: value for key, value in obj_dict.items() if value not in [None, ""]
+            }
             return obj_dict
         return obj
 
     def _serialize_model_objects(self, objs, model):
         return [self._serialize_model_object(obj, model) for obj in objs]
-
-
 
     def update(self, instance, validated_data):
         validated_data = self.clean_field_types(validated_data)
@@ -298,4 +326,3 @@ class RelationshipHandlerMixin(serializers.ModelSerializer):
 
         instance.save()
         return instance
-

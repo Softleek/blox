@@ -1,13 +1,17 @@
-
 from datetime import timedelta
 
 from core.filters import GroupFilter, PermissionFilter, UserFilter
 from core.models import OTP, User, UserIPAddress
+from core.models.auth import RoleType
 from core.permissions import HasGroupPermission, IsSuperUser
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from core.serializers import (GroupSerializer, PermissionSerializer,
-                              UserIPAddressSerializer, UserSerializer)
-from core.utils import send_custom_email
+from core.serializers import (
+    GroupSerializer,
+    PermissionSerializer,
+    UserIPAddressSerializer,
+    UserSerializer,
+)
+from core.utils import generate_simple_password, send_custom_email
+from core.utils.sms import send_sms
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.models import Group, Permission
@@ -15,14 +19,11 @@ from django.utils import timezone
 from django.utils.crypto import get_random_string
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token as AuthToken
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from core.models.auth import RoleType
 
 from .template import GenericViewSet
-from core.utils.sms import send_sms
-from core.utils import generate_simple_password
 
 
 class UserGroupPermissions(APIView):
@@ -30,7 +31,7 @@ class UserGroupPermissions(APIView):
 
     def get(self, request):
         user = request.user
-        
+
         # If the user is a superuser, return "all"
         if user.is_superuser:
             return Response("all")
@@ -55,21 +56,25 @@ class GroupViewSet(GenericViewSet):
     A simple viewset for viewing and editing user groups.
     Only accessible by admins or users with sufficient permissions.
     """
+
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     filterset_class = GroupFilter
-    permission_classes = [IsSuperUser, HasGroupPermission] 
-    
+    permission_classes = [IsSuperUser, HasGroupPermission]
+
+
 class PermissionViewSet(GenericViewSet):
     """
     A viewset for viewing and editing user permissions.
     Only accessible by superusers.
     """
+
     queryset = Permission.objects.all()
     serializer_class = PermissionSerializer
     filterset_class = PermissionFilter
-    permission_classes = [IsSuperUser, HasGroupPermission] 
- 
+    permission_classes = [IsSuperUser, HasGroupPermission]
+
+
 class ResendOTPView(APIView):
     def post(self, request):
         username = request.data.get("username")
@@ -197,14 +202,14 @@ class LoginView(APIView):
         password = request.data["password"]
         user = authenticate(username=username, password=password)
         if user is not None:
-           token, created = AuthToken.objects.get_or_create(user=user)
-           login(request, user)
-           return Response({"token": token.key}, status=status.HTTP_200_OK)
+            token, created = AuthToken.objects.get_or_create(user=user)
+            login(request, user)
+            return Response({"token": token.key}, status=status.HTTP_200_OK)
         return Response(
             {"error": "Invalid credentials."}, status=status.HTTP_400_BAD_REQUEST
         )
 
-      
+
 class OTPActivationView(APIView):
     def post(self, request):
         otp_code = request.data["otp"]
@@ -233,7 +238,6 @@ class LogoutView(APIView):
         )
 
 
-
 class UserViewSet(GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -249,8 +253,8 @@ class UserViewSet(GenericViewSet):
                 data["password"] = password
             else:
                 password = data["password"]
-                
-            role=data.get("role")
+
+            role = data.get("role")
             if role:
                 role = RoleType.objects.get(pk=role)
 
@@ -299,7 +303,9 @@ class UserViewSet(GenericViewSet):
         try:
             partial = kwargs.pop("partial", False)
             instance = self.get_object()
-            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer = self.get_serializer(
+                instance, data=request.data, partial=partial
+            )
             serializer.is_valid(raise_exception=True)
 
             # Update the user data
@@ -316,22 +322,21 @@ class UserViewSet(GenericViewSet):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class UserIPAddressViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserIPAddressSerializer
 
     def get_queryset(self):
         user = self.request.user
         return UserIPAddress.objects.filter(user=user).distinct()
-    
-    
+
+
 class UserGetViewSet(APIView):
     def get(self, request):
         userid = request.query_params.get("user")
         try:
             # Fetch the user using the primary key (username in this case)
             user = User.objects.get(id=userid)
-            
+
             # Serialize the user data
             serializer = UserSerializer(user)
 
@@ -339,4 +344,6 @@ class UserGetViewSet(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         except User.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"error": "User not found"}, status=status.HTTP_404_NOT_FOUND
+            )

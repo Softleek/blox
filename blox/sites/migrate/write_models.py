@@ -4,13 +4,14 @@ from typing import Any, Dict, List, Optional, TextIO
 from .models.json_loader import load_json_file
 from .models.model_fields_writer import write_model
 
+
 def write_model_fields(
-    module_file: TextIO, 
-    file_path: str, 
-    folder_path: str, 
-    model_name: str, 
-    doc_name: str, 
-    django_path: str
+    module_file: TextIO,
+    file_path: str,
+    folder_path: str,
+    model_name: str,
+    doc_name: str,
+    django_path: str,
 ) -> None:
     """
     Write model fields based on fields.json or doc_name.json in the given folder path.

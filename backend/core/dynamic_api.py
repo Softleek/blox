@@ -1,4 +1,5 @@
 import importlib
+
 from django.urls import re_path
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -52,11 +53,17 @@ class DynamicAPIView(APIView):
             if issubclass(obj, ViewSet):  # Handle DRF ViewSet
                 actions = self.get_viewset_actions(request, obj)
                 if not actions:
-                    return Response({"error": f"Method {request.method} not allowed"}, status=405)
-                return obj.as_view(actions)(request._request, *args, **kwargs)  # Use request._request
+                    return Response(
+                        {"error": f"Method {request.method} not allowed"}, status=405
+                    )
+                return obj.as_view(actions)(
+                    request._request, *args, **kwargs
+                )  # Use request._request
 
             if hasattr(obj, "as_view"):  # Handle APIView or Django CBVs
-                return obj.as_view()(request._request, *args, **kwargs)  # Use request._request
+                return obj.as_view()(
+                    request._request, *args, **kwargs
+                )  # Use request._request
 
             return Response({"error": "Invalid class-based view"}, status=400)
 

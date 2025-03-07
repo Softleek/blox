@@ -45,4 +45,3 @@ def log_create(instance, user):
         new_value="Created",
         user=user,
     )
-

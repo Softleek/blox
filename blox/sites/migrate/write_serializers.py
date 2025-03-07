@@ -1,6 +1,6 @@
 import os
 import re
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
 from ...utils.text import to_snake_case, to_titlecase_no_space
 from .models.field_mappings import get_field_type
@@ -11,10 +11,10 @@ from .models.reserved_keywords import reserved_keywords
 def rename_reserved_keywords(field_id: str) -> str:
     """
     Rename field ID if it is a reserved keyword.
-    
+
     Args:
         field_id (str): The original field ID.
-    
+
     Returns:
         str: The renamed field ID if it was a reserved keyword, otherwise the original field ID.
     """
@@ -26,10 +26,10 @@ def sanitize_field_name(field_id: str) -> str:
     Sanitize the field name to ensure it is a valid Python variable name.
     - Replace invalid characters with underscores.
     - Prefix with an underscore if the name starts with a digit.
-    
+
     Args:
         field_id (str): The original field ID.
-    
+
     Returns:
         str: The sanitized field name.
     """
@@ -40,11 +40,11 @@ def sanitize_field_name(field_id: str) -> str:
 def load_fields(folder_path: str, doc_name: str) -> List[Dict[str, Any]]:
     """
     Load fields from doc_name.json.
-    
+
     Args:
         folder_path (str): The path to the folder containing the JSON file.
         doc_name (str): The name of the document (without .json extension).
-    
+
     Returns:
         List[Dict[str, Any]]: A list of fields loaded from the JSON file.
     """
@@ -62,12 +62,17 @@ def load_fields(folder_path: str, doc_name: str) -> List[Dict[str, Any]]:
 
 
 def write_serializers_header(
-    module_file: Any, app_name: str, module_name: str, model_name: str, doc_name: str, related_fields: Dict[str, Dict[str, Any]]
+    module_file: Any,
+    app_name: str,
+    module_name: str,
+    model_name: str,
+    doc_name: str,
+    related_fields: Dict[str, Dict[str, Any]],
 ) -> None:
     """
     Write the imports for the serializers at the top of the file.
     Only import serializers for related models that are not the same as the current model.
-    
+
     Args:
         module_file (Any): The file object to write to.
         app_name (str): The name of the app.
@@ -88,10 +93,12 @@ def write_serializers_header(
     )
 
 
-def write_meta_class(module_file: Any, model_name: str, related_fields: Dict[str, Dict[str, Any]]) -> None:
+def write_meta_class(
+    module_file: Any, model_name: str, related_fields: Dict[str, Dict[str, Any]]
+) -> None:
     """
     Write the Meta class, including related fields, for the serializer.
-    
+
     Args:
         module_file (Any): The file object to write to.
         model_name (str): The name of the model.
@@ -102,16 +109,18 @@ def write_meta_class(module_file: Any, model_name: str, related_fields: Dict[str
     module_file.write("        fields = '__all__'\n")
 
 
-def process_field(field: Dict[str, Any], model_name: str, current_doc_name: str) -> Dict[str, Dict[str, Any]]:
+def process_field(
+    field: Dict[str, Any], model_name: str, current_doc_name: str
+) -> Dict[str, Dict[str, Any]]:
     """
     Process a single field and return its related field definition if applicable.
     Handles nested representation for self-referencing fields, ManyToManyField, and OneToOneField relationships.
-    
+
     Args:
         field (Dict[str, Any]): The field to process.
         model_name (str): The name of the model.
         current_doc_name (str): The name of the current document.
-    
+
     Returns:
         Dict[str, Dict[str, Any]]: A dictionary of related fields.
     """
@@ -157,12 +166,17 @@ def process_field(field: Dict[str, Any], model_name: str, current_doc_name: str)
 
 
 def write_serializer(
-    module_file: Any, app_name: str, module_name: str, model_name: str, doc_name: str, doc_folder_path: str
+    module_file: Any,
+    app_name: str,
+    module_name: str,
+    model_name: str,
+    doc_name: str,
+    doc_folder_path: str,
 ) -> None:
     """
     Generate and write a single serializer class for the given model, focusing on related fields.
     Use SerializerMethodField for self-referencing fields and declare related fields before Meta.
-    
+
     Args:
         module_file (Any): The file object to write to.
         app_name (str): The name of the app.

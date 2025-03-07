@@ -3,6 +3,7 @@ import os
 import re
 from difflib import get_close_matches
 from typing import List, Optional, Union
+
 from ...utils.config import DJANGO_PATH
 
 
@@ -99,9 +100,12 @@ def write_viewset(
     view_file.write(f"    permission_classes = [HasGroupPermission]\n")
     view_file.write(f"    serializer_class = {model_name}Serializer\n\n")
 
+
 def add_import_to_signals(app_name, module_name, doc_name):
     signals_path = os.path.join(DJANGO_PATH, f"{app_name}_app", "signals.py")
-    import_statement = f"from {app_name}.{module_name}.doctype.{doc_name}.{doc_name} import *"
+    import_statement = (
+        f"from {app_name}.{module_name}.doctype.{doc_name}.{doc_name} import *"
+    )
 
     # Ensure the file exists
     if not os.path.exists(signals_path):

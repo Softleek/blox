@@ -1,0 +1,77 @@
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311']
+extend-exclude = '''
+(
+    ^env
+  | ^venv
+  | ^\.venv
+  | ^migrations
+  | ^node_modules
+  | ^\..*  # Ignore all hidden directories
+  | .*\/env
+  | .*\/venv
+  | .*\/\.venv
+  | .*\/migrations
+  | .*\/node_modules
+  | .*\/\..*
+)
+'''
+
+[tool.isort]
+profile = "black"
+skip = ["env", "venv", ".venv", "migrations", "node_modules"]
+skip_glob = ["**/env", "**/venv", "**/.venv", "**/migrations", "**/node_modules", "**/.*"]
+
+[tool.poetry]
+name = "blox"
+version = "0.1.0"
+description = "Blox"
+authors = ["Softleek"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+asgiref = "*"
+autoflake = "*"
+black = "*"
+certifi = "*"
+cffi = "*"
+charset-normalizer = "*"
+cryptography = "*"
+defusedxml = "*"
+Django = "*"
+django-allauth = "*"
+django-cors-headers = "*"
+django-crontab = "*"
+django-filter = "*"
+django-multiselectfield = "*"
+djangorestframework = "*"
+flake8 = "*"
+idna = "*"
+isort = "*"
+oauthlib = "*"
+pandas = "*"
+Pillow = "*"
+pycparser = "*"
+PyJWT = "*"
+PyMySQL = "*"
+python-barcode = "*"
+python-decouple = "*"
+python3-openid = "*"
+pytz = "*"
+qrcode = "*"
+requests = "*"
+requests-oauthlib = "*"
+six = "*"
+sqlparse = "*"
+typing_extensions = "*"
+tzdata = "*"
+urllib3 = "*"
+unicode = "*"
+whitenoise = "*"
+xlrd = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

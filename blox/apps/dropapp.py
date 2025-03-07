@@ -6,15 +6,15 @@ from typing import List
 
 import click
 
-from ..utils.config import PROJECT_ROOT
 from ..sites.utils.uninstalldjangoapp import uninstall_django_app
+from ..utils.config import PROJECT_ROOT
 
 
 @click.command()
 @click.argument("app")
 def dropapp(app: str) -> None:
     """
-    Delete the specified Django app, uninstall it from all sites using `blox uninstallapp`, 
+    Delete the specified Django app, uninstall it from all sites using `blox uninstallapp`,
     and remove it from the configuration.
 
     Args:
@@ -40,7 +40,9 @@ def dropapp(app: str) -> None:
         for i, app_entry in enumerate(apps, 1):
             click.echo(f"{i}. {app_entry}")
 
-        app_choice: int = click.prompt("Enter the number of the app to delete", type=int)
+        app_choice: int = click.prompt(
+            "Enter the number of the app to delete", type=int
+        )
 
         if app_choice < 1 or app_choice > len(apps):
             click.echo("Invalid app selection.")
@@ -82,7 +84,9 @@ def dropapp(app: str) -> None:
             )
 
             if os.name == "nt":  # Check if Windows
-                powershell_command: str = f'Remove-Item -Recurse -Force "{custom_app_path}"'
+                powershell_command: str = (
+                    f'Remove-Item -Recurse -Force "{custom_app_path}"'
+                )
                 subprocess.check_call(
                     ["powershell", "-Command", powershell_command], shell=True
                 )
@@ -91,7 +95,7 @@ def dropapp(app: str) -> None:
                 shutil.rmtree(custom_app_path)
 
             click.echo(f"Deleted the app folder '{custom_app_path}'.")
-            
+
             uninstall_django_app(selected_app, PROJECT_ROOT)
         else:
             click.echo(f"App folder '{custom_app_path}' does not exist.")

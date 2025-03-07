@@ -1,6 +1,6 @@
 import json
 import os
-from typing import List, Dict, Any, Optional
+from typing import Any, Dict, List, Optional
 
 import click
 
@@ -61,7 +61,9 @@ def save_data_to_file(data: List[Dict[str, Any]]) -> None:
         json.dump(data, json_file, indent=4)
 
 
-def find_or_create_app_entry(existing_data: List[Dict[str, Any]], app_id: str, app_name: str) -> Dict[str, Any]:
+def find_or_create_app_entry(
+    existing_data: List[Dict[str, Any]], app_id: str, app_name: str
+) -> Dict[str, Any]:
     """
     Finds an app entry by ID or creates a new one, always replacing the name if found.
 
@@ -82,7 +84,9 @@ def find_or_create_app_entry(existing_data: List[Dict[str, Any]], app_id: str, a
     return app_entry
 
 
-def find_or_create_module_entry(app_entry: Dict[str, Any], module_id: str, module_name: str) -> Dict[str, Any]:
+def find_or_create_module_entry(
+    app_entry: Dict[str, Any], module_id: str, module_name: str
+) -> Dict[str, Any]:
     """
     Finds a module entry by ID within an app or creates a new one, always replacing the name if found.
 
@@ -104,7 +108,12 @@ def find_or_create_module_entry(app_entry: Dict[str, Any], module_id: str, modul
         module_entry["name"] = module_name  # Always replace the name
     return module_entry
 
-def update_module_docs(module_entry: Dict[str, Any], docs: List[Dict[str, str]], prints: List[Dict[str, str]] = []) -> None:
+
+def update_module_docs(
+    module_entry: Dict[str, Any],
+    docs: List[Dict[str, str]],
+    prints: List[Dict[str, str]] = [],
+) -> None:
     """
     Updates the documents in a module, replacing names if IDs match.
 
@@ -133,7 +142,14 @@ def update_module_docs(module_entry: Dict[str, Any], docs: List[Dict[str, str]],
             module_entry["print_formats"].append(doc)
 
 
-def add_single_doc(app_id: str, app_name: str, module_id: str, module_name: str, doc_id: str, doc_name: str) -> None:
+def add_single_doc(
+    app_id: str,
+    app_name: str,
+    module_id: str,
+    module_name: str,
+    doc_id: str,
+    doc_name: str,
+) -> None:
     """
     Adds or updates a single document in the specified app and module.
 
@@ -154,7 +170,11 @@ def add_single_doc(app_id: str, app_name: str, module_id: str, module_name: str,
     if doc_entry:
         doc_entry["name"] = doc_name
     else:
-        doc_entry = {"id": doc_id, "model": to_titlecase_no_space(doc_name), "name": doc_name}
+        doc_entry = {
+            "id": doc_id,
+            "model": to_titlecase_no_space(doc_name),
+            "name": doc_name,
+        }
         module_entry["docs"].append(doc_entry)
         click.echo(
             f"Document '{doc_name}' added to module '{module_name}' in app '{app_name}'."
@@ -178,7 +198,9 @@ def process_module(app_name: str, module: str, app_entry: Dict[str, Any]) -> Non
     _, module_path = find_module_base_path(app_name=app_name, module_name=module_id)
 
     if not module_path or not os.path.exists(module_path):
-        click.echo(f"Module '{module}' does not exist in app '{module_path}'. Skipping...")
+        click.echo(
+            f"Module '{module}' does not exist in app '{module_path}'. Skipping..."
+        )
         return
 
     prints_path = os.path.join(module_path, "print_format")
@@ -219,7 +241,11 @@ def create_doctypes_json(app_name: str, module_name: Optional[str] = None) -> No
     save_data_to_file(existing_data)
 
 
-def add_single_entry(app_name: Optional[str] = None, module_name: Optional[str] = None, doc_name: Optional[str] = None) -> None:
+def add_single_entry(
+    app_name: Optional[str] = None,
+    module_name: Optional[str] = None,
+    doc_name: Optional[str] = None,
+) -> None:
     """
     Allows adding a single doc, module, or app.
 

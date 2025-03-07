@@ -9,7 +9,12 @@ import click
 from ...utils.config import APPS_PATH, PROJECT_ROOT
 from ...utils.file_operations import ensure_file_exists
 
-def install_libraries(libraries: List[str], app_name: Optional[str] = None, sites: Optional[List[str]] = None) -> None:
+
+def install_libraries(
+    libraries: List[str],
+    app_name: Optional[str] = None,
+    sites: Optional[List[str]] = None,
+) -> None:
     """
     Install the specified libraries in the virtual environment and update the requirements file for the specified app.
 
@@ -49,11 +54,13 @@ def install_libraries(libraries: List[str], app_name: Optional[str] = None, site
             except subprocess.CalledProcessError as e:
                 click.echo(f"Error installing libraries for site '{site}': {e}")
 
+
 @click.group()
 def pip() -> None:
     """
     Manage Python packages for the project.
     """
+
 
 @click.command()
 @click.argument("libraries", nargs=-1)
@@ -77,6 +84,7 @@ def install(libraries: List[str], app: Optional[str], site: Optional[str]) -> No
     """
     run_pip_install(libraries, app, site)
 
+
 @click.command()
 @click.argument("libraries", nargs=-1)
 @click.option(
@@ -99,7 +107,10 @@ def i(libraries: List[str], app: Optional[str], site: Optional[str]) -> None:
     """
     run_pip_install(libraries, app, site)
 
-def run_pip_install(libraries: List[str], app: Optional[str], site: Optional[str]) -> None:
+
+def run_pip_install(
+    libraries: List[str], app: Optional[str], site: Optional[str]
+) -> None:
     """
     Run the pip install command for the specified libraries.
 
@@ -139,6 +150,7 @@ def run_pip_install(libraries: List[str], app: Optional[str], site: Optional[str
         click.echo("Libraries installed successfully.")
     except subprocess.CalledProcessError as e:
         click.echo(f"Error installing libraries: {e}")
+
 
 pip.add_command(install)
 pip.add_command(i)

@@ -56,7 +56,8 @@ def remove_app_from_installed_apps(app: str, app_name: str, settings_path: str) 
         # Remove both single and double quotes sys.path.append lines for the app
         if (
             f"sys.path.append(str(os.path.join(PROJECT_PATH, 'apps', '{app}')))" in line
-            or f'sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "{app}")))' in line
+            or f'sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "{app}")))'
+            in line
         ):
             path_app_found = True
             continue  # Skip this line (removing sys.path.append)
@@ -114,7 +115,7 @@ def uninstall_django_app(app: str, project_root: str) -> None:
         project_root (str): The root directory of the project.
     """
     app_name = f"{app}_app"
-    
+
     site_path = os.path.join(project_root, "sites")
     django_path = os.path.join(site_path, "django")
 

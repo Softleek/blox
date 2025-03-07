@@ -4,9 +4,10 @@ from typing import List, Optional
 
 import click
 
-from ..utils.config import PROJECT_ROOT
 from ..sites.migrate.migrate import run_migration
+from ..utils.config import PROJECT_ROOT
 from ..utils.file_operations import ensure_file_exists
+
 
 @click.command()
 @click.option(

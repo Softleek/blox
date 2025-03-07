@@ -1,12 +1,14 @@
+import datetime
+import getpass
 import os
 import sys
 import traceback
+from typing import Dict, Optional
+
 import requests
-import datetime
-import getpass
-from typing import Optional, Dict
 
 SPDX_LICENSE_URL = "https://raw.githubusercontent.com/spdx/license-list-data/main/text/"
+
 
 def normalize_license_name(license_type: str) -> str:
     """Convert license names to SPDX-compliant format."""
@@ -15,34 +17,29 @@ def normalize_license_name(license_type: str) -> str:
         # MIT License
         "mit": "MIT",
         "MIT": "MIT",
-
         # GNU General Public Licenses (GPL)
         "gpl": "GPL-3.0",
         "gpl3": "GPL-3.0",
         "gpl-3.0": "GPL-3.0",
         "GPL-3.0": "GPL-3.0",
         "gnu general public license v3": "GPL-3.0",
-
         "gpl2": "GPL-2.0",
         "gpl-2.0": "GPL-2.0",
         "GPL-2.0": "GPL-2.0",
         "gplv2": "GPL-2.0",
         "gnu gpl 2": "GPL-2.0",
         "gnu general public license v2": "GPL-2.0",
-
         # Lesser General Public License (LGPL)
         "lgpl": "LGPL-3.0",
         "lgpl3": "LGPL-3.0",
         "lgpl-3.0": "LGPL-3.0",
         "LGPL-3.0": "LGPL-3.0",
         "lgplv3": "LGPL-3.0",
-
         "lgpl 2.1": "LGPL-2.1",
         "lgpl2.1": "LGPL-2.1",
         "lgpl-2.1": "LGPL-2.1",
         "lgpl v2.1": "LGPL-2.1",
         "LGPL-2.1": "LGPL-2.1",
-
         # Affero General Public License (AGPL)
         "agpl": "AGPL-3.0",
         "agpl3": "AGPL-3.0",
@@ -51,7 +48,6 @@ def normalize_license_name(license_type: str) -> str:
         "AGPL-3.0": "AGPL-3.0",
         "gnu agpl 3": "AGPL-3.0",
         "gnu affero general public license v3": "AGPL-3.0",
-
         # Apache License
         "apache": "Apache-2.0",
         "apache2": "Apache-2.0",
@@ -60,7 +56,6 @@ def normalize_license_name(license_type: str) -> str:
         "Apache-2.0": "Apache-2.0",
         "apache software license": "Apache-2.0",
         "apache software license 2.0": "Apache-2.0",
-
         # BSD Licenses
         "bsd": "BSD-3-Clause",
         "bsd3": "BSD-3-Clause",
@@ -68,64 +63,54 @@ def normalize_license_name(license_type: str) -> str:
         "bsd 3-clause": "BSD-3-Clause",
         "BSD-3-Clause": "BSD-3-Clause",
         "bsd-3-clause license": "BSD-3-Clause",
-
         "bsd2": "BSD-2-Clause",
         "bsd-2.0": "BSD-2-Clause",
         "bsd 2-clause": "BSD-2-Clause",
         "bsd 2 clause license": "BSD-2-Clause",
         "BSD-2-Clause": "BSD-2-Clause",
-
         # Mozilla Public License (MPL)
         "mpl": "MPL-2.0",
         "mpl2": "MPL-2.0",
         "mpl-2.0": "MPL-2.0",
         "MPL-2.0": "MPL-2.0",
         "mozilla public license 2.0": "MPL-2.0",
-
         # Eclipse Public License (EPL)
         "epl": "EPL-2.0",
         "epl2": "EPL-2.0",
         "epl-2.0": "EPL-2.0",
         "EPL-2.0": "EPL-2.0",
         "eclipse public license 2.0": "EPL-2.0",
-
         # Creative Commons Licenses (CC)
         "cc0": "CC0-1.0",
         "CC0-1.0": "CC0-1.0",
         "cc0-1.0": "CC0-1.0",
         "creative commons zero": "CC0-1.0",
-
         "cc by": "CC-BY-4.0",
         "cc-by": "CC-BY-4.0",
         "CC-BY-4.0": "CC-BY-4.0",
         "cc-by-4.0": "CC-BY-4.0",
         "creative commons attribution": "CC-BY-4.0",
         "creative commons attribution 4.0": "CC-BY-4.0",
-
         "cc by-sa": "CC-BY-SA-4.0",
         "cc-by-sa": "CC-BY-SA-4.0",
         "CC-BY-SA-4.0": "CC-BY-SA-4.0",
         "cc-by-sa-4.0": "CC-BY-SA-4.0",
         "creative commons attribution share-alike": "CC-BY-SA-4.0",
         "creative commons attribution share-alike 4.0": "CC-BY-SA-4.0",
-
         # Unlicense
         "unlicense": "Unlicense",
         "public domain": "Unlicense",
         "Unlicense": "Unlicense",
-
         # Zlib/Libpng
         "zlib": "Zlib",
         "Zlib": "Zlib",
         "zlib/libpng": "Zlib",
-
         # Boost Software License
         "bsl": "BSL-1.0",
         "BSL-1.0": "BSL-1.0",
         "boost": "BSL-1.0",
         "boost software license": "BSL-1.0",
         "boost software license 1.0": "BSL-1.0",
-
         # WTFPL (Do What The F*** You Want To Public License)
         "wtfpl": "WTFPL",
         "WTFPL": "WTFPL",
@@ -134,9 +119,10 @@ def normalize_license_name(license_type: str) -> str:
 
     # Normalize input: lowercase and strip spaces
     license_type = license_type.strip().lower()
-    
+
     # Return SPDX-compliant name or assume correct if not mapped
     return license_map.get(license_type, license_type.replace(" ", "-"))
+
 
 def fetch_license_text(license_type: str) -> str:
     """Fetch the full license text from the official URL for each license type."""
@@ -158,7 +144,7 @@ def fetch_license_text(license_type: str) -> str:
         "Unlicense": "https://unlicense.org/",
         "Zlib": "https://opensource.org/licenses/Zlib",
         "BSL-1.0": "https://opensource.org/licenses/BSL-1.0",
-        "WTFPL": "http://www.wtfpl.net/"
+        "WTFPL": "http://www.wtfpl.net/",
     }
 
     normalized_license = normalize_license_name(license_type)
@@ -176,6 +162,7 @@ def fetch_license_text(license_type: str) -> str:
     except requests.RequestException:
         return f"{normalized_license} License\n\n[License text unavailable. Please check official site]."
 
+
 def autofill_license(license_text: str) -> str:
     """Replace placeholders in license text."""
     current_year = str(datetime.datetime.now().year)
@@ -186,10 +173,11 @@ def autofill_license(license_text: str) -> str:
 
     return license_text
 
+
 def create_license(base_path: str, license_type: str) -> None:
     """Create a LICENSE.txt file with the specified license type."""
     license_path = os.path.join(base_path, "LICENSE.txt")
-    
+
     # Fetch and autofill license text
     license_content = fetch_license_text(license_type)
     license_content = autofill_license(license_content)
@@ -205,7 +193,14 @@ def create_license(base_path: str, license_type: str) -> None:
         exc_type, exc_value, exc_tb = sys.exc_info()
         traceback.print_exception(exc_type, exc_value, exc_tb)
 
-def create_files_from_templates(base_path: str, app_name: str, templates_folder: str, license_type: str, dynamic_content: Optional[Dict[str, str]] = None) -> None:
+
+def create_files_from_templates(
+    base_path: str,
+    app_name: str,
+    templates_folder: str,
+    license_type: str,
+    dynamic_content: Optional[Dict[str, str]] = None,
+) -> None:
     """Create necessary files for the app by loading content from templates."""
 
     file_mappings = {
@@ -240,7 +235,7 @@ def create_files_from_templates(base_path: str, app_name: str, templates_folder:
                 content = template_file.read()
         except FileNotFoundError:
             pass
-        
+
         except Exception:
             exc_type, exc_value, exc_tb = sys.exc_info()
             traceback.print_exception(exc_type, exc_value, exc_tb)

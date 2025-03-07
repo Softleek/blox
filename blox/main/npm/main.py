@@ -8,6 +8,7 @@ import click
 from ...utils.config import APPS_PATH, PROJECT_ROOT
 from ...utils.file_operations import ensure_file_exists
 
+
 def update_package_json(app_name: str, libraries: List[str]) -> None:
     """
     Update the package.json file of the specified app with the given libraries.
@@ -37,7 +38,9 @@ def update_package_json(app_name: str, libraries: List[str]) -> None:
     click.echo(f"Updated {package_json_path} with new dependencies.")
 
 
-def install_npm_packages(libraries: List[str], app_name: Optional[str], site: str) -> None:
+def install_npm_packages(
+    libraries: List[str], app_name: Optional[str], site: str
+) -> None:
     """
     Install the specified NPM packages in the core Next.js project.
 
@@ -61,7 +64,7 @@ def install_npm_packages(libraries: List[str], app_name: Optional[str], site: st
             subprocess.check_call(npm_command, cwd=nextjs_path, shell=True)
         else:  # Unix-based systems
             subprocess.check_call(npm_command, cwd=nextjs_path)
-            
+
         click.echo("Libraries installed successfully in core Next.js project.")
     except subprocess.CalledProcessError as e:
         click.echo(f"Error installing libraries in core Next.js project: {e}")
@@ -85,7 +88,7 @@ def npm() -> None:
 def install(libraries: List[str], app: Optional[str], site: Optional[str]) -> None:
     """
     Install the specified NPM packages in the project.
-    
+
     Usage: blox npm install <library_name> [<library_name>...] [--app <app_name>] [--site <site_name>]
 
     Args:
@@ -94,9 +97,11 @@ def install(libraries: List[str], app: Optional[str], site: Optional[str]) -> No
         site (Optional[str]): The name of the site (if any).
     """
     run_npm_install(libraries, app, site)
-    
-    
-def run_npm_install(libraries: List[str], app: Optional[str], site: Optional[str]) -> None:
+
+
+def run_npm_install(
+    libraries: List[str], app: Optional[str], site: Optional[str]
+) -> None:
     """
     Run the NPM install process for the specified libraries, app, and site.
 
@@ -149,7 +154,7 @@ def run_npm_install(libraries: List[str], app: Optional[str], site: Optional[str
 def i(libraries: List[str], app: Optional[str], site: Optional[str]) -> None:
     """
     Install the specified NPM packages in the project using the alias 'i'.
-    
+
     Usage: blox npm i <library_name> [<library_name>...] [--app <app_name>] [--site <site_name>]
 
     Args:

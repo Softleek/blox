@@ -1,46 +1,65 @@
+import subprocess
+import sys
+
 from setuptools import find_packages, setup
+
+DEPENDENCIES = [
+    "asgiref",
+    "autoflake",
+    "black",
+    "certifi",
+    "cffi",
+    "charset-normalizer",
+    "cryptography",
+    "defusedxml",
+    "Django",
+    "django-allauth",
+    "django-cors-headers",
+    "django-crontab",
+    "django-filter",
+    "django-multiselectfield",
+    "djangorestframework",
+    "flake8",
+    "idna",
+    "isort",
+    "oauthlib",
+    "pandas",
+    "Pillow",
+    "pycparser",
+    "PyJWT",
+    "PyMySQL",
+    "python-barcode",
+    "python-decouple",
+    "python3-openid",
+    "pytz",
+    "qrcode",
+    "requests",
+    "requests-oauthlib",
+    "six",
+    "sqlparse",
+    "typing_extensions",
+    "tzdata",
+    "urllib3",
+    "unicode",
+    "whitenoise",
+    "xlrd",
+]
+
+
+def check_and_install_deps():
+    subprocess.check_call(
+        [sys.executable, "-m", "pip", "install", "--upgrade"] + DEPENDENCIES
+    )
+
+
+check_and_install_deps()
 
 setup(
     name="blox",
     version="0.1",
     packages=find_packages(),
     include_package_data=True,
-    install_requires=[
-        "Click",
-        "asgiref==3.7.2",
-        "autoflake",
-        "certifi==2023.7.22",
-        "cffi==1.16.0",
-        "charset-normalizer==3.2.0",
-        "cryptography==41.0.3",
-        "defusedxml==0.7.1",
-        "Django==4.2.5",
-        "django-allauth==0.56.0",
-        "django-cors-headers==4.2.0",
-        "django-crontab==0.7.1",
-        "django-filter==23.3",
-        "django-multiselectfield==0.1.13",
-        "djangorestframework==3.14.0",
-        "idna==3.4",
-        "oauthlib==3.2.2",
-        "pandas",
-        "Pillow==10.1.0",
-        "pycparser==2.21",
-        "PyJWT==2.8.0",
-        "PyMySQL==1.1.0",
-        "python-barcode==0.15.1",
-        "python-decouple==3.8",
-        "python3-openid==3.2.0",
-        "pytz==2023.3.post1",
-        "qrcode==7.4.2",
-        "requests==2.31.0",
-        "requests-oauthlib==1.3.1",
-        "six==1.16.0",
-        "sqlparse==0.4.4",
-        "typing_extensions==4.9.0",
-        "tzdata==2023.3",
-        "urllib3==2.0.4",
-    ],
+    install_requires=DEPENDENCIES,
     entry_points={
         "console_scripts": [
             "blox=blox.cli:cli",

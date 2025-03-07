@@ -2,17 +2,18 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission, User
 from django.db import models
 from django.utils import timezone
-from .template import BaseModel
 
+from .template import BaseModel
 
 
 class RoleType(BaseModel):
     name = models.CharField(max_length=255)
-    
+
+
 class Branch(BaseModel):
     name = models.CharField(max_length=255)
-    
-    
+
+
 class User(AbstractUser):
     ROLE_CHOICES = (
         ("Customer", "Customer"),
@@ -23,7 +24,7 @@ class User(AbstractUser):
     role = models.CharField(max_length=200, choices=ROLE_CHOICES, default="Customer")
     groups = models.ManyToManyField(
         Group, related_name="api_user_groups", blank=True  # Add a unique related name
-    ) 
+    )
     user_permissions = models.ManyToManyField(
         Permission,
         related_name="api_user_permissions",  # Add a unique related name
@@ -40,12 +41,13 @@ class User(AbstractUser):
     modified = models.DateTimeField(auto_now=True)
     last_activity = models.DateTimeField(auto_now=True)
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, blank=True, null=True)
-    
 
     def save(self, *args, **kwargs):
-        self.role = "Admin" if self.is_superuser else "Staff" if self.is_staff else "Customer"
-        self.is_superuser = (self.role == "Admin")
-        self.is_staff = (self.role in ["Admin", "Staff"])
+        self.role = (
+            "Admin" if self.is_superuser else "Staff" if self.is_staff else "Customer"
+        )
+        self.is_superuser = self.role == "Admin"
+        self.is_staff = self.role in ["Admin", "Staff"]
         super(User, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -60,12 +62,14 @@ class OTP(models.Model):
 
 
 class UserIPAddress(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ip_addresses')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="ip_addresses"
+    )
     ip_address = models.GenericIPAddressField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'ip_address')
+        unique_together = ("user", "ip_address")
 
     def __str__(self):
         return f"{self.user.username} - {self.ip_address} ({self.timestamp})"

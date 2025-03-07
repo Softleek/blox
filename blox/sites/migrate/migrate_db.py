@@ -131,7 +131,9 @@ def create_database_user() -> Tuple[str, str, str]:
     return new_user, new_password, new_db
 
 
-def drop_existing_tables(db_name: str, user: str, password: str, host: str = "localhost") -> None:
+def drop_existing_tables(
+    db_name: str, user: str, password: str, host: str = "localhost"
+) -> None:
     """Drop all tables in the given database.
 
     Args:
@@ -161,7 +163,9 @@ def drop_existing_tables(db_name: str, user: str, password: str, host: str = "lo
         conn.close()
 
 
-def update_app_settings(user: str, password: str, db_name: str, host: str = "localhost") -> None:
+def update_app_settings(
+    user: str, password: str, db_name: str, host: str = "localhost"
+) -> None:
     """Update settings.py to use MariaDB/MySQL.
 
     Args:

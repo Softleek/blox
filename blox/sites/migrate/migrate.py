@@ -7,13 +7,13 @@ from typing import Optional
 
 import click
 
-from ...utils.config import (DEFAULT_SITE, DJANGO_PATH, PROJECT_ROOT, find_django_path)
+from ...utils.config import DEFAULT_SITE, DJANGO_PATH, PROJECT_ROOT, find_django_path
 from ..utils.app_database_utils import create_entries_from_config
 from ..utils.configure_app import configure_app, configure_doc, configure_module
+from ..utils.load_doc_config import get_all_sites
 from .migrate_app import migrate_app
 from .migrate_doc import migrate_doc
 from .migrate_module import migrate_module
-from ..utils.load_doc_config import get_all_sites
 
 MODULES_FOLDER = {
     "views": "views",
@@ -41,7 +41,13 @@ def remove_class_block(file_path: str, class_name: str) -> None:
         file.write(content)
 
 
-def updatefiles(app: Optional[str] = None, module: Optional[str] = None, doc: Optional[str] = None, site: Optional[str] = None, all: bool = True) -> None:
+def updatefiles(
+    app: Optional[str] = None,
+    module: Optional[str] = None,
+    doc: Optional[str] = None,
+    site: Optional[str] = None,
+    all: bool = True,
+) -> None:
     """Update files and perform migrations based on provided options.
 
     Args:
@@ -65,7 +71,9 @@ def updatefiles(app: Optional[str] = None, module: Optional[str] = None, doc: Op
 
         return
 
-    selected_site = next((s for s in sites if s.get("site_name") == site), None) if site else None
+    selected_site = (
+        next((s for s in sites if s.get("site_name") == site), None) if site else None
+    )
 
     if doc and module and app:
         configure_doc(app, module, doc)
@@ -85,12 +93,28 @@ def updatefiles(app: Optional[str] = None, module: Optional[str] = None, doc: Op
             migrate_app(app, DJANGO_PATH)
 
     subprocess.run(
-        ["autoflake", "--in-place", "--remove-unused-variables", "--recursive", "--exclude", "*/__init__.py", "."],
+        [
+            "autoflake",
+            "--in-place",
+            "--remove-unused-variables",
+            "--recursive",
+            "--exclude",
+            "*/__init__.py",
+            ".",
+        ],
         cwd=DJANGO_PATH,
     )
 
     subprocess.run(
-        ["autoflake", "--in-place", "--remove-all-unused-imports", "--recursive", "--exclude", "*/__init__.py", "."],
+        [
+            "autoflake",
+            "--in-place",
+            "--remove-all-unused-imports",
+            "--recursive",
+            "--exclude",
+            "*/__init__.py",
+            ".",
+        ],
         cwd=DJANGO_PATH,
     )
     click.echo("Migration process completed successfully.")
@@ -150,11 +174,22 @@ def run_migrate_django(site: Optional[str] = None) -> None:
     )
 
     create_entries_from_config(DJANGO_PATH, site)
-    message = f"Migration completed successfully for site '{site}'." if site else "Migration completed successfully."
+    message = (
+        f"Migration completed successfully for site '{site}'."
+        if site
+        else "Migration completed successfully."
+    )
     click.echo(message)
 
 
-def run_migration(app: Optional[str] = None, module: Optional[str] = None, doc: Optional[str] = None, site: Optional[str] = None, all_sites: bool = True, skip: bool = False) -> None:
+def run_migration(
+    app: Optional[str] = None,
+    module: Optional[str] = None,
+    doc: Optional[str] = None,
+    site: Optional[str] = None,
+    all_sites: bool = True,
+    skip: bool = False,
+) -> None:
     """Core migration process.
 
     Args:
@@ -204,7 +239,14 @@ def run_migration(app: Optional[str] = None, module: Optional[str] = None, doc: 
 @click.option(
     "-s", "--skip", is_flag=True, help="Skip updating files before running migrations."
 )
-def migrate(app: Optional[str] = None, module: Optional[str] = None, doc: Optional[str] = None, site: Optional[str] = None, all: bool = True, skip: bool = False) -> None:
+def migrate(
+    app: Optional[str] = None,
+    module: Optional[str] = None,
+    doc: Optional[str] = None,
+    site: Optional[str] = None,
+    all: bool = True,
+    skip: bool = False,
+) -> None:
     """Run Django makemigrations and migrate commands.
 
     Args:

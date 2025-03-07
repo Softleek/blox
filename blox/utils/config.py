@@ -4,8 +4,9 @@ from typing import Optional, Tuple
 
 import click
 
-from .default_site import get_default_site_info
 from ..utils.file_operations import ensure_file_exists
+from .default_site import get_default_site_info
+
 
 def find_project_root(current_path: str) -> str:
     while current_path != "/":
@@ -14,8 +15,10 @@ def find_project_root(current_path: str) -> str:
         current_path = os.path.dirname(current_path)
     raise FileNotFoundError("Project root with 'blox.config' not found.")
 
+
 def find_django_path(site: str) -> str:
     return os.path.join(PROJECT_ROOT, f"backend")
+
 
 def write_running_ports(django_port: int, nextjs_port: int) -> None:
     next_path = os.path.join(PROJECT_ROOT)
@@ -46,7 +49,10 @@ def write_running_ports(django_port: int, nextjs_port: int) -> None:
                 f.write(f"NEXT_PUBLIC_DJANGO_PORT={django_port}\n")
                 f.write(f"NEXT_PUBLIC_NEXTJS_PORT={nextjs_port}\n")
 
-def find_module_base_path(app_name: str, module_name: Optional[str] = None, app_path: Optional[str] = None) -> Tuple[Optional[str], Optional[str]]:
+
+def find_module_base_path(
+    app_name: str, module_name: Optional[str] = None, app_path: Optional[str] = None
+) -> Tuple[Optional[str], Optional[str]]:
     """Locate the modules.txt file and determine the base path for modules, searching specified directories.
 
     Args:
@@ -68,9 +74,10 @@ def find_module_base_path(app_name: str, module_name: Optional[str] = None, app_
             return modules_file_path, modules_path
     else:
         if os.path.isfile(modules_file_path):
-            return modules_file_path, base_path    
+            return modules_file_path, base_path
 
     return None, None
+
 
 PROJECT_ROOT = find_project_root(os.getcwd())
 APPS_TXT_PATH = os.path.join(PROJECT_ROOT, "config", "apps.txt")
@@ -78,6 +85,6 @@ SITES_JSON_PATH = os.path.join(PROJECT_ROOT, "sites", "sites.json")
 DOCS_JSON_PATH = os.path.join(PROJECT_ROOT, "sites", "doctypes.json")
 PRINT_JSON_PATH = os.path.join(PROJECT_ROOT, "sites", "print_formats.json")
 APPS_PATH = os.path.join(PROJECT_ROOT, "apps")
-DJANGO_PATH =  os.path.join(PROJECT_ROOT, "backend")
+DJANGO_PATH = os.path.join(PROJECT_ROOT, "backend")
 DEFAULT_SITE = get_default_site_info(PROJECT_ROOT)
 SITES_PATH = os.path.join(PROJECT_ROOT, "sites")

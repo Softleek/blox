@@ -1,4 +1,5 @@
 from typing import List, Optional, Tuple
+
 from ...utils.config import APPS_TXT_PATH, find_module_base_path
 from .load_doc_config import load_existing_data
 
@@ -81,7 +82,9 @@ def get_name_by_id(entity_id: str, entity_type: str) -> Optional[str]:
     return None
 
 
-def get_doc_details(doc_identifier: str) -> Optional[Tuple[Optional[str], Optional[str], Optional[str]]]:
+def get_doc_details(
+    doc_identifier: str,
+) -> Optional[Tuple[Optional[str], Optional[str], Optional[str]]]:
     """
     Retrieves the app ID, module ID, and doc ID associated with a given document name or ID.
 

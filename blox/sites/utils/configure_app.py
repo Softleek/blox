@@ -4,7 +4,7 @@ from typing import List, Tuple
 from ...utils.register_models import register_to_model_json
 from ...utils.register_prints import register_to_print_json
 from ...utils.text import underscore_to_titlecase
-from .generate_json import create_doctypes_json, add_single_entry
+from .generate_json import add_single_entry, create_doctypes_json
 
 
 def configure_app(app_name: str) -> None:
@@ -42,7 +42,9 @@ def configure_doc(app_name: str, module_name: str, doc_name: str) -> None:
     add_single_entry(app_name, module_name, doc_name)
 
 
-def process_folder_docs(app_name: str, module: str, folder_path: str, django_path: str) -> Tuple[List[str], List[str]]:
+def process_folder_docs(
+    app_name: str, module: str, folder_path: str, django_path: str
+) -> Tuple[List[str], List[str]]:
     """
     Processes each document or doctype in the specified folder and returns model names and import statements.
 
@@ -76,7 +78,6 @@ def process_folder_docs(app_name: str, module: str, folder_path: str, django_pat
             doc_name=item_name,
             django_path=django_path,
         )
-
 
     # Use list comprehension for faster directory listing and processing
     items = [

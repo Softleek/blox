@@ -1,11 +1,11 @@
 import random
 import string
+import uuid
 
 from django.db import models
 from multiselectfield import MultiSelectField
 
 from .template import BaseModel
-import uuid
 
 RESERVED_KEYNAMES = ["admin", "system"]
 
@@ -13,6 +13,7 @@ RESERVED_KEYNAMES = ["admin", "system"]
 def generate_random_slug(length=10):
     characters = string.ascii_lowercase + string.digits
     return "".join(random.choices(characters, k=length))
+
 
 # Default choices for the license field and supported platforms
 DEFAULT_LICENSE_CHOICES = [
@@ -30,8 +31,9 @@ SUPPORTED_PLATFORMS_CHOICES = [
     ("Windows", "Windows"),
     ("Linux", "Linux"),
     ("MacOS", "MacOS"),
-    ("Custom", "Custom (Add New)")  # Option to add a custom platform
+    ("Custom", "Custom (Add New)"),  # Option to add a custom platform
 ]
+
 
 class ChangeLog(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
@@ -43,6 +45,7 @@ class ChangeLog(models.Model):
 
     def __str__(self):
         return f"ChangeLog for {self.model_name} {self.object_id} at {self.timestamp}"
+
 
 class AbstractApp(BaseModel):
     status = models.CharField(max_length=255, default="Active")
@@ -80,31 +83,34 @@ class AbstractApp(BaseModel):
 
 class App(AbstractApp):
     email = models.EmailField(null=True, blank=True)
-    
+
     # License field with choices and option to add custom
     license = models.CharField(
-        max_length=50,
-        choices=DEFAULT_LICENSE_CHOICES,
-        default="MIT"
+        max_length=50, choices=DEFAULT_LICENSE_CHOICES, default="MIT"
     )
-    
+
     publisher = models.CharField(max_length=255, null=True, blank=True)
     app_url = models.URLField(null=True, blank=True)  # URL associated with the app
-    
+
     # Additional Information
-    version = models.CharField(max_length=50, default="1.0.0", null=True, blank=True)  # Version of the app
-    contact_phone = models.CharField(max_length=20, null=True, blank=True)  # Optional phone number
-    
+    version = models.CharField(
+        max_length=50, default="1.0.0", null=True, blank=True
+    )  # Version of the app
+    contact_phone = models.CharField(
+        max_length=20, null=True, blank=True
+    )  # Optional phone number
+
     # MultiSelectField for supported platforms, allowing multiple selections
     supported_platforms = MultiSelectField(
-        choices=SUPPORTED_PLATFORMS_CHOICES,
-        null=True,
-        blank=True
+        choices=SUPPORTED_PLATFORMS_CHOICES, null=True, blank=True
     )
-    
-    app_icon = models.ImageField(upload_to="app_icons/", null=True, blank=True)  # App icon (image)
-    github_url = models.URLField(null=True, blank=True)  # Link to GitHub (if applicable)
-    
+
+    app_icon = models.ImageField(
+        upload_to="app_icons/", null=True, blank=True
+    )  # App icon (image)
+    github_url = models.URLField(
+        null=True, blank=True
+    )  # Link to GitHub (if applicable)
 
 
 class Module(AbstractApp):
@@ -128,14 +134,18 @@ class Document(AbstractApp):
     def __str__(self):
         return f"{self.name} - {self.module}"
 
+
 class PrintFormat(AbstractApp):
     app = models.ForeignKey(App, on_delete=models.CASCADE, related_name="print_formats")
 
-    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name="print_formats")
+    module = models.ForeignKey(
+        Module, on_delete=models.CASCADE, related_name="print_formats"
+    )
     type = models.CharField(max_length=255, default="custom")
 
     def __str__(self):
         return f"{self.name} - {self.module}"
+
 
 class Tenant(models.Model):
     name = models.CharField(max_length=255, unique=True)

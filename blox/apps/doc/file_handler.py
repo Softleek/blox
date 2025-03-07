@@ -1,6 +1,7 @@
 import os
-from ...utils.text import to_titlecase_no_space
 from typing import Dict
+
+from ...utils.text import to_titlecase_no_space
 
 
 def create_files(base_path: str, doc_name: str, doc_id: str, module: str) -> str:

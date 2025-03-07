@@ -1,8 +1,8 @@
 import os
+import shutil
 from typing import List, Tuple
 
 import click
-import shutil
 
 from ...utils.config import find_module_base_path
 from ...utils.text import to_snake_case
@@ -79,7 +79,9 @@ def migrate_module(app_name: str, module: str, django_path: str) -> None:
 
     # Check if the module path exists
     if not module_path or not os.path.exists(module_path):
-        click.echo(f"Module '{module}' does not exist in app '{module_path}'. Skipping...")
+        click.echo(
+            f"Module '{module}' does not exist in app '{module_path}'. Skipping..."
+        )
         return
 
     # Define the paths for 'doc' and 'doctype' folders
@@ -109,7 +111,10 @@ STRUCTURE = {
     "tests": "tests",
 }
 
-def process_folder_docs(app_name: str, module: str, folder_path: str, folder_type: str, django_path: str) -> None:
+
+def process_folder_docs(
+    app_name: str, module: str, folder_path: str, folder_type: str, django_path: str
+) -> None:
     """
     Processes each document or doctype in the specified folder.
 
@@ -124,15 +129,18 @@ def process_folder_docs(app_name: str, module: str, folder_path: str, folder_typ
     folder_docs = [
         item_name
         for item_name in os.listdir(folder_path)
-        if os.path.isdir(os.path.join(folder_path, item_name)) and not item_name.startswith(("_", "pycache"))
+        if os.path.isdir(os.path.join(folder_path, item_name))
+        and not item_name.startswith(("_", "pycache"))
     ]
-    
+
     module = to_snake_case(module)
 
     # Iterate over the STRUCTURE and delete all files in the module path
     for key, structure_item in STRUCTURE.items():
-        module_path = os.path.join(django_path, f"{app_name}_app", structure_item, module)
-        
+        module_path = os.path.join(
+            django_path, f"{app_name}_app", structure_item, module
+        )
+
         if os.path.exists(module_path):
             shutil.rmtree(module_path)
         os.makedirs(module_path, exist_ok=True)
@@ -140,7 +148,7 @@ def process_folder_docs(app_name: str, module: str, folder_path: str, folder_typ
     # Process each document in the folder
     for item_name in folder_docs:
         item_path = os.path.join(folder_path, item_name)
-        
+
         if os.path.isdir(item_path):
             migrate_doc(
                 app_name=app_name,

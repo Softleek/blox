@@ -10,14 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import json
 import os
 import sys
 from pathlib import Path
 
-from decouple import config
-
 import pymysql
-import json
+from decouple import config
 
 pymysql.install_as_MySQLdb()
 
@@ -26,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_PATH = BASE_DIR.parent
 CONFIG_PATH = os.path.join(PROJECT_PATH, "config")
 SITE_PATH = os.path.join(PROJECT_PATH, "sites")
-sys.path.append(str(PROJECT_PATH)) 
+sys.path.append(str(PROJECT_PATH))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -65,7 +64,7 @@ THIRD_PARTY_APPS = [
 
 # Custom Apps – Only these will be exposed via API
 CUSTOM_APPS = [
-    "core",    
+    "core",
     "masafa_app",
 ]
 
@@ -74,7 +73,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
 
 
 MIDDLEWARE = [
-    'core.middleware.TenantMiddleware',
+    "core.middleware.TenantMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -84,7 +83,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'core.middleware.UserActivityMiddleware', 
+    "core.middleware.UserActivityMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -158,7 +157,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
@@ -196,8 +194,6 @@ LOGOUT_REDIRECT_URL = "/"
 # ----------------------------------------------------------------------
 # Auth and user
 # ----------------------------------------------------------------------
-
-
 
 
 REST_USE_JWT = True
@@ -240,9 +236,9 @@ ACCOUNT_EMAIL_CONFIRMATION_SIGNUP_MESSAGE = "account/confirmation_signup_message
 
 
 SMS_API_KEY = config("SMS_API_KEY", default="")
-SMS_CLIENT_ID = config("SMS_CLIENT_ID", default="") 
-SMS_SENDER_ID = config("SMS_SENDER_ID", default="") 
-SMS_API_URL = config("SMS_API_URL", default="") 
+SMS_CLIENT_ID = config("SMS_CLIENT_ID", default="")
+SMS_SENDER_ID = config("SMS_SENDER_ID", default="")
+SMS_API_URL = config("SMS_API_URL", default="")
 SMS_IS_UNICODE = True
 SMS_IS_FLASH = True
 
@@ -263,23 +259,48 @@ CRONJOBS = [
 ]
 
 
-# Load database configurations from sites.json
-with open(os.path.join(PROJECT_PATH, 'sites', 'sites.json')) as f:
-    sites = json.load(f)
+# ----------------------------------------------------------------------
+# Multi-tenancy settings
+# ----------------------------------------------------------------------
 
-# Define the default database
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+default_site = "default"
+common_config_file = SITE_PATH / "common_site_config.json"
+
+if common_config_file.exists():
+    try:
+        with open(common_config_file) as f:
+            common_config = json.load(f)
+            if isinstance(common_config, dict) and "default_site" in common_config:
+                default_site = common_config["default_site"]
+    except json.JSONDecodeError:
+        pass
+
+DATABASES = {}
+
+for site_folder in SITE_PATH.iterdir():
+    site_config_file = site_folder / "site_config.json"
+
+    if site_folder.is_dir() and site_config_file.exists():
+        try:
+            with open(site_config_file) as f:
+                site_config = json.load(f)
+                if (
+                    isinstance(site_config, dict)
+                    and "site_name" in site_config
+                    and "database" in site_config
+                ):
+                    DATABASES[site_config["site_name"]] = site_config["database"]
+        except json.JSONDecodeError:
+            pass
+
+if default_site in DATABASES:
+    DATABASES = {default_site: DATABASES[default_site]}
+else:
+    DATABASES = {
+        default_site: {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
 
-# Add databases from sites.json
-for site in sites:
-    DATABASES[site['site_name']] = site['database']
-
-
-DATABASE_ROUTERS = ['core.db_router.MultiTenantRouter']
-
-sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "masafa")))
+DATABASE_ROUTERS = ["core.db_router.MultiTenantRouter"]

@@ -1,12 +1,13 @@
 import os
 import shutil
-import click
 import sys
 import traceback
 from typing import List
 
-from ...utils.config import PROJECT_ROOT
+import click
+
 from ...sites.migrate.migrate import run_migration
+from ...utils.config import PROJECT_ROOT
 
 
 @click.command()

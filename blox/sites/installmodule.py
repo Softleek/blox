@@ -4,9 +4,10 @@ from typing import List, Optional
 
 import click
 
-from ..utils.config import DEFAULT_SITE, DJANGO_PATH, PROJECT_ROOT
 from ..sites.migrate.migrate import run_migration
+from ..utils.config import DEFAULT_SITE, DJANGO_PATH, PROJECT_ROOT
 from ..utils.file_operations import ensure_file_exists
+
 
 @click.command()
 @click.option(
@@ -14,7 +15,9 @@ from ..utils.file_operations import ensure_file_exists
 )
 @click.option("--app", type=str, help="The name of the app containing the module.")
 @click.option("--module", type=str, help="The name of the module to install.")
-def installmodule(site: Optional[str], app: Optional[str], module: Optional[str]) -> None:
+def installmodule(
+    site: Optional[str], app: Optional[str], module: Optional[str]
+) -> None:
     """
     Install a module into a selected app and update sites.json.
 
@@ -26,7 +29,7 @@ def installmodule(site: Optional[str], app: Optional[str], module: Optional[str]
     # Load sites from sites.json
     sites_json_path: str = os.path.join(PROJECT_ROOT, "sites", "sites.json")
     ensure_file_exists(sites_json_path, initial_data=[])
-    
+
     if os.path.exists(sites_json_path):
         with open(sites_json_path, "r") as json_file:
             sites = json.load(json_file)

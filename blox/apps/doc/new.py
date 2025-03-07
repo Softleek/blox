@@ -1,11 +1,12 @@
 import os
-import click
-from typing import Optional, List
+from typing import List, Optional
 
+import click
+
+from ...sites.migrate.migrate import run_migration
 from ...utils.config import PROJECT_ROOT
 from ...utils.text import to_snake_case
 from .file_handler import create_files
-from ...sites.migrate.migrate import run_migration
 
 
 @click.command()
@@ -98,12 +99,16 @@ def determine_app_selection(app: Optional[str], apps: List[str]) -> Optional[str
             app_index: int = int(app_choice) - 1
             return apps[app_index] if 0 <= app_index < len(apps) else None
         else:
-            return to_snake_case(app_choice) if to_snake_case(app_choice) in apps else None
+            return (
+                to_snake_case(app_choice) if to_snake_case(app_choice) in apps else None
+            )
     else:
         return app if app in apps else None
 
 
-def determine_module_selection(module_id: Optional[str], modules: List[str]) -> Optional[str]:
+def determine_module_selection(
+    module_id: Optional[str], modules: List[str]
+) -> Optional[str]:
     """
     Determine the module selection based on user input or provided module name.
 
@@ -125,6 +130,10 @@ def determine_module_selection(module_id: Optional[str], modules: List[str]) -> 
             module_index: int = int(module_choice) - 1
             return modules[module_index] if 0 <= module_index < len(modules) else None
         else:
-            return to_snake_case(module_choice) if to_snake_case(module_choice) in modules else None
+            return (
+                to_snake_case(module_choice)
+                if to_snake_case(module_choice) in modules
+                else None
+            )
     else:
         return module_id if module_id in modules else None
