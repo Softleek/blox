@@ -91,7 +91,7 @@ const DataTable = ({
   return (
     <>
       {showComponents && (
-        <div className="border border-slate-300 w-full rounded-lg p-4 bg-white shadow-xs my-4 overflow-x-auto">
+        <div className="border border-slate-300 w-full rounded-lg p-4 bg-white shadow-sm my-4 overflow-x-auto">
           <table className="w-full border-collapse text-xs">
             <thead>
               <tr className="bg-fuchsia-50 border-b">

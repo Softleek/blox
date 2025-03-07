@@ -66,7 +66,7 @@ const CustomDateSelector = ({ selectedDate, onChange, readOnly }) => {
   };
 
   return (
-    <div className="flex flex-row w-full focus:outline-hidden focus:ring-0 focus:border-none">
+    <div className="flex flex-row w-full focus:outline-none focus:ring-0 focus:border-none">
       <input
         type="text"
         value={inputValue}
@@ -74,13 +74,13 @@ const CustomDateSelector = ({ selectedDate, onChange, readOnly }) => {
         readOnly={readOnly}
         onBlur={handleInputBlur}
         placeholder="DD-MM-YYYY"
-        className="w-full focus:outline-hidden focus:ring-0 focus:border-none"
+        className="w-full focus:outline-none focus:ring-0 focus:border-none"
       />
       <div className={`w-6 ${readOnly ? "hidden" : ""}`}>
         <Datepicker
           value={{ startDate: value, endDate: value }}
           inputClassName="w-0"
-          toggleClassName="absolute bg-linear-to-tl from-purple-700 to-pink-500 rounded-md text-white right-0 h-full p-[1px] text-gray-400 focus:outline-hidden disabled:opacity-40 disabled:cursor-not-allowed"
+          toggleClassName="absolute bg-gradient-to-tl from-purple-700 to-pink-500 rounded-md text-white right-0 h-full p-[1px] text-gray-400 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed"
           containerClassName=""
           readOnly
           onChange={handleChange}

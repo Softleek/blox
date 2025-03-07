@@ -114,7 +114,7 @@ const DocSettings = ({ config, onChange, saveSettings, setting, data }) => {
                 value={settings.smsPhone}
                 onChange={handleChange}
                 placeholder="Enter SMS phone number"
-                className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
+                className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             )}
           </div>
@@ -139,7 +139,7 @@ const DocSettings = ({ config, onChange, saveSettings, setting, data }) => {
                 value={settings.emailAddress}
                 onChange={handleChange}
                 placeholder="Enter email address"
-                className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
+                className="w-full px-2 py-2 border text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             )}
           </div>

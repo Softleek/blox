@@ -19,7 +19,7 @@ const SmallTextField = ({
         readOnly={readOnly || preview} // Make input readOnly in both readOnly and preview mode
         disabled={readOnly || preview}
         hidden={hidden}
-        className="px-1 text-sm w-full focus:outline-hidden focus:ring-0 focus:border-none"
+        className="px-1 text-sm w-full focus:outline-none focus:ring-0 focus:border-none"
         placeholder="Start typing your text here..."
       />
     </div>

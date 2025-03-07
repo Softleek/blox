@@ -18,7 +18,7 @@ const TextAreaField = ({
         readOnly={readOnly || preview} // Make input readOnly in both readOnly and preview mode
         disabled={readOnly || preview}
         onChange={handleInputChange || onChange}
-        className="px-1 text-sm w-full focus:outline-hidden focus:ring-0 focus:border-none"
+        className="px-1 text-sm w-full focus:outline-none focus:ring-0 focus:border-none"
         placeholder={placeholder}
         hidden={hidden}
       />

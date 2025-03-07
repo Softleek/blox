@@ -200,7 +200,7 @@ const DocLink = ({
       <button
         type="button"
         onClick={handleAddNew}
-        className="py-1.5 px-3 rounded-sm bg-purple-500 hover:bg-purple-700 text-white"
+        className="py-1.5 px-3 rounded bg-purple-500 hover:bg-purple-700 text-white"
         title="Add New"
       >
         <FontAwesomeIcon icon={faPlus} />

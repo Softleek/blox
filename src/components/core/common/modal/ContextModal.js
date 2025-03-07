@@ -20,7 +20,7 @@ const ContextConfirmationModal = () => {
       isOpen={isOpen}
       onClose={closeModal}
       position="top"
-      className="pt-40!"
+      className="!pt-40"
     >
       <div className="flex flex-col w-fit p-4">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">{title}</h2>

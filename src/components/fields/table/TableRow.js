@@ -37,7 +37,7 @@ const TableRow = ({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.1, ease: "easeInOut", delay: rowIndex * 0.1 }}
-      className="bg-white shadow-xs hover:bg-gray-100"
+      className="bg-white shadow-sm hover:bg-gray-100"
     >
       <td className={`px-2 ${readOnly ? "hidden" : ""}`}>
         <input

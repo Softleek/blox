@@ -19,7 +19,7 @@ const ListColorPrint = forwardRef(
             </tr>
           </thead>
           {/* Watermark */}
-          <div className="fixed bottom-0 -m-8 z-1 top-0 w-full flex items-center justify-center bg-linear-to-br from-blue-50 via-purple-50 to-pink-50">
+          <div className="fixed bottom-0 -m-8 z-1 top-0 w-full flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
             <span className="text-8xl font-bold text-gray-300 opacity-60 rotate-[-30deg]">
               Masafa Logistics
             </span>
@@ -67,7 +67,7 @@ const ListColorPrint = forwardRef(
                   {fields?.map((field, index) => (
                     <th
                       key={index}
-                      className="px-4 py-2 text-white bg-linear-to-r from-blue-500 via-pink-500 to-purple-500 font-semibold text-sm"
+                      className="px-4 py-2 text-white bg-gradient-to-r from-blue-500 via-pink-500 to-purple-500 font-semibold text-sm"
                     >
                       {field.name}
                     </th>

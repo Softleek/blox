@@ -180,7 +180,7 @@ const SettingsPermissionTable = ({ settings = {}, onPermissionsChange }) => {
                           name={perm}
                           checked={newPermission?.permissions[perm]}
                           onChange={handlePermissionCheckboxChange}
-                          className="h-4 w-4 border-gray-300 rounded-sm focus:ring-purple-500"
+                          className="h-4 w-4 border-gray-300 rounded focus:ring-purple-500"
                         />
                       ) : permission.permissions.includes(perm) ? (
                         <span className="text-green-500">✓</span>
@@ -241,7 +241,7 @@ const SettingsPermissionTable = ({ settings = {}, onPermissionsChange }) => {
                         name={perm}
                         checked={newPermission?.permissions[perm]}
                         onChange={handlePermissionCheckboxChange}
-                        className="h-4 w-4 border-gray-300 rounded-sm focus:ring-purple-500"
+                        className="h-4 w-4 border-gray-300 rounded focus:ring-purple-500"
                       />
                     </td>
                   ))}

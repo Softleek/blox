@@ -85,7 +85,7 @@ export default function LoginForm({ onLoginSuccess }) {
               onChange={(e) =>
                 setCredentials({ ...credentials, username: e.target.value })
               }
-              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-hidden focus:border-b-blue-600"
+              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-b-blue-600"
               placeholder="Username"
             />
             <label
@@ -106,7 +106,7 @@ export default function LoginForm({ onLoginSuccess }) {
               onChange={(e) =>
                 setCredentials({ ...credentials, password: e.target.value })
               }
-              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-hidden focus:border-b-blue-600"
+              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-b-blue-600"
               placeholder="Password"
             />
             <label
@@ -127,7 +127,7 @@ export default function LoginForm({ onLoginSuccess }) {
           </div>
           <button
             type="submit"
-            className="relative inline-block w-full px-6 py-3 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-linear-to-tl from-purple-800 to-purple-700 hover:shadow-soft-2xl hover:scale-102"
+            className="relative inline-block w-full px-6 py-3 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-800 to-purple-700 hover:shadow-soft-2xl hover:scale-102"
           >
             Login
           </button>

@@ -32,7 +32,7 @@ const ReportGraph = ({ data }) => {
   }));
 
   return (
-    <div className="bg-white p-4 shadow-sm rounded-md">
+    <div className="bg-white p-4 shadow rounded-md">
       <h2 className="text-sm font-medium text-gray-700 mb-2">Monthly Report</h2>
       <ResponsiveContainer width="100%" height={160}>
         <BarChart

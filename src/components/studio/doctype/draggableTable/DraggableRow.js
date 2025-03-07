@@ -48,7 +48,7 @@ const DraggableRow = ({
           type="checkbox"
           checked={isSelected}
           onChange={() => handleCheckboxChange(index)}
-          className="form-checkbox w-4 h-4 text-purple-600 border-gray-300 rounded-sm"
+          className="form-checkbox w-4 h-4 text-purple-600 border-gray-300 rounded"
         />
       </div>
 
@@ -66,7 +66,7 @@ const DraggableRow = ({
           type="text"
           value={field.label || ""}
           onChange={(e) => handleFieldEdit("label", e.target.value)}
-          className="w-full px-2 py-1 text-xs rounded-sm outline-hidden ring-none focus:outline-hidden focus:ring-1 focus:ring-purple-500 focus:border-transparent"
+          className="w-full px-2 py-1 text-xs rounded outline-none ring-none focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent"
         />
       </div>
 
@@ -76,7 +76,7 @@ const DraggableRow = ({
           type="text"
           value={field.fieldname || ""}
           onChange={(e) => handleFieldEdit("fieldname", e.target.value)}
-          className="w-full px-2 py-1 text-xs rounded-sm outline-hidden ring-none focus:outline-hidden focus:ring-1 focus:ring-purple-500 focus:border-transparent"
+          className="w-full px-2 py-1 text-xs rounded outline-none ring-none focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent"
         />
       </div>
 
@@ -86,7 +86,7 @@ const DraggableRow = ({
           value={field.default || ""}
           onChange={(e) => handleFieldEdit("default", e.target.value)}
           rows={1}
-          className="w-full px-2 py-1 text-xs rounded-sm outline-hidden ring-none focus:outline-hidden focus:ring-1 focus:ring-purple-500 focus:border-transparent"
+          className="w-full px-2 py-1 text-xs rounded outline-none ring-none focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent"
         />
       </div>
 

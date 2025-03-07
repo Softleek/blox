@@ -43,7 +43,7 @@ const ModuleSettings = () => {
       {/* Module */}
       <div className="flex flex-col">
         <label className="text-sm font-medium text-gray-700">Module</label>
-        <div className="p-1 border border-gray-300 rounded-sm bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500 transition ease-in-out">
+        <div className="p-1 border border-gray-300 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out">
           <LinkField
             field={item}
             value={toUnderscoreLowercase(config?.module) || ""}
@@ -56,7 +56,7 @@ const ModuleSettings = () => {
         <label className="text-sm font-medium text-gray-700">
           Default Print Format
         </label>
-        <div className="p-1 border border-gray-300 rounded-sm bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500 transition ease-in-out">
+        <div className="p-1 border border-gray-300 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out">
           <LinkField
             field={print}
             value={toUnderscoreLowercase(config?.default_print_format) || ""}

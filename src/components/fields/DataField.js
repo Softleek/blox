@@ -16,7 +16,7 @@ const DataField = ({
     onChange={onChange}
     placeholder={placeholder}
     hidden={hidden}
-    className="p-1 bg-white rounded-md w-full focus:outline-hidden focus:ring-0 focus:border-none"
+    className="p-1 bg-white rounded-md w-full focus:outline-none focus:ring-0 focus:border-none"
   />
 );
 

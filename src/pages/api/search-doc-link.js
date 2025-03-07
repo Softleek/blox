@@ -4,6 +4,10 @@ import fs from "fs";
 // Define the root path for apps
 const basePath = path.join(process.cwd());
 
+// Load the site configuration
+const siteConfigPath = path.join(process.cwd(), "sites", "sites.json");
+const siteConfig = JSON.parse(fs.readFileSync(siteConfigPath, "utf8"));
+
 // Load the doctypes data
 const doctypeConfigPath = path.join(basePath, "sites", "doctypes.json");
 const doctypesData = JSON.parse(fs.readFileSync(doctypeConfigPath, "utf8"));

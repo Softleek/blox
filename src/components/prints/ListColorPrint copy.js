@@ -203,7 +203,7 @@ const ListColorPrint = React.forwardRef(
                       {Object.entries(filters)
                         .filter(([_, value]) => value)
                         .map(([key, value]) => (
-                          <div className="flex flex-row justify-between bg-slate-50 w-[100%] rounded-sm px-2 py-1 my-1">
+                          <div className="flex flex-row justify-between bg-slate-50 w-[100%] rounded px-2 py-1 my-1">
                             <div className="flex-none w-full px-1">
                               <div>
                                 <p className="mb-0 font-sans text-sm font-medium text-gray-800 leading-normal">
@@ -213,7 +213,7 @@ const ListColorPrint = React.forwardRef(
                               </div>
                             </div>
                             <div className="px-1 text-right -ml-12 flex justify-end">
-                              <div className="flex items-center justify-center w-12 h-12 text-center rounded-lg bg-linear-to-tl from-purple-700 to-pink-500">
+                              <div className="flex items-center justify-center w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
                                 <i className="fas fa-id-badge text-lg text-white"></i>
                               </div>
                             </div>

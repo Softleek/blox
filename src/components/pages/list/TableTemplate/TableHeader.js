@@ -23,7 +23,7 @@ const TableHeader = ({
       {/* <h1 className="text-xl font-semibold">{toTitleCase(title)}</h1> */}
       <div className="text-right flex items-center justify-end space-x-4">
         <CustomButton
-          className={"items-center! py-1"}
+          className={"!items-center py-1"}
           icon={faRefresh}
           onClick={refresh}
         />

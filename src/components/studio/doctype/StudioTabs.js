@@ -98,7 +98,7 @@ const StudioTabs = ({
                       else if (e.key === "Escape") handleCancelEdit();
                     }}
                     autoFocus
-                    className="text-md font-semibold p-1 border border-gray-300 rounded-sm bg-white shadow-xs focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                    className="text-md font-semibold p-1 border border-gray-300 rounded bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 ) : (
                   <h4 className="text-md font-semibold">{tab.name}</h4>
@@ -137,7 +137,7 @@ const StudioTabs = ({
                             else if (e.key === "Escape") handleCancelEdit();
                           }}
                           autoFocus
-                          className="text-md font-semibold p-1 border border-gray-300 rounded-sm bg-white shadow-xs focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                          className="text-md font-semibold p-1 border border-gray-300 rounded bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                       ) : (
                         <h4 className="text-md font-semibold">

@@ -27,7 +27,7 @@ const FieldSettingsModal = ({
 
         {/* Header Section */}
         <div className="mb-4 flex items-center h-4">
-          {/* <div className="text-xl font-semibold grow">Field Settings</div> */}
+          {/* <div className="text-xl font-semibold flex-grow">Field Settings</div> */}
         </div>
         <div className="grid grid-cols-1 gap-y-4">
           {/* Main Content */}

@@ -286,7 +286,7 @@ const CustomTimePicker = ({
       hidden={hidden}
     >
       <input
-        className="w-full! px-2 text-gray-900 sm:text-sm rounded-lg focus:outline-hidden focus:border-none focus:ring-0 bg-transparent"
+        className="!w-full px-2 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus:border-none focus:ring-0 bg-transparent"
         value={value}
         onFocus={handleIconClick}
         onChange={(e) => onChange(e.target.value)}

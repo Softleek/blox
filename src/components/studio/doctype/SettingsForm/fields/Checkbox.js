@@ -15,7 +15,7 @@ const Checkbox = ({
           type="checkbox"
           checked={checked}
           onChange={onChange}
-          className={`h-4 w-4 rounded-sm focus:ring-0 ${className}`}
+          className={`h-4 w-4 rounded focus:ring-0 ${className}`}
           {...props}
         />
         {label && (

@@ -6,7 +6,7 @@ import Select from "react-select";
 
 const IconLabel = ({ icon, text }) => (
   <label className="block text-xs font-medium mb-1 flex items-center text-gray-600">
-    <div className="flex items-center justify-center w-5 h-5 rounded-sm bg-purple-100 mr-2">
+    <div className="flex items-center justify-center w-5 h-5 rounded bg-purple-100 mr-2">
       <FontAwesomeIcon icon={icon} className="text-purple-600 h-3 w-3" />
     </div>
     {text}
@@ -27,7 +27,7 @@ export const TextInput = ({
       type="text"
       value={value || ""}
       onChange={onChange}
-      className="mt-1 block w-full p-1.5 text-xs border border-gray-300 rounded-md text-gray-800 placeholder-gray-500 focus:outline-hidden focus:ring-1 focus:ring-purple-300"
+      className="mt-1 block w-full p-1.5 text-xs border border-gray-300 rounded-md text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-purple-300"
       placeholder={placeholder}
     />
     {description && (
@@ -50,7 +50,7 @@ export const NumberInput = ({
       type="number"
       value={value || ""}
       onChange={onChange}
-      className="mt-1 block w-full p-1.5 text-xs border border-gray-300 rounded-md text-gray-800 placeholder-gray-500 focus:outline-hidden focus:ring-1 focus:ring-purple-300"
+      className="mt-1 block w-full p-1.5 text-xs border border-gray-300 rounded-md text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-purple-300"
       placeholder={placeholder}
     />
     {description && (
@@ -65,7 +65,7 @@ export const CheckboxInput = ({ label, value, onChange, description }) => (
       type="checkbox"
       checked={value || false}
       onChange={onChange}
-      className="w-4 h-4 text-purple-600 border-gray-300 rounded-sm focus:ring-purple-500"
+      className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
     />
     <span className="ml-2 text-xs text-gray-600">{label}</span>
     {description && (
@@ -87,7 +87,7 @@ export const TextareaInput = ({
     <textarea
       value={value || ""}
       onChange={onChange}
-      className="block w-full h-24 p-1.5 text-xs border border-gray-300 rounded-md text-gray-800 placeholder-gray-500 bg-gray-50 focus:outline-hidden focus:ring-1 focus:ring-purple-300"
+      className="block w-full h-24 p-1.5 text-xs border border-gray-300 rounded-md text-gray-800 placeholder-gray-500 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-purple-300"
       placeholder={placeholder}
     />
     {description && (

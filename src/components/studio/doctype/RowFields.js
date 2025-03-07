@@ -52,7 +52,7 @@ const DraggableRow = ({
         ref={dragRef}
         className="border px-2 py-1 text-center cursor-move bg-gray-100"
       >
-        <span className="inline-block w-4 h-4 bg-gray-400 rounded-xs"></span>
+        <span className="inline-block w-4 h-4 bg-gray-400 rounded-sm"></span>
       </td>
       <td
         className="border px-4 py-2"

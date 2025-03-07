@@ -62,7 +62,7 @@ const DurationField = ({ value, onChange, readOnly, preview, hidden }) => {
         onChange={handleInputChange}
         onClick={() => !readOnly && setShowPopup(true)}
         placeholder="Enter Duration (e.g., 2d 4h 30m 20s)"
-        className={`bg-white rounded-md w-full focus:outline-hidden ${
+        className={`bg-white rounded-md w-full focus:outline-none ${
           error ? "border border-red-500 p-2" : ""
         }`}
       />

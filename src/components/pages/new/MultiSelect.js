@@ -52,7 +52,7 @@ const MultiSelect = ({
               {selectedValues.map((option, index) => (
                 <li
                   key={index}
-                  className="bg-purple-100 text-purple-700 py-1 px-3 rounded-full text-xs font-semibold shadow-xs"
+                  className="bg-purple-100 text-purple-700 py-1 px-3 rounded-full text-xs font-semibold shadow-sm"
                 >
                   {option}
                 </li>

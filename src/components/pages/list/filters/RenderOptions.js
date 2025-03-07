@@ -84,7 +84,7 @@ export const RenderValueInput = (
         switch (field?.fieldtype) {
           case "Link":
             return (
-              <div className="py-1 px-2 border rounded-sm w-48">
+              <div className="py-1 px-2 border rounded w-48">
                 <LinkField
                   field={item}
                   value={filter.value}
@@ -124,7 +124,7 @@ export const RenderValueInput = (
                   handleFilterChange(index, "value", e.target.value)
                 }
                 placeholder="Value"
-                className="py-1 px-2 border rounded-sm w-48"
+                className="py-1 px-2 border rounded w-48"
               />
             );
         }
@@ -139,7 +139,7 @@ export const RenderValueInput = (
             value={filter.value}
             onChange={(e) => handleFilterChange(index, "value", e.target.value)}
             placeholder="Enter text"
-            className="py-1 px-2 border rounded-sm w-48"
+            className="py-1 px-2 border rounded w-48"
           />
         );
       case "__gt":
@@ -152,7 +152,7 @@ export const RenderValueInput = (
             value={filter.value}
             onChange={(e) => handleFilterChange(index, "value", e.target.value)}
             placeholder="Enter number"
-            className="py-1 px-2 border rounded-sm w-48"
+            className="py-1 px-2 border rounded w-48"
           />
         );
       case "__is_set":
@@ -185,7 +185,7 @@ export const RenderValueInput = (
                 handleFilterChange(index, "value", e.target.value)
               }
               placeholder="Enter range (e.g., 1-10)"
-              className="py-1 px-2 border rounded-sm"
+              className="py-1 px-2 border rounded"
             />
             <small className="text-gray-500">Format: start,end</small>
           </div>
@@ -201,7 +201,7 @@ export const RenderValueInput = (
                 handleFilterChange(index, "value", e.target.value)
               }
               placeholder="Enter comma-separated values"
-              className="py-1 px-2 border rounded-sm"
+              className="py-1 px-2 border rounded"
             />
             <small className="text-gray-500">Separate values with commas</small>
           </div>
@@ -214,7 +214,7 @@ export const RenderValueInput = (
             value={filter.value}
             onChange={(e) => handleFilterChange(index, "value", e.target.value)}
             placeholder="Enter regex pattern"
-            className="py-1 px-2 border rounded-sm w-48"
+            className="py-1 px-2 border rounded w-48"
           />
         );
       case "__isnull":
@@ -248,7 +248,7 @@ export const RenderValueInput = (
             value={filter.value}
             onChange={(e) => handleFilterChange(index, "value", e.target.value)}
             placeholder="Select Date"
-            className="py-1 px-2 border rounded-sm w-48"
+            className="py-1 px-2 border rounded w-48"
           />
         );
       default:
@@ -258,7 +258,7 @@ export const RenderValueInput = (
             value={filter.value}
             onChange={(e) => handleFilterChange(index, "value", e.target.value)}
             placeholder="Value"
-            className="py-1 px-2 border rounded-sm w-48"
+            className="py-1 px-2 border rounded w-48"
           />
         );
     }

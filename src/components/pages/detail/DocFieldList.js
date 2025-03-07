@@ -23,7 +23,7 @@ const DocFieldList = ({ data }) => {
                 </div>
               </div>
               <div className="px-2 text-right flex justify-end">
-                <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tl from-purple-700 to-pink-500">
+                <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
                   <FontAwesomeIcon
                     icon={field.icon}
                     className="h-4 w-4 text-white"
@@ -62,8 +62,8 @@ const DocFieldList = ({ data }) => {
             onClick={() => handleTabClick(tab.id)}
             className={`px-4 py-2 m-2 rounded ${
               selectedTab === tab.id
-                ? "inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-linear-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
-                : "inline-block px-6 py-3 font-bold text-center text-gray-900 uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-linear-to-tl from-gray-200 to-slate-200 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
+                ? "inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
+                : "inline-block px-6 py-3 font-bold text-center text-gray-900 uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-200 to-slate-200 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
             }`}
           >
             {tab.name}

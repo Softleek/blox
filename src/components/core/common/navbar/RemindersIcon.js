@@ -60,7 +60,7 @@ const RemindersIcon = () => {
         size="xl"
       />
       {remindersCount > 0 && (
-        <span className="absolute bottom-2 left-2 inline-block w-6 h-6 flex items-center justify-center text-xs font-semibold text-white bg-linear-to-r from-yellow-400 to-yellow-500 border-2 border-white rounded-full shadow-lg animate-pulse">
+        <span className="absolute bottom-2 left-2 inline-block w-6 h-6 flex items-center justify-center text-xs font-semibold text-white bg-gradient-to-r from-yellow-400 to-yellow-500 border-2 border-white rounded-full shadow-lg animate-pulse">
           {remindersCount}
         </span>
       )}

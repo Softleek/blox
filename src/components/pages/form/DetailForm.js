@@ -63,7 +63,7 @@ const DetailForm = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
-        <div className="relative flex items-center justify-between px-4 pt-2 bg-linear-to-tl from-purple-100 to-pink-100 text-white rounded-t-xl">
+        <div className="relative flex items-center justify-between px-4 pt-2 bg-gradient-to-tl from-purple-100 to-pink-100 text-white rounded-t-xl">
           <ul className="flex pt-2 gap-x-6 list-none bg-transparent">
             <Suspense fallback={<div>Loading Tabs...</div>}>
               {tabs.map((tab, index) => (

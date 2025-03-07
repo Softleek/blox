@@ -102,7 +102,7 @@ const NewDoc = ({ config, initialData }) => {
           backgroundPositionY: "50%",
         }}
       >
-        <span className="absolute inset-y-0 w-full h-full bg-center bg-cover bg-linear-to-tl from-purple-700 to-pink-500 opacity-60"></span>
+        <span className="absolute inset-y-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-purple-700 to-pink-500 opacity-60"></span>
       </div>
 
       <div className="relative flex flex-col flex-auto min-w-0 p-4 mx-6 -mt-12 overflow-hidden break-words border-0 shadow-blur rounded-2xl bg-white/80 bg-clip-border backdrop-blur-2xl backdrop-saturate-200">

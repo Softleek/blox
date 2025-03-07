@@ -41,7 +41,7 @@ const WorkflowStatusTable = ({
 
   return (
     <table className="min-w-full bg-white border border-gray-200 rounded-lg mb-4 shadow-md">
-      <thead className="bg-linear-to-br from-purple-300 to-pink-300 text-black">
+      <thead className="bg-gradient-to-br from-purple-300 to-pink-300 text-black">
         <tr>
           <th className="py-1 px-4 text-left text-sm font-medium">
             <TableTooltip content="The name of the status">Name</TableTooltip>
@@ -79,7 +79,7 @@ const WorkflowStatusTable = ({
                     name="name"
                     value={newStatus.name}
                     onChange={handleNewStatusChange}
-                    className="w-full px-2 py-2 text-xs border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-2 py-2 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                     placeholder="Enter name"
                   />
                 ) : (
@@ -97,7 +97,7 @@ const WorkflowStatusTable = ({
                           onChange={(e) =>
                             handleActionChange(i, e.target.value)
                           }
-                          className="w-full px-2 py-2 text-xs border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
+                          className="w-full px-2 py-2 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                           placeholder="Enter action"
                         />
                         <button
@@ -129,7 +129,7 @@ const WorkflowStatusTable = ({
                   onChange={(e) =>
                     handleNextStatusChange(index, e.target.value)
                   }
-                  className="w-full px-2 py-2 text-xs border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-2 py-2 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="Enter next status"
                 />
               </td>
@@ -176,8 +176,8 @@ const WorkflowStatusTable = ({
             {expandedRows[index] && (
               <tr>
                 <td colSpan={4}>
-                  <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-xs">
-                    <thead className="bg-linear-to-tr from-pink-300 to-purple-300 text-xs text-pink-900">
+                  <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <thead className="bg-gradient-to-tr from-pink-300 to-purple-300 text-xs text-pink-900">
                       <tr>
                         <th className="py-1 px-4 text-left text-sm font-medium">
                           <TableTooltip content="User group for permissions">

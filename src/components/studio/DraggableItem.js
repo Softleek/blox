@@ -69,7 +69,7 @@ const DraggableItem = ({
       ) : (
         <>
           <div className="flex flex-row items-center w-full">
-            <div className="flex items-center justify-center w-8 h-8 text-center rounded-lg bg-linear-to-tl from-purple-700 to-pink-500 mr-1">
+            <div className="flex items-center justify-center w-8 h-8 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 mr-1">
               <FontAwesomeIcon
                 icon={item.icon}
                 className="text-white h-4 w-4"
@@ -83,7 +83,7 @@ const DraggableItem = ({
                 onChange={(e) =>
                   handleInputChange("name", e.target.value, item, "field")
                 }
-                className="block w-full p-1 text-sm border border-gray-300 rounded-sm"
+                className="block w-full p-1 text-sm border border-gray-300 rounded"
               />
             </div>
             {selectedFieldId === item && (
@@ -112,7 +112,7 @@ const DraggableItem = ({
                   onChange={(e) => {
                     handleInputChange("id1", e.target.value, item, "field");
                   }}
-                  className="mt-1 block w-full text-sm p-1 border border-gray-300 rounded-sm"
+                  className="mt-1 block w-full text-sm p-1 border border-gray-300 rounded"
                 />
               </div>
               <div className="">
@@ -122,7 +122,7 @@ const DraggableItem = ({
                   onChange={(e) =>
                     handleInputChange("type", e.target.value, item, "field")
                   }
-                  className="mt-1 block w-full p-1 text-sm border border-gray-300 rounded-sm"
+                  className="mt-1 block w-full p-1 text-sm border border-gray-300 rounded"
                 >
                   {fields?.map((field) => (
                     <option key={field.id} value={field.name}>
@@ -163,7 +163,7 @@ const DraggableItem = ({
                         "field"
                       );
                     }}
-                    className="mt-1 block w-full text-sm p-1 border border-gray-300 rounded-sm"
+                    className="mt-1 block w-full text-sm p-1 border border-gray-300 rounded"
                   />
                 </div>
               )}

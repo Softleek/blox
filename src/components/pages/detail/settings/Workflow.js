@@ -166,7 +166,7 @@ const WorkflowTable = ({ workflow = {}, onWorkflowChange }) => {
                 name="name"
                 value={newStatus.name}
                 onChange={handleNewStatusChange}
-                className="w-full h-fit px-2 py-2 m-1 text-xs border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
+                className="w-full h-fit px-2 py-2 m-1 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="Enter status name"
               />
               <div className="flex flex-col space-y-1">
@@ -178,7 +178,7 @@ const WorkflowTable = ({ workflow = {}, onWorkflowChange }) => {
                       onChange={(e) =>
                         handleActionChange(index, "action", e.target.value)
                       }
-                      className="w-full px-2 py-2 m-2 text-xs border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-2 py-2 m-2 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                       placeholder="Enter action"
                     />
                     <input
@@ -187,7 +187,7 @@ const WorkflowTable = ({ workflow = {}, onWorkflowChange }) => {
                       onChange={(e) =>
                         handleActionChange(index, "nextStatus", e.target.value)
                       }
-                      className="w-full px-2 py-2 m-2 text-xs border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-2 py-2 m-2 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                       placeholder="Enter next status"
                     />
                     <button

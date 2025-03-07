@@ -289,7 +289,7 @@ const DocumentForm = forwardRef(
           id: field.id1,
           name: field.id1,
           className:
-            "shadow-xs bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5",
+            "shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5",
           placeholder: field.name,
           required: field.required,
           readOnly: field.readonly,
@@ -400,7 +400,7 @@ const DocumentForm = forwardRef(
               className="text-sm font-medium text-gray-900 block mb-2"
             >
               <div className="flex items-center space-x-2">
-                <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-linear-to-tl from-purple-700 to-pink-500">
+                <div className="flex items-center justify-center w-6 h-6 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
                   <FontAwesomeIcon icon={icon} className="h-4 w-4 text-white" />
                 </div>
                 <span>{field.name}</span>
@@ -445,8 +445,8 @@ const DocumentForm = forwardRef(
               onClick={() => setActiveTab(tab.id)}
               className={`px-4 py-2 m-2 text-xs rounded ${
                 activeTab === tab.id
-                  ? "bg-linear-to-tl from-gray-900 to-slate-800 text-white"
-                  : "bg-linear-to-tl from-gray-200 to-slate-200 text-gray-900"
+                  ? "bg-gradient-to-tl from-gray-900 to-slate-800 text-white"
+                  : "bg-gradient-to-tl from-gray-200 to-slate-200 text-gray-900"
               } font-bold text-center uppercase cursor-pointer transition-transform transform hover:scale-105`}
             >
               {tab.name}
@@ -463,14 +463,14 @@ const DocumentForm = forwardRef(
         className="py-4 mx-4 space-y-2"
       >
         {renderTabs()}
-        <div className="bg-white border border-4 my-8 rounded-lg shadow-sm relative">
+        <div className="bg-white border border-4 my-8 rounded-lg shadow relative">
           {config?.fields
             ?.filter((tab) => tab.id === activeTab)
             ?.map((tab) =>
               tab?.sections?.map((section) => (
                 <div
                   key={section.id}
-                  className="shadow-xs shadow-slate-300 rounded-md px-4 py-6"
+                  className="shadow-sm shadow-slate-300 rounded-md px-4 py-6"
                 >
                   {renderSections([section])}
                 </div>

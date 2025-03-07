@@ -116,7 +116,7 @@ const PrintPage = () => {
           </div>
           <div className="flex gap-4 mb-6">
             <SecondaryButton
-              className={"px-6! text-xl!"}
+              className={"!px-6 !text-xl"}
               onClick={handlePrintClick}
               text="Print"
             />

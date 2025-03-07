@@ -50,7 +50,7 @@ const Pagination = ({
       if (page === "...") {
         return (
           <li key={index}>
-            <span className="relative flex items-center justify-center font-medium min-w-[2rem] px-1 py-2 rounded-md outline-hidden cursor-default">
+            <span className="relative flex items-center justify-center font-medium min-w-[2rem] px-1 py-2 rounded-md outline-none cursor-default">
               {page}
             </span>
           </li>
@@ -61,7 +61,7 @@ const Pagination = ({
           <button
             type="button"
             onClick={() => onPageChange(page)}
-            className={`relative flex items-center justify-center font-medium min-w-[2rem] px-1 py-1 mx-1 rounded-md outline-hidden transition ${
+            className={`relative flex items-center justify-center font-medium min-w-[2rem] px-1 py-1 mx-1 rounded-md outline-none transition ${
               currentPage === page
                 ? "text-purple-900 bg-purple-500/10 ring-1 ring-purple-500"
                 : "hover:bg-gray-500/5 bg-white focus:bg-purple-500/10 dark:hover:bg-gray-400/5 focus:text-purple-900"
@@ -81,7 +81,7 @@ const Pagination = ({
           id="itemsPerPage"
           value={itemsPerPage}
           onChange={(e) => onItemsPerPageChange(parseInt(e.target.value, 10))}
-          className="relative flex items-right text-center justify-center text-xs font-medium border-gray-400 border-[1.5px] min-w-[2rem] px-1 py-1 rounded-md outline-hidden hover:bg-gray-500/5 focus:bg-purple-500/10 focus:ring-2 focus:ring-purple-500 dark:hover:bg-gray-400/5 transition text-purple-900"
+          className="relative flex items-right text-center justify-center text-xs font-medium border-gray-400 border-[1.5px] min-w-[2rem] px-1 py-1 rounded-md outline-none hover:bg-gray-500/5 focus:bg-purple-500/10 focus:ring-2 focus:ring-purple-500 dark:hover:bg-gray-400/5 transition text-purple-900"
         >
           <option value={25}>25</option>
           <option value={50}>50</option>
@@ -98,7 +98,7 @@ const Pagination = ({
                 <button
                   type="button"
                   onClick={() => onPageChange(currentPage - 1)}
-                  className={`relative flex items-center justify-center font-medium min-w-[2rem] px-1 py-1 rounded-md outline-hidden bg-white hover:bg-gray-500/5 focus:bg-purple-500/10 dark:hover:bg-gray-400/5 transition text-purple-900 ${
+                  className={`relative flex items-center justify-center font-medium min-w-[2rem] px-1 py-1 rounded-md outline-none bg-white hover:bg-gray-500/5 focus:bg-purple-500/10 dark:hover:bg-gray-400/5 transition text-purple-900 ${
                     currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
                   }`}
                   aria-label="Previous"
@@ -125,7 +125,7 @@ const Pagination = ({
                 <button
                   type="button"
                   onClick={() => onPageChange(currentPage + 1)}
-                  className={`relative flex items-center justify-center font-medium min-w-[2rem] px-1 mx-1 py-1 rounded-md outline-hidden bg-white hover:bg-gray-500/5 focus:bg-purple-500/10 focus:ring-2 focus:ring-purple-500 dark:hover:bg-gray-400/5 transition text-purple-900 ${
+                  className={`relative flex items-center justify-center font-medium min-w-[2rem] px-1 mx-1 py-1 rounded-md outline-none bg-white hover:bg-gray-500/5 focus:bg-purple-500/10 focus:ring-2 focus:ring-purple-500 dark:hover:bg-gray-400/5 transition text-purple-900 ${
                     currentPage === totalPages
                       ? "cursor-not-allowed opacity-50"
                       : ""

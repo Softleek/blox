@@ -17,7 +17,7 @@ const DefaultTooltip = ({ children, content }) => {
       {children}
       {isVisible && (
         <div
-          className="absolute z-10 bg-150 bg-x-25 leading-pro bg-linear-to-br from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102 text-white text-xs font-medium py-1 px-2 rounded-lg shadow-lg"
+          className="absolute z-10 bg-150 bg-x-25 leading-pro bg-gradient-to-br from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102 text-white text-xs font-medium py-1 px-2 rounded-lg shadow-lg"
           style={{
             top: "0",
             right: "0",

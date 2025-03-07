@@ -15,14 +15,14 @@ const SettingsPage = () => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
-    <div className="p-6 mx-6 bg-white rounded-sm shadow-md">
+    <div className="p-6 mx-6 bg-white rounded shadow-md">
       <h1 className="text-2xl font-bold mb-4 text-purple-600">Settings</h1>
 
       {/* Sidebar Settings */}
       <div className="mb-4 flex flex-col space-y-2">
         <div
           onClick={toggleSidebar}
-          className="flex items-center cursor-pointer justify-between bg-slate-100 p-2 rounded-sm hover:bg-slate-200 transition"
+          className="flex items-center cursor-pointer justify-between bg-slate-100 p-2 rounded hover:bg-slate-200 transition"
         >
           <h2 className="text-lg font-semibold text-slate-900">
             Sidebar Settings
@@ -39,7 +39,7 @@ const SettingsPage = () => {
       <div className="mb-4 flex flex-col space-y-8">
         <div
           onClick={toggleMetaInfo}
-          className="flex items-center cursor-pointer justify-between bg-slate-100 p-2 rounded-sm hover:bg-slate-200 transition"
+          className="flex items-center cursor-pointer justify-between bg-slate-100 p-2 rounded hover:bg-slate-200 transition"
         >
           <h2 className="text-lg font-semibold text-slate-900">
             Meta Info Settings
@@ -56,7 +56,7 @@ const SettingsPage = () => {
       <div className="mb-4 flex flex-col space-y-8">
         <div
           onClick={toggleLogo}
-          className="flex items-center cursor-pointer justify-between bg-slate-100 p-2 rounded-sm hover:bg-slate-200 transition"
+          className="flex items-center cursor-pointer justify-between bg-slate-100 p-2 rounded hover:bg-slate-200 transition"
         >
           <h2 className="text-lg font-semibold text-slate-900">
             Logo Settings
@@ -71,7 +71,7 @@ const SettingsPage = () => {
 
       {/* Add a footer or button with a green theme if necessary */}
       {/* <div className="mt-6">
-        <button className="bg-green-500 text-white py-2 px-4 rounded-sm hover:bg-green-600 transition">
+        <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
           Save Changes
         </button>
       </div> */}

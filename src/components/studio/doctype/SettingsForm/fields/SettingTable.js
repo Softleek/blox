@@ -21,7 +21,7 @@ const SettingTable = ({
           {label}
         </label>
       )}
-      <div className="p-1 border border-gray-300 rounded-sm bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500 transition ease-in-out">
+      <div className="p-1 border border-gray-300 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out">
         <TableField
           field={item}
           value={value}

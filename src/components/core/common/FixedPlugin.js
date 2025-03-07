@@ -41,7 +41,7 @@ const FixedPlugin = () => {
             </button>
           </div>
         </div>
-        <hr className="h-px mx-0 my-1 bg-transparent bg-linear-to-r from-transparent via-black/40 to-transparent" />
+        <hr className="h-px mx-0 my-1 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
         <div className="flex-auto p-6 pt-0 sm:pt-4">
           <div>
             <h6 className="mb-0">Sidebar Colors</h6>
@@ -49,37 +49,37 @@ const FixedPlugin = () => {
           <a>
             <div className="my-2 text-left">
               <span
-                className="text-xs rounded-circle h-5.75 mr-1.25 w-5.75 ease-soft-in-out bg-linear-to-tl from-purple-700 to-pink-500 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-slate-700 text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
+                className="text-xs rounded-circle h-5.75 mr-1.25 w-5.75 ease-soft-in-out bg-gradient-to-tl from-purple-700 to-pink-500 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-slate-700 text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
                 data-color-from="purple-700"
                 data-color-to="pink-500"
                 onClick={(e) => sidebarColor(e.target)}
               ></span>
               <span
-                className="text-xs rounded-circle h-5.75 mr-1.25 w-5.75 ease-soft-in-out bg-linear-to-tl from-gray-900 to-slate-800 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
+                className="text-xs rounded-circle h-5.75 mr-1.25 w-5.75 ease-soft-in-out bg-gradient-to-tl from-gray-900 to-slate-800 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
                 data-color-from="gray-900"
                 data-color-to="slate-800"
                 onClick={(e) => sidebarColor(e.target)}
               ></span>
               <span
-                className="text-xs rounded-circle h-5.75 mr-1.25 w-5.75 ease-soft-in-out bg-linear-to-tl from-blue-600 to-cyan-400 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
+                className="text-xs rounded-circle h-5.75 mr-1.25 w-5.75 ease-soft-in-out bg-gradient-to-tl from-blue-600 to-cyan-400 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
                 data-color-from="blue-600"
                 data-color-to="cyan-400"
                 onClick={(e) => sidebarColor(e.target)}
               ></span>
               <span
-                className="text-xs rounded-circle h-5.75 mr-1.25 w-5.75 ease-soft-in-out bg-linear-to-tl from-green-600 to-lime-400 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
+                className="text-xs rounded-circle h-5.75 mr-1.25 w-5.75 ease-soft-in-out bg-gradient-to-tl from-green-600 to-lime-400 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
                 data-color-from="green-600"
                 data-color-to="lime-400"
                 onClick={(e) => sidebarColor(e.target)}
               ></span>
               <span
-                className="text-xs rounded-circle h-5.75 mr-1.25 w-5.75 ease-soft-in-out bg-linear-to-tl from-red-500 to-yellow-400 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
+                className="text-xs rounded-circle h-5.75 mr-1.25 w-5.75 ease-soft-in-out bg-gradient-to-tl from-red-500 to-yellow-400 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
                 data-color-from="red-500"
                 data-color-to="yellow-400"
                 onClick={(e) => sidebarColor(e.target)}
               ></span>
               <span
-                className="text-xs rounded-circle h-5.75 mr-1.25 w-5.75 ease-soft-in-out bg-linear-to-tl from-red-600 to-rose-400 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
+                className="text-xs rounded-circle h-5.75 mr-1.25 w-5.75 ease-soft-in-out bg-gradient-to-tl from-red-600 to-rose-400 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
                 data-color-from="red-600"
                 data-color-to="rose-400"
                 onClick={(e) => sidebarColor(e.target)}
@@ -93,7 +93,7 @@ const FixedPlugin = () => {
             </p>
           </div>
           <div className="flex">
-            <button className="inline-block w-full px-4 py-3 mb-2 text-xs font-bold text-center text-white uppercase align-middle transition-all border border-transparent border-solid rounded-lg cursor-pointer xl-max:cursor-not-allowed xl-max:opacity-65 xl-max:pointer-events-none xl-max:bg-gradient-to-tl xl-max:from-purple-700 xl-max:to-pink-500 xl-max:text-white xl-max:border-0 hover:scale-102 hover:shadow-soft-xs active:opacity-85 leading-pro ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 bg-linear-to-tl from-purple-700 to-pink-500 bg-fuchsia-500 hover:border-fuchsia-500">
+            <button className="inline-block w-full px-4 py-3 mb-2 text-xs font-bold text-center text-white uppercase align-middle transition-all border border-transparent border-solid rounded-lg cursor-pointer xl-max:cursor-not-allowed xl-max:opacity-65 xl-max:pointer-events-none xl-max:bg-gradient-to-tl xl-max:from-purple-700 xl-max:to-pink-500 xl-max:text-white xl-max:border-0 hover:scale-102 hover:shadow-soft-xs active:opacity-85 leading-pro ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 bg-gradient-to-tl from-purple-700 to-pink-500 bg-fuchsia-500 hover:border-fuchsia-500">
               Transparent
             </button>
             <button className="inline-block w-full px-4 py-3 mb-2 ml-2 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg cursor-pointer xl-max:cursor-not-allowed xl-max:opacity-65 xl-max:pointer-events-none xl-max:bg-gradient-to-tl xl-max:from-purple-700 xl-max:to-pink-500 xl-max:text-white xl-max:border-0 hover:scale-102 hover:shadow-soft-xs active:opacity-85 leading-pro ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 border-fuchsia-500 bg-none text-fuchsia-500 hover:border-fuchsia-500">
@@ -112,9 +112,9 @@ const FixedPlugin = () => {
               type="checkbox"
             />
           </div>
-          <hr className="h-px bg-transparent bg-linear-to-r from-transparent via-black/40 to-transparent sm:my-6" />
+          <hr className="h-px bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent sm:my-6" />
           <a
-            className="inline-block w-full px-6 py-3 mb-4 text-xs font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer leading-pro ease-soft-in hover:shadow-soft-xs hover:scale-102 active:opacity-85 tracking-tight-soft shadow-soft-md bg-150 bg-x-25 bg-linear-to-tl from-gray-900 to-slate-800"
+            className="inline-block w-full px-6 py-3 mb-4 text-xs font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer leading-pro ease-soft-in hover:shadow-soft-xs hover:scale-102 active:opacity-85 tracking-tight-soft shadow-soft-md bg-150 bg-x-25 bg-gradient-to-tl from-gray-900 to-slate-800"
             href="https://www.creative-tim.com/product/soft-ui-dashboard-tailwind"
             target="_blank"
           >

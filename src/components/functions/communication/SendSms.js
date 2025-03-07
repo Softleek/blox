@@ -88,13 +88,13 @@ const SendSms = ({ isOpen, onRequestClose, phone, msg }) => {
       <div className="flex justify-end space-x-4 mt-6">
         <button
           onClick={onRequestClose}
-          className="uppercase align-middle transition-all border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 bg-slate-100 text-xl text-slate-700 font-bold px-4 py-2 rounded-lg shadow-sm"
+          className="uppercase align-middle transition-all border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 bg-slate-100 text-xl text-slate-700 font-bold px-4 py-2 rounded-lg shadow"
         >
           Cancel
         </button>
         <button
           onClick={handleSendSms}
-          className="uppercase align-middle transition-all border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 bg-fuchsia-500 text-xl text-white font-bold px-4 py-2 rounded-lg shadow-sm"
+          className="uppercase align-middle transition-all border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 bg-fuchsia-500 text-xl text-white font-bold px-4 py-2 rounded-lg shadow"
         >
           Send
         </button>

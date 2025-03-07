@@ -31,7 +31,7 @@ const Dashboard = () => {
             title="Apps"
             icon={faBook}
             href="/apps"
-            iconBg="bg-linear-to-tl from-blue-400 to-green-500"
+            iconBg="bg-gradient-to-tl from-blue-400 to-green-500"
             bgColor="bg-white"
             tooltipContent="App list"
           />
@@ -39,7 +39,7 @@ const Dashboard = () => {
             title="Modules"
             icon={faBookOpen}
             href="/modules"
-            iconBg="bg-linear-to-tl from-blue-400 to-green-500"
+            iconBg="bg-gradient-to-tl from-blue-400 to-green-500"
             bgColor="bg-white"
             tooltipContent="Manage modules"
           />
@@ -47,7 +47,7 @@ const Dashboard = () => {
             title="Documents"
             icon={faBookReader}
             href="/documents"
-            iconBg="bg-linear-to-tl from-blue-400 to-green-500"
+            iconBg="bg-gradient-to-tl from-blue-400 to-green-500"
             bgColor="bg-white"
             tooltipContent="Manage documents"
           />
@@ -62,7 +62,7 @@ const Dashboard = () => {
               title={`${appName.charAt(0).toUpperCase() + appName.slice(1)}`}
               icon={faBox}
               href={`/${appName}`}
-              iconBg="bg-linear-to-tl from-green-400 to-blue-500"
+              iconBg="bg-gradient-to-tl from-green-400 to-blue-500"
               bgColor="bg-white"
               tooltipContent={`Manage ${appName}`}
             />
@@ -91,7 +91,7 @@ const Dashboard = () => {
               }`,
               icon: faBox,
             }))}
-            bgColor="bg-linear-to-tl from-blue-200 to-green-200"
+            bgColor="bg-gradient-to-tl from-blue-200 to-green-200"
             textColor="text-gray-900"
           />
         ))}

@@ -216,7 +216,7 @@ const LinkField = ({
           value={searchTerm}
           onChange={handleInputChange}
           placeholder={placeholder}
-          className="px-1 w-full focus:outline-hidden focus:ring-0 focus:border-none"
+          className="px-1 w-full focus:outline-none focus:ring-0 focus:border-none"
           disabled={readOnly || preview}
           onFocus={() => {
             setIsDropdownOpen(true);
@@ -261,7 +261,7 @@ const LinkField = ({
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute w-full mt-1 bg-white text-left border border-gray-300 rounded-xs shadow-lg z-10 max-h-80 overflow-y-auto"
+            className="absolute w-full mt-1 bg-white text-left border border-gray-300 rounded-sm shadow-lg z-10 max-h-80 overflow-y-auto"
           >
             {options.map((option) => (
               <div

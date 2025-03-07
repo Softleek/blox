@@ -64,7 +64,7 @@ const SidebarList = ({ icon, text, link, permission }) => {
         <div
           className={`mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 ${
             isHovered || active
-              ? "shadow-soft-xl bg-linear-to-tl from-purple-700 to-pink-500 text-white"
+              ? "shadow-soft-xl bg-gradient-to-tl from-purple-700 to-pink-500 text-white"
               : "shadow-soft-2xl"
           }`}
         >

@@ -151,13 +151,13 @@ const ImportDataModal = ({ isOpen, onRequestClose, onSendData }) => {
       isOpen={isOpen}
       onClose={onRequestClose}
       position="top"
-      className="pt-10!"
+      className="!pt-10"
     >
-      <div className="grid w-[70vw]! min-h-[50vh]!">
+      <div className="grid !w-[70vw] !min-h-[50vh]">
         <h2 className="text-xl font-semibold mb-6">Import Data</h2>
         {importErrors.length > 0 && (
           <div
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-sm relative mb-4"
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
             role="alert"
           >
             <strong className="font-bold">Errors occurred:</strong>
@@ -182,7 +182,7 @@ const ImportDataModal = ({ isOpen, onRequestClose, onSendData }) => {
               onChange={handleFileChange}
               className="hidden" // Hide the default file input
             />
-            <span className="block w-1/2 text-center bg-purple-500 text-white py-2 px-4 rounded-sm cursor-pointer hover:bg-purple-600 transition-all duration-200">
+            <span className="block w-1/2 text-center bg-purple-500 text-white py-2 px-4 rounded cursor-pointer hover:bg-purple-600 transition-all duration-200">
               {file ? file.name : "Select File"}
             </span>
           </label>
@@ -201,12 +201,12 @@ const ImportDataModal = ({ isOpen, onRequestClose, onSendData }) => {
           <CustomButton
             onClick={onRequestClose}
             text={"Cancel"}
-            className={"text-base! px-6!"}
+            className={"!text-base !px-6"}
           />
           <SecondaryButton
             onClick={handleSendData}
             text={"Import Data"}
-            className={"text-base! py-1! px-6!"}
+            className={"!text-base !py-1 !px-6"}
           />
         </div>
       </div>

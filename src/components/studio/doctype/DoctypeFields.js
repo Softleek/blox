@@ -66,7 +66,7 @@ const DoctypeFields = ({ config, data }) => {
                 )}
               </div>
               {item.icon && (
-                <div className="flex items-center justify-center w-12 h-12 text-center rounded-full bg-linear-to-tl from-purple-600 to-pink-500">
+                <div className="flex items-center justify-center w-12 h-12 text-center rounded-full bg-gradient-to-tl from-purple-600 to-pink-500">
                   <FontAwesomeIcon
                     icon={item.icon}
                     className="h-6 w-6 text-white"
@@ -122,7 +122,7 @@ const DoctypeFields = ({ config, data }) => {
             )}
           </div>
           {tabItem.icon && (
-            <div className="w-12 h-12 bg-linear-to-tl from-purple-600 to-pink-500 rounded-full flex justify-center items-center">
+            <div className="w-12 h-12 bg-gradient-to-tl from-purple-600 to-pink-500 rounded-full flex justify-center items-center">
               <FontAwesomeIcon icon={tabItem.icon} className="text-white" />
             </div>
           )}

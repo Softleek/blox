@@ -111,7 +111,7 @@ const ChildTableEditableRows = ({
                           value={newRow[column.key] || ""}
                           readOnly={column.key === "id"}
                           onChange={(e) => handleNewRowChange(e, column.key)}
-                          className="h-8 p-2 w-full border-gray-300 rounded-sm focus:ring-purple-500"
+                          className="h-8 p-2 w-full border-gray-300 rounded focus:ring-purple-500"
                         />
                       ) : (
                         row[column.key]
@@ -157,7 +157,7 @@ const ChildTableEditableRows = ({
                         value={newRow[column.key] || ""}
                         readOnly={column.key === "id"}
                         onChange={(e) => handleNewRowChange(e, column.key)}
-                        className="h-8 p-2 w-full border-gray-300 rounded-sm focus:ring-purple-500 border-[1px] border-slate-100"
+                        className="h-8 p-2 w-full border-gray-300 rounded focus:ring-purple-500 border-[1px] border-slate-100"
                       />
                     </td>
                   ))}
