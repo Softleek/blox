@@ -197,26 +197,32 @@ const TableTemplate = ({
             </div>
           </div>
         </div>
-        <ExportModal
-          data={selectedRowsData}
-          fields={tableConfig?.fields?.filter(
-            (field) => !field?.fieldtype?.includes("Break")
-          )}
-          fileName={tableConfig.name || "User Data"}
-          isOpen={isExportModalOpen}
-          onClose={() => setIsExportModalOpen(false)}
-        />
+        {isExportModalOpen && (
+          <ExportModal
+            data={selectedRowsData}
+            fields={tableConfig?.fields?.filter(
+              (field) => !field?.fieldtype?.includes("Break")
+            )}
+            fileName={tableConfig.name || "User Data"}
+            isOpen={isExportModalOpen}
+            onClose={() => setIsExportModalOpen(false)}
+          />
+        )}
         {/* Import Data Modal */}
-        <ImportDataModal
-          isOpen={isImportModalOpen}
-          onRequestClose={() => setIsImportModalOpen(false)}
-          onSendData={(data) => uploadData(tableConfig, endpoint, data)}
-        />
-        <PrintModal
-          isOpen={isPrintModalOpen}
-          onClose={() => setIsPrintModalOpen(false)}
-          form={form}
-        />
+        {isImportModalOpen && (
+          <ImportDataModal
+            isOpen={isImportModalOpen}
+            onRequestClose={() => setIsImportModalOpen(false)}
+            onSendData={(data) => uploadData(tableConfig, endpoint, data)}
+          />
+        )}
+        {isPrintModalOpen && (
+          <PrintModal
+            isOpen={isPrintModalOpen}
+            onClose={() => setIsPrintModalOpen(false)}
+            form={form}
+          />
+        )}
       </div>
     </>
   );

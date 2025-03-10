@@ -96,12 +96,14 @@ export default function App({ Component, pageProps }) {
                 <div className="h-[88vh] w-fit">
                   <Sidebar />
                 </div>
-                <div className="flex-grow h-[88vh] overflow-y-auto">
-                  <div className="relative flex-grow">
-                    <Component {...pageProps} />
+                <div className="flex-grow flex flex-col w-full">
+                  <div className="flex-grow h-[88vh] overflow-y-auto">
+                    <div className="relative flex-grow">
+                      <Component {...pageProps} />
+                    </div>
                   </div>
+                  <Footer />{" "}
                 </div>
-                <Footer />{" "}
               </>
             )}{" "}
           </div>

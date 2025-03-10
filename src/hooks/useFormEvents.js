@@ -14,7 +14,7 @@ export function useFormEvents(form, setForm, doc, setDoc) {
       const { default: Setup } = await import(
         `../../apps/${docData?.app_id}/${docData?.app_id}/${docData?.module_id}/doctype/${slug}/${slug}.js`
       );
-      Setup(form, registerEvent);
+      // Setup(form, registerEvent);
 
       await triggerEvent("refresh", form, setForm, doc, setDoc);
     } catch (error) {

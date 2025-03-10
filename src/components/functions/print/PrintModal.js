@@ -46,7 +46,7 @@ const PrintModal = ({ form, onClose, isOpen }) => {
   }, [config]);
 
   useEffect(() => {
-    if (!selectedFormat) return;
+    if (!selectedFormat || !isOpen) return;
 
     const loadPrintComponent = async () => {
       try {
@@ -60,7 +60,7 @@ const PrintModal = ({ form, onClose, isOpen }) => {
           await import(
             `../../../../apps/${docData?.app_id}/${docData?.app_id}/${docData?.module_id}/print_format/${selectedFormat}/${selectedFormat}.js`
           )
-        ).default;
+        )?.default;
 
         setPrintComponent(() => Component);
       } catch (error) {
@@ -69,7 +69,7 @@ const PrintModal = ({ form, onClose, isOpen }) => {
     };
 
     loadPrintComponent();
-  }, [selectedFormat]);
+  }, [selectedFormat, isOpen]);
 
   const handlePrint = useReactToPrint({
     content: () => printRef.current,

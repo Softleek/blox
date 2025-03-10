@@ -124,6 +124,9 @@ def get_site_config(site_name : str) -> Optional[dict]:
     Returns:
         dict or None: The loaded site configuration if valid, otherwise None.
     """
+    if not site_name:
+        print("Site name is required.")
+        return {}
     site_path = os.path.join(SITES_PATH, site_name)
     
     if not os.path.isdir(site_path):
