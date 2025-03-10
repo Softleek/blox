@@ -1,4 +1,3 @@
-from core.views.report import DetailedReportView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -39,25 +38,25 @@ from .views import (
 )
 
 router = DefaultRouter()
-router.register(r"app", AppViewSet)
-router.register(r"module", ModuleViewSet)
-router.register(r"document", DocumentViewSet)
-router.register(r"print_format", PrintFormatViewSet)
-router.register(r"print_formats", PrintFormatViewSet)
-router.register(r"apps", AppViewSet)
-router.register(r"modules", ModuleViewSet)
-router.register(r"documents", DocumentViewSet)
-router.register(r"changelogs", ChangeLogViewSet)
-router.register(r"users", UserViewSet)
-router.register(r"core/user", UserViewSet)
-router.register(r"core/reminder", ReminderViewSet)
-router.register(r"core/role_type", RoleViewSet)
-router.register(r"core/branch", BranchViewSet)
-router.register(r"core/rolegroup", GroupViewSet)
-router.register(r"core/group", GroupViewSet)
-router.register(r"core/permission", PermissionViewSet)
+router.register(r"app", AppViewSet, basename="app")
+router.register(r"module", ModuleViewSet, basename="module")
+router.register(r"document", DocumentViewSet, basename="document")
+router.register(r"print_format", PrintFormatViewSet, basename="print_format")
+router.register(r"print_formats", PrintFormatViewSet, basename="print_formats")
+router.register(r"apps", AppViewSet, basename="apps")
+router.register(r"modules", ModuleViewSet, basename="modules")
+router.register(r"documents", DocumentViewSet, basename="documents")
+router.register(r"changelogs", ChangeLogViewSet, basename="changelogs")
+router.register(r"users", UserViewSet, basename="users")
+router.register(r"core/user", UserViewSet, basename="core_user")
+router.register(r"core/reminder", ReminderViewSet, basename="core_reminder")
+router.register(r"core/role_type", RoleViewSet, basename="core_role_type")
+router.register(r"core/branch", BranchViewSet, basename="core_branch")
+router.register(r"core/rolegroup", GroupViewSet, basename="core_rolegroup")
+router.register(r"core/group", GroupViewSet, basename="core_group")
+router.register(r"core/permission", PermissionViewSet, basename="core_permission")
 router.register(
-    r"user-ip-addresses", UserIPAddressViewSet, basename="user-ip-addresses"
+    r"user-ip-addresses", UserIPAddressViewSet, basename="user_ip_addresses"
 )
 
 

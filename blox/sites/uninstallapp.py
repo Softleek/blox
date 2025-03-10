@@ -5,9 +5,7 @@ from typing import Any, Dict, List, Optional
 import click
 
 from ..sites.migrate.migrate import run_migration
-from ..utils.config import PROJECT_ROOT
-from ..utils.file_operations import ensure_file_exists
-from .utils.uninstalldjangoapp import uninstall_django_app
+from ..utils.config import PROJECT_ROOT, get_all_sites, get_site_config, update_site_config
 
 
 @click.command()
@@ -22,16 +20,7 @@ def uninstallapp(site: Optional[str], app: str) -> None:
     :param site: The name of the site where the app will be uninstalled.
     :param app: The name of the app to uninstall.
     """
-    # Load sites from sites.json
-    sites_json_path: str = os.path.join(PROJECT_ROOT, "sites", "sites.json")
-    ensure_file_exists(sites_json_path, initial_data=[])
-    if os.path.exists(sites_json_path):
-        with open(sites_json_path, "r") as json_file:
-            sites: List[Dict[str, Any]] = json.load(json_file)
-    else:
-        click.echo("No sites found in sites.json.")
-        return
-
+    sites: List[Dict[str, Any]] = get_all_sites()
     # Prompt for site if not provided
     if not site:
         click.echo("Select a site to uninstall the app:")
@@ -44,13 +33,14 @@ def uninstallapp(site: Optional[str], app: str) -> None:
             click.echo("Invalid site selection.")
             return
 
-        selected_site: Dict[str, Any] = sites[site_choice - 1]
-    else:
-        selected_site = next((s for s in sites if s["site_name"] == site), None)
-        if not selected_site:
-            click.echo(f"Site '{site}' not found in sites.json.")
-            return
+        site = sites[site_choice - 1]
+        
+    site_folder = os.path.join(PROJECT_ROOT, "sites", site)
+    if not os.path.exists(site_folder):
+        click.echo(click.style(f"Site '{site}' does not exist. Aborting.", fg="red"))
+        return
 
+    selected_site = get_site_config(site)
     # Ensure the site has installed apps
     if "installed_apps" not in selected_site or not selected_site["installed_apps"]:
         click.echo(f"No apps installed in '{selected_site['site_name']}'.")
@@ -85,8 +75,7 @@ def uninstallapp(site: Optional[str], app: str) -> None:
     # Remove the app from the installed_apps list
     selected_site["installed_apps"].remove(selected_app)
 
-    with open(sites_json_path, "w") as json_file:
-        json.dump(sites, json_file, indent=4)
+    update_site_config(site, selected_site)
 
     click.echo(
         f"The app '{selected_app}' has been successfully uninstalled from '{selected_site['site_name']}'."

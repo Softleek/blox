@@ -5,8 +5,7 @@ from typing import List, Optional
 
 import click
 
-from ...utils.config import APPS_PATH, PROJECT_ROOT
-from ...utils.file_operations import ensure_file_exists
+from ...utils.config import APPS_PATH, PROJECT_ROOT, get_all_sites, get_site_config
 
 
 def update_package_json(app_name: str, libraries: List[str]) -> None:
@@ -49,7 +48,7 @@ def install_npm_packages(
         app_name (Optional[str]): The name of the app (if any).
         site (str): The name of the site.
     """
-    nextjs_path = os.path.join(PROJECT_ROOT, "sites", "nextjs")
+    nextjs_path = os.path.join(PROJECT_ROOT)
 
     if not os.path.exists(nextjs_path):
         click.echo(f"Next.js path for site '{site}' not found.")
@@ -108,27 +107,20 @@ def run_npm_install(
     Args:
         libraries (List[str]): A list of libraries to install.
         app (Optional[str]): The name of the app (if any).
-        site (Optional[str]): The name of the site (if any).
+        site (Optional[str]): The name of the site (if any). 
     """
-    # Load sites from sites.json
-    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
-    ensure_file_exists(sites_json_path, initial_data=[])
-    if os.path.exists(sites_json_path):
-        with open(sites_json_path, "r") as json_file:
-            sites = json.load(json_file)
-    else:
-        click.echo("No sites found in sites.json.")
+    sites = get_all_sites()
+    if not sites:
+        click.echo("No sites found in sites.")
         return
 
-    if not site:
-        selected_sites = [site["site_name"] for site in sites]
-    else:
-        selected_sites = [site]
+    if site:
+        sites = [site]
 
     # Check for apps in selected sites
     app_names = set()
-    for selected_site in selected_sites:
-        site_info = next((s for s in sites if s["site_name"] == selected_site), None)
+    for selected_site in sites:
+        site_info = get_site_config(selected_site)
         if site_info and "installed_apps" in site_info:
             app_names.update(site_info["installed_apps"])
 
@@ -138,8 +130,8 @@ def run_npm_install(
 
     if app:
         update_package_json(app, libraries)
-
-    for selected_site in selected_sites:
+  
+    for selected_site in sites:
         install_npm_packages(libraries, app, selected_site)
 
 

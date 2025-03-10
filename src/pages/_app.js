@@ -85,18 +85,26 @@ export default function App({ Component, pageProps }) {
               !isAuthPage ? "pt-14 h-[100vh]" : ""
             } flex flex-row relative items-center justify-center rounded-xl transition-all duration-200 w-full max-w-[1536px]`}
           >
-            {!isAuthPage && (
-              <div className="h-[88vh] w-fit">
-                <Sidebar />
+            {isAuthPage ? (
+              <div className="flex-grow overflow-y-auto">
+                <div className="relative flex-grow">
+                  <Component {...pageProps} />
+                </div>
               </div>
-            )}
-            <div className="flex-grow h-[88vh] overflow-y-auto">
-              <div className="relative flex-grow">
-                <Component {...pageProps} />
-              </div>
-            </div>
+            ) : (
+              <>
+                <div className="h-[88vh] w-fit">
+                  <Sidebar />
+                </div>
+                <div className="flex-grow h-[88vh] overflow-y-auto">
+                  <div className="relative flex-grow">
+                    <Component {...pageProps} />
+                  </div>
+                </div>
+                <Footer />{" "}
+              </>
+            )}{" "}
           </div>
-          {!isAuthPage && <Footer />}
         </main>
         <Loader />
         <ContextConfirmationModal />

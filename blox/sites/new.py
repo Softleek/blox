@@ -10,7 +10,6 @@ from typing import Any, Dict, List
 import click
 
 from ..utils.config import PROJECT_ROOT
-from ..utils.file_operations import ensure_file_exists
 
 
 def generate_random_password(length: int = 12) -> str:
@@ -43,24 +42,18 @@ def newsite(site_name: str, db_type: str) -> None:
         site_name (str): The name of the new site.
         db_type (str): The type of database to use (sqlite or mysql).
     """
+    site_folder = os.path.join(PROJECT_ROOT, "sites", site_name)
+    if os.path.exists(site_folder):
+        click.echo(click.style(f"Site '{site_name}' already exists. Aborting.", fg="red"))
+        return
+
+    os.makedirs(site_folder)
+
     if db_type is None:
         db_type = click.prompt(
             "Select database type: 1 for sqlite, 2 for mysql", type=int
         )
         db_type = "sqlite" if db_type == 1 else "mysql"
-
-    # Load existing sites.json or initialize an empty list
-    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
-    sites: List[Dict[str, Any]] = []
-
-    ensure_file_exists(sites_json_path, initial_data=[])
-    try:
-        with open(sites_json_path, "r") as json_file:
-            content = json_file.read().strip()
-            if content:
-                sites = json.loads(content)
-    except json.JSONDecodeError:
-        click.echo(f"Invalid JSON in {sites_json_path}. Initializing an empty list.")
 
     domains = [f"{site_name}.localhost", f"{site_name}.127.0.0.1"]
     if db_type == "mysql":
@@ -171,14 +164,12 @@ def newsite(site_name: str, db_type: str) -> None:
             )
         )
 
-    # Add the new site information to the list
-    sites.append(site_info)
+    # Save the site information to config.json in the site folder
+    config_path = os.path.join(site_folder, "site_config.json")
+    with open(config_path, "w") as json_file:
+        json.dump(site_info, json_file, indent=4)
 
-    # Save the updated sites.json
-    with open(sites_json_path, "w") as json_file:
-        json.dump(sites, json_file, indent=4)
-
-    click.echo(click.style(f"Site '{site_name}' added to sites.json.", fg="green"))
+    click.echo(click.style(f"Site '{site_name}' configuration saved to site_config.json.", fg="green"))
 
     # Run post-creation commands
     try:

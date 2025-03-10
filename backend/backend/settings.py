@@ -60,12 +60,15 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "django_filters",
     "django_crontab",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
 ]
+
 
 # Custom Apps – Only these will be exposed via API
 CUSTOM_APPS = [
     "core",
-    "masafa_app",
 ]
 
 # Final Installed Apps List
@@ -224,7 +227,7 @@ DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="webmaster@example.com
 
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
-ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 SOCIALACCOUNT_QUERY_EMAIL = True
@@ -263,10 +266,12 @@ CRONJOBS = [
 # Multi-tenancy settings
 # ----------------------------------------------------------------------
 
+# Define default_site and common_config_file
 default_site = "default"
-common_config_file = SITE_PATH / "common_site_config.json"
+common_config_file = os.path.join(SITE_PATH, "common_site_config.json")  # Use os.path.join
 
-if common_config_file.exists():
+# Check if common_config_file exists and load it
+if os.path.exists(common_config_file):
     try:
         with open(common_config_file) as f:
             common_config = json.load(f)
@@ -275,12 +280,15 @@ if common_config_file.exists():
     except json.JSONDecodeError:
         pass
 
+# Initialize DATABASES
 DATABASES = {}
 
-for site_folder in SITE_PATH.iterdir():
-    site_config_file = site_folder / "site_config.json"
+# Iterate through site folders and load site configurations
+for site_folder in os.listdir(SITE_PATH):
+    site_folder_path = os.path.join(SITE_PATH, site_folder)  # Full path to the site folder
+    site_config_file = os.path.join(site_folder_path, "site_config.json")  # Use os.path.join
 
-    if site_folder.is_dir() and site_config_file.exists():
+    if os.path.isdir(site_folder_path) and os.path.exists(site_config_file):
         try:
             with open(site_config_file) as f:
                 site_config = json.load(f)
@@ -293,14 +301,16 @@ for site_folder in SITE_PATH.iterdir():
         except json.JSONDecodeError:
             pass
 
+# Set the default database configuration
 if default_site in DATABASES:
     DATABASES = {default_site: DATABASES[default_site]}
 else:
     DATABASES = {
         default_site: {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),  # Use os.path.join
         }
     }
 
+# Define DATABASE_ROUTERS
 DATABASE_ROUTERS = ["core.db_router.MultiTenantRouter"]
