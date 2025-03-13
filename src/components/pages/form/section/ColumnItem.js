@@ -2,11 +2,48 @@ import React, { Suspense, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { useConfig } from "@/contexts/ConfigContext";
 import FieldItem from "../FieldItem";
+import { useData } from "@/contexts/DataContext";
 
 const ColumnItem = ({ section, column, handleFocus, handleBlur }) => {
-  // Dragging logic for the column (already in place)
   const { selectedItem, localConfig, selectedTab, setLocalConfig } =
     useConfig();
+  const { form } = useData();
+  const [isVisible, setIsVisible] = useState(true);
+
+  // Evaluate depends_on condition whenever form or column.depends_on changes
+  useEffect(() => {
+    if (column?.depends_on) {
+      const visibility = evaluateDependsOn(column.depends_on, form);
+      setIsVisible(visibility);
+    }
+  }, [form, column?.depends_on]);
+
+  // Function to evaluate depends_on condition
+  const evaluateDependsOn = (dependsOn, form) => {
+    try {
+      const match = dependsOn.match(/^\s*(\w+)\s*(!=|==)\s*(['"]?)(.*?)\3\s*$/);
+      if (!match) {
+        console.error("Invalid depends_on condition format:", dependsOn);
+        return true;
+      }
+
+      const [, key, operator, , value] = match;
+      const formValue = form[key.trim()];
+
+      if (operator === "!=") {
+        return formValue !== value;
+      } else if (operator === "==") {
+        return formValue === value;
+      }
+      return true;
+    } catch (error) {
+      console.error("Error evaluating depends_on condition:", error);
+      return true;
+    }
+  };
+
+  // If the column is not visible, return null
+  if (!isVisible) return null;
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

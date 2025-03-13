@@ -39,11 +39,11 @@ def perform_init(name: str) -> None:
         os.makedirs(os.path.join(project_root, directory), exist_ok=True)
 
     # Create necessary files
-    sites_json_path: str = os.path.join(project_root, "sites", "sites.json")
+    sites_json_path: str = os.path.join(project_root, "sites", "common_site_config.json") 
     procfile_path: str = os.path.join(project_root, "Procfile")
     blox_config_path: str = os.path.join(project_root, "blox.config")
 
-    ensure_file_exists(sites_json_path, initial_data=[])
+    ensure_file_exists(sites_json_path, initial_data={})
     ensure_file_exists(blox_config_path, initial_data=[])
 
     with open(procfile_path, "w") as procfile:
@@ -75,28 +75,24 @@ schedule: blox schedule
         # Move the cloned repository to the sites directory
         for item in os.listdir(temp_dir):
             shutil.move(os.path.join(temp_dir, item), core_apps_path)
-
+            
     try:
         with open(sites_json_path, "r") as json_file:
-            sites: List[dict[str, Any]] = json.load(json_file) or []
+            site_config: dict[str, Any] = json.load(json_file) or {}
     except json.JSONDecodeError:
-        sites = []
+        site_config = {}
 
     # Assign available ports
-    django_ports: List[int] = [site.get("django_port") for site in sites]
-    next_django_port: int = 8000
-    while next_django_port in django_ports:
-        next_django_port += 1
+    django_port: int = site_config.get("django_port", 8000)
+    nextjs_port: int = site_config.get("nextjs_port", 3000)
 
-    nextjs_ports: List[int] = [site.get("nextjs_port") for site in sites]
-    next_nextjs_port: int = 3000
-    while next_nextjs_port in nextjs_ports:
-        next_nextjs_port += 1
+    # Update site_config with the assigned ports
+    site_config["django_port"] = django_port
+    site_config["nextjs_port"] = nextjs_port
 
-    # Update sites.json
-
+    # Write the updated configuration back to the file
     with open(sites_json_path, "w") as json_file:
-        json.dump(sites, json_file, indent=4)
+        json.dump(site_config, json_file, indent=4)
 
     click.echo("Project initialized successfully!")
 

@@ -8,9 +8,12 @@ import { faClock, faUser, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { findDocDetails } from "@/utils/findDocDetails";
 import { motion } from "framer-motion";
+import DocFooter from "./FormFooter";
+import { useData } from "@/contexts/DataContext";
 
 const DocumentLogs = () => {
   const [logs, setLogs] = useState([]);
+  const { data } = useData();
 
   const router = useRouter();
   const { slug, id } = router.query;
@@ -106,6 +109,7 @@ const DocumentLogs = () => {
           </li>
         )}
       </ul>
+      <DocFooter data={data} />
     </motion.div>
   );
 };

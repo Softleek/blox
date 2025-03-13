@@ -4,13 +4,16 @@ import fs from "fs";
 // Define the root path for apps
 const basePath = path.join(process.cwd());
 
-// Load the site configuration
-const siteConfigPath = path.join(process.cwd(), "sites", "sites.json");
-const siteConfig = JSON.parse(fs.readFileSync(siteConfigPath, "utf8"));
-
 // Load the doctypes data
 const doctypeConfigPath = path.join(basePath, "sites", "doctypes.json");
 const doctypesData = JSON.parse(fs.readFileSync(doctypeConfigPath, "utf8"));
+
+// Define static list matches
+const staticMatches = [
+  { type: "app", name: "App", id: "apps", link: "/apps" },
+  { type: "module1", name: "Module", id: "module", link: "/modules" },
+  { type: "doctype", name: "Document", id: "documents", link: "/documents" },
+];
 
 // Helper function to normalize and clean the search keyword
 const cleanKeyword = (keyword) => {
@@ -20,8 +23,15 @@ const cleanKeyword = (keyword) => {
   if (cleanedKeyword.startsWith("new ")) {
     cleanedKeyword = cleanedKeyword.slice(4).trim(); // Remove 'new'
   }
+
   if (cleanedKeyword.endsWith(" list")) {
     cleanedKeyword = cleanedKeyword.slice(0, -5).trim(); // Remove 'list'
+  } else if (cleanedKeyword.endsWith(" lis")) {
+    cleanedKeyword = cleanedKeyword.slice(0, -4).trim(); // Remove 'lis'
+  } else if (cleanedKeyword.endsWith(" li")) {
+    cleanedKeyword = cleanedKeyword.slice(0, -3).trim(); // Remove 'li'
+  } else if (cleanedKeyword.endsWith(" l")) {
+    cleanedKeyword = cleanedKeyword.slice(0, -2).trim(); // Remove 'l'
   }
 
   return cleanedKeyword;
@@ -42,42 +52,66 @@ export default async function handler(req, res) {
   // Clean and prepare the search keyword for matching
   const cleanedKeyword = cleanKeyword(keyword);
 
-  // Array to hold the matched documents
-  let matchedDocs = [];
+  // Array to hold the matched results
+  let matchedResults = [];
 
-  // Iterate through the installed apps to find matching doctypes
+  // Check static matches
+  for (const staticItem of staticMatches) {
+    if (isFuzzyMatch(staticItem.name, cleanedKeyword)) {
+      matchedResults.push(staticItem);
+    }
+  }
+
+  // Iterate through the installed apps to find matching doctypes, modules, and apps
   for (const appData of doctypesData) {
-    // Find the app in the doctypes data
-    // const appData = doctypesData.find((appEntry) => appEntry.id === app.id);
+    // Match app name or ID
+    if (
+      isFuzzyMatch(appData.name, cleanedKeyword) ||
+      isFuzzyMatch(appData.id, cleanedKeyword)
+    ) {
+      matchedResults.push({
+        type: "app",
+        name: appData.name,
+        id: appData.id,
+        link: `/apps/${appData.id}`,
+      });
+    }
 
-    if (appData) {
-      // Iterate through the modules and their docs
-      for (const module of appData.modules) {
-        for (const doc of module.docs) {
-          // Check for partial matches for both doc id and doc name
-          const matchId = isFuzzyMatch(doc.id, cleanedKeyword);
-          const matchName = isFuzzyMatch(doc.name, cleanedKeyword);
+    // Iterate through the modules and their docs
+    for (const module1 of appData.modules) {
+      // Match module1 name or ID
+      if (
+        isFuzzyMatch(module1.name, cleanedKeyword) ||
+        isFuzzyMatch(module1.id, cleanedKeyword)
+      ) {
+        matchedResults.push({
+          type: "module1",
+          name: module1.name,
+          id: module1.id,
+          app_id: appData.id,
+          link: `/modules/${module1.id}`,
+        });
+      }
 
-          if (matchId || matchName) {
-            // Add the matched document to the results
-            matchedDocs.push({
-              app: appData.name,
-              app_id: appData.id,
-              module_id: module.id,
-              module: module.name,
-              id: doc.id,
-              name: doc.name,
-            });
-          }
+      // Match doctypes within the module1
+      for (const doc of module1.docs) {
+        if (
+          isFuzzyMatch(doc.id, cleanedKeyword) ||
+          isFuzzyMatch(doc.name, cleanedKeyword)
+        ) {
+          matchedResults.push({
+            type: "doctype",
+            name: doc.name,
+            id: doc.id,
+            app_id: appData.id,
+            module_id: module1.id,
+            link: `/app/${doc.id}`,
+          });
         }
       }
     }
   }
 
-  // Check if any matches were found
-  if (matchedDocs.length > 0) {
-    return res.status(200).json(matchedDocs);
-  } else {
-    return res.status(200).json([]); // Return an empty array if no matches
-  }
+  // Return matched results
+  return res.status(200).json(matchedResults.length > 0 ? matchedResults : []);
 }

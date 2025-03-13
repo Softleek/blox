@@ -1,14 +1,13 @@
 import json
 import os
 import sys
-from typing import Any, Dict, List, Tuple
+from typing import Any, List, Tuple
 
 import django
 from django.db.models import Model
 
-from ...utils.config import DOCS_JSON_PATH
+from ...utils.config import DOCS_JSON_PATH, get_site_config
 from ...utils.file_operations import ensure_file_exists
-from .load_doc_config import get_all_sites
 
 
 def initialize_django_env(django_path: str) -> None:
@@ -66,8 +65,8 @@ def create_entries_from_config(django_path: str, site: str) -> None:
 
     # Load JSON configuration file
     ensure_file_exists(DOCS_JSON_PATH, initial_data=[])
-    sites = get_all_sites()
-    site_data = next((s for s in sites if s.get("site_name") == site), None)
+    # sites = get_all_sites()
+    site_data = get_site_config(site)
     installed_apps = site_data.get("installed_apps", []) if site_data else []
     installed_apps.append("core")
     with open(DOCS_JSON_PATH, "r") as file:

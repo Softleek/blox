@@ -60,12 +60,16 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "django_filters",
     "django_crontab",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
 ]
+
 
 # Custom Apps – Only these will be exposed via API
 CUSTOM_APPS = [
     "core",
-    "masafa_app",
+    'cms_app',
 ]
 
 # Final Installed Apps List
@@ -148,7 +152,7 @@ AUTH_USER_MODEL = "core.User"
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join(BASE_DIR.parent, "sites")
 
 
 # Default primary key field type
@@ -224,7 +228,7 @@ DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="webmaster@example.com
 
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
-ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 SOCIALACCOUNT_QUERY_EMAIL = True
@@ -234,6 +238,10 @@ ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = (
 )
 ACCOUNT_EMAIL_CONFIRMATION_SIGNUP_MESSAGE = "account/confirmation_signup_message.txt"
 
+
+SA_SMS_API_URL = config("SA_SMS_API_URL", default="")
+SA_API_SECRET = config("SA_API_SECRET", default="")
+SA_API_KEY = config("SA_API_KEY", default="")
 
 SMS_API_KEY = config("SMS_API_KEY", default="")
 SMS_CLIENT_ID = config("SMS_CLIENT_ID", default="")
@@ -263,10 +271,12 @@ CRONJOBS = [
 # Multi-tenancy settings
 # ----------------------------------------------------------------------
 
+# Define default_site and common_config_file
 default_site = "default"
-common_config_file = SITE_PATH / "common_site_config.json"
+common_config_file = os.path.join(SITE_PATH, "common_site_config.json")  # Use os.path.join
 
-if common_config_file.exists():
+# Check if common_config_file exists and load it
+if os.path.exists(common_config_file):
     try:
         with open(common_config_file) as f:
             common_config = json.load(f)
@@ -275,12 +285,15 @@ if common_config_file.exists():
     except json.JSONDecodeError:
         pass
 
+# Initialize DATABASES
 DATABASES = {}
 
-for site_folder in SITE_PATH.iterdir():
-    site_config_file = site_folder / "site_config.json"
+# Iterate through site folders and load site configurations
+for site_folder in os.listdir(SITE_PATH):
+    site_folder_path = os.path.join(SITE_PATH, site_folder)  # Full path to the site folder
+    site_config_file = os.path.join(site_folder_path, "site_config.json")  # Use os.path.join
 
-    if site_folder.is_dir() and site_config_file.exists():
+    if os.path.isdir(site_folder_path) and os.path.exists(site_config_file):
         try:
             with open(site_config_file) as f:
                 site_config = json.load(f)
@@ -293,14 +306,19 @@ for site_folder in SITE_PATH.iterdir():
         except json.JSONDecodeError:
             pass
 
+# Set the default database configuration
 if default_site in DATABASES:
-    DATABASES = {default_site: DATABASES[default_site]}
+    default_database = DATABASES.pop(default_site)
+    DATABASES = {default_site: default_database, **DATABASES}
 else:
     DATABASES = {
         default_site: {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),  # Use os.path.join
+        }, 
+        **DATABASES
     }
 
+# Define DATABASE_ROUTERS
 DATABASE_ROUTERS = ["core.db_router.MultiTenantRouter"]
+sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "cms")))

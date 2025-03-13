@@ -3,10 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import { useDocumentData } from "@/hooks/useDocumentData";
 import { useData } from "@/contexts/DataContext";
 import { findDocDetails } from "@/utils/findDocDetails";
-import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { useReactToPrint } from "react-to-print";
+import PrimaryButton from "@/components/core/common/buttons/Primary";
 import { fetchData } from "@/utils/Api";
 import Select from "react-select";
 import SecondaryButton from "@/components/core/common/buttons/Secondary";
+import DefaultPrintFormat from "./DefaultPrint";
 
 const PrintPage = () => {
   const router = useRouter();
@@ -15,7 +17,7 @@ const PrintPage = () => {
   const [printData, setPrintData] = useState(null);
   const [PrintComponent, setPrintComponent] = useState(null);
   const [selectedFormat, setSelectedFormat] = useState("");
-  const printRef = useRef();
+  const printRef = useRef(null); // Initialize with null
   const [isPreview, setIsPreview] = useState(true);
   const [prints, setPrints] = useState([]);
   const [url, setUrl] = useState(null);
@@ -74,12 +76,18 @@ const PrintPage = () => {
 
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
-    onBeforePrint: () => setIsPreview(false),
-    onAfterPrint: () => setIsPreview(true),
   });
 
   const handlePrintClick = () => {
     setIsPreview(false);
+
+    // If no PrintComponent is loaded, trigger the default browser print dialog
+    if (!PrintComponent) {
+      window.print();
+      return;
+    }
+
+    // Otherwise, use react-to-print
     setTimeout(() => {
       handlePrint();
     }, 1000);
@@ -87,12 +95,12 @@ const PrintPage = () => {
 
   return (
     <>
-      <div
+      {/* <div
         className={`fixed top-0 left-0 w-full h-full z-50 bg-gray-900 opacity-90 ${
           isPreview ? "hidden" : ""
         }`}
         style={{ top: 0, left: 0, width: "100%", height: "100%", zIndex: 9999 }}
-      ></div>
+      ></div> */}
       <div className="p-6 bg-white shadow-lg min-h-[85vh] rounded-lg">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl font-bold mb-6 text-center">Print Preview</h1>
@@ -120,18 +128,15 @@ const PrintPage = () => {
               onClick={handlePrintClick}
               text="Print"
             />
-            <ReactToPrint content={() => printRef.current} />
           </div>
           <div className="border border-gray-300 p-4 rounded-lg shadow-md bg-gray-50">
-            {PrintComponent && printData ? (
-              <div ref={printRef} className="preview-container">
+            <div ref={printRef} className="preview-container">
+              {PrintComponent && printData ? (
                 <PrintComponent preview={isPreview} data={form} />
-              </div>
-            ) : (
-              <p className="text-center text-gray-500">
-                Loading print format...
-              </p>
-            )}
+              ) : (
+                <DefaultPrintFormat preview={isPreview} data={form} />
+              )}
+            </div>
           </div>
         </div>
       </div>

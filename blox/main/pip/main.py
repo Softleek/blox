@@ -6,8 +6,7 @@ from typing import List, Optional
 
 import click
 
-from ...utils.config import APPS_PATH, PROJECT_ROOT
-from ...utils.file_operations import ensure_file_exists
+from ...utils.config import APPS_PATH, PROJECT_ROOT, get_all_sites, get_site_config
 
 
 def install_libraries(
@@ -23,36 +22,37 @@ def install_libraries(
         app_name (Optional[str]): Name of the app to update its requirements.txt file.
         sites (Optional[List[str]]): List of sites to install the libraries.
     """
-    venv_path = os.path.join(PROJECT_ROOT, "env")
-    if not os.path.exists(venv_path):
-        click.echo("Virtual environment not found. Please run 'blox setup' first.")
-        return
+    pass
+    # venv_path = os.path.join(PROJECT_ROOT, "env")
+    # if not os.path.exists(venv_path):
+    #     click.echo("Virtual environment not found. Please run 'blox setup' first.")
+    #     return
 
-    python_executable = os.path.join(venv_path, "bin", "python")
-    if sys.platform.startswith("win"):
-        python_executable = os.path.join(venv_path, "Scripts", "python.exe")
+    # python_executable = os.path.join(venv_path, "bin", "python")
+    # if sys.platform.startswith("win"):
+    #     python_executable = os.path.join(venv_path, "Scripts", "python.exe")
 
-    if app_name:
-        requirements_file = os.path.join(APPS_PATH, f"{app_name}/requirements.txt")
+    # if app_name:
+    #     requirements_file = os.path.join(APPS_PATH, f"{app_name}/requirements.txt")
 
-        # Add libraries to requirements file
-        with open(requirements_file, "a") as f:
-            for library in libraries:
-                f.write(f"{library}\n")
-        click.echo(f"Added libraries to {requirements_file}")
+    #     # Add libraries to requirements file
+    #     with open(requirements_file, "a") as f:
+    #         for library in libraries:
+    #             f.write(f"{library}\n")
+    #     click.echo(f"Added libraries to {requirements_file}")
 
-    # Install libraries on the specified sites
-    for site in sites:
-        django_path = os.path.join(PROJECT_ROOT, "sites", site, "django")
-        if os.path.exists(django_path):
-            try:
-                for library in libraries:
-                    subprocess.check_call(
-                        [python_executable, "-m", "pip", "install", library]
-                    )
-                click.echo(f"Installed libraries for site '{site}' successfully.")
-            except subprocess.CalledProcessError as e:
-                click.echo(f"Error installing libraries for site '{site}': {e}")
+    # # Install libraries on the specified sites
+    # for site in sites:
+    #     django_path = os.path.join(PROJECT_ROOT, "sites", site, "backend")
+    #     if os.path.exists(django_path):
+    #         try:
+    #             for library in libraries:
+    #                 subprocess.check_call(
+    #                     [python_executable, "-m", "pip", "install", library]
+    #                 )
+    #             click.echo(f"Installed libraries for site '{site}' successfully.")
+    #         except subprocess.CalledProcessError as e:
+    #             click.echo(f"Error installing libraries for site '{site}': {e}")
 
 
 @click.group()
@@ -119,25 +119,18 @@ def run_pip_install(
         app (Optional[str]): Name of the app to update its requirements.txt file.
         site (Optional[str]): Name of the site to install the libraries.
     """
-    # Load sites from sites.json
-    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
-    ensure_file_exists(sites_json_path, initial_data=[])
-    if os.path.exists(sites_json_path):
-        with open(sites_json_path, "r") as json_file:
-            sites = json.load(json_file)
-    else:
-        click.echo("No sites found in sites.json.")
+    sites = get_all_sites()
+    if not sites:
+        click.echo("No sites found in sites.")
         return
 
-    if not site:
-        selected_sites = [site["site_name"] for site in sites]
-    else:
-        selected_sites = [site]
+    if site:
+        sites = [site]
 
     # Check for apps in selected sites
     app_names = set()
-    for selected_site in selected_sites:
-        site_info = next((s for s in sites if s["site_name"] == selected_site), None)
+    for selected_site in sites:
+        site_info = get_site_config(selected_site)
         if site_info and "installed_apps" in site_info:
             app_names.update(site_info["installed_apps"])
 
@@ -146,7 +139,7 @@ def run_pip_install(
         return
 
     try:
-        install_libraries(libraries, app, selected_sites)
+        install_libraries(libraries, app, sites)
         click.echo("Libraries installed successfully.")
     except subprocess.CalledProcessError as e:
         click.echo(f"Error installing libraries: {e}")

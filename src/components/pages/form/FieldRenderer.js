@@ -360,7 +360,6 @@ const FieldRenderer = ({
         </>
       );
     case "file":
-    case "image":
       return (
         <>
           {renderLabel()}
@@ -372,7 +371,23 @@ const FieldRenderer = ({
               readOnly={item?.read_only}
               hidden={item?.hidden}
             />
-            {renderIcon()}{" "}
+            {/* {renderIcon()}{" "} */}
+          </div>
+        </>
+      );
+    case "image":
+      return (
+        <>
+          {renderLabel()}
+          <div className="text-right flex justify-between w-full">
+            <ImageField
+              field={item}
+              onChange={(file) => handleInputChange(item, file)}
+              readOnly={item?.read_only}
+              hidden={item?.hidden}
+              value={value}
+            />
+            {/* {renderIcon()}{" "} */}
           </div>
         </>
       );

@@ -163,6 +163,14 @@ const ViewSettings = () => {
           }
           description="This will make the 'name' field searchable in global search."
         />
+
+        {/* Make APIs Public */}
+        <Checkbox
+          label="Make APIs Public"
+          checked={config.is_public || false}
+          onChange={(e) => handleInputChange("is_public", e.target.checked)}
+          description="Enable to make this DocType's APIs publicly accessible."
+        />
       </div>
     </div>
   );

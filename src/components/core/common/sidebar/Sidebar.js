@@ -35,7 +35,6 @@ import { useSidebar } from "@/contexts/SidebarContext";
 import { useNavbar } from "@/contexts/NavbarContext";
 import { useRouter } from "next/router";
 import sidebarConfig from "@/data/sidebar.json"; // Import sidebar.json for sidebar settings
-import { generateSidebarData } from "../../../../utils/generateSidebarData";
 
 const Sidebar = () => {
   const { sidebarWidth, setSidebarWidth, sidebarHidden } = useSidebar();
@@ -43,8 +42,6 @@ const Sidebar = () => {
   const sidebarRef = useRef(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const router = useRouter();
-
-  const { apps, modules, developerMode } = generateSidebarData();
 
   // Extract sidebar links from sidebarConfig
   const sidebarLinks = sidebarConfig.sidebarLinks || []; // Assuming the sidebar.json has a links array
@@ -147,104 +144,6 @@ const Sidebar = () => {
               active={dashboardText === "Home"}
             />
             <SidebarList
-              icon={faDashboard}
-              text="Dashboard"
-              link="/"
-              active={dashboardText === "Dashboard"}
-            />
-            <SidebarList
-              icon={faCartShopping}
-              text="Item"
-              link="/app/item"
-              permission="view_item"
-              active={dashboardText === "Item"}
-            />
-            <SidebarList
-              icon={faTruckLoading}
-              text="Crossborder"
-              link="/app/crossborder"
-              permission="view_crossborder"
-              active={dashboardText === "Crossborder"}
-            />
-            <SidebarList
-              icon={faPerson}
-              text="Customer"
-              link="/app/customer"
-              permission="view_customer"
-              active={dashboardText === "Customer"}
-            />
-            <SidebarList
-              icon={faSailboat}
-              text="Supplier"
-              link="/app/supplier"
-              permission="view_supplier"
-              active={dashboardText === "Supplier"}
-            />
-            <SidebarList
-              icon={faFileInvoice}
-              text="Invoice"
-              link="/app/invoice?type=Invoice"
-              permission="view_invoice"
-              active={dashboardText === "Invoice"}
-            />
-            <SidebarList
-              icon={faFileInvoice}
-              text="Add Invoice"
-              link="/app/invoice/new"
-              permission="view_invoice"
-              active={dashboardText === "Add Invoice"}
-            />
-
-            <SidebarList
-              icon={faQuoteLeft}
-              text="Quote"
-              link="/app/invoice?type=Quote"
-              permission="view_invoice"
-              active={dashboardText === "Quote"}
-            />
-            <SidebarList
-              icon={faMoneyBillTransfer}
-              text="Payment"
-              link="/app/payment"
-              permission="view_payment"
-              active={dashboardText === "Payment"}
-            />
-            <SidebarList
-              icon={faMoneyBillTransfer}
-              text="Paymentdetails"
-              link="/app/paymentdetails"
-              permission="view_paymentdetails"
-              active={dashboardText === "Paymentdetails"}
-            />
-            <SidebarList
-              icon={faTruckPickup}
-              text="Dispatch"
-              link="/app/dispatch"
-              permission="view_dispatch"
-              active={dashboardText === "Dispatch"}
-            />
-            <SidebarList
-              icon={faDriversLicense}
-              text="Driver"
-              link="/app/driver"
-              permission="view_driver"
-              active={dashboardText === "Driver"}
-            />
-            <SidebarList
-              icon={faUserCheck}
-              text="Employee"
-              link="/app/employee"
-              permission="view_employee"
-              active={dashboardText === "Employee"}
-            />
-            <SidebarList
-              icon={faCar}
-              text="Vehicle"
-              link="/app/vehicle"
-              permission="view_vehicle"
-              active={dashboardText === "Vehicle"}
-            />
-            <SidebarList
               icon={faBell}
               text="Reminder"
               link="/app/reminder"
@@ -261,40 +160,6 @@ const Sidebar = () => {
                 link={link?.link}
               />
             ))}
-            {developerMode && (
-              <>
-                {/* New Section for Apps */}
-                <li className="w-full mb-2 mt-6 pr-2">
-                  <h6 className="pl-3 ml-2 text-xs font-bold leading-tight uppercase opacity-60">
-                    Apps
-                  </h6>
-                </li>
-                {apps.map((app) => (
-                  <SidebarList
-                    key={app.id}
-                    icon={faBook} // Replace with a suitable icon if needed
-                    text={app.name} // Capitalize the app name
-                    link={app.link} // Link to /appname
-                  />
-                ))}
-
-                {/* New Section for Modules */}
-                {/* <li className="w-full my-2 pr-2">
-                  <h6 className="pl-3 ml-2 text-xs font-bold leading-tight uppercase opacity-60">
-                    Modules
-                  </h6>
-                </li> */}
-              </>
-            )}
-            {/* 
-            {modules.map((module) => (
-              <SidebarList
-                key={module.id} // Unique key for each module
-                icon={faBookOpen} // Replace with a suitable icon if needed
-                text={module.name} // Capitalize the module name
-                link={module?.link} // Link to /appname/modulename
-              />
-            ))} */}
 
             <li className="w-full mb-2 mt-6 pr-2">
               <h6 className="pl-3 ml-2 text-xs font-bold leading-tight uppercase opacity-60">
@@ -328,22 +193,6 @@ const Sidebar = () => {
               permission="view_permission"
               active={dashboardText === "Permission"}
             />
-
-            {developerMode && (
-              <>
-                <li className="w-full my-2 pr-2">
-                  <h6 className="pl-3 ml-2 text-xs font-bold leading-tight uppercase opacity-60">
-                    Developer Settings
-                  </h6>
-                </li>
-                <SidebarList
-                  icon={faTools}
-                  text="Settings"
-                  link="/settings"
-                  active={dashboardText === "Settings"}
-                />
-              </>
-            )}
 
             <Documentation />
           </ul>

@@ -28,21 +28,10 @@ def installdoc(
         module (Optional[str]): The name of the module to install.
         doc (Optional[str]): The name of the doc to install.
     """
-    # Load sites from sites.json
-    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
-    ensure_file_exists(sites_json_path, initial_data=[])
-    if os.path.exists(sites_json_path):
-        with open(sites_json_path, "r") as json_file:
-            json.load(json_file)
-    else:
-        click.echo("No sites found in sites.json.")
-        return
 
-    # Prompt for site if not provided
     if not site:
-        selected_site = DEFAULT_SITE
+        site = DEFAULT_SITE
 
-    site = selected_site["site_name"]
     # Load available apps from apps.txt
     apps_txt_path = os.path.join(PROJECT_ROOT, "config", "apps.txt")
     with open(apps_txt_path, "r") as apps_file:

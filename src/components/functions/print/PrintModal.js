@@ -46,7 +46,7 @@ const PrintModal = ({ form, onClose, isOpen }) => {
   }, [config]);
 
   useEffect(() => {
-    if (!selectedFormat) return;
+    if (!selectedFormat || !isOpen) return;
 
     const loadPrintComponent = async () => {
       try {
@@ -56,11 +56,12 @@ const PrintModal = ({ form, onClose, isOpen }) => {
         if (!docData) throw new Error("Failed to fetch document details");
         setUrl(docData);
 
-        const Component = (
-          await import(
-            `../../../../apps/${docData?.app_id}/${docData?.app_id}/${docData?.module_id}/print_format/${selectedFormat}/${selectedFormat}.js`
-          )
-        ).default;
+        const Component =
+          (
+            await import(
+              `../../../../apps/${docData?.app_id}/${docData?.app_id}/${docData?.module_id}/print_format/${selectedFormat}/${selectedFormat}.js`
+            )
+          ).default || null;
 
         setPrintComponent(() => Component);
       } catch (error) {
@@ -69,7 +70,7 @@ const PrintModal = ({ form, onClose, isOpen }) => {
     };
 
     loadPrintComponent();
-  }, [selectedFormat]);
+  }, [selectedFormat, isOpen]);
 
   const handlePrint = useReactToPrint({
     content: () => printRef.current,

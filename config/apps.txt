@@ -1,4 +1,2 @@
 core
-masafa
-masafa
-masafa
+cms

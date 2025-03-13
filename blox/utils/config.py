@@ -7,13 +7,23 @@ import click
 from ..utils.file_operations import ensure_file_exists
 from .default_site import get_default_site_info
 
-
 def find_project_root(current_path: str) -> str:
     while current_path != "/":
         if "blox.config" in os.listdir(current_path):
             return current_path
         current_path = os.path.dirname(current_path)
     raise FileNotFoundError("Project root with 'blox.config' not found.")
+
+PROJECT_ROOT = find_project_root(os.getcwd())
+APPS_TXT_PATH = os.path.join(PROJECT_ROOT, "config", "apps.txt")
+# SITES_JSON_PATH = os.path.join(PROJECT_ROOT, "sites", "sites.json")
+DOCS_JSON_PATH = os.path.join(PROJECT_ROOT, "sites", "doctypes.json")
+PRINT_JSON_PATH = os.path.join(PROJECT_ROOT, "sites", "print_formats.json")
+APPS_PATH = os.path.join(PROJECT_ROOT, "apps")
+DJANGO_PATH = os.path.join(PROJECT_ROOT, "backend")
+DEFAULT_SITE = get_default_site_info(PROJECT_ROOT)
+SITES_PATH = os.path.join(PROJECT_ROOT, "sites")
+
 
 
 def find_django_path(site: str) -> str:
@@ -79,12 +89,89 @@ def find_module_base_path(
     return None, None
 
 
-PROJECT_ROOT = find_project_root(os.getcwd())
-APPS_TXT_PATH = os.path.join(PROJECT_ROOT, "config", "apps.txt")
-SITES_JSON_PATH = os.path.join(PROJECT_ROOT, "sites", "sites.json")
-DOCS_JSON_PATH = os.path.join(PROJECT_ROOT, "sites", "doctypes.json")
-PRINT_JSON_PATH = os.path.join(PROJECT_ROOT, "sites", "print_formats.json")
-APPS_PATH = os.path.join(PROJECT_ROOT, "apps")
-DJANGO_PATH = os.path.join(PROJECT_ROOT, "backend")
-DEFAULT_SITE = get_default_site_info(PROJECT_ROOT)
-SITES_PATH = os.path.join(PROJECT_ROOT, "sites")
+def get_all_sites() -> list:
+    """
+    Returns a list of all valid site folder names in the given directory.
+    A site is considered valid if it contains a `site_config.json` file.
+
+    Args:
+        SITES_PATH (str): Path to the directory containing site subfolders.
+
+    Returns:
+        list: A list of valid site folder names.
+    """
+    valid_sites = []
+
+    for site_folder in os.listdir(SITES_PATH):
+        site_path = os.path.join(SITES_PATH, site_folder)
+        
+        if os.path.isdir(site_path):
+            site_config_path = os.path.join(site_path, "site_config.json")
+            if os.path.exists(site_config_path):
+                valid_sites.append(site_folder)
+
+    return valid_sites
+
+
+def get_site_config(site_name : str) -> Optional[dict]:
+    """
+    Returns the site configuration for the given site folder if it exists.
+
+    Args:
+        SITES_PATH (str): Path to the directory containing site subfolders.
+        site_name (str): Name of the site folder.
+
+    Returns:
+        dict or None: The loaded site configuration if valid, otherwise None.
+    """
+    if not site_name:
+        print("Site name is required.")
+        return {}
+    site_path = os.path.join(SITES_PATH, site_name)
+    
+    if not os.path.isdir(site_path):
+        print(f"Site folder '{site_name}' does not exist.")
+        return None
+    
+    site_config_path = os.path.join(site_path, "site_config.json")
+    
+    if not os.path.exists(site_config_path):
+        print(f"Site '{site_name}' does not contain a site_config.json file.")
+        return None
+    
+    with open(site_config_path, "r") as f:
+        site_config = json.load(f)
+    return site_config
+
+
+def update_site_config(site_name: str, config: dict, key: Optional[str] = None) -> None:
+    """
+    Updates the site configuration for the given site folder. If a key is provided, updates or adds the key.
+    Otherwise, replaces the entire configuration. If the configuration file does not exist, it creates one.
+
+    Args:
+        site_name (str): Name of the site folder.
+        config (dict): Configuration data to update.
+        key (str, optional): Specific key to update in the configuration. Defaults to None.
+    """
+    site_path = os.path.join(SITES_PATH, site_name)
+    
+    if not os.path.isdir(site_path):
+        print(f"Site folder '{site_name}' does not exist.")
+        return
+    
+    site_config_path = os.path.join(site_path, "site_config.json")
+    
+    if os.path.exists(site_config_path):
+        with open(site_config_path, "r") as f:
+            site_config = json.load(f)
+    else:
+        site_config = {}
+    
+    if key:
+        site_config[key] = config
+    else:
+        site_config = config
+    
+    with open(site_config_path, "w") as f:
+        json.dump(site_config, f, indent=4)

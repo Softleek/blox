@@ -116,8 +116,7 @@ def uninstall_django_app(app: str, project_root: str) -> None:
     """
     app_name = f"{app}_app"
 
-    site_path = os.path.join(project_root, "sites")
-    django_path = os.path.join(site_path, "django")
+    django_path = os.path.join(project_root, "backend")
 
     # Determine Python executable
     get_python_executable(project_root)

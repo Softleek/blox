@@ -1,34 +1,17 @@
-[tool.black]
-line-length = 88
-target-version = ['py38', 'py39', 'py310', 'py311']
-extend-exclude = '''
-(
-    ^env
-  | ^venv
-  | ^\.venv
-  | ^migrations
-  | ^node_modules
-  | ^\..*  # Ignore all hidden directories
-  | .*\/env
-  | .*\/venv
-  | .*\/\.venv
-  | .*\/migrations
-  | .*\/node_modules
-  | .*\/\..*
-)
-'''
-
-[tool.isort]
-profile = "black"
-skip = ["env", "venv", ".venv", "migrations", "node_modules"]
-skip_glob = ["**/env", "**/venv", "**/.venv", "**/migrations", "**/node_modules", "**/.*"]
-
 [tool.poetry]
 name = "blox"
 version = "0.1.0"
-description = "Blox"
+description = "Blox - A modular framework for Django and Next.js"
 authors = ["Softleek"]
 license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/softleek/blox"
+repository = "https://github.com/softleek/blox"
+documentation = "https://softleek.com/docs/blox"
+keywords = ["django", "nextjs", "framework", "pwa", "erp", "softleek"]
+packages = [
+    { include = "blox" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -71,6 +54,70 @@ urllib3 = "*"
 unicode = "*"
 whitenoise = "*"
 xlrd = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+pytest-django = "*"
+pytest-cov = "*"
+mypy = "*"
+pre-commit = "*"
+bandit = "*"
+
+[tool.poetry.scripts]
+blox = "blox.cli:cli"
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311']
+extend-exclude = '''
+(
+    ^env
+  | ^venv
+  | ^\.venv
+  | ^migrations
+  | ^node_modules
+  | ^\..*  # Ignore all hidden directories
+  | .*\/env
+  | .*\/venv
+  | .*\/\.venv
+  | .*\/migrations
+  | .*\/node_modules
+  | .*\/\..*
+)
+'''
+
+[tool.isort]
+profile = "black"
+skip = ["env", "venv", ".venv", "migrations", "node_modules"]
+skip_glob = ["**/env", "**/venv", "**/.venv", "**/migrations", "**/node_modules", "**/.*"]
+
+[tool.mypy]
+python_version = "3.8"
+ignore_missing_imports = true
+disallow_untyped_calls = true
+warn_unused_ignores = true
+warn_return_any = true
+warn_redundant_casts = true
+strict_optional = true
+
+[tool.pytest.ini_options]
+python_files = ["tests.py", "test_*.py", "*_test.py"]
+addopts = "--cov=blox --cov-report=xml --cov-report=html"
+
+[tool.bandit]
+exclude_dirs = ["tests", "migrations", "venv", "node_modules"]
+
+[tool.pre-commit]
+repos = [
+  { repo = "https://github.com/pre-commit/pre-commit-hooks", rev = "v4.4.0", hooks = [
+    { id = "trailing-whitespace" },
+    { id = "end-of-file-fixer" },
+    { id = "check-yaml" },
+    { id = "black" },
+    { id = "isort" },
+    { id = "flake8" }
+  ]}
+]
 
 [build-system]
 requires = ["poetry-core"]

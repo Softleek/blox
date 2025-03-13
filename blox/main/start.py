@@ -8,7 +8,7 @@ import traceback
 
 import click
 
-from ..utils.config import PROJECT_ROOT, SITES_JSON_PATH, write_running_ports
+from ..utils.config import PROJECT_ROOT, get_all_sites, write_running_ports
 from ..utils.initialize_django import initialize_django_env
 from ..utils.run_process import get_python_executable, run_subprocess
 
@@ -97,17 +97,14 @@ def start(mode):
         django_stdout_thread.start()
         django_stderr_thread.start()
 
-        # Load site names from SITES_JSON_PATH
-        with open(SITES_JSON_PATH, "r") as f:
-            sites = json.load(f)
+        sites = get_all_sites()
 
         # Generate and display links for all sites
         for site in sites:
-            site_name = site.get("site_name", "")
-            if site_name:
+            if site:
                 click.echo(
                     click.style(
-                        f"Open {site_name} at: http://{site_name}.localhost:{nextjs_port}\n",
+                        f"Open {site} at: http://{site}.localhost:{nextjs_port}\n",
                         fg="green",
                     )
                 )

@@ -85,23 +85,39 @@ const GeneralSettings = () => {
       {["Link", "Table MultiSelect", "Table", "Connection"].includes(
         selectedItem?.fieldtype
       ) && (
-        <LinkSelect
-          icon={faLink}
-          label="Options"
-          value={selectedItem?.options}
-          handleChange={(_, e) => handleChange("options", e)}
-          placeholder="Enter target Doctype"
-          name="options"
-          endpoint="document"
-          field={{
-            name: "Document",
-            label: "Options",
-            filter_on: "doctype",
-            title_field: "name",
-            search_fields: ["name", "id", "module", "app"],
-          }}
-        />
+        <>
+          <LinkSelect
+            icon={faLink}
+            label="Options"
+            value={selectedItem?.options}
+            handleChange={(_, e) => handleChange("options", e)}
+            placeholder="Enter target Doctype"
+            name="options"
+            endpoint="document"
+            field={{
+              name: "Document",
+              label: "Options",
+              filter_on: "doctype",
+              title_field: "name",
+              search_fields: ["name", "id", "module", "app"],
+            }}
+          />
+          <CheckboxInput
+            key={"unique"}
+            label="Is Section?"
+            value={selectedItem?.is_section}
+            onChange={(e) => handleChange("is_section", e.target.checked)}
+          />
+          <NumberInput
+            icon={faRuler}
+            label="Columns"
+            value={selectedItem?.columns}
+            onChange={(e) => handleChange("columns", e.target.value)}
+            placeholder="Enter number of columns"
+          />
+        </>
       )}
+
       {["Connection"].includes(selectedItem?.fieldtype) && (
         <TextInput
           icon={faFilter}
@@ -264,30 +280,115 @@ const GeneralSettings = () => {
 
       {/* Checkbox Inputs */}
       {[
-        { label: "Allow in Quick Entry", value: "allow_in_quick_entry" },
-        { label: "Allow on Submit", value: "allow_on_submit" },
-        { label: "Mandatory", value: "reqd" },
-        { label: "Hide Select", value: "hide_select" },
-        { label: "Bold", value: "bold" },
-        { label: "Hidden", value: "hidden" },
-        { label: "Ignore User Permissions", value: "ignore_user_permissions" },
-        { label: "In Filter", value: "in_filter" },
-        { label: "In Global Search", value: "in_global_search" },
-        { label: "In List View", value: "in_list_view" },
-        { label: "In Standard Filter", value: "in_standard_filter" },
-        { label: "Read Only", value: "read_only" },
-        { label: "Show on Timeline", value: "show_on_timeline" },
-        { label: "Translatable", value: "translatable" },
-        { label: "Unique", value: "unique" },
-        { label: "Collapsible", value: "collapsible" },
-        { label: "No Copy", value: "no_copy" }, // Added No Copy
+        {
+          label: "Allow in Quick Entry",
+          value: "allow_in_quick_entry",
+          description: "Enable to allow this field in quick entry forms.",
+        },
+        {
+          label: "Allow on Submit",
+          value: "allow_on_submit",
+          description:
+            "Enable to allow editing this field even after submission.",
+        },
+        {
+          label: "Mandatory",
+          value: "reqd",
+          description: "Enable to make this field mandatory.",
+        },
+        {
+          label: "Hide Select",
+          value: "hide_select",
+          description: "Enable to hide the select option for this field.",
+        },
+        {
+          label: "Bold",
+          value: "bold",
+          description: "Enable to display this field's label in bold.",
+        },
+        {
+          label: "Hidden",
+          value: "hidden",
+          description: "Enable to hide this field in forms.",
+        },
+        {
+          label: "Ignore User Permissions",
+          value: "ignore_user_permissions",
+          description: "Enable to bypass user permissions for this field.",
+        },
+        {
+          label: "In Filter",
+          value: "in_filter",
+          description: "Enable to include this field in filter options.",
+        },
+        {
+          label: "In Global Search",
+          value: "in_global_search",
+          description: "Enable to include this field in global search results.",
+        },
+        {
+          label: "In List View",
+          value: "in_list_view",
+          description: "Enable to display this field in list views.",
+        },
+        {
+          label: "In Standard Filter",
+          value: "in_standard_filter",
+          description: "Enable to include this field in standard filters.",
+        },
+        {
+          label: "Read Only",
+          value: "read_only",
+          description: "Enable to make this field read-only.",
+        },
+        {
+          label: "Show on Timeline",
+          value: "show_on_timeline",
+          description: "Enable to display this field on the timeline.",
+        },
+        {
+          label: "Translatable",
+          value: "translatable",
+          description: "Enable to allow translations for this field.",
+        },
+        {
+          label: "Unique",
+          value: "unique",
+          description: "Enable to enforce unique values for this field.",
+        },
+        {
+          label: "Collapsible",
+          value: "collapsible",
+          description: "Enable to make this field collapsible in forms.",
+        },
+        {
+          label: "No Copy",
+          value: "no_copy",
+          description: "Enable to prevent copying this field's value.",
+        },
+        {
+          label: "Public in List",
+          value: "public_in_list",
+          description: "Enable to show this field in public list views.",
+        },
+        {
+          label: "Public in Detail",
+          value: "public_in_detail",
+          description: "Enable to show this field in public detail views.",
+        },
       ].map((checkbox) => (
-        <CheckboxInput
-          key={checkbox.value}
-          label={checkbox.label}
-          value={selectedItem ? selectedItem[checkbox.value] : null}
-          onChange={(e) => handleChange(checkbox.value, e.target.checked)}
-        />
+        <div key={checkbox.value}>
+          <CheckboxInput
+            label={checkbox.label}
+            value={selectedItem ? selectedItem[checkbox.value] : null}
+            onChange={(e) => handleChange(checkbox.value, e.target.checked)}
+          />
+          {checkbox.description && (
+            <div className="text-[11px] text-blue-800 pl-6 italic">
+              {checkbox.description}
+            </div>
+          )}
+        </div>
       ))}
     </div>
   );

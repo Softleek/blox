@@ -1,4 +1,3 @@
-import json
 import os
 import platform
 import subprocess
@@ -7,8 +6,7 @@ from typing import Any, Dict, List
 import click
 
 from ..sites.migrate.migrate import run_migration
-from ..utils.config import PROJECT_ROOT
-from ..utils.file_operations import ensure_file_exists
+from ..utils.config import PROJECT_ROOT, get_all_sites
 
 
 @click.command()
@@ -20,21 +18,13 @@ def dropsite(site: str) -> None:
     Args:
         site (str): The name of the site to delete.
     """
-    # Load sites from sites.json
-    sites_json_path: str = os.path.join(PROJECT_ROOT, "sites", "sites.json")
-    ensure_file_exists(sites_json_path, initial_data=[])
-    if os.path.exists(sites_json_path):
-        with open(sites_json_path, "r") as json_file:
-            sites: List[Dict[str, Any]] = json.load(json_file)
-    else:
-        click.echo("No sites found in sites.json.")
-        return
-
+    
     # Prompt for site if not provided
     if not site:
+        sites: List[Dict[str, Any]] = get_all_sites()
         click.echo("Select a site to delete:")
         for i, site_entry in enumerate(sites, 1):
-            click.echo(f"{i}. {site_entry['site_name']}")
+            click.echo(f"{i}. {site_entry}")
 
         site_choice: int = click.prompt(
             "Enter the number of the site to delete", type=int
@@ -44,16 +34,11 @@ def dropsite(site: str) -> None:
             click.echo("Invalid site selection.")
             return
 
-        selected_site: Dict[str, Any] = sites[site_choice - 1]
-    else:
-        selected_site = next((s for s in sites if s["site_name"] == site), None)
-        if not selected_site:
-            click.echo(f"Site '{site}' not found in sites.json.")
-            return
+        site = sites[site_choice - 1]
 
     # Confirm the deletion
     confirm: bool = click.confirm(
-        f"Are you sure you want to delete the site '{selected_site['site_name']}'?",
+        f"Are you sure you want to delete the site '{site}'?",
         default=False,
     )
     if not confirm:
@@ -62,7 +47,7 @@ def dropsite(site: str) -> None:
 
     # Delete the site folder with admin/superuser privileges
     site_folder_path: str = os.path.join(
-        PROJECT_ROOT, "sites", selected_site["site_name"]
+        PROJECT_ROOT, "sites", site
     )
 
     try:
@@ -90,14 +75,8 @@ def dropsite(site: str) -> None:
         click.echo(f"Error deleting site folder: {e}")
         return
 
-    # Remove the site entry from sites.json
-    sites = [s for s in sites if s["site_name"] != selected_site["site_name"]]
-
-    with open(sites_json_path, "w") as json_file:
-        json.dump(sites, json_file, indent=4)
-
     click.echo(
-        f"Site '{selected_site['site_name']}' has been successfully removed from sites.json."
+        f"Site '{site}' has been successfully removed."
     )
 
     run_migration()

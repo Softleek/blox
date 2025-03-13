@@ -3,7 +3,7 @@ export const generateTabList = (config) => {
   const generateRandomFieldname = (prefix) =>
     `${prefix}_${Math.random().toString(36).substring(2, 8)}`;
 
-  const firstField = config?.fields.find(
+  const firstField = config?.fields?.find(
     (f) => f.fieldname === config?.field_order[0]
   );
 

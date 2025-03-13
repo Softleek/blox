@@ -7,10 +7,11 @@ from ...utils.config import find_module_base_path
 from ...utils.text import to_snake_case, to_titlecase_no_space
 from ..utils.app_actions import get_name_by_id
 
+from .models.json_loader import load_json_file
 
 def update_urls_py(app_name: str, modules: List[str], django_path: str) -> None:
     """
-    Update urls.py to register ViewSets for models within an app.
+    Update urls.py to register ViewSets for models within an app, including public viewsets.
 
     Args:
         app_name (str): The name of the Django app.
@@ -64,7 +65,22 @@ def update_urls_py(app_name: str, modules: List[str], django_path: str) -> None:
                 for model in models:
                     model_name = to_titlecase_no_space(get_name_by_id(model, "doc"))
                     viewset_name = f"{model_name}ViewSet"
+                    public_viewset_name = f"Public{model_name}ViewSet"
+
+                    # Register the main viewset
                     urls_content += f"router.register(r'{model}', {viewset_name})\n"
+
+                    # Check if the model has a public viewset
+                    config_file_path = os.path.join(
+                        doc_path if os.path.isdir(doc_path) else doctype_path, model, f"{model}.json"
+                    )
+                    if os.path.exists(config_file_path):
+                        config = load_json_file(config_file_path)
+                        is_public = config.get("is_public", False)
+
+                        # Register the public viewset if it exists
+                        if is_public:
+                            urls_content += f"router.register(r'public/{model}', {public_viewset_name})\n"
 
         # Add the router's URLs to urlpatterns
     urls_content += """
@@ -77,7 +93,7 @@ urlpatterns = [
     # Write the final urls.py
     with open(urls_path, "w") as file:
         file.write(urls_content)
-
+        
 
 def extract_model_names(folder_path: str) -> List[str]:
     """

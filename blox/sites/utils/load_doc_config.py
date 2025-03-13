@@ -26,17 +26,3 @@ def load_existing_data() -> List[Dict[str, Any]]:
     return []
 
 
-def get_all_sites() -> List[Dict[str, Any]]:
-    """
-    Retrieves all sites from the sites JSON file.
-
-    Returns:
-        List[Dict[str, Any]]: A list of dictionaries containing the site data.
-    """
-    sites_json_path = os.path.join(PROJECT_ROOT, "sites", "sites.json")
-    ensure_file_exists(sites_json_path, initial_data=[])
-
-    with open(sites_json_path, "r") as json_file:
-        sites = json.load(json_file)
-
-    return sites

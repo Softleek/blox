@@ -7,10 +7,9 @@ from typing import Optional
 
 import click
 
-from ...utils.config import DEFAULT_SITE, DJANGO_PATH, PROJECT_ROOT, find_django_path
+from ...utils.config import DEFAULT_SITE, DJANGO_PATH, PROJECT_ROOT, find_django_path, get_all_sites, get_site_config
 from ..utils.app_database_utils import create_entries_from_config
 from ..utils.configure_app import configure_app, configure_doc, configure_module
-from ..utils.load_doc_config import get_all_sites
 from .migrate_app import migrate_app
 from .migrate_doc import migrate_doc
 from .migrate_module import migrate_module
@@ -62,7 +61,7 @@ def updatefiles(
 
     if all:
         for site_entry in sites:
-            installed_apps = site_entry.get("installed_apps", [])
+            installed_apps = get_site_config(site_entry).get("installed_apps", [])
             for app in installed_apps:
                 configure_app(app)
 
@@ -71,9 +70,7 @@ def updatefiles(
 
         return
 
-    selected_site = (
-        next((s for s in sites if s.get("site_name") == site), None) if site else None
-    )
+    selected_site = get_site_config(site)
 
     if doc and module and app:
         configure_doc(app, module, doc)
@@ -209,7 +206,7 @@ def run_migration(
             if all:
                 sites = get_all_sites()
                 for site_entry in sites:
-                    run_migrate_django(site_entry.get("site_name"))
+                    run_migrate_django(site_entry)
             else:
                 run_migrate_django(site)
         run_migrate_django()

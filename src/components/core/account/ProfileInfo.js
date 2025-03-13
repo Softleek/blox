@@ -9,9 +9,10 @@ import {
   faBriefcase,
   faCalendarDay,
   faSignInAlt,
-  faFacebookF,
-  faTwitter,
-  faInstagram,
+  faImage,
+  faBirthdayCake,
+  faGlobe,
+  faCodeBranch,
 } from "@fortawesome/free-solid-svg-icons";
 
 const ProfileInfo = ({ userData }) => {
@@ -102,6 +103,42 @@ const ProfileInfo = ({ userData }) => {
                   ? new Date(userData.last_login).toLocaleDateString()
                   : "N/A"}
               </span>
+            </li>
+            <li className="flex items-center px-4 py-3 bg-green-100 border border-green-300 rounded-lg text-sm">
+              <FontAwesomeIcon icon={faImage} className="text-green-600 mr-3" />
+              <strong className="text-slate-700 w-32">
+                Profile Picture:
+              </strong>{" "}
+              &nbsp;
+              <span>{userData?.profile_picture || "N/A"}</span>
+            </li>
+            <li className="flex items-center px-4 py-3 bg-pink-100 border border-pink-300 rounded-lg text-sm">
+              <FontAwesomeIcon
+                icon={faBirthdayCake}
+                className="text-pink-600 mr-3"
+              />
+              <strong className="text-slate-700 w-32">Birthdate:</strong> &nbsp;
+              <span>
+                {userData?.birthdate
+                  ? new Date(userData.birthdate).toLocaleDateString()
+                  : "N/A"}
+              </span>
+            </li>
+            <li className="flex items-center px-4 py-3 bg-purple-100 border border-purple-300 rounded-lg text-sm">
+              <FontAwesomeIcon
+                icon={faGlobe}
+                className="text-purple-600 mr-3"
+              />
+              <strong className="text-slate-700 w-32">Timezone:</strong> &nbsp;
+              <span>{userData?.timezone || "N/A"}</span>
+            </li>
+            <li className="flex items-center px-4 py-3 bg-green-100 border border-green-300 rounded-lg text-sm">
+              <FontAwesomeIcon
+                icon={faCodeBranch}
+                className="text-green-600 mr-3"
+              />
+              <strong className="text-slate-700 w-32">Branch:</strong> &nbsp;
+              <span>{userData?.branch || "N/A"}</span>
             </li>
           </ul>
         </div>

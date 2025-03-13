@@ -63,16 +63,6 @@ def dropapp(app: str) -> None:
         click.echo("App deletion canceled.")
         return
 
-    # Uninstall the app from all sites using `blox uninstallapp`
-    sites_json_path: str = os.path.join(PROJECT_ROOT, "sites", "sites.json")
-    if not os.path.exists(sites_json_path):
-        click.echo("No sites.json configuration found.")
-        return
-
-    # Load all sites from sites.json
-    with open(sites_json_path, "r") as sites_file:
-        json.load(sites_file)
-
     # Path to the app folder
     custom_app_path: str = os.path.join(PROJECT_ROOT, "apps", selected_app)
 
@@ -83,7 +73,7 @@ def dropapp(app: str) -> None:
                 f"Attempting to delete the app folder '{custom_app_path}' with admin privileges..."
             )
 
-            if os.name == "nt":  # Check if Windows
+            if os.name == "nt": 
                 powershell_command: str = (
                     f'Remove-Item -Recurse -Force "{custom_app_path}"'
                 )

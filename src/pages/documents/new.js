@@ -38,8 +38,8 @@ const Newdocument = () => {
       ) {
         const documentname = response.data.id;
         const app = response.data.app.name;
-        const module = response.data.module.name;
-        addDoc({ documentname, app, module }); // Don't wait for the response
+        const module1 = response.data.module.name;
+        addDoc({ documentname, app, module: module1 }); // Don't wait for the response
         router.push(`${router.pathname.replace("/new", "")}/${documentname}`);
       }
     } catch (error) {
