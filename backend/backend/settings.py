@@ -239,6 +239,10 @@ ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = (
 ACCOUNT_EMAIL_CONFIRMATION_SIGNUP_MESSAGE = "account/confirmation_signup_message.txt"
 
 
+SA_SMS_API_URL = config("SA_SMS_API_URL", default="")
+SA_API_SECRET = config("SA_API_SECRET", default="")
+SA_API_KEY = config("SA_API_KEY", default="")
+
 SMS_API_KEY = config("SMS_API_KEY", default="")
 SMS_CLIENT_ID = config("SMS_CLIENT_ID", default="")
 SMS_SENDER_ID = config("SMS_SENDER_ID", default="")
