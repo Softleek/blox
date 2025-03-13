@@ -89,7 +89,7 @@ def install_django_app(app: str, project_root: str) -> None:
             settings_content.insert(end_index, f"    '{app_name}',\n")
 
         path_append_line = (
-            f'sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "{app}")))\n'
+            f'\nsys.path.append(str(os.path.join(PROJECT_PATH, "apps", "{app}")))\n'
         )
         if path_append_line not in settings_content:
             settings_content.append(f"\n{path_append_line}")
@@ -131,6 +131,11 @@ def install_django_app(app: str, project_root: str) -> None:
 
         with open(apps_py_path, "w") as apps_file:
             apps_file.writelines(apps_py_content)
+
+        # Create signals.py
+        signals_path = os.path.join(app_path, "signals.py")
+        with open(signals_path, "w") as signals_file:
+            signals_file.write("\n")
 
         # Create module structure
         create_module_structure(app_path, custom_app_path, app)

@@ -2,8 +2,7 @@ import { getChanges } from "./getChanges";
 import { postData, updateData, deleteData, fetchJSON } from "./Api";
 import { getDocDetail } from "./generateSidebarData";
 import ToastTemplates from "@/components/core/common/toast/ToastTemplates";
-import { Elsie } from "next/font/google";
-import { set } from "date-fns";
+import _ from "lodash";
 
 export const handleSave = async ({
   data,
@@ -123,6 +122,7 @@ const handleTableChanges = async (
       } else if (!previousIds.includes(item.id)) {
       } else {
         const { id, ...rest } = item;
+        console.log("rest", rest);
 
         await updateData(rest, `${docDetail.endpoint}/${id}`);
       }

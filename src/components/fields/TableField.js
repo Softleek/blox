@@ -90,6 +90,7 @@ const TableField = ({
         getFieldDetails={getFieldDetails}
         handleRowSelect={handleRowSelect}
         ordered={ordered}
+        field={field}
       />
 
       {!readOnly && !preview && (

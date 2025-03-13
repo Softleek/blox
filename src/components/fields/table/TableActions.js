@@ -12,10 +12,10 @@ const TableActions = ({
     <div className="flex space-x-4 mt-2">
       {/* Add Row Button */}
       <button
-        className="px-3 py-1 bg-gray-200 text-xs text-gray-800 rounded-md flex items-center hover:bg-gray-300 transition"
+        className="px-3 py-1 bg-gray-100 text-xs text-pink-700 rounded-md border border-pink-400 flex items-center hover:bg-pink-200 transition"
         onClick={handleAddRow}
       >
-        <FontAwesomeIcon icon={faPlus} className="mr-1 text-gray-600" /> Add Row
+        <FontAwesomeIcon icon={faPlus} className="mr-1 text-pink-600" /> Add New
       </button>
       {selectedRows.length > 0 && (
         <>

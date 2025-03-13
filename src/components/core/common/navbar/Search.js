@@ -53,12 +53,12 @@ const Search = () => {
           ?.map((option) => [
             {
               name: `${option.name} List`,
-              link: option.id,
+              link: option.link,
               type: "list",
             },
             {
               name: `New ${option.name}`,
-              link: option.id,
+              link: option.link,
               module: option.module,
               type: "new",
             },
@@ -85,9 +85,7 @@ const Search = () => {
   // Handle click on an option
   const handleOptionClick = (option) => {
     const link =
-      option.type === "new"
-        ? `/app/${option.link.toLowerCase()}/new`
-        : `/app/${option.link.toLowerCase()}`;
+      option.type === "new" ? `/${option.link}/new` : `/${option.link}`;
     router.push(link);
     setIsFocused(false); // Hide options after clicking
   };

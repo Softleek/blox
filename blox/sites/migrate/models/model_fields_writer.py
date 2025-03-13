@@ -167,8 +167,8 @@ def write_model(
             write_field_declaration(
                 module_file,
                 field_id,
-                "models.FileField",
-                "upload_to='attachments/'",
+                "models.CharField",
+                "max_length=255",
                 field_name=field.get("label", ""),
                 default_value=field.get("default"),
             )

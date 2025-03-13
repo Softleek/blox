@@ -472,3 +472,53 @@ export const fetchJSON = async (filePath) => {
     throw error;
   }
 };
+
+export const uploadFile = async (file, folder, filename, isPrivate) => {
+  const token = await getFromDB("authToken"); // Get auth token
+  const uploadUrl = formatUrl(`${apiUrl}/upload-file/`); // API endpoint
+  const tenant = getTenant(); // Get tenant information
+  const isPrivateFolder = isPrivate ? "private" : "public"; // Check if folder is private
+
+  try {
+    const headers = {
+      "X-Tenant": tenant,
+      Authorization: `Token ${token}`, // Add auth token
+    };
+
+    // Create FormData object
+    const formData = new FormData();
+    formData.append("file", file); // Append the file
+    formData.append("folder", `${tenant}/${isPrivateFolder}/${folder}`); // Append the folder name
+    formData.append("filename", filename); // Append the desired filename
+
+    // Debugging: Log FormData entries
+    for (const [key, value] of formData.entries()) {
+      console.log(`FormData Key: ${key}, Value:`, value);
+    }
+
+    // Send the request
+    const response = await axios.post(uploadUrl, formData, { headers });
+
+    if (response.status === 201) {
+      return {
+        success: "File uploaded successfully",
+        url: response.data.url, // Return the file URL
+      };
+    } else if (response.status === 401) {
+      handle401Error(); // Handle 401 error
+      return { error: "401 error" };
+    }
+
+    return response;
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      handle401Error(); // Handle 401 error
+    }
+
+    ToastTemplates.error(error?.response?.data?.error || error.message); // Show error toast
+    return {
+      error: error,
+      message: error?.response?.data,
+    };
+  }
+};

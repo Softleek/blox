@@ -145,13 +145,14 @@ class ProfileView(APIView):
             user.first_name = data.get("first_name", user.first_name)
             user.last_name = data.get("last_name", user.last_name)
             user.email = data.get("email", user.email)
-            user.bio = data.get("bio", user.bio)  # Assuming bio is an extra field
-            user.phone = data.get(
-                "phone", user.phone
-            )  # Assuming phone is an extra field
-            user.location = data.get(
-                "location", user.location
-            )  # Assuming location is an extra field
+            user.bio = data.get("bio", user.bio)
+            user.phone = data.get("phone", user.phone)
+            user.location = data.get("location", user.location)
+            user.profile_picture = data.get("profile_picture", user.profile_picture)
+            user.birthdate = data.get("birthdate", user.birthdate)
+            user.timezone = data.get("timezone", user.timezone)
+            user.full_name = data.get("full_name", user.full_name)
+            user.branch = data.get("branch", user.branch)
 
             # Handle password separately
             password = data.get("password")
@@ -177,11 +178,21 @@ class ProfileView(APIView):
             if "email" in data:
                 user.email = data["email"]
             if "bio" in data:
-                user.bio = data["bio"]  # Assuming bio is an extra field
+                user.bio = data["bio"]
             if "phone" in data:
-                user.phone = data["phone"]  # Assuming phone is an extra field
+                user.phone = data["phone"]
             if "location" in data:
-                user.location = data["location"]  # Assuming location is an extra field
+                user.location = data["location"]
+            if "profile_picture" in data:
+                user.profile_picture = data["profile_picture"]
+            if "birthdate" in data:
+                user.birthdate = data["birthdate"]
+            if "timezone" in data:
+                user.timezone = data["timezone"]
+            if "full_name" in data:
+                user.full_name = data["full_name"]
+            if "branch" in data:
+                user.branch = data["branch"]
 
             # Handle password separately
             if "password" in data:

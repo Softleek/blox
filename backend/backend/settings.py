@@ -69,6 +69,7 @@ THIRD_PARTY_APPS = [
 # Custom Apps – Only these will be exposed via API
 CUSTOM_APPS = [
     "core",
+    'cms_app',
 ]
 
 # Final Installed Apps List
@@ -151,7 +152,7 @@ AUTH_USER_MODEL = "core.User"
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join(BASE_DIR.parent, "sites")
 
 
 # Default primary key field type
@@ -303,14 +304,17 @@ for site_folder in os.listdir(SITE_PATH):
 
 # Set the default database configuration
 if default_site in DATABASES:
-    DATABASES = {default_site: DATABASES[default_site]}
+    default_database = DATABASES.pop(default_site)
+    DATABASES = {default_site: default_database, **DATABASES}
 else:
     DATABASES = {
         default_site: {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": os.path.join(BASE_DIR, "db.sqlite3"),  # Use os.path.join
-        }
+        }, 
+        **DATABASES
     }
 
 # Define DATABASE_ROUTERS
 DATABASE_ROUTERS = ["core.db_router.MultiTenantRouter"]
+sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "cms")))

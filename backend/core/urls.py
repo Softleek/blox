@@ -17,6 +17,7 @@ from .views import (
     CreatePrintFormatAPIView,
     DataImportAPIView,
     DocumentViewSet,
+    FileUploadView,
     GroupViewSet,
     LoginView,
     LogoutView,
@@ -87,6 +88,7 @@ urlpatterns = [
     path("dataimport/", DataImportAPIView.as_view(), name="dataimport"),
     path("bulkdelete/", BulkDeleteAPIView.as_view(), name="bulkdelete"),
     path("sendemail/", SendEmailView.as_view(), name="email"),
+    path("upload-file/", FileUploadView.as_view(), name="upload-file"),
     path("admin/", admin.site.urls),
     path("", include(static_urlpatterns)),
     re_path(
@@ -96,3 +98,4 @@ urlpatterns = [
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += [    path('cms/', include('cms_app.urls')),]

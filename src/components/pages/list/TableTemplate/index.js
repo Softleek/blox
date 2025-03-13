@@ -216,13 +216,13 @@ const TableTemplate = ({
             onSendData={(data) => uploadData(tableConfig, endpoint, data)}
           />
         )}
-        {isPrintModalOpen && (
+        {/* {isPrintModalOpen && (
           <PrintModal
             isOpen={isPrintModalOpen}
             onClose={() => setIsPrintModalOpen(false)}
             form={form}
           />
-        )}
+        )} */}
       </div>
     </>
   );

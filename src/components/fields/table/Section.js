@@ -12,7 +12,7 @@ const TableModalSection = ({ form, section, handleInputChange }) => {
   }, []);
 
   return (
-    <div className={clsx("border-b-[1px] border-gray-400 px-2 py-1")}>
+    <div className={clsx("border-b-[1px] border-gray-400 px-2 py-1 h-full")}>
       {/* Section Header */}
       {section?.label && (
         <div

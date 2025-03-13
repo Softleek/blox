@@ -2,7 +2,8 @@ import ast
 import os
 import re
 from difflib import get_close_matches
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Dict, Any
+from .models.json_loader import load_json_file
 
 from ...utils.config import DJANGO_PATH
 
@@ -41,12 +42,11 @@ def find_nearest_class(model_name: str, class_names: List[str]) -> Optional[str]
     matches = get_close_matches(model_name, class_names, n=1, cutoff=0.6)
     return matches[0] if matches else None
 
-
 def write_viewset(
     view_file, model_name: str, module_name: str, folder_path: str, doc_name: str
 ) -> None:
     """
-    Write a viewset for a given model, skipping the import if the file is missing or empty.
+    Write a viewset for a given model, including a public viewset if configured.
 
     Args:
         view_file (TextIO): The file object to write the viewset to.
@@ -54,9 +54,6 @@ def write_viewset(
         module_name (str): The name of the module.
         folder_path (str): The path to the folder containing the model file.
         doc_name (str): The name of the document (model file) without extension.
-
-    Raises:
-        ValueError: If no matching or similar class is found for the model name.
     """
     model_file_path = os.path.join(folder_path, f"{doc_name}.py")
 
@@ -79,27 +76,42 @@ def write_viewset(
             nearest_class = find_nearest_class(model_name, class_names)
             if nearest_class:
                 modelimport_name = nearest_class
-                # raise ValueError(
-                #     f"No matching or similar class found for {model_name} in {model_file_path}."
-                # )
             modelimport_name = model_name
         else:
             modelimport_name = model_name
 
-    # Construct import path dynamically
-    import_path = ".".join(re.split(r"[\\/]", os.path.normpath(folder_path))[-5:])
-    if modelimport_name:
-        view_file.write(
-            f"# from apps.{import_path}.{doc_name} import {modelimport_name} as Custom{model_name}\n\n"
-        )
+    # Construct import paths dynamically
+    app_name = module_name.split(".")[0]  # Extract app name from module name
+    view_file.write(f"from core.views.template import GenericViewSet\n")
+    view_file.write(f"from {app_name}_app.models.{module_name}.{doc_name} import {model_name}\n")
+    view_file.write(f"from {app_name}_app.filters.{module_name}.{doc_name} import {model_name}Filter\n")
+    view_file.write(f"from {app_name}_app.serializers.{module_name}.{doc_name} import {model_name}Serializer\n")
+    view_file.write(f"from core.permissions import HasGroupPermission\n\n")
+    view_file.write(f"from rest_framework.permissions import AllowAny\n\n")
 
-    # Write the viewset
+    # Write the main viewset
     view_file.write(f"class {model_name}ViewSet(GenericViewSet):\n")
     view_file.write(f"    queryset = {model_name}.objects.all()\n")
     view_file.write(f"    filterset_class = {model_name}Filter\n")
     view_file.write(f"    permission_classes = [HasGroupPermission]\n")
     view_file.write(f"    serializer_class = {model_name}Serializer\n\n")
 
+    # Load config file
+    config_file_path = os.path.join(folder_path, f"{doc_name}.json")
+    config: Dict[str, Any] = {}
+
+    if os.path.exists(config_file_path):
+        config = load_json_file(config_file_path)
+        is_public = config.get("is_public", False)
+
+        # If public, create a new public viewset
+        if is_public:
+            view_file.write(f"class Public{model_name}ViewSet(GenericViewSet):\n")
+            view_file.write(f"    queryset = {model_name}.objects.all()\n")
+            view_file.write(f"    serializer_class = {model_name}Serializer\n")
+            view_file.write(f"    permission_classes = [AllowAny]\n")
+            view_file.write(f"    http_method_names = ['get']\n\n")
+                       
 
 def add_import_to_signals(app_name, module_name, doc_name):
     signals_path = os.path.join(DJANGO_PATH, f"{app_name}_app", "signals.py")

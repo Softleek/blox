@@ -1,12 +1,20 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useConfig } from "@/contexts/ConfigContext";
 import FieldRenderer from "./FieldRenderer";
 import { useData } from "@/contexts/DataContext";
 
 const FieldItem = ({ item, handleFocus, placeholder = false }) => {
-  const { selectedItem, setSelectedItem } = useConfig(); // Destructure setSelectedItem
+  const { selectedItem, setSelectedItem } = useConfig();
   const { form, setForm, data } = useData();
   const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    if (item?.depends_on) {
+      const visibility = evaluateDependsOn(item.depends_on, form);
+      setIsVisible(visibility);
+    }
+  }, [form, item?.depends_on]);
 
   if (!item) {
     console.error(`Item is undefined`);
@@ -28,6 +36,32 @@ const FieldItem = ({ item, handleFocus, placeholder = false }) => {
     }));
   };
 
+  const evaluateDependsOn = (dependsOn, form) => {
+    try {
+      // Use a regular expression to extract the key, operator, and value
+      const match = dependsOn.match(/^\s*(\w+)\s*(!=|==)\s*(['"]?)(.*?)\3\s*$/);
+      if (!match) {
+        console.error("Invalid depends_on condition format:", dependsOn);
+        return true;
+      }
+
+      const [, key, operator, , value] = match;
+      const formValue = form[key.trim()];
+
+      if (operator === "!=") {
+        return formValue !== value;
+      } else if (operator === "==") {
+        return formValue === value;
+      }
+      return true;
+    } catch (error) {
+      console.error("Error evaluating depends_on condition:", error);
+      return true;
+    }
+  };
+
+  if (!isVisible) return null;
+
   return (
     <div
       ref={ref}
@@ -44,7 +78,7 @@ const FieldItem = ({ item, handleFocus, placeholder = false }) => {
           : "border min-h-10 bg-white"
       } ${item?.hidden || (item?.read_only && !fieldValue) ? "hidden" : ""}`}
       onClick={handleSelect}
-      tabIndex={0} // Allow the div to receive focus
+      tabIndex={0}
     >
       <FieldRenderer
         fieldtype={item.fieldtype}

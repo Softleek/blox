@@ -81,7 +81,8 @@ const ProfilePage = () => {
       const changedFields = getChangedFields(formData);
       if (Object.keys(changedFields).length) {
         const response = await updateData(changedFields, `profile`);
-        if (response?.success) {
+
+        if (response?.status === 200) {
           toast.success("Profile updated successfully!");
           setIsEditing(false);
         } else {
@@ -109,7 +110,7 @@ const ProfilePage = () => {
       <div className="-mt-2 overflow-auto max-h-[calc(100vh-10rem)]">
         <div className="w-full px-6 mx-auto">
           <div
-            className="relative flex items-center p-0 mt-4 overflow-hidden bg-center bg-cover min-h-32 rounded-2xl"
+            className="relative flex items-center p-0 mt-4 overflow-hidden bg-center bg-cover min-h-16 rounded-2xl"
             style={{
               backgroundImage: `url('/img/curved-images/curved0.jpg')`,
               backgroundPositionY: "50%",
@@ -117,16 +118,16 @@ const ProfilePage = () => {
           >
             <span className="absolute inset-y-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-purple-700 to-pink-500 opacity-60"></span>
           </div>
-          <div className="relative flex flex-col flex-auto min-w-0 p-4 mx-6 -mt-16 overflow-hidden break-words border-0 shadow-blur rounded-2xl bg-white/80 bg-clip-border backdrop-blur-2xl backdrop-saturate-200">
+          <div className="relative flex flex-col flex-auto min-w-0 p-2 mx-2 -mt-12 overflow-hidden break-words border-0 shadow-blur rounded-2xl bg-white/80 bg-clip-border backdrop-blur-2xl backdrop-saturate-200">
             <div className="flex flex-wrap -mx-3">
               <div className="flex-none w-auto max-w-full px-3">
-                <div className="text-base ease-soft-in-out h-18.5 w-18.5 relative inline-flex items-center justify-center rounded-xl text-white transition-all duration-200">
+                {/* <div className="text-base ease-soft-in-out h-18.5 w-18.5 relative inline-flex items-center justify-center rounded-xl text-white transition-all duration-200">
                   <img
                     src={profileData?.profile_picture || "/img/bruce-mars.jpg"}
                     alt="profile_image"
                     className="w-full shadow-soft-sm rounded-xl"
                   />
-                </div>
+                </div> */}
               </div>
               <div className="flex-none w-auto max-w-full px-3 my-auto">
                 <div className="h-full">
@@ -170,7 +171,7 @@ const ProfilePage = () => {
             </div>
           </div>
         </div>
-        <div className="w-full p-6 mx-auto">
+        <div className="w-full px-6 py-2 mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 -mx-3 gap-2">
             {isEditing ? (
               <ProfileEditForm
@@ -183,14 +184,7 @@ const ProfilePage = () => {
             ) : (
               <>
                 <ProfileInfo userData={profileData} />
-                {/* <ProfileSettings
-                  isEditing={isEditing}
-                  onEditClick={handleEditClick}
-                  onSaveClick={handleSaveClick}
-                  formRef={formRef}
-                  onSubmit={handleFormSubmitSuccess}
-                  profileData={profileData}
-                /> */}
+
                 <Messages profileData={profileData} />
               </>
             )}

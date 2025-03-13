@@ -14,11 +14,14 @@ import Tab from "./Tab";
 import DocumentLogs from "./Logs";
 
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
 
 const DetailForm = () => {
   const [tabs, setTabs] = useState([]);
   const [tabFields, setTabFields] = useState([]);
   const [showLogs, setShowLogs] = useState(false);
+  const router = useRouter();
+  const { slug, id } = router.query;
   const {
     localConfig,
     setLocalConfig,
@@ -86,6 +89,8 @@ const DetailForm = () => {
             className={`flex flex-row items-center font-medium text-base cursor-pointer ${
               showLogs
                 ? "border-b-[1px] border-slate-800 text-purple-700"
+                : !id
+                ? "hidden"
                 : "text-slate-900"
             }`}
             onClick={handleShowLogs}

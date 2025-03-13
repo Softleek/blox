@@ -56,11 +56,12 @@ const PrintModal = ({ form, onClose, isOpen }) => {
         if (!docData) throw new Error("Failed to fetch document details");
         setUrl(docData);
 
-        const Component = (
-          await import(
-            `../../../../apps/${docData?.app_id}/${docData?.app_id}/${docData?.module_id}/print_format/${selectedFormat}/${selectedFormat}.js`
-          )
-        )?.default;
+        const Component =
+          (
+            await import(
+              `../../../../apps/${docData?.app_id}/${docData?.app_id}/${docData?.module_id}/print_format/${selectedFormat}/${selectedFormat}.js`
+            )
+          ).default || null;
 
         setPrintComponent(() => Component);
       } catch (error) {
