@@ -54,6 +54,10 @@ const DetailForm = () => {
   const handleBlur = () => setSelectedItem(null);
   const handleShowLogs = () => setShowLogs(true);
 
+  if (!slug) {
+    return
+  }
+
   return (
     <motion.div
       className="w-full"

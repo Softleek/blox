@@ -89,7 +89,7 @@ def find_module_base_path(
     return None, None
 
 
-def get_all_sites() -> list:
+def get_all_sites() -> list: 
     """
     Returns a list of all valid site folder names in the given directory.
     A site is considered valid if it contains a `site_config.json` file.

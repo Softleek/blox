@@ -13,11 +13,11 @@ const TableMultiSelectField = ({
   ordered = false,
 }) => {
   const [optionValue, setOptionValue] = useState(
-    value?.map((option) => ({
+    value ? value?.map((option) => ({
       value: option?.id,
       label: option?.id,
       fullData: option,
-    })) || null
+    })) : null
   );
 
   return (
