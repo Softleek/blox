@@ -2,7 +2,7 @@ import { useNavbar } from "@/contexts/NavbarContext";
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 import { useSidebar } from "@/contexts/SidebarContext";
-import AppDashboard from "@/components/workspace/AppDashboard";
+// import AppDashboard from "@/components/workspace/AppDashboard";
 import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -34,9 +34,5 @@ export default function AppIndex() {
     updateDashboardText(titleCaseText);
   }, []); // Add router.asPath as a dependency to trigger effect on route change
 
-  return (
-    <>
-      <AppDashboard />
-    </>
-  );
+  return <>{/* <AppDashboard /> */}</>;
 }

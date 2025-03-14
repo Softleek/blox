@@ -17,6 +17,9 @@ def build() -> NoReturn:
     This function checks for the existence of a virtual environment, collects Django static files,
     and builds the Next.js project. If any step fails, it prints an error message.
     """
+    run_build() 
+    
+def run_build() -> NoReturn:
     venv_path: str = os.path.join(PROJECT_ROOT, "env")
     if not os.path.exists(venv_path):
         click.echo("Virtual environment not found. Please run 'blox setup' first.")
@@ -31,14 +34,14 @@ def build() -> NoReturn:
         click.echo(click.style("Building Django static files...", fg="blue"))
         subprocess.check_call(
             [python_executable, "manage.py", "collectstatic", "--noinput"],
-            cwd=os.path.join(PROJECT_ROOT, "apps/core/django"),
+            cwd=os.path.join(PROJECT_ROOT, "backend"),
         )
         click.echo(click.style("Django static files built successfully.", fg="green"))
 
         # Build Next.js project
         click.echo(click.style("Building Next.js project...", fg="blue"))
         subprocess.check_call(
-            ["npm", "run", "build"], cwd=os.path.join(PROJECT_ROOT, "apps/core/nextjs")
+            ["npm", "run", "build"], cwd=os.path.join(PROJECT_ROOT)
         )
         click.echo(click.style("Next.js project built successfully.", fg="green"))
 
