@@ -70,7 +70,7 @@ const Table = ({
           )}
           {field?.is_section ? (
             <div
-              className={`grid gap-4 grid-cols-${
+              className={`grid gap-4 grid-cols-1 lg:grid-cols-${
                 field?.columns ? field?.columns : 1
               }`}
             >
