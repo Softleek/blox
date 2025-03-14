@@ -32,6 +32,7 @@ from .views import (
     RoleViewSet,
     SendEmailView,
     SendSmsView,
+    SidebarLinkViewSet,
     UserGetViewSet,
     UserGroupPermissions,
     UserIPAddressViewSet,
@@ -54,6 +55,7 @@ router.register(r"core/reminder", ReminderViewSet, basename="core_reminder")
 router.register(r"core/role_type", RoleViewSet, basename="core_role_type")
 router.register(r"core/branch", BranchViewSet, basename="core_branch")
 router.register(r"core/rolegroup", GroupViewSet, basename="core_rolegroup")
+router.register(r"core/sidebar_link", SidebarLinkViewSet, basename="core_sidebarlink")
 router.register(r"core/group", GroupViewSet, basename="core_group")
 router.register(r"core/permission", PermissionViewSet, basename="core_permission")
 router.register(

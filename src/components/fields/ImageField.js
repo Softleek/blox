@@ -6,7 +6,9 @@ import { uploadFile } from "@/utils/Api";
 const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
   const [imageFile, setImageFile] = useState(value || null);
   const [previewImage, setPreviewImage] = useState(value ? value : null);
-  const [imageName, setImageName] = useState(value ? value.name : "");
+  const [imageName, setImageName] = useState(
+    value ? value.name || value.split("/").pop() : ""
+  );
   const [showPreview, setShowPreview] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -95,29 +97,23 @@ const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
   };
 
   return (
-    <div className="relative image-field" hidden={hidden}>
+    <div className="relative image-field w-full overflow-auto" hidden={hidden}>
       {previewImage ? (
-        <div className="relative image-preview">
+        <div className="relative image-preview w-full overflow-auto">
           <img
             src={previewImage}
             alt="Preview"
-            className="image-preview__img w-full h-fit object-cover rounded-lg cursor-pointer"
+            className="image-preview__img w-full h-32 p-2 object-cover rounded-lg cursor-pointer"
             onClick={() => setShowPreview(true)}
           />
-          <div className="flex items-center mt-2">
-            {/* <input
+          <div className="flex items-center -mt-14 mb-2 p-2 w-full overflow-auto">
+            <input
               type="text"
-              className="image-preview__rename border border-gray-300 text-right rounded-sm px-2 py-2 m-2 focus:outline-none focus:ring-1 focus:ring-yellow-500"
-              value={getFileNameAndExtension(imageName).name} // Only show the name part
-              onChange={handleRename}
-              readOnly={readOnly}
-            /> */}
-            <span className="text-gray-800 py-4 px-2">
-              {getFileNameAndExtension(imageName).name}
-              {getFileNameAndExtension(imageName).extension}{" "}
-              {/* Display the extension */}
-            </span>
+              className="mt-1 block w-full text-[12px] border border-gray-300 rounded-md py-1 px-2 mx-1 bg-pink-50 focus:outline-none focus:ring-1 focus:ring-yellow-500"
+              value={imageName}
+            />
           </div>
+
           <button
             type="button"
             className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md hover:bg-gray-100"
@@ -150,10 +146,11 @@ const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
       {/* Full-Image Preview Modal */}
       {showPreview && (
         <Modal
-          className="fixed inset-0 p-4 flex items-center justify-center bg-gray-600 bg-opacity-50 backdrop-blur-sm h-screen !z-500 rounded-md "
+          className="fixed inset-0 p-4 flex items-center justify-center bg-gray-600 bg-opacity-50 backdrop-blur-sm h-screen !z-50000 rounded-md "
           onClick={() => setShowPreview(false)}
           isOpen={showPreview}
           onClose={() => setShowPreview(false)}
+          zIndex={50000}
         >
           <div className="relative bg-white rounded-lg p-4 max-w-4xl max-h-screen overflow-auto">
             <img
@@ -180,6 +177,7 @@ const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
           onClick={() => setShowConfirmationModal(false)}
           isOpen={showConfirmationModal}
           onClose={() => setShowConfirmationModal(false)}
+          zIndex={50000}
         >
           <div className="flex flex-col items-center justify-center bg-white rounded-lg p-6 max-w-4xl">
             <h2 className="text-lg font-semibold mb-4">Confirm Image Upload</h2>

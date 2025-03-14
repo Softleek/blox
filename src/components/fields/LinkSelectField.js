@@ -91,8 +91,9 @@ const LinkSelectField = ({
         const fetchedOptions =
           response?.data?.data?.map((option) => ({
             value: option.id,
-            label:
-              `${option[appData?.title_field]} - ${option?.id}` || option.id,
+            label: option[appData?.title_field]
+              ? `${option[appData?.title_field]} - ${option?.id}`
+              : option.id,
             fullData: option,
           })) || [];
 

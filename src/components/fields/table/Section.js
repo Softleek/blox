@@ -4,7 +4,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { useConfig } from "@/contexts/ConfigContext";
 import FieldItem from "./FieldItem";
-const TableModalSection = ({ form, section, handleInputChange }) => {
+const TableModalSection = ({
+  form,
+  section,
+  handleInputChange,
+  openFullForm,
+}) => {
   const [isCollapsed, setIsCollapsed] = useState(section.collapsible === 1);
 
   const toggleCollapse = useCallback(() => {
@@ -42,9 +47,11 @@ const TableModalSection = ({ form, section, handleInputChange }) => {
           {section?.columns?.map((column, columnIndex) => (
             <div key={columnIndex} className={clsx("flex-1 rounded-md")}>
               {/* Column Header */}
-              <div className="flex flex-row justify-between">
-                <h5 className="text-md font-semibold p-2">{column.label}</h5>
-              </div>
+              {column?.label && (
+                <div className="flex flex-row justify-between">
+                  <h5 className="text-md font-semibold p-2">{column.label}</h5>
+                </div>
+              )}
 
               {/* Column Fields */}
               {column?.fields?.map((item) => (
@@ -53,6 +60,7 @@ const TableModalSection = ({ form, section, handleInputChange }) => {
                     item={item}
                     handleInputChange={handleInputChange}
                     form={form}
+                    openFullForm={openFullForm}
                   />
                 </Suspense>
               ))}

@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import FieldRenderer from "@/components/pages/form/FieldRenderer";
+import FieldRenderer from "./FieldRenderer";
 import { useConfig } from "@/contexts/ConfigContext";
 
-const FieldItem = ({ form, item, handleInputChange }) => {
+const FieldItem = ({ form, item, handleInputChange, openFullForm }) => {
   const ref = useRef(null);
   const { selectedItem, setSelectedItem } = useConfig();
 
@@ -43,6 +43,7 @@ const FieldItem = ({ form, item, handleInputChange }) => {
         placeholder={item?.label}
         handleInputChange={handleChange} // Pass fieldname and value
         label={item.label}
+        openFullForm={openFullForm}
       />
     </div>
   );

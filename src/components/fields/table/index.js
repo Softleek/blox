@@ -62,7 +62,7 @@ const Table = ({
             <tr>
               <td
                 colSpan={columnsData.length + 3}
-                className="text-center py-4 text-gray-500 font-regular"
+                className="text-center py-2 text-gray-500 font-regular"
               >
                 No data available
               </td>

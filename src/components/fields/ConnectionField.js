@@ -9,7 +9,7 @@ import PrimaryButton from "../core/common/buttons/Primary";
 import { saveToDB } from "@/utils/indexedDB";
 import { useData } from "@/contexts/DataContext";
 
-const ConnectionField = ({ value = [], field, hidden }) => {
+const ConnectionField = ({ value = [], field, hidden, readOnly = false }) => {
   const [endpoint, setEndpoint] = useState(null);
   const [appData, setAppData] = useState(null);
   const [slug_link, setSlug] = useState(null);
@@ -76,10 +76,12 @@ const ConnectionField = ({ value = [], field, hidden }) => {
   return (
     <div className="flex flex-col space-y-4 py-2 w-full">
       <TableField field={field} value={options} readOnly={true} />
-      <div className="flex flex-row space-x-4 pb-2 w-full">
-        <PrimaryButton onClick={handleViewAll} text={"View All"} />
-        <PrimaryButton onClick={handleAddNew} text={"Add New"} />
-      </div>
+      {!readOnly && (
+        <div className="flex flex-row space-x-4 pb-2 w-full">
+          <PrimaryButton onClick={handleViewAll} text={"View All"} />
+          <PrimaryButton onClick={handleAddNew} text={"Add New"} />
+        </div>
+      )}
     </div>
   );
 };
