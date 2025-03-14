@@ -21,15 +21,18 @@ const ColumnItem = ({ section, column, handleFocus, handleBlur }) => {
   // Function to evaluate depends_on condition
   const evaluateDependsOn = (dependsOn, form) => {
     try {
+      // If form is null, return true to make the section visible by default
+      if (!form) return true;
+  
       const match = dependsOn.match(/^\s*(\w+)\s*(!=|==)\s*(['"]?)(.*?)\3\s*$/);
       if (!match) {
         console.error("Invalid depends_on condition format:", dependsOn);
         return true;
       }
-
+  
       const [, key, operator, , value] = match;
       const formValue = form[key.trim()];
-
+  
       if (operator === "!=") {
         return formValue !== value;
       } else if (operator === "==") {

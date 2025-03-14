@@ -19,15 +19,18 @@ const Section = ({ section, handleFocus, handleBlur }) => {
   // Function to evaluate depends_on condition
   const evaluateDependsOn = (dependsOn, form) => {
     try {
+      // If form is null, return true to make the section visible by default
+      if (!form) return true;
+  
       const match = dependsOn.match(/^\s*(\w+)\s*(!=|==)\s*(['"]?)(.*?)\3\s*$/);
       if (!match) {
         console.error("Invalid depends_on condition format:", dependsOn);
         return true;
       }
-
+  
       const [, key, operator, , value] = match;
       const formValue = form[key.trim()];
-
+  
       if (operator === "!=") {
         return formValue !== value;
       } else if (operator === "==") {
@@ -38,6 +41,7 @@ const Section = ({ section, handleFocus, handleBlur }) => {
       console.error("Error evaluating depends_on condition:", error);
       return true;
     }
+  
   };
 
   // If the section is not visible, return null

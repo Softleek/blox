@@ -266,8 +266,6 @@ class UserViewSet(GenericViewSet):
                 password = data["password"]
 
             role = data.get("role")
-            if role:
-                role = RoleType.objects.get(pk=role)
 
             # Create the user instance but do not save it yet
             user = User(

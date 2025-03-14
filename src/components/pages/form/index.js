@@ -50,9 +50,9 @@ const DoctypeForm = ({ handleSave, config }) => {
     }
   }, [slug]);
 
-  // if (!slug || !localConfig) {
-  //   return null;
-  // }
+  if (!slug || !localConfig) {
+    return null;
+  }
 
   const ComponentBefore = doc?.componentBefore || null;
   const ComponentAfter = doc?.componentAfter || null;

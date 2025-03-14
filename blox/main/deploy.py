@@ -8,7 +8,7 @@ from typing import List, Dict, Optional
 from pathlib import Path
 
 # Constants
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 NGINX_AVAILABLE_DIR = "/etc/nginx/sites-available"
 NGINX_ENABLED_DIR = "/etc/nginx/sites-enabled"
 SUPERVISOR_CONF_DIR = "/etc/supervisor/conf.d"

@@ -15,6 +15,11 @@ from rest_framework.request import Request
 
 from .models import UserIPAddress
 
+import os
+import json
+from pathlib import Path
+from django.conf import settings
+
 _request_local = local()
 
 
@@ -85,6 +90,7 @@ class TenantMiddleware(MiddlewareMixin):
     def process_request(self, request):
         """Determine the tenant's database and set it in the request context."""
         tenant_name = request.headers.get("X-Tenant")
+        tenant_name = get_tenant_from_url(tenant_name)
 
         # If no tenant name is provided, use the default database
         if not tenant_name or tenant_name not in settings.DATABASES:
@@ -104,3 +110,24 @@ class TenantMiddleware(MiddlewareMixin):
         # Switch to the tenant's database connection
         connections["default"].close()
         connections[tenant_name] = connections[tenant_name]
+
+
+def get_tenant_from_url(url):
+    sites_path = Path(settings.SITE_PATH)
+    
+    if not sites_path.exists():
+        return None
+    
+    for site_folder in sites_path.iterdir():
+        if site_folder.is_dir():
+            config_file = site_folder / "site_config.json"
+            if config_file.exists():
+                with open(config_file, "r") as f:
+                    try:
+                        config = json.load(f)
+                        if "domains" in config and url in config["domains"]:
+                            return config.get("site_name")
+                    except json.JSONDecodeError:
+                        print(f"Error decoding JSON in {config_file}")
+    
+    return None  # No match found

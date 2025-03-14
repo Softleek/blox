@@ -321,4 +321,6 @@ else:
 
 # Define DATABASE_ROUTERS
 DATABASE_ROUTERS = ["core.db_router.MultiTenantRouter"]
+
+
 sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "cms")))
