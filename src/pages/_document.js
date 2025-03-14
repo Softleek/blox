@@ -4,51 +4,51 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <title>Blox ERP - Comprehensive and Adaptable ERP Solution</title>
+        <title>Destiny Care Home - Compassionate Caregivers</title>
 
         {/* SEO Meta Tags */}
         <meta
           name="description"
-          content="Blox ERP - A scalable and customizable enterprise resource planning solution designed for diverse industries."
+          content="Destiny Care Home provides compassionate and professional care services for seniors, ensuring a safe and nurturing environment for your loved ones."
         />
         <meta
           name="keywords"
-          content="Blox ERP, enterprise resource planning, ERP software, business management, CRM, HR, inventory management, supply chain, manufacturing, financial management"
+          content="Destiny Care Home, senior care, elderly care, assisted living, memory care, nursing home, compassionate care, senior living"
         />
-        <meta name="author" content="Blox ERP" />
+        <meta name="author" content="Destiny Care Home" />
 
         {/* Open Graph Meta Tags for SMO */}
         <meta
           property="og:title"
-          content="Blox ERP - Comprehensive and Adaptable ERP Solution"
+          content="Destiny Care Home - Compassionate Caregivers"
         />
         <meta
           property="og:description"
-          content="Streamline your business operations with Blox ERP, the flexible and scalable ERP solution tailored for all industries."
+          content="At Destiny Care Home, we provide professional and compassionate care services for seniors, ensuring a safe and nurturing environment."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.bloxerp.com" />
+        <meta property="og:url" content="https://www.destinycarehome.com" />
         <meta
           property="og:image"
-          content="https://test.bloxerp.com/blox-logo.png"
+          content="https://www.destinycarehome.com/destiny-logo.png"
         />
-        <meta property="og:site_name" content="Blox ERP" />
+        <meta property="og:site_name" content="Destiny Care Home" />
 
         {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="Blox ERP - Comprehensive and Adaptable ERP Solution"
+          content="Destiny Care Home - Compassionate Caregivers"
         />
         <meta
           name="twitter:description"
-          content="Blox ERP offers a modular, scalable ERP solution designed to manage business operations across various industries."
+          content="Destiny Care Home offers professional and compassionate care services for seniors, ensuring a safe and nurturing environment."
         />
         <meta
           name="twitter:image"
-          content="https://test.bloxerp.com/blox-logo.png"
+          content="https://www.destinycarehome.com/destiny-logo.png"
         />
-        <meta name="twitter:site" content="@BloxERP" />
+        <meta name="twitter:site" content="@DestinyCareHome" />
 
         {/* Existing links and scripts */}
         <link

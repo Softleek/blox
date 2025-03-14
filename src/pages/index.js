@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useSidebar } from "@/contexts/SidebarContext";
 import ModuleDashboard from "@/components/workspace/ModuleDashboard";
 import { useRouter } from "next/router";
+import Dashboard from "@/components/workspace/Dashboard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,7 +32,7 @@ export default function ModuleIndex() {
 
   return (
     <>
-      <ModuleDashboard />
+      <Dashboard />
     </>
   );
 }

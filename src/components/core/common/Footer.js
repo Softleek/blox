@@ -11,14 +11,22 @@ const Footer = () => {
             <div className="text-sm leading-normal text-center text-slate-500 lg:text-left">
               Made with <i className="fa fa-heart text-pink-600"></i> by
               <a
+                href="https://mslabdesigns.com/"
+                className="font-semibold text-blue-700"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                &nbsp;Mslabdesigns&nbsp;
+              </a>
+              for a better web.
+              <a
                 href="https://softleek.com/"
                 className="font-semibold text-blue-700"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                &nbsp;Softleek&nbsp;
+                {/* &nbsp;Softleek&nbsp; */}
               </a>
-              for a better web.
             </div>
           </div>
           <div>&copy; {currentYear} All rights reserved.</div>
