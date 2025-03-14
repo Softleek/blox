@@ -18,7 +18,7 @@ const DoctypeForm = ({ handleSave, config }) => {
   const { form, setForm, setLoading, data, setData, doc, setDoc } = useData();
   const router = useRouter();
   const { openModal } = useModal();
-  const { slug } = router.query;
+  const { slug, id } = router.query;
   const formRef = useRef(null);
 
   const { initializeFormEvents } = useFormEvents(form, setForm, doc, setDoc);
@@ -63,7 +63,7 @@ const DoctypeForm = ({ handleSave, config }) => {
       <DocHeader
         isEditing={isEditing}
         handleSaveClick={handleSaveClick}
-        title={localConfig?.name}
+        title={id || slug}
         buttons={buttons}
       />
       <div className="relative z-1 px-4 flex flex-col mt-2 w-full">

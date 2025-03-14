@@ -99,6 +99,7 @@ const TableField = ({
           handleDeleteRows={handleDeleteRows}
           handleCopyRows={handleCopyRows}
           selectedRows={selectedRows}
+          field={field}
         />
       )}
 

@@ -3,7 +3,8 @@ import { getFromDB } from "@/utils/indexedDB";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import * as Icons from "react-icons/fa"; // Import all Font Awesome icons
 
 const SidebarList = ({ icon, text, link, permission }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -34,22 +35,30 @@ const SidebarList = ({ icon, text, link, permission }) => {
 
   // Check if permission is granted
   const hasPermission = () => {
-    // If no specific permission is required, show the item
     if (!permission) {
       return true;
     }
-    // If superuser or permissions contain "all", show the item
     if (perms === "all") {
       return true;
     }
-    // Otherwise, check if the specific permission exists in the permissions array
     return perms?.includes(permission);
   };
 
-  // Only render the `li` if the user has permission
   if (!hasPermission()) {
-    return null; // Don't render the `li` if the user lacks permission
+    return null;
   }
+  const renderIcon = () => {
+    const iconColor = isHovered || active ? "#FFFFFF" : "#701a75";
+
+    if (typeof icon === "string" && Icons[icon]) {
+      return React.createElement(Icons[icon], {
+        className: "w-5 h-5",
+        style: { color: iconColor },
+      });
+    } else {
+      return <FontAwesomeIcon icon={icon} style={{ color: iconColor }} />;
+    }
+  };
 
   return (
     <li id={uniqueId} key={uniqueId} className="mt-0.5 w-full">
@@ -68,10 +77,7 @@ const SidebarList = ({ icon, text, link, permission }) => {
               : "shadow-soft-2xl"
           }`}
         >
-          <FontAwesomeIcon
-            icon={icon}
-            style={{ color: isHovered || active ? "#FFFFFF" : "#701a75" }}
-          />
+          {renderIcon()}
         </div>
         <span className="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">
           {text}

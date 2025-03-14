@@ -7,6 +7,7 @@ const TableActions = ({
   handleDeleteRows,
   handleCopyRows,
   selectedRows,
+  field,
 }) => {
   return (
     <div className="flex space-x-4 mt-2">
@@ -17,7 +18,7 @@ const TableActions = ({
       >
         <FontAwesomeIcon icon={faPlus} className="mr-1 text-pink-600" /> Add New
       </button>
-      {selectedRows.length > 0 && (
+      {selectedRows.length > 0 && !field?.is_section && (
         <>
           {/* Duplicate Button */}
           <button

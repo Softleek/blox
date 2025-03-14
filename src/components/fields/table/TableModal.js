@@ -55,15 +55,6 @@ const TableModal = ({
     onSave(editedRowData);
   };
 
-  const openFullForm = () => {
-    if (configData?.name && rowData?.id) {
-      window.open(
-        `/app/${toUnderscoreLowercase(configData?.name)}/${rowData?.id}`,
-        "_blank"
-      );
-    }
-  };
-
   return (
     <div className="-mt-2">
       <Modal isOpen={true} onClose={onClose} position={"top"}>

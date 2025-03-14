@@ -44,7 +44,7 @@ export const useTableLogic = ({ value, field, handleInputChange }) => {
     const newIndex = newData.length - 1;
     setSelectedRows([newIndex]);
     setEditRowIndex(newIndex);
-    setIsModalOpen(true);
+    // setIsModalOpen(true);
   };
 
   const handleDeleteRows = () => {

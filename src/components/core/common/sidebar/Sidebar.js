@@ -35,16 +35,16 @@ import { useSidebar } from "@/contexts/SidebarContext";
 import { useNavbar } from "@/contexts/NavbarContext";
 import { useRouter } from "next/router";
 import sidebarConfig from "@/data/sidebar.json"; // Import sidebar.json for sidebar settings
+import Link from "next/link";
+import { fetchData } from "@/utils/Api";
 
 const Sidebar = () => {
   const { sidebarWidth, setSidebarWidth, sidebarHidden } = useSidebar();
-  const { dashboardText } = useNavbar();
+  const { dashboardText, pageInfo } = useNavbar();
   const sidebarRef = useRef(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [sidebarLinks, setSidebarLinks] = useState([]);
   const router = useRouter();
-
-  // Extract sidebar links from sidebarConfig
-  const sidebarLinks = sidebarConfig.sidebarLinks || []; // Assuming the sidebar.json has a links array
 
   useEffect(() => {
     const handleResize = () => {
@@ -70,6 +70,16 @@ const Sidebar = () => {
       setSidebarWidth(sidebarRef.current.offsetWidth);
     }
   }, [isCollapsed, sidebarHidden]);
+
+  useEffect(() => {
+    const fetchLinks = async () => {
+      const response = await fetchData({}, `core/sidebar_link`);
+      if (response?.data) {
+        setSidebarLinks(response?.data?.data);
+      }
+    };
+    fetchLinks();
+  }, []);
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -127,9 +137,11 @@ const Sidebar = () => {
             rel="noreferrer"
             href="/"
           >
-            <span className="ml-4 mr-2 font-semibold text-xl transition-all duration-200 ease-nav-brand">
-              {dashboardText}
-            </span>
+            <Link href={pageInfo?.link || "/"}>
+              <span className="ml-4 mr-2 font-semibold text-xl transition-all duration-200 ease-nav-brand">
+                {pageInfo?.text || "Home"}
+              </span>
+            </Link>
           </a>
         </div>
 
@@ -143,21 +155,14 @@ const Sidebar = () => {
               link="/"
               active={dashboardText === "Home"}
             />
-            <SidebarList
-              icon={faBell}
-              text="Reminder"
-              link="/app/reminder"
-              permission="view_reminder"
-              active={dashboardText === "Reminder"}
-            />
 
             {/* Dynamically add links from sidebar.json */}
             {sidebarLinks.map((link) => (
               <SidebarList
-                key={link.text} // Use text as key or any unique identifier
-                icon={link.icon} // Adjust the icon or load dynamically from sidebar.json
-                text={link?.text}
-                link={link?.link}
+                key={link?.id} // Use text as key or any unique identifier
+                icon={link?.icon} // Adjust the icon or load dynamically from sidebar.json
+                text={link?.label}
+                link={link?.url}
               />
             ))}
 

@@ -54,6 +54,7 @@ import DurationField from "@/components/fields/DurationField";
 import MultiSelectField from "@/components/fields/MultiSelectField";
 import PasswordField from "@/components/fields/PasswordField";
 import ConnectionField from "@/components/fields/ConnectionField";
+import IconField from "@/components/fields/IconField";
 
 const FieldRenderer = ({
   fieldtype,
@@ -171,6 +172,22 @@ const FieldRenderer = ({
               required={item?.reqd}
             />
             {renderIcon()}{" "}
+          </div>
+        </>
+      );
+    case "icon":
+      return (
+        <>
+          {renderLabel()}
+          <div className="text-right flex justify-between w-full">
+            <IconField
+              field={item}
+              value={value}
+              onChange={(icon) => handleInputChange(item, icon)}
+              readOnly={item?.read_only}
+              hidden={item?.hidden}
+            />
+            {/* {renderIcon()}{" "} */}
           </div>
         </>
       );

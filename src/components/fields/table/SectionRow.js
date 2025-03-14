@@ -54,6 +54,19 @@ const SectionRow = ({
     onChange(key, value);
   };
 
+  const openForm = () => {
+    handleRowEdit(rowIndex);
+  };
+
+  const openFullForm = () => {
+    if (configData?.name && rowData?.id) {
+      window.open(
+        `/app/${toUnderscoreLowercase(configData?.name)}/${rowData?.id}`,
+        "_blank"
+      );
+    }
+  };
+
   return (
     <div className="w-full border border-gray-400">
       <div className="h-full px-2 w-full bg-white rounded-xl">
@@ -81,7 +94,7 @@ const SectionRow = ({
             </ul>
           </div>
         )}
-        <div className="relative flex flex-col w-full justify-between h-full pb-4">
+        <div className="relative flex flex-col w-full justify-between h-full pb-1">
           <Suspense fallback={<div>Loading Sections...</div>}>
             {tabFields?.map((section, index) => (
               <TableModalSection
@@ -89,28 +102,27 @@ const SectionRow = ({
                 section={section}
                 form={rowData}
                 handleInputChange={handleInputChange}
+                openFullForm={openFullForm}
               />
             ))}
 
             <td
-              className={`p-1 text-lg flex space-x-4 ${
-                readOnly ? "hidden" : ""
-              }`}
+              className={`text-lg flex space-x-4 ${readOnly ? "hidden" : ""}`}
             >
               <button
-                className="text-blue-500"
-                onClick={() => handleRowEdit(rowIndex)}
+                className="text-blue-500 text-[14px]"
+                onClick={() => openFullForm()}
               >
                 <FontAwesomeIcon icon={faEdit} />
               </button>
               <button
-                className="text-green-500"
+                className="text-green-500 text-[14px]"
                 onClick={() => handleDuplicateRow(rowIndex)}
               >
                 <FontAwesomeIcon icon={faCopy} />
               </button>
               <button
-                className="text-red-500"
+                className="text-red-500 text-[14px]"
                 onClick={() => handleDeleteRow(rowIndex)}
               >
                 <FontAwesomeIcon icon={faTrash} />
