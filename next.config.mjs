@@ -16,6 +16,11 @@ const nextConfig = {
         hostname: "barcode.tec-it.com",
         pathname: "/barcode.ashx/**",
       },
+      {
+        protocol: "https",
+        hostname: "cms.destinycarehome.org",
+        pathname: "/**",
+      },
     ],
   },
   async rewrites() {

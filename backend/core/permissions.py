@@ -39,6 +39,8 @@ class HasGroupPermission(BasePermission):
         model = view.queryset.model
 
         permission_type = permission_map.get(action)
+        if permission_type == "view":
+            return True
         if permission_type:
             permission = (
                 f"{model._meta.app_label}.{permission_type}_{model._meta.model_name}"

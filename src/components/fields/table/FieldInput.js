@@ -11,6 +11,9 @@ const FieldInput = ({
   getFieldDetails,
 }) => {
   const item = getFieldDetails(fieldname);
+  if(item?.fieldtype in ["Table", "Table MultiSelect", "MultiSelect", "Connection", "Image", "QR Code", "Attach", "Attach Image"] ) {
+    return
+  }
 
   return (
     <div
