@@ -68,7 +68,7 @@ def update_urls_py(app_name: str, modules: List[str], django_path: str) -> None:
                     public_viewset_name = f"Public{model_name}ViewSet"
 
                     # Register the main viewset
-                    urls_content += f"router.register(r'{model}', {viewset_name})\n"
+                    urls_content += f"router.register(r'{model}', {viewset_name}, basename='{model}')\n"
 
                     # Check if the model has a public viewset
                     config_file_path = os.path.join(
@@ -80,7 +80,7 @@ def update_urls_py(app_name: str, modules: List[str], django_path: str) -> None:
 
                         # Register the public viewset if it exists
                         if is_public:
-                            urls_content += f"router.register(r'public/{model}', {public_viewset_name})\n"
+                            urls_content += f"router.register(r'public/{model}', {public_viewset_name}, basename='public-{model}')\n"
 
         # Add the router's URLs to urlpatterns
     urls_content += """
