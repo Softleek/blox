@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LinkSelect from "@/components/pages/new/LinkSelect";
-import CustomCheckbox from "react-custom-checkbox";
 
 import {
   faFont,
@@ -309,16 +308,17 @@ const DocumentForm = forwardRef(
             />
           ),
           checkbox: (
-            <CustomCheckbox
-              checked={formData[field.id1]?.value}
-              onChange={(e) => {
-                handleInputChange(field.id1, e, fieldType);
-              }}
-              borderColor="#d1d5db"
-              checkmarkColor="green"
-              size={28}
-              className="mr-2"
-            />
+            <></>
+            // <CustomCheckbox
+            //   checked={formData[field.id1]?.value}
+            //   onChange={(e) => {
+            //     handleInputChange(field.id1, e, fieldType);
+            //   }}
+            //   borderColor="#d1d5db"
+            //   checkmarkColor="green"
+            //   size={28}
+            //   className="mr-2"
+            // />
           ),
           select: (
             <select

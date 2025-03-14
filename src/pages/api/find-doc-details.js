@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import modelsData from "../../../../doctypes.json";
+import modelsData from "/sites/doctypes.json";
 
 // Define the root path for apps
 const basePath = path.join(process.cwd(), "..", "..");

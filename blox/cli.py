@@ -47,6 +47,8 @@ cli.add_command(django)
 cli.add_command(init)
 cli.add_command(start)
 cli.add_command(build)
+cli.add_command(deploy, name="deploy")
+cli.add_command(setup_site, name="setup-site")
 
 cli.add_command(usesite, name="use")
 
