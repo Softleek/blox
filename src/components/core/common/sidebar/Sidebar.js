@@ -144,7 +144,7 @@ const Sidebar = () => {
               rel="noreferrer"
               href="/"
             >
-              <Link href={pageInfo?.link || "/"}>
+              <Link href={`/${pageInfo?.link}` || "/"}>
                 <span className="ml-4 mr-2 font-semibold text-xl transition-all duration-200 ease-nav-brand">
                   {pageInfo?.text || "Home"}
                 </span>

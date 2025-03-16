@@ -25,7 +25,7 @@ def write_model_fields(
         django_path (str): The Django path for the model.
     """
     fields_file_path = os.path.join(folder_path, "fields.json")
-    model_file_path = os.path.join(folder_path, f"{doc_name}.json")
+    model_file_path = os.path.join(folder_path, f"{doc_name}.json") 
     settings_file_path = os.path.join(folder_path, "settings.json")
 
     field_list: List[Dict[str, Any]] = []

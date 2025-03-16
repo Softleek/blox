@@ -70,7 +70,7 @@ static_urlpatterns = [
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("newmodule/", CreateModuleAPIView.as_view(), name="create-module"),
+    path("new-module/", CreateModuleAPIView.as_view(), name="create-module"),
     path("newapp/", CreateAppAPIView.as_view(), name="create-app"),
     path("newdoc/", CreateDocumentAPIView.as_view(), name="create-document"),
     path(
@@ -101,3 +101,4 @@ urlpatterns = [
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += [    path('cms/', include('cms_app.urls')),]
+urlpatterns += [    path('human/', include('human_app.urls')),]

@@ -13,12 +13,15 @@ const NewModule = () => {
     updatePagesText,
     updateTextColor,
     updateIconColor,
+    updatePageInfo,
   } = useNavbar();
   const { setSidebarHidden } = useSidebar();
   const { loading, setLoading } = useData();
 
   useEffect(() => {
-    updateDashboardText("Documents");
+    const title = "Modules";
+    updateDashboardText(title);
+    updatePageInfo({ text: title, link: `modules` });
     updatePagesText("Core");
     updateTextColor("text-white");
     updateIconColor("text-blue-200");
@@ -30,15 +33,10 @@ const NewModule = () => {
 
       const response = await postData(form, `modules`, true);
 
-      if (
-        response.data.additional &&
-        response.data.additional.type === "newdoc"
-      ) {
-        const documentname = response.data.id;
-        const app = response.data.app;
-        const module = response.data.module;
-        await addDoc({ documentname, app, module });
-        router.push(`${router.pathname.replace("/new", "")}/${documentname}`);
+      if (response?.data) {
+        const name = response.data.id;
+        addModule({ name });
+        router.push(`${router.pathname.replace("/new", "")}/${name}`);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -47,9 +45,25 @@ const NewModule = () => {
     }
   };
 
+  const addModule = (data) => {
+    // Remove await here to allow the code to continue without waiting for the response
+    postData(data, "new-module")
+      .then((response) => {
+        // Handle successful response if necessary (you can log or process the response)
+      })
+      .catch((error) => {
+        console.error("Error starting module:", error);
+      });
+  };
+
   return (
     <ConfigProvider initialConfig={config}>
-      <DoctypeForm handleSave={saveData} config={config} is_doc={false} />
+      <DoctypeForm
+        handleSave={saveData}
+        config={config}
+        is_doc={false}
+        title="Module"
+      />
     </ConfigProvider>
   );
 };

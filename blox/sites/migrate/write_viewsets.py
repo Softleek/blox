@@ -80,15 +80,6 @@ def write_viewset(
         else:
             modelimport_name = model_name
 
-    # Construct import paths dynamically
-    app_name = module_name.split(".")[0]  # Extract app name from module name
-    view_file.write(f"from core.views.template import GenericViewSet\n")
-    view_file.write(f"from {app_name}_app.models.{module_name}.{doc_name} import {model_name}\n")
-    view_file.write(f"from {app_name}_app.filters.{module_name}.{doc_name} import {model_name}Filter\n")
-    view_file.write(f"from {app_name}_app.serializers.{module_name}.{doc_name} import {model_name}Serializer\n")
-    view_file.write(f"from core.permissions import HasGroupPermission\n\n")
-    view_file.write(f"from rest_framework.permissions import AllowAny\n\n")
-
     # Write the main viewset
     view_file.write(f"class {model_name}ViewSet(GenericViewSet):\n")
     view_file.write(f"    queryset = {model_name}.objects.all()\n")

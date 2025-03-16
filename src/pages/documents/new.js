@@ -14,13 +14,16 @@ const Newdocument = () => {
     updatePagesText,
     updateTextColor,
     updateIconColor,
+    updatePageInfo,
   } = useNavbar();
   const { setSidebarHidden } = useSidebar();
   const { setLoading } = useData();
   const router = useRouter();
 
   useEffect(() => {
-    updateDashboardText("Documents");
+    const title = "Documents";
+    updateDashboardText(title);
+    updatePageInfo({ text: title, link: `documents` });
     updatePagesText("Core");
     updateTextColor("text-white");
     updateIconColor("text-blue-200");
@@ -32,15 +35,10 @@ const Newdocument = () => {
 
       const response = await postData(form, `documents`, true);
 
-      if (
-        response.data.additional &&
-        response.data.additional.type === "newdoc"
-      ) {
-        const documentname = response.data.id;
-        const app = response.data.app.name;
-        const module1 = response.data.module.name;
-        addDoc({ documentname, app, module: module1 }); // Don't wait for the response
-        router.push(`${router.pathname.replace("/new", "")}/${documentname}`);
+      if (response.data) {
+        const name = response.data.id;
+        addDoc({ name }); // Don't wait for the response
+        router.push(`${router.pathname.replace("/new", "")}/${name}`);
       }
     } catch (error) {
       console.error("Error submitting form:", error);

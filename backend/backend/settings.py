@@ -70,6 +70,7 @@ THIRD_PARTY_APPS = [
 CUSTOM_APPS = [
     "core",
     'cms_app',
+    'human_app',
 ]
 
 # Final Installed Apps List
@@ -324,3 +325,6 @@ DATABASE_ROUTERS = ["core.db_router.MultiTenantRouter"]
 
 
 sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "cms")))
+
+
+sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "human")))
