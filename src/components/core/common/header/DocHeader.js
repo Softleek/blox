@@ -71,7 +71,7 @@ const DocHeader = ({
     <>
       {isLoading && <Loading />}
       <div
-        className="relative flex items-center mx-4 p-0 bg-center bg-cover min-h-14 rounded-2xl"
+        className="relative flex items-center mx-4 mt-4 md:mt-0 p-0 bg-center bg-cover min-h-14 rounded-2xl"
         style={{
           backgroundImage: `url('/img/curved-images/curved0.jpg')`,
           backgroundPositionY: "50%",
@@ -107,7 +107,7 @@ const DocHeader = ({
               </p>
             </div>
           </div>
-          <div className="w-fit max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0">
+          <div className="w-fit max-w-full md:px-3 md:mx-auto md:mt-4 sm:my-auto sm:mr-0">
             <div className="relative right-0 flex flex-row items-center">
               <ul className="relative flex flex-wrap p-1 list-none bg-transparent">
                 {tabs?.map((tab) => (
@@ -132,7 +132,7 @@ const DocHeader = ({
                   </li>
                 ))}
               </ul>
-              <div className="flex flex-row space-x-2 items-center">
+              <div className="flex flex-wrap space-x-2 space-y-2 w-full items-end justify-start md:justify-end">
                 {action && (
                   <PrimaryButton text={action} onClick={updateStatus} />
                 )}
