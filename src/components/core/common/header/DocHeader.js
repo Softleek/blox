@@ -85,7 +85,7 @@ const DocHeader = ({
         }}
         className="relative flex flex-col flex-auto min-w-0 px-4 py-1 mx-6 -mt-10 break-words border-0 shadow-blur rounded-2xl bg-white/80 bg-clip-border backdrop-blur-2xl backdrop-saturate-200"
       >
-        <div className="flex flex-wrap -mx-3 min-h-12">
+        <div className="flex flex-wrap -mx-3 min-h-12 justify-between">
           {/* <div className="flex-none w-auto max-w-full px-3">
             <div className="text-base ease-soft-in-out h-8.5 w-8.5 relative inline-flex items-center justify-center rounded-xl text-white transition-all duration-200">
               <img
@@ -107,8 +107,8 @@ const DocHeader = ({
               </p>
             </div>
           </div>
-          <div className="w-fit max-w-full md:px-3 md:mx-auto md:mt-4 sm:my-auto sm:mr-0">
-            <div className="relative right-0 flex flex-row items-center">
+          <div className="px-2 md:px-3 flex flex-wrap items-center justify-end w-fit">
+            <div className="relative right-0 flex flex-wrap items-center justify-end w-full">
               <ul className="relative flex flex-wrap p-1 list-none bg-transparent">
                 {tabs?.map((tab) => (
                   <li
@@ -132,7 +132,7 @@ const DocHeader = ({
                   </li>
                 ))}
               </ul>
-              <div className="flex flex-wrap space-x-2 space-y-2 w-full items-end justify-start md:justify-end">
+              <div className="flex flex-wrap space-x-2 w-full items- w-fit justify-start md:justify-end">
                 {action && (
                   <PrimaryButton text={action} onClick={updateStatus} />
                 )}

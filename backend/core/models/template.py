@@ -4,6 +4,7 @@ import uuid
 
 from django.conf import settings
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 def generate_random_slug(length=10):
@@ -41,6 +42,29 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+        
+
+class SingletonModel(BaseModel):
+    id = models.AutoField(primary_key=True)
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            if self.__class__.objects.exists():
+                raise ValidationError(f"Only one instance of {self.__class__.__name__} is allowed.")
+            self.pk = 1  # Force id=1 on creation
+
+        elif self.pk != 1:
+            raise ValidationError(f"The primary key for {self.__class__.__name__} must be 1.")
+        
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def get_instance(cls):
+        instance, created = cls.objects.get_or_create(pk=1)
+        return instance
+
 
 
 class Series(models.Model):
