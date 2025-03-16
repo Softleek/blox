@@ -12,18 +12,45 @@ from ..utils.data_validation import validate_serializer_data
 from ..utils.get_model_details import get_file_content
 
 
+import traceback
+import sys
+from rest_framework.response import Response
+from rest_framework import status
+import click
+
 def handle_errors(func):
     """
-    Decorator to handle exceptions in viewset methods.
+    Decorator to handle exceptions in viewset methods with complete error details.
+    Returns function name, file, line number, exception type, error message, and full stack trace.
     """
 
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
         except Exception as e:
-            print(f"Error in {func.__name__}: {e}")
+            exc_type, exc_obj, tb = sys.exc_info()
+            filename = tb.tb_frame.f_code.co_filename
+            line_number = tb.tb_lineno
+            stack_trace = traceback.format_exc()
+            exception_type = exc_type.__name__
+
+            error_info = {
+                "function": func.__name__,
+                "file": filename,
+                "line": line_number,
+                "exception_type": exception_type,
+                "error_message": str(e),
+                "stack_trace": stack_trace,
+            }
+
+            # Print for server logs
+            click.secho("\n--- ERROR DETAILS ---", fg='red', bold=True)
+            for key, value in error_info.items():
+                click.secho(f"{key.capitalize()}: {value}", fg='red')
+            click.secho("--- END ERROR DETAILS ---\n", fg='red', bold=True)
+
             return Response(
-                {"error": f"An error occurred: {str(e)}"},
+                {"error": f"An exception occurred, {error_info}", "details": error_info},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 

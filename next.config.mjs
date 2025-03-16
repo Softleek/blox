@@ -21,7 +21,26 @@ const nextConfig = {
         hostname: "cms.destinycarehome.org",
         pathname: "/**",
       },
+      {
+        protocol: "http", // Add protocol for local development
+        hostname: "test.localhost",
+        pathname: "/**",
+      },
+      {
+        hostname: "",
+        pathname: "/**",
+      },
     ],
+  },
+  images: {
+    domains: [
+      "test.localhost",
+      "localhost",
+      "cms.destinycarehome.org",
+      "api.qrserver.com",
+      "barcode.tec-it.com",
+      "",
+    ], // Add your domain(s) here
   },
   async rewrites() {
     return [

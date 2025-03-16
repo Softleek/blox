@@ -55,9 +55,10 @@ class SingletonModel(BaseModel):
                 raise ValidationError(f"Only one instance of {self.__class__.__name__} is allowed.")
             self.pk = 1  # Force id=1 on creation
 
-        elif self.pk != 1:
-            raise ValidationError(f"The primary key for {self.__class__.__name__} must be 1.")
+        elif self.pk != "1" and self.pk != 1:
+            raise ValidationError(f"The primary key for {self.__class__.__name__} - {self.pk } must be 1.")
         
+        print(self)
         super().save(*args, **kwargs)
 
     @classmethod

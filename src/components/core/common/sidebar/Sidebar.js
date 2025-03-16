@@ -96,7 +96,7 @@ const Sidebar = () => {
       <aside
         className={`${
           !sidebarHidden ? "" : "hidden"
-        } -mt-16 md:mt-0 w-fit relative z-100 flex flex-col`}
+        } -mt-[8vh] pt-2 md:pt-0 md:mt-0 w-fit relative z-100 flex flex-col`}
         ref={sidebarRef}
       >
         {isCollapsed && (
@@ -118,7 +118,7 @@ const Sidebar = () => {
         )}
 
         <div
-          className={`w-fit h-screen md:max-h-[92vh] overflow-auto ease-nav-brand block -translate-x-full flex-wrap flex-grow items-center justify-between border-0 p-1 antialiased transition-transform duration-200 left-0 translate-x-0 ${
+          className={`w-fit h-[110vh] md:max-h-[92vh] overflow-auto ease-nav-brand block -translate-x-full flex-wrap flex-grow items-center justify-between border-0 p-1 antialiased transition-transform duration-200 left-0 translate-x-0 ${
             !isCollapsed ? "fixed md:relative bg-white" : "hidden"
           }`}
         >

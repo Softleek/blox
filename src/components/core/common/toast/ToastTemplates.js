@@ -28,12 +28,13 @@ const ToastTemplates = {
         hideProgressBar: false,
         progressClassName: "bg-green-300",
         position: position,
+        toastClassName: "wide-toast", // Apply custom class for width
       }
     ),
 
   error: (message, title = "Error!", position = "top-center") =>
     toast(
-      <div className={`${baseStyle} text-red-500 w-full`}>
+      <div className={`${baseStyle} !text-red-500`}>
         <FontAwesomeIcon
           icon={faTimesCircle}
           className="w-6 h-6 mr-3 text-red-600"
@@ -48,6 +49,7 @@ const ToastTemplates = {
         hideProgressBar: false, // Show progress bar even if it's static
         progressClassName: "bg-red-300",
         position: position,
+        toastClassName: "wide-toast", // Apply custom class for width
       }
     ),
 
@@ -68,6 +70,7 @@ const ToastTemplates = {
         hideProgressBar: false,
         progressClassName: "bg-yellow-300",
         position: position,
+        toastClassName: "wide-toast", // Apply custom class for width
       }
     ),
 
@@ -88,6 +91,7 @@ const ToastTemplates = {
         hideProgressBar: false,
         progressClassName: "bg-blue-300",
         position: position,
+        toastClassName: "wide-toast", // Apply custom class for width
       }
     ),
 };

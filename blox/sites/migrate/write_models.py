@@ -29,6 +29,7 @@ def write_model_fields(
     settings_file_path = os.path.join(folder_path, "settings.json")
 
     field_list: List[Dict[str, Any]] = []
+    field_order: List[str] = []
     settings: Dict[str, Any] = {}
 
     # Load fields from fields.json or doc_name.json
@@ -43,6 +44,7 @@ def write_model_fields(
         # Load data from doc_name.json and extract fields and settings
         model_data = load_json_file(model_file_path)
         field_list = model_data.get("fields", [])
+        field_order = model_data.get("field_order", [])
         # Use the rest of the doc_name.json as settings, excluding "fields"
         settings = {k: v for k, v in model_data.items() if k != "fields"}
     else:
@@ -55,7 +57,7 @@ def write_model_fields(
         return
 
     # Write model fields
-    write_model(module_file, field_list, model_name, django_path)
+    write_model(module_file, field_list, field_order, model_name, django_path)
 
     # Write ID field using the settings data
     # write_id_field(module_file, file_path, settings, model_name)

@@ -99,6 +99,15 @@ const DocumentDetail = () => {
     return <Loading />;
   }
 
+  if (config?.issingle && typeof window !== "undefined") {
+    const path = window.location.pathname
+      .split("/")
+      .filter(Boolean)
+      .slice(0, -1)
+      .join("/");
+    window.location.replace(`${window.location.origin}/${path}`);
+  }
+
   return (
     <ConfigProvider initialConfig={config} initialAppData={appData}>
       <DoctypeForm handleSave={saveData} config={config} />

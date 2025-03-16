@@ -37,6 +37,8 @@ def generate_name_for_model(sender, instance, **kwargs):
     model_name = instance.__class__.__name__
     doctype_config = get_model_doctype_json(model_name)
     naming_manager = NamingManager(instance, doctype_config)
+    
+    is_single =  str((doctype_config or {}).get("issingle")).lower() in ("1", "true")
 
     if doctype_config and doctype_config.get("fields"):
         for field in doctype_config.get("fields", []):
@@ -48,12 +50,16 @@ def generate_name_for_model(sender, instance, **kwargs):
                 instance.__dict__[fieldname] = naming_manager.generate_code(
                     fieldname, format_value
                 )
-
+    
     if not getattr(instance, "created", None):
-        id = naming_manager.generate_name()
 
-        if id:
-            instance.id = id
+        if is_single:
+            instance.id = "1"
+        else:
+            id = naming_manager.generate_name()
+
+            if id:
+                instance.id = id
 
     if doctype_config and doctype_config.get("fields"):
         for field in doctype_config.get("fields", []):

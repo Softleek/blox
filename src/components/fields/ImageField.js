@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { XCircle, Eye } from "lucide-react"; // Import Lucide icons
 import Modal from "../core/common/modal/Modal";
 import { uploadFile } from "@/utils/Api";
+import Image from "next/image"; // Import Next.js Image component
 
 const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
   const [imageFile, setImageFile] = useState(value || null);
@@ -100,9 +101,11 @@ const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
     <div className="relative image-field w-full overflow-auto" hidden={hidden}>
       {previewImage ? (
         <div className="relative image-preview w-full overflow-auto">
-          <img
+          <Image
             src={previewImage}
             alt="Preview"
+            width={500} // Set appropriate width
+            height={300} // Set appropriate height
             className="image-preview__img w-full h-32 p-2 object-cover rounded-lg cursor-pointer"
             onClick={() => setShowPreview(true)}
           />
@@ -146,26 +149,40 @@ const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
       {/* Full-Image Preview Modal */}
       {showPreview && (
         <Modal
-          className="fixed inset-0 p-4 flex items-center justify-center bg-gray-600 bg-opacity-50 backdrop-blur-sm h-screen !z-50000 rounded-md "
+          className="fixed inset-0 p-4 flex items-center justify-center bg-gray-600 bg-opacity-50 backdrop-blur-sm h-screen !z-50000 rounded-md"
           onClick={() => setShowPreview(false)}
           isOpen={showPreview}
           onClose={() => setShowPreview(false)}
           zIndex={50000}
         >
           <div className="relative bg-white rounded-lg p-4 max-w-4xl max-h-screen overflow-auto">
-            <img
+            <Image
               src={previewImage}
               alt="Full Preview"
+              width={800}
+              height={600}
               className="max-w-full max-h-[80vh] object-contain"
             />
-            <button
-              type="button"
-              className="absolute top-4 right-4 bg-white rounded-full p-1 shadow-md hover:bg-pink-100"
-              onClick={() => setShowPreview(false)}
-            >
-              <XCircle className="w-6 h-6 text-red-500" />{" "}
-              {/* Lucide icon for closing modal */}
-            </button>
+            {/* Buttons Container */}
+            <div className="absolute top-4 right-4 flex gap-2">
+              {/* Open in New Tab Button */}
+              <button
+                type="button"
+                className="bg-white rounded-full p-1 shadow-md hover:bg-pink-100"
+                onClick={() => window.open(previewImage, "_blank")}
+              >
+                <Eye className="w-6 h-6 text-purple-500" />
+              </button>
+
+              {/* Close Button */}
+              <button
+                type="button"
+                className="bg-white rounded-full p-1 shadow-md hover:bg-pink-100"
+                onClick={() => setShowPreview(false)}
+              >
+                <XCircle className="w-6 h-6 text-red-500" />
+              </button>
+            </div>
           </div>
         </Modal>
       )}
@@ -185,9 +202,11 @@ const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
 
             {/* Preview Image */}
             <div className="mb-4">
-              <img
+              <Image
                 src={previewImage}
                 alt="Preview"
+                width={400} // Set appropriate width
+                height={300} // Set appropriate height
                 className="w-full h-48 object-cover rounded-lg"
               />
             </div>

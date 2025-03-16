@@ -10,6 +10,8 @@ import { findDocDetails } from "@/utils/findDocDetails";
 import { importFile } from "@/utils/importFile";
 import NotFoundPage from "@/components/core/common/NotFound";
 import { useData } from "@/contexts/DataContext";
+import DoctypeForm from "@/components/pages/form";
+import SingleDocumentDetail from "@/components/pages/detail/SingleDoc";
 
 const DocumentDetail = () => {
   const router = useRouter();
@@ -91,6 +93,11 @@ const DocumentDetail = () => {
   }
   if (!config) {
     return <Loading />;
+  }
+
+  const is_single = config?.issingle;
+  if (is_single) {
+    return <SingleDocumentDetail />;
   }
 
   return (

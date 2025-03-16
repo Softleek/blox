@@ -59,13 +59,13 @@ const PrintPage = () => {
         if (!docData) throw new Error("Failed to fetch document details");
         setUrl(docData);
 
-        const Component = (
-          await import(
-            `../../../../apps/${docData?.app_id}/${docData?.app_id}/${docData?.module_id}/print_format/${selectedFormat}/${selectedFormat}.js`
-          )
-        ).default;
+        // const Component = (
+        //   await import(
+        //     `../../../../apps/${docData?.app_id}/${docData?.app_id}/${docData?.module_id}/print_format/${selectedFormat}/${selectedFormat}.js`
+        //   )
+        // ).default;
 
-        setPrintComponent(() => Component);
+        // setPrintComponent(() => Component);
       } catch (error) {
         console.error("Failed to load print format:", error);
       }
