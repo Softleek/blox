@@ -63,3 +63,15 @@ logs/
 **/frappe_app/**/__pycache__/*.pyc
 **/frappe_app/__pycache__/*.pyo
 **/frappe_app/__pycache__/*.pyd
+
+# Ignore __pycache__ in frappe_app
+backend/frappe_app/**/__pycache__/
+backend/frappe_app/**/__pycache__/*.pyc
+backend/frappe_app/**/__pycache__/*.pyo
+backend/frappe_app/**/__pycache__/*.pyd
+
+# Ignore __pycache__ in frappe_app
+backend/frappe_app/**/__pycache__/
+backend/frappe_app/**/__pycache__/*.pyc
+backend/frappe_app/**/__pycache__/*.pyo
+backend/frappe_app/**/__pycache__/*.pyd
