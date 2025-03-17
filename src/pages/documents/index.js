@@ -7,17 +7,20 @@ import { useSidebar } from "@/contexts/SidebarContext";
 import { ConfigProvider } from "@/contexts/ConfigContext";
 import DoctypeListTable from "@/components/pages/list/doctype/DoctypeListTable";
 
-const documentList = () => {
+const DocumentList = () => {
   const {
     updateDashboardText,
     updatePagesText,
     updateTextColor,
     updateIconColor,
+    updatePageInfo,
   } = useNavbar();
   const { setSidebarHidden } = useSidebar();
 
   useEffect(() => {
-    updateDashboardText("Document");
+    const title = "Documents";
+    updateDashboardText(title);
+    updatePageInfo({ text: title, link: `documents` });
     updatePagesText("Core");
     updateTextColor("text-gray-900");
     updateIconColor("text-purple-900");
@@ -39,4 +42,4 @@ const documentList = () => {
   );
 };
 
-export default documentList;
+export default DocumentList;

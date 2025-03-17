@@ -10,6 +10,8 @@ import { findDocDetails } from "@/utils/findDocDetails";
 import { importFile } from "@/utils/importFile";
 import NotFoundPage from "@/components/core/common/NotFound";
 import { useData } from "@/contexts/DataContext";
+import DoctypeForm from "@/components/pages/form";
+import SingleDocumentDetail from "@/components/pages/detail/SingleDoc";
 
 const DocumentDetail = () => {
   const router = useRouter();
@@ -58,7 +60,7 @@ const DocumentDetail = () => {
         const title = toTitleCase(slug);
         updateDashboardText(title);
         updatePagesText(toTitleCase(docData.module));
-        updatePageInfo({ text: title, link: `${slug}` });
+        updatePageInfo({ text: title, link: `app/${slug}` });
         updateNavLinks([
           { text: toTitleCase(docData.app), link: `/apps/${docData.app_id}` },
           {
@@ -91,6 +93,11 @@ const DocumentDetail = () => {
   }
   if (!config) {
     return <Loading />;
+  }
+
+  const is_single = config?.issingle;
+  if (is_single) {
+    return <SingleDocumentDetail />;
   }
 
   return (

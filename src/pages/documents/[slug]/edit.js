@@ -1,133 +1,120 @@
-import DocStudio from "@/components/studio/DocStudio";
-import { useData } from "@/contexts/DataContext";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useNavbar } from "@/contexts/NavbarContext";
 import { useSidebar } from "@/contexts/SidebarContext";
-import { fetchData, postData } from "@/utils/Api";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { toTitleCase } from "@/utils/textConvert";
+import Loading from "@/components/core/account/Loading";
+import DoctypeStudio from "@/components/studio/doctype/DocStudio";
+import { ConfigProvider } from "@/contexts/ConfigContext";
+import ToastTemplates from "@/components/core/common/toast/ToastTemplates";
+import { postData } from "@/utils/Api";
+import { useData } from "@/contexts/DataContext";
+import { findDocDetails } from "@/utils/findDocDetails";
+import { importFile } from "@/utils/importFile";
 
-const toTitleCase = (str) => {
-  return str.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
-};
+const DocumentDetail = () => {
+  const { slug } = useRouter().query;
+  const [config, setConfig] = useState(null);
+  const [filePath, setFilePath] = useState(null);
+  const { setLoading } = useData();
 
-const StudioEdit = () => {
-  const { sidebarWidth, setSidebarWidth, setSidebarHidden } = useSidebar();
   const {
     updateDashboardText,
     updatePagesText,
     updateTextColor,
     updateIconColor,
+    updatePageInfo,
+    updateNavLinks,
   } = useNavbar();
-  const [initialData, setInitialData] = useState(null);
-  const router = useRouter();
-  // const { id } = router.query;
-  const { data, setData } = useData();
-
-  const endpoint = "documents";
-
-  const getPathSegmentBeforeEdit = (path) => {
-    const segments = path.split("/");
-    const editIndex = segments.indexOf("edit");
-    if (editIndex > 0) {
-      return segments[editIndex - 1];
-    }
-    return "";
-  };
-
-  const id = getPathSegmentBeforeEdit(router.pathname);
-
-  const handleSave = async (canvasItems) => {
-    try {
-      const r = {
-        app: data?.app,
-        module: data?.module,
-        id,
-        canvasItems,
-      };
-      const response = await fetch("/api/saveFields", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(r),
-      });
-
-      const result = await response.json();
-      if (response.ok) {
-        await postData({ doc: id }, `migrate`);
-        window.location.reload();
-      } else {
-        console.error("Error saving fields:", result.error);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  const { setSidebarHidden, setSidebarWidth } = useSidebar();
 
   useEffect(() => {
-    if (id) {
-      const formattedId = toTitleCase(id);
-      updateDashboardText(formattedId);
-    }
-    updatePagesText("Documents");
-    updateTextColor("text-gray-900");
-    updateIconColor("text-purple-900");
-    setSidebarWidth(10);
-    setSidebarHidden(true);
-  }, [id]);
+    if (!slug) return;
 
-  useEffect(() => {
-    const fetchData1 = async () => {
-      if (!endpoint || !id) return;
+    const fetchDocumentData = async () => {
       try {
-        const response = await fetchData({}, `${endpoint}/${id}`);
-        if (response?.data) {
-          setData(response?.data);
-        }
+        // Fetch document details
+
+        const docData = findDocDetails(slug);
+        if (!docData) throw new Error("Failed to fetch document details");
+
+        setFilePath(docData.docPath);
+
+        // Update UI elements
+        const title = toTitleCase(slug);
+        updateDashboardText(title);
+        updatePagesText(toTitleCase(docData.module));
+        updatePageInfo({ text: title, link: `documents/${slug}` });
+        updateNavLinks([
+          { text: toTitleCase(docData.app), link: `/apps/${docData.app}` },
+          {
+            text: "Documents",
+            link: `/documents`,
+          },
+        ]);
+
+        // Fetch configuration data
+        const configData = await importFile(slug, `${slug}.json`);
+        if (!configData) throw new Error("Failed to load configuration");
+
+        setConfig(configData.content);
+
+        // Sidebar and UI customization
+        updateTextColor("text-gray-200");
+        updateIconColor("text-purple-300");
+        setSidebarWidth(100);
+        setSidebarHidden(true);
       } catch (error) {
-        console.error(`Failed to fetch data, ${error.message || error}`);
+        console.error(error.message);
       }
     };
 
-    fetchData1();
-  }, [endpoint, id]);
+    fetchDocumentData();
+  }, [slug]);
 
-  useEffect(() => {
-    if (fields) {
-      setInitialData(fields);
-    } else {
-      setInitialData([
-        {
-          id: "tab-1",
-          name: "Details",
-          type: "tab",
-          sections: [
-            {
-              id: "section-1",
-              name: "Section 1",
-              type: "section",
-              columns: [
-                {
-                  id: "column-1",
-                  name: "Column 1",
-                  type: "column",
-                  fields: [],
-                },
-              ],
-            },
-          ],
-        },
-      ]);
+  const saveConfig = async (settings) => {
+    try {
+      if (!filePath || !slug) throw new Error("File path or slug not set");
+      setLoading(true);
+      const response = await fetch("/api/save-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          directoryPath: filePath,
+          filename: `${slug}.json`,
+          content: settings,
+        }),
+      });
+
+      if (response.ok) {
+        setConfig(settings);
+        const response1 = await postData({ doc: slug }, `migrate`);
+        if (!response1) {
+          throw new Error("Failed to migrate");
+        } else {
+          ToastTemplates.success("Saved!");
+        }
+      } else throw new Error("Failed to save configuration");
+    } catch (error) {
+      console.error("Error saving configuration:", error);
+      ToastTemplates.error(error);
+    } finally {
+      setLoading(false);
     }
-  }, [fields]);
+  };
+
+  if (!config) {
+    return <Loading />;
+  }
 
   return (
-    <>
-      {initialData && (
-        <DocStudio handleSave={handleSave} initialData={initialData} />
-      )}
-    </>
+    <ConfigProvider
+      initialConfig={config}
+      initialAppData={{ endpoint: `documents/${slug}` }}
+    >
+      <DoctypeStudio handleSave={saveConfig} config={config} />
+    </ConfigProvider>
   );
 };
 
-export default StudioEdit;
+export default DocumentDetail;

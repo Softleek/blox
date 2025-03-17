@@ -24,31 +24,6 @@ def initialize_django_env(django_path: str) -> None:
     django.setup()
 
 
-def update_or_create_entry(
-    model: Model, id_value: Any, name_value: str, site: str, **kwargs: Any
-) -> Tuple[Model, bool]:
-    """
-    Update an existing entry's name if the ID exists, or create a new entry.
-
-    Args:
-        model (Model): The model class to query.
-        id_value (Any): The ID to look for.
-        name_value (str): The name to set or update.
-        site (str): The database alias to use.
-        kwargs (Any): Additional fields for creating a new entry.
-
-    Returns:
-        Tuple[Model, bool]: A tuple of (instance, created).
-    """
-    instance, created = model.objects.using(site).get_or_create(
-        id=id_value, defaults={"name": name_value, **kwargs}
-    )
-    if not created and instance.name != name_value:
-        instance.name = name_value
-        instance.save()
-    return instance, created
-
-
 def create_entries_from_config(django_path: str, site: str) -> None:
     """
     Process the JSON configuration file and create/update database entries.
@@ -65,7 +40,6 @@ def create_entries_from_config(django_path: str, site: str) -> None:
 
     # Load JSON configuration file
     ensure_file_exists(DOCS_JSON_PATH, initial_data=[])
-    # sites = get_all_sites()
     site_data = get_site_config(site)
     installed_apps = site_data.get("installed_apps", []) if site_data else []
     installed_apps.append("core")
@@ -85,6 +59,9 @@ def create_entries_from_config(django_path: str, site: str) -> None:
     modules_to_create: List[Module] = []
     docs_to_create: List[Document] = []
     print_formats_to_create: List[PrintFormat] = []
+
+    # Track IDs that have already been added to avoid duplicates
+    added_doc_ids = set(existing_docs.keys())
 
     # Process each app and its modules/documents
     for app_data in config:
@@ -135,17 +112,19 @@ def create_entries_from_config(django_path: str, site: str) -> None:
                 if not doc_id or not doc_name:
                     continue
 
-                if doc_id in existing_docs:
-                    doc = existing_docs[doc_id]
-                    # if doc.name != doc_name:
-                    #     doc.name = doc_name
-                    #     doc.save()
-                else:
-                    docs_to_create.append(
-                        Document(
-                            id=doc_id, name=doc_name, module_id=module_id, app_id=app_id
-                        )
+                # Skip if the doc_id already exists in existing_docs or has been added to docs_to_create
+                if doc_id in added_doc_ids:
+                    continue
+
+                # Add the doc_id to the set of added IDs
+                added_doc_ids.add(doc_id)
+
+                # Create the Document object
+                docs_to_create.append(
+                    Document(
+                        id=doc_id, name=doc_name, module_id=module_id, app_id=app_id
                     )
+                )
 
             for pf_data in module_data.get("print_formats", []):
                 pf_id = pf_data.get("id")
@@ -157,9 +136,9 @@ def create_entries_from_config(django_path: str, site: str) -> None:
 
                 if pf_id in existing_print_formats:
                     pf = existing_print_formats[pf_id]
-                    # if pf.name != pf_name:
-                    #     pf.name = pf_name
-                    #     pf.save()
+                    if pf.name != pf_name:
+                        pf.name = pf_name
+                        pf.save()
                 else:
                     print_formats_to_create.append(
                         PrintFormat(

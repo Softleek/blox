@@ -90,12 +90,12 @@ def process_folder_docs(
         model_name = underscore_to_titlecase(item_name)
 
         # Register model details
-        register_to_model_json(
-            app_name=app_name,
-            module_name=module,
-            doc_name=item_name,
-            django_path=django_path,
-        )
+        # register_to_model_json(
+        #     app_name=app_name,
+        #     module_name=module,
+        #     doc_name=item_name,
+        #     django_path=django_path,
+        # )
 
         # Generate import statement and add to lists
         import_statement = (

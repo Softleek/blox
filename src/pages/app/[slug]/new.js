@@ -51,7 +51,7 @@ const DocumentDetail = () => {
         const title = toTitleCase(slug);
         updateDashboardText(title);
         updatePagesText(toTitleCase(docData.module));
-        updatePageInfo({ text: title, link: `${slug}` });
+        updatePageInfo({ text: title, link: `app/${slug}` });
         updateNavLinks([
           { text: toTitleCase(docData.app), link: `/apps/${docData.app_id}` },
           {
@@ -97,6 +97,15 @@ const DocumentDetail = () => {
 
   if (!config) {
     return <Loading />;
+  }
+
+  if (config?.issingle && typeof window !== "undefined") {
+    const path = window.location.pathname
+      .split("/")
+      .filter(Boolean)
+      .slice(0, -1)
+      .join("/");
+    window.location.replace(`${window.location.origin}/${path}`);
   }
 
   return (

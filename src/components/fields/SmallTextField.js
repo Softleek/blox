@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const SmallTextField = ({
   value = "",
@@ -6,22 +6,43 @@ const SmallTextField = ({
   readOnly,
   preview,
   hidden,
-  handleInputChange,
   placeholder = "Enter text",
 }) => {
+  const [rows, setRows] = useState(8);
+
+  const expand = () => setRows((prev) => prev + 4);
+  const collapse = () => setRows((prev) => (prev > 4 ? prev - 4 : 4)); // Minimum 4 rows
+
   return (
-    <div className="flex flex-col space-y-2">
+    <div className={`flex flex-col space-y-2 ${hidden ? "hidden" : ""}`}>
       <label className="text-sm font-semibold text-gray-700">Small Text</label>
       <textarea
-        type="text"
-        value={preview ? "" : value || ""} // In preview mode, do not display any value
-        rows={8}
-        readOnly={readOnly || preview} // Make input readOnly in both readOnly and preview mode
+        value={preview ? "" : value}
+        onChange={onChange}
+        rows={rows}
+        readOnly={readOnly || preview}
         disabled={readOnly || preview}
-        hidden={hidden}
-        className="px-1 text-sm w-full focus:outline-none focus:ring-0 focus:border-none"
-        placeholder="Start typing your text here..."
+        className="px-2 py-1 text-sm w-full border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
+        placeholder={placeholder}
       />
+      {!readOnly && !preview && (
+        <div className="flex space-x-2">
+          <button
+            type="button"
+            onClick={expand}
+            className="text-xs text-blue-500 underline"
+          >
+            Expand
+          </button>
+          <button
+            type="button"
+            onClick={collapse}
+            className="text-xs text-red-500 underline"
+          >
+            Collapse
+          </button>
+        </div>
+      )}
     </div>
   );
 };

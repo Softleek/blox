@@ -69,7 +69,9 @@ THIRD_PARTY_APPS = [
 # Custom Apps – Only these will be exposed via API
 CUSTOM_APPS = [
     "core",
+    'frappe_app',
     'cms_app',
+    'human_app',
 ]
 
 # Final Installed Apps List
@@ -324,3 +326,9 @@ DATABASE_ROUTERS = ["core.db_router.MultiTenantRouter"]
 
 
 sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "cms")))
+
+
+sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "human")))
+
+
+# sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "frappe")))

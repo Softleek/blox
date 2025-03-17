@@ -4,16 +4,33 @@ export const getFieldsForTab = (config, tabBreak = null) => {
   if (!config?.fields || !config?.field_order) {
     return arrangeFieldsIntoSectionsAndColumns([]);
   }
-  let tabFieldList = [];
+
   // Helper function to find a field by fieldname
   const findField = (fieldname) =>
     config.fields.find((field) => field.fieldname === fieldname);
+
+  // Helper function to check naming_rule and add "Id" field if needed
+  const processFieldList = (fieldList) => {
+    if (config.naming_rule === "Set by user") {
+      const idField = {
+        fieldname: "id",
+        fieldtype: "Data",
+        label: "Id",
+        // Add any other necessary properties for the Id field
+      };
+      fieldList.unshift(idField);
+    }
+    return fieldList;
+  };
+
+  let tabFieldList = [];
 
   // If no specific tabBreak?.fieldname is passed, return all fields in the order of field_order
   if (!tabBreak?.fieldname) {
     tabFieldList = config.field_order
       .map((fieldname) => findField(fieldname))
       .filter(Boolean);
+    return arrangeFieldsIntoSectionsAndColumns(processFieldList(tabFieldList));
   }
 
   if (tabBreak?.odd) {
@@ -26,7 +43,9 @@ export const getFieldsForTab = (config, tabBreak = null) => {
       tabFieldList = config.field_order
         .map((fieldname) => findField(fieldname))
         .filter(Boolean);
-      return arrangeFieldsIntoSectionsAndColumns(tabFieldList);
+      return arrangeFieldsIntoSectionsAndColumns(
+        processFieldList(tabFieldList)
+      );
     }
 
     // tabFieldList = all fields before the first "Tab Break"
@@ -35,7 +54,7 @@ export const getFieldsForTab = (config, tabBreak = null) => {
       .map((fieldname) => findField(fieldname))
       .filter(Boolean);
 
-    return arrangeFieldsIntoSectionsAndColumns(tabFieldList); // Passing tabBreak here
+    return arrangeFieldsIntoSectionsAndColumns(processFieldList(tabFieldList));
   }
 
   // Handle a specific tabBreak?.fieldname
@@ -63,5 +82,8 @@ export const getFieldsForTab = (config, tabBreak = null) => {
     .map((fieldname) => findField(fieldname))
     .filter(Boolean);
 
-  return arrangeFieldsIntoSectionsAndColumns(tabFieldList, tabBreak); // Passing tabBreak here
+  return arrangeFieldsIntoSectionsAndColumns(
+    processFieldList(tabFieldList),
+    tabBreak
+  );
 };

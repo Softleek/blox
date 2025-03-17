@@ -5,7 +5,7 @@ from django.urls import include, path, re_path
 from django.views.static import serve
 from rest_framework.routers import DefaultRouter
 
-from .dynamic_api import DynamicAPIView
+from .dynamic_api import dynamic_forward_view
 from .views import (
     AppViewSet,
     BranchViewSet,
@@ -70,7 +70,7 @@ static_urlpatterns = [
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("newmodule/", CreateModuleAPIView.as_view(), name="create-module"),
+    path("new-module/", CreateModuleAPIView.as_view(), name="create-module"),
     path("newapp/", CreateAppAPIView.as_view(), name="create-app"),
     path("newdoc/", CreateDocumentAPIView.as_view(), name="create-document"),
     path(
@@ -88,16 +88,16 @@ urlpatterns = [
     path("roles/", UserGroupPermissions.as_view(), name="roles"),
     path("sendsms/", SendSmsView.as_view(), name="sms"),
     path("dataimport/", DataImportAPIView.as_view(), name="dataimport"),
-    path("bulkdelete/", BulkDeleteAPIView.as_view(), name="bulkdelete"),
+    path("bulkdelete/", BulkDeleteAPIView.as_view(), name="bulkdelete"), 
     path("sendemail/", SendEmailView.as_view(), name="email"),
     path("upload-file/", FileUploadView.as_view(), name="upload-file"),
     path("admin/", admin.site.urls),
     path("", include(static_urlpatterns)),
-    re_path(
-        r"^method/(?P<module_path>[\w/]+)/(?P<callable_name>[\w]+)/$",
-        DynamicAPIView.as_view(),
-    ),
+    path('method/<path:target_path>/', dynamic_forward_view, name='dynamic_forward'),
+
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += [    path('cms/', include('cms_app.urls')),]
+urlpatterns += [    path('human/', include('human_app.urls')),]
+urlpatterns += [    path('frappe/', include('frappe_app.urls')),]

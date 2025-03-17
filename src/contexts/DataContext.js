@@ -9,6 +9,7 @@ export const DataProvider = ({ children }) => {
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(false);
   const [doc, setDoc] = useState(null);
+  const [websiteSettings, setWebsiteSettings] = useState(null);
 
   const router = useRouter();
 
@@ -39,6 +40,8 @@ export const DataProvider = ({ children }) => {
         setNotifications,
         doc,
         setDoc,
+        websiteSettings,
+        setWebsiteSettings,
       }}
     >
       {children}

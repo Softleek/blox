@@ -142,10 +142,6 @@ class AppViewSet(GenericViewSet):
         Module.objects.create(**module_data, app=app)
 
         response_data = serializer.data
-        response_data["additional"] = {
-            "type": "newapp",
-            "info": {"message": "App created and ready to be used."},
-        }
 
         headers = self.get_success_headers(serializer.data)
         return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
@@ -169,14 +165,14 @@ class AppViewSet(GenericViewSet):
 class CreateModuleAPIView(APIView):
     @handle_errors
     def post(self, request, *args, **kwargs):
-        modulename = request.data.get("modulename")
-        if not modulename:
+        name = request.data.get("name")
+        if not name:
             return Response(
-                {"error": "Missing 'modulename' parameter"},
+                {"error": "Missing 'name' parameter"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        module = Module.objects.get(pk=modulename)
+        module = Module.objects.get(pk=name)
         return run_subprocess(
             ["blox", "new-module", module.app.id, module.name],
             "Module created successfully",
@@ -191,17 +187,17 @@ class ModuleViewSet(GenericViewSet):
 
     @handle_errors
     def create(self, request, *args, **kwargs):
+        data = request.data
+        app_id = data.get("app")
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-
+        app_serializer = AppSerializer(App.objects.get(pk=app_id))
+        
         response_data = serializer.data
-        response_data["additional"] = {
-            "type": "new-module",
-            "info": {"message": "Module created and ready to be used."},
-        }
+        response_data["app"] = app_serializer.data
 
-        headers = self.get_success_headers(serializer.data)
+        headers = self.get_success_headers(serializer.data) 
         return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
 
     @handle_errors
@@ -226,12 +222,11 @@ class ModuleViewSet(GenericViewSet):
 class CreateDocumentAPIView(APIView):
     @handle_errors
     def post(self, request, *args, **kwargs):
-        documentname = request.data.get("documentname")
-        app = request.data.get("app")
-        module = request.data.get("module")
+        name = request.data.get("name")
+        document = Document.objects.get(pk=name)
 
         return run_subprocess(
-            ["blox", "new-doc", "--app", app, "--module", module, documentname],
+            ["blox", "new-doc", "--app", document.app.id, "--module", document.module.id, name],
             "Document created successfully",
             "Failed to create document",
         )
@@ -251,16 +246,7 @@ class DocumentViewSet(GenericViewSet):
         data["module"] = module
         doc = Document.objects.create(**data)
 
-        module_serializer = ModuleSerializer(module)
-        app_serializer = AppSerializer(App.objects.get(pk=module.app.id))
-
         response_data = self.get_serializer(doc).data
-        response_data["module"] = module_serializer.data
-        response_data["app"] = app_serializer.data
-        response_data["additional"] = {
-            "type": "newdoc",
-            "info": {"message": "Document created and ready to be used."},
-        }
 
         return Response(
             response_data,

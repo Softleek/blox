@@ -10,6 +10,7 @@ from .write_filters import write_filters
 from .write_models import write_model_fields
 from .write_serializers import write_serializer
 from .write_viewsets import add_import_to_signals, write_viewset
+from .models.json_loader import load_json_file
 
 STRUCTURE = {
     "views": "views",
@@ -128,13 +129,19 @@ def write_module_content(
 
     with open(module_file_path, "w+") as module_file:
         if folder == "models":
-            write_model_header(module_file, model_name)
+            model_file_path = os.path.join(doc_folder_path, f"{doc_name}.json")
+            is_single = False
+            if os.path.exists(model_file_path):
+                # Load data from doc_name.json and extract fields and settings
+                model_data = load_json_file(model_file_path)
+                is_single = str((model_data or {}).get("issingle")).lower() in ("1", "true")
+            write_model_header(module_file, model_name, is_single)
             write_model_fields(
                 module_file,
                 module_file_path,
                 doc_folder_path,
                 model_name,
-                doc_name,
+                doc_name, 
                 django_path,
             )
         elif folder == "views":
@@ -160,22 +167,24 @@ def write_module_content(
                 doc_name,
                 doc_folder_path,
             )
+            
 
-
-def write_model_header(module_file: TextIO, model_name: str) -> None:
+def write_model_header(module_file: TextIO, model_name: str, is_single: bool) -> None:
     """Write the imports and class definition header for models.
 
     Args:
         module_file (TextIO): The file object for the module file.
         model_name (str): The name of the model class.
+        is_single (bool): Whether the model is a singleton.
     """
     module_file.write(
         "from django.db import models\n"
         "from multiselectfield import MultiSelectField\n"
-        "from core.models.template import BaseModel\n"
+        "from core.models.template import BaseModel, SingletonModel\n"
         "import uuid\nimport os\nfrom django.conf import settings\n\n"
     )
-    module_file.write(f"class {model_name}(BaseModel):\n")
+    base_class = "SingletonModel" if is_single else "BaseModel"
+    module_file.write(f"class {model_name}({base_class}):\n")
 
 
 def write_views_header(
@@ -196,5 +205,6 @@ def write_views_header(
         f"from {app_name}.models.{module_name}.{doc_name} import {model_name}\n"
         f"from {app_name}.filters.{module_name}.{doc_name} import {model_name}Filter\n"
         f"from {app_name}.serializers.{module_name}.{doc_name} import {model_name}Serializer\n"
+        f"from rest_framework.permissions import AllowAny\n"
         f"from core.permissions import HasGroupPermission\n\n"
     )

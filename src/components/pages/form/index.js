@@ -11,7 +11,7 @@ import { useFormEvents } from "@/hooks/useFormEvents";
 import { useFormLogic } from "@/hooks/useFormLogic";
 import { useFormButtons } from "@/hooks/useFormButtons";
 
-const DoctypeForm = ({ handleSave, config }) => {
+const DoctypeForm = ({ handleSave, config, title }) => {
   const [smsModalOpen, setSmsModalOpen] = useState(false);
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const { localConfig, localAppData } = useConfig();
@@ -50,9 +50,9 @@ const DoctypeForm = ({ handleSave, config }) => {
     }
   }, [slug]);
 
-  if (!slug || !localConfig) {
-    return null;
-  }
+  // if (!slug || !localConfig) {
+  //   return null;
+  // }
 
   const ComponentBefore = doc?.componentBefore || null;
   const ComponentAfter = doc?.componentAfter || null;
@@ -63,7 +63,7 @@ const DoctypeForm = ({ handleSave, config }) => {
       <DocHeader
         isEditing={isEditing}
         handleSaveClick={handleSaveClick}
-        title={id || slug}
+        title={id || slug || title}
         buttons={buttons}
       />
       <div className="relative z-1 px-4 flex flex-col mt-2 w-full">

@@ -92,8 +92,8 @@ const ModuleSettings = () => {
       {/* Is Single */}
       <Checkbox
         label="Is Single"
-        checked={config.is_single || false}
-        onChange={(e) => handleInputChange("is_single", e.target.checked)}
+        checked={config.issingle || false}
+        onChange={(e) => handleInputChange("issingle", e.target.checked)}
         description="Single Types have only one record with no tables associated. Values are stored in tabSingles."
       />
 

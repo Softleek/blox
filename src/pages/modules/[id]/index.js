@@ -7,6 +7,7 @@ import DoctypeForm from "@/components/pages/form";
 import { useData } from "@/contexts/DataContext";
 import { fetchData, postData, updateData } from "@/utils/Api";
 import { useRouter } from "next/router";
+import { getChanges } from "@/utils/getChanges";
 
 const ModuleDetail = () => {
   const {
@@ -16,7 +17,7 @@ const ModuleDetail = () => {
     updateIconColor,
   } = useNavbar();
   const { setSidebarHidden } = useSidebar();
-  const { loading, setLoading, setData, setForm } = useData();
+  const { loading, setLoading, setData, setForm, data } = useData();
   const [appData, setAppData] = useState(null);
   const router = useRouter();
   const { id } = router.query;
@@ -45,7 +46,14 @@ const ModuleDetail = () => {
     try {
       setLoading(true);
 
-      const response = await updateData(form, `modules/${id}`, true);
+      const changes = getChanges(data, form, config);
+
+      // If 'app' exists in changes, replace its value with its 'id'
+      if (changes.app && typeof changes.app === "object" && changes.app.id) {
+        changes.app = changes.app.id;
+      }
+
+      const response = await updateData(changes, `modules/${id}`, true);
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {

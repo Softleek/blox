@@ -12,7 +12,9 @@
 .react-datepicker-wrapper {
   width: 100% !important; /* Full width */
 }
-
+:root {
+  --toastify-toast-width: fit-content !important;
+}
 /* Width */
 ::-webkit-scrollbar {
   width: 5px; /* Slightly thinner scrollbar */
