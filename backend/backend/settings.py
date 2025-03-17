@@ -69,9 +69,9 @@ THIRD_PARTY_APPS = [
 # Custom Apps – Only these will be exposed via API
 CUSTOM_APPS = [
     "core",
+    'frappe_app',
     'cms_app',
     'human_app',
-    'frappe_app',
 ]
 
 # Final Installed Apps List

@@ -56,7 +56,7 @@ export default function App({ Component, pageProps }) {
 
     checkAuth();
     setIsClient(true);
-  }, [router.pathname]);
+  }, []);
 
   if (!isClient) {
     return <Loading />;

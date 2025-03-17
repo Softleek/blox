@@ -245,20 +245,20 @@ class RelationshipHandlerMixin(serializers.ModelSerializer):
             f"Unexpected type for time: {type(value).__name__}"
         )
 
-    def create(self, validated_data):
-        validated_data = self.clean_field_types(validated_data)
-        validated_data, related_instances = self.handle_related_fields(validated_data)
+    # def create(self, validated_data):
+    #     validated_data = self.clean_field_types(validated_data)
+    #     validated_data, related_instances = self.handle_related_fields(validated_data)
 
-        instance = super().create(validated_data)
+    #     instance = super().create(validated_data)
 
-        for field_name, related_instance in related_instances.items():
-            if isinstance(related_instance, list):
-                getattr(instance, field_name).set(related_instance)
-            else:
-                setattr(instance, field_name, related_instance)
+    #     for field_name, related_instance in related_instances.items():
+    #         if isinstance(related_instance, list):
+    #             getattr(instance, field_name).set(related_instance)
+    #         else:
+    #             setattr(instance, field_name, related_instance)
 
-        instance.save()
-        return instance
+    #     instance.save()
+    #     return instance
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)

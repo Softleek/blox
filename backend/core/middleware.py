@@ -22,6 +22,9 @@ from django.conf import settings
 
 _request_local = local()
 
+def get_current_request_user():
+    return getattr(_request_local, 'user', None)
+
 
 class UserActivityMiddleware:
     def __init__(self, get_response):

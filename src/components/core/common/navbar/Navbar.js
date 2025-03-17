@@ -17,6 +17,7 @@ import { getFromDB, deleteFromDB } from "@/utils/indexedDB";
 import LogoutModal from "@/components/core/common/LogoutModal";
 import Search from "./Search";
 import RemindersIcon from "./RemindersIcon";
+import { useData } from "@/contexts/DataContext";
 
 const Navbar = () => {
   const router = useRouter();
@@ -25,6 +26,8 @@ const Navbar = () => {
   const { sidebarWidth } = useSidebar();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { websiteSettings } = useData();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -46,11 +49,13 @@ const Navbar = () => {
       <div className="w-full max-w-[1536px] z-50 flex flex-wrap items-center justify-between transition-all duration-250 ease-soft-in bg-transparent">
         <div className="flex items-center justify-between w-full px-2 md:px-4 py-1">
           <Link href="/">
-            <img
-              src="/img/logos/logo.png"
-              alt="Blox ERP Logo"
-              className="h-10 md:h-12 ml-4 w-auto p-1 flex items-center cursor-pointer"
-            />
+            {websiteSettings?.app_logo && (
+              <img
+                src={websiteSettings?.app_logo}
+                alt="App Logo"
+                className="h-10 md:h-12 ml-4 w-auto p-1 flex items-center cursor-pointer"
+              />
+            )}
           </Link>
           <nav className="hidden md:flex md:flex-col gap-x-4">
             <ol className="flex flex-wrap pt-1 bg-transparent rounded-lg sm:mr-16">

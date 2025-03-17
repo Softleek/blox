@@ -119,7 +119,7 @@ const Sidebar = () => {
 
         <div
           className={`w-fit h-[110vh] md:max-h-[92vh] overflow-auto ease-nav-brand block -translate-x-full flex-wrap flex-grow items-center justify-between border-0 p-1 antialiased transition-transform duration-200 left-0 translate-x-0 ${
-            !isCollapsed ? "fixed md:relative bg-white" : "hidden"
+            !isCollapsed ? "fixed md:relative" : "hidden"
           }`}
         >
           <div className="h-fit flex items-center justify-between px-4">

@@ -25,11 +25,15 @@ if (typeof window !== "undefined") {
 const formatUrl = (url) => (url.endsWith("/") ? url : url + "/");
 
 const handle403Error = async () => {
-  window.location.href = "/403";
+  if (window.location.pathname !== "/403") {
+    window.location.href = "/403";
+  }
 };
 const handle401Error = async () => {
   await deleteTokenFromDB();
-  window.location.href = "/login";
+  if (window.location.pathname !== "/login") {
+    window.location.href = "/login";
+  }
 };
 
 const deleteTokenFromDB = async () => {

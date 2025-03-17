@@ -25,7 +25,10 @@ const Pagination = ({
   }, []);
 
   useEffect(() => {
-    if (!totalPages) return;
+    if (!totalPages || totalPages < 2) {
+      setPaginationData([1]);
+      return;
+    }
 
     let pagination_data = [];
 
