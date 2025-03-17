@@ -8,6 +8,11 @@ from typing import Any, List
 import click
 
 from ..utils.file_operations import ensure_file_exists
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 @click.command()
@@ -60,21 +65,27 @@ schedule: blox schedule
     # Clone mainsite into sites/default
     core_apps_path: str = os.path.join(project_root, "apps", "core")
     repo_url: str = "https://github.com/Softleek/blox-core.git"
+    frappe_apps_path = os.path.join(project_root, "apps", "frappe")
+    frappe_repo_url = "https://github.com/Softleek/frappe.git"
 
-    # Create a temporary directory
-    with tempfile.TemporaryDirectory() as temp_dir:
-        try:
-            subprocess.check_call(["git", "clone", repo_url, temp_dir])
-        except subprocess.CalledProcessError as e:
-            click.echo(f"Failed to clone the repository: {e}")
+    # Clone and move blox-core repository
+    with tempfile.TemporaryDirectory() as temp_dir_blox:
+        blox_clone_path = os.path.join(temp_dir_blox, "blox-core")
+        if not clone_repository(repo_url, blox_clone_path):
             return
 
-        # Ensure the sites directory exists
-        os.makedirs(core_apps_path, exist_ok=True)
+        if not move_repository_contents(blox_clone_path, core_apps_path):
+            return
 
-        # Move the cloned repository to the sites directory
-        for item in os.listdir(temp_dir):
-            shutil.move(os.path.join(temp_dir, item), core_apps_path)
+    # Clone and move frappe repository
+    with tempfile.TemporaryDirectory() as temp_dir_frappe:
+        frappe_clone_path = os.path.join(temp_dir_frappe, "frappe")
+        if not clone_repository(frappe_repo_url, frappe_clone_path):
+            return
+
+        if not move_repository_contents(frappe_clone_path, frappe_apps_path):
+            return
+
             
     try:
         with open(sites_json_path, "r") as json_file:
@@ -104,3 +115,31 @@ schedule: blox schedule
         click.echo("Successfully initialized project.")
     except subprocess.CalledProcessError as e:
         click.echo(f"Failed to run post-creation commands: {e}", err=True)
+
+
+
+def clone_repository(repo_url: str, target_path: str) -> bool:
+    """Clone a Git repository to the target path."""
+    try:
+        subprocess.check_call(["git", "clone", repo_url, target_path])
+        return True
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Failed to clone the repository {repo_url}: {e}")
+        return False
+    except Exception as e:
+        logger.error(f"Unexpected error while cloning {repo_url}: {e}")
+        return False
+
+def move_repository_contents(source_path: str, destination_path: str) -> bool:
+    """Move contents from the source path to the destination path."""
+    try:
+        # Ensure the destination directory exists
+        os.makedirs(destination_path, exist_ok=True)
+
+        # Move each item from the source to the destination
+        for item in os.listdir(source_path):
+            shutil.move(os.path.join(source_path, item), destination_path)
+        return True
+    except Exception as e:
+        logger.error(f"Failed to move contents from {source_path} to {destination_path}: {e}")
+        return False
