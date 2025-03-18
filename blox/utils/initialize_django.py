@@ -27,7 +27,7 @@ def initialize_django_env() -> None:
 
     # Add project root and Django path to Python path
     sys.path.insert(0, PROJECT_ROOT)
-    sys.path.insert(0, DJANGO_PATH)
+    sys.path.insert(0, DJANGO_PATH) 
 
     # Optionally add the `apps` directory explicitly to sys.path
     apps_path = os.path.join(PROJECT_ROOT, "apps")
