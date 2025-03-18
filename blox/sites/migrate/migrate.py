@@ -58,6 +58,7 @@ def updatefiles(
     """
     sites = get_all_sites()
     configure_app("core")
+    configure_app("frappe")
 
     if all:
         for site_entry in sites:

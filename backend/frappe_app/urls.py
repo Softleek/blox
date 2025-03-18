@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
-from .views.core import *
+from .views.frappe_core import *
 router.register(r'permission_inspector', PermissionInspectorViewSet, basename='permission_inspector')
 router.register(r'page', PageViewSet, basename='page')
 router.register(r'user', UserViewSet, basename='user')

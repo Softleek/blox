@@ -99,3 +99,4 @@ urlpatterns = [
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += [    path('frappe/', include('frappe_app.urls')),]
+urlpatterns += [    path('shop/', include('shop_app.urls')),]

@@ -6,7 +6,7 @@ import os
 from django.conf import settings
 
 class CustomRole(BaseModel):
-    page = models.ForeignKey("cms_app.Page", related_name="CustomRolePage", on_delete=models.CASCADE, null=True, blank=True)
+    page = models.ForeignKey("frappe_app.Page", related_name="CustomRolePage", on_delete=models.CASCADE, null=True, blank=True)
     report = models.ForeignKey("frappe_app.Report", related_name="CustomRoleReport", on_delete=models.CASCADE, null=True, blank=True)
     roles = models.ManyToManyField("frappe_app.HasRole", related_name="CustomRoleRoles", )
     response = models.TextField(null=True, blank=True)

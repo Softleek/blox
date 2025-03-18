@@ -109,7 +109,7 @@ schedule: blox schedule
 
     # Run post-install commands
     try:
-        subprocess.check_call(["blox", "install"])
+        # subprocess.check_call(["blox", "install"])
         subprocess.check_call(["blox", "migrate"])
         subprocess.check_call(["blox", "django", "createsuperuser"])
         click.echo("Successfully initialized project.")

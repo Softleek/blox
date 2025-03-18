@@ -1,4 +1,3 @@
 core
-cms
-human
 frappe
+shop

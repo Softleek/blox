@@ -26,7 +26,7 @@ class FormTour(BaseModel):
     ]
     view_name = models.CharField(choices=CHOICES_VIEW_NAME, max_length=255, null=True, blank=True)
     workspace_name = models.ForeignKey("frappe_app.Workspace", related_name="FormTourWorkspaceName", on_delete=models.CASCADE, null=True, blank=True)
-    page_name = models.ForeignKey("cms_app.Page", related_name="FormTourPageName", on_delete=models.CASCADE, null=True, blank=True)
+    page_name = models.ForeignKey("frappe_app.Page", related_name="FormTourPageName", on_delete=models.CASCADE, null=True, blank=True)
     CHOICES_LIST_NAME = [
         ("List", "List"),
         ("Report", "Report"),
