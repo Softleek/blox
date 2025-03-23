@@ -14,7 +14,7 @@ import Textarea from "./fields/Textarea";
 const NamingSettings = () => {
   const { localConfig, setLocalConfig } = useConfig();
 
-  const [namingRule, setNamingRule] = useState(localConfig.naming_rule || "");
+  const [namingRule, setNamingRule] = useState(localConfig?.naming_rule || "");
 
   const handleFieldChange = (name, value) => {
     setLocalConfig((prevConfig) => ({ ...prevConfig, [name]: value }));
@@ -80,7 +80,7 @@ const NamingSettings = () => {
         <TextInput
           label="Documentation Link"
           icon={<FontAwesomeIcon icon={faLink} className="text-green-500" />}
-          value={localConfig.documentation || ""}
+          value={localConfig?.documentation || ""}
           onChange={(e) => handleFieldChange("documentation", e.target.value)}
           // className="border-green-300 bg-green-100"
         />
@@ -91,7 +91,7 @@ const NamingSettings = () => {
             icon={
               <FontAwesomeIcon icon={faInfoCircle} className="text-pink-500" />
             }
-            value={localConfig.autoname || ""}
+            value={localConfig?.autoname || ""}
             onChange={(e) => handleFieldChange("autoname", e.target.value)}
             // className="border-pink-300 bg-pink-100"
           />
@@ -102,7 +102,7 @@ const NamingSettings = () => {
 
         <Checkbox
           label="Allow Rename"
-          checked={localConfig.allow_rename || false}
+          checked={localConfig?.allow_rename || false}
           onChange={(e) => handleFieldChange("allow_rename", e.target.checked)}
           // className="border-green-300"
         />
@@ -151,7 +151,7 @@ const NamingSettings = () => {
         <Textarea
           label="Description"
           icon={<FontAwesomeIcon icon={faEdit} className="text-pink-500" />}
-          value={localConfig.description || ""}
+          value={localConfig?.description || ""}
           onChange={(e) => handleFieldChange("description", e.target.value)}
           className=" h-48"
         />

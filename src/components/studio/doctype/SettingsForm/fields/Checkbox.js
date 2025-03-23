@@ -18,11 +18,11 @@ const Checkbox = ({
           className={`h-4 w-4 rounded focus:ring-0 ${className}`}
           {...props}
         />
-        {label && (
+        {label?.length > 0 && (
           <label className="text-sm font-medium text-gray-700">{label}</label>
         )}
       </div>
-      {description && (
+      {description?.length > 0 && (
         <p className="text-xs text-gray-500 ml-6">{description}</p>
       )}
     </div>

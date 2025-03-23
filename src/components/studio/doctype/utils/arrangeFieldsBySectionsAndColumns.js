@@ -4,7 +4,7 @@ export const arrangeFieldsIntoSectionsAndColumns = (
 ) => {
   // Helper function to generate random ID
   const generateRandomId = (prefix) =>
-    `${prefix}_${Math.random().toString(36).substring(2, 8)}`;
+    `${prefix}_${Math.random()?.toString(36)?.substring(2, 8)}`;
 
   const sections = [];
   let currentSection = null;
@@ -13,7 +13,7 @@ export const arrangeFieldsIntoSectionsAndColumns = (
   // If no fields are provided, return a default section with a default column
   const id = generateRandomId("section");
 
-  if (!fields || fields.length === 0) {
+  if (!fields || fields?.length === 0) {
     return [
       {
         label: "",
@@ -35,8 +35,8 @@ export const arrangeFieldsIntoSectionsAndColumns = (
     ];
   }
 
-  fields.forEach((field) => {
-    switch (field.fieldtype) {
+  fields?.forEach((field) => {
+    switch (field?.fieldtype) {
       case "Section Break":
         // If the Section Break field exists, copy it as is
         currentSection = {
@@ -44,7 +44,7 @@ export const arrangeFieldsIntoSectionsAndColumns = (
           prevField,
           columns: [],
         };
-        sections.push(currentSection);
+        sections?.push(currentSection);
 
         // Create a default column for this section if no columns exist
         currentColumn = {
@@ -52,10 +52,10 @@ export const arrangeFieldsIntoSectionsAndColumns = (
           fieldname: "",
           id: generateRandomId("column"),
           fieldtype: "Column Break",
-          prevField: field.fieldname,
+          prevField: field?.fieldname,
           fields: [],
         };
-        currentSection.columns.push(currentColumn);
+        currentSection?.columns?.push(currentColumn);
         break;
 
       case "Column Break":
@@ -66,7 +66,7 @@ export const arrangeFieldsIntoSectionsAndColumns = (
             prevField,
             fields: [],
           };
-          currentSection.columns.push(currentColumn);
+          currentSection?.columns?.push(currentColumn);
         }
         break;
 
@@ -82,7 +82,7 @@ export const arrangeFieldsIntoSectionsAndColumns = (
             fieldtype: "Section Break", // Default fieldtype for section breaks
             columns: [],
           };
-          sections.push(currentSection);
+          sections?.push(currentSection);
 
           // Create a default column in the default section
           currentColumn = {
@@ -93,15 +93,15 @@ export const arrangeFieldsIntoSectionsAndColumns = (
             fieldtype: "Column Break", // Default fieldtype for column breaks
             fields: [],
           };
-          currentSection.columns.push(currentColumn);
+          currentSection?.columns?.push(currentColumn);
         }
 
         // Add the field to the current column
         if (currentColumn) {
-          currentColumn.fields.push({
+          currentColumn?.fields?.push({
             ...field,
             prevField,
-            fieldname: field.fieldname || generateRandomId("field"), // Use fieldname if available or generate new ID
+            fieldname: field?.fieldname || generateRandomId("field"), // Use fieldname if available or generate new ID
           });
         }
         break;
@@ -111,14 +111,15 @@ export const arrangeFieldsIntoSectionsAndColumns = (
   });
 
   // Remove empty columns but preserve sections
-  const filteredSections = sections.map((section) => {
+  const filteredSections = sections?.map((section) => {
     // Filter columns: remove those without fields unless they have fieldname or is_new
-    const filteredColumns = section.columns.filter(
-      (column) => column.fields.length > 0 || column.fieldname || column.is_new
+    const filteredColumns = section?.columns?.filter(
+      (column) =>
+        column?.fields?.length > 0 || column?.fieldname || column?.is_new
     );
 
     // Always preserve sections with `is_new: true`, even if empty
-    return section.is_new
+    return section?.is_new
       ? section
       : {
           ...section,
@@ -127,7 +128,7 @@ export const arrangeFieldsIntoSectionsAndColumns = (
   });
 
   // If no sections are left after filtering, create a default section and column
-  if (filteredSections.length === 0) {
+  if (filteredSections?.length === 0) {
     return [
       {
         label: "",

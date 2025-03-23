@@ -36,8 +36,8 @@ import LinkSelect from "@/components/pages/new/LinkSelect";
 
 const GeneralSettings = () => {
   const fieldOptions = fields.map((field) => ({
-    value: field.name,
-    label: field.name,
+    value: field?.name,
+    label: field?.name,
   }));
 
   const { selectedItem, setSelectedItem, localConfig, setLocalConfig } =
@@ -61,7 +61,7 @@ const GeneralSettings = () => {
         icon={faList}
         label="Field Type"
         value={selectedItem?.fieldtype}
-        onChange={(e) => handleChange("fieldtype", e.value)}
+        onChange={(e) => handleChange("fieldtype", e?.value)}
         options={fieldOptions}
       />
 
@@ -70,14 +70,14 @@ const GeneralSettings = () => {
         icon={faTag}
         label="Label"
         value={selectedItem?.label}
-        onChange={(e) => handleChange("label", e.target.value)}
+        onChange={(e) => handleChange("label", e?.target?.value)}
         placeholder="Enter label"
       />
       <TextInput
         icon={faIdBadge}
         label="Field Name"
         value={selectedItem?.fieldname}
-        onChange={(e) => handleChange("fieldname", e.target.value)}
+        onChange={(e) => handleChange("fieldname", e?.target?.value)}
         placeholder="Enter field name"
       />
 
@@ -106,13 +106,13 @@ const GeneralSettings = () => {
             key={"unique"}
             label="Is Section?"
             value={selectedItem?.is_section}
-            onChange={(e) => handleChange("is_section", e.target.checked)}
+            onChange={(e) => handleChange("is_section", e?.target?.checked)}
           />
           <NumberInput
             icon={faRuler}
             label="Columns"
             value={selectedItem?.columns}
-            onChange={(e) => handleChange("columns", e.target.value)}
+            onChange={(e) => handleChange("columns", e?.target?.value)}
             placeholder="Enter number of columns"
           />
         </>
@@ -123,7 +123,7 @@ const GeneralSettings = () => {
           icon={faFilter}
           label="Linked Field"
           value={selectedItem?.linked_field}
-          onChange={(e) => handleChange("linked_field", e.target.value)}
+          onChange={(e) => handleChange("linked_field", e?.target?.value)}
           placeholder="Enter the linked field"
         />
       )}
@@ -132,7 +132,7 @@ const GeneralSettings = () => {
           icon={faRuler}
           label="Precision"
           value={selectedItem?.precision || 2}
-          onChange={(e) => handleChange("precision", e.target.value)}
+          onChange={(e) => handleChange("precision", e?.target?.value)}
           placeholder="Enter precision"
         />
       )}
@@ -141,7 +141,7 @@ const GeneralSettings = () => {
           icon={faList}
           label="Options"
           value={selectedItem?.options}
-          onChange={(e) => handleChange("options", e.target.value)}
+          onChange={(e) => handleChange("options", e?.target?.value)}
           placeholder="Enter options separated by newline"
         />
       )}
@@ -149,7 +149,7 @@ const GeneralSettings = () => {
         icon={faClipboard}
         label="Description"
         value={selectedItem?.description}
-        onChange={(e) => handleChange("description", e.target.value)}
+        onChange={(e) => handleChange("description", e?.target?.value)}
         placeholder="Enter description"
       />
       {/* Default Value */}
@@ -157,14 +157,14 @@ const GeneralSettings = () => {
         icon={faExclamation}
         label="Default Value"
         value={selectedItem?.default}
-        onChange={(e) => handleChange("default", e.target.value)}
+        onChange={(e) => handleChange("default", e?.target?.value)}
         placeholder="Enter default value"
       />
       <TextareaInput
         icon={faClipboardCheck}
         label="Depends On"
         value={selectedItem?.depends_on}
-        onChange={(e) => handleChange("depends_on", e.target.value)}
+        onChange={(e) => handleChange("depends_on", e?.target?.value)}
         placeholder="Enter dependency"
       />
 
@@ -172,14 +172,14 @@ const GeneralSettings = () => {
         icon={faList}
         label="Filter Format"
         value={selectedItem?.filter_format}
-        onChange={(e) => handleChange("filter_format", e.target.value)}
+        onChange={(e) => handleChange("filter_format", e?.target?.value)}
         description="Enter Expression format for filtering the value. Use eval() function to evaluate the expression"
       />
       <TextareaInput
         icon={faList}
         label="Format"
         value={selectedItem?.format}
-        onChange={(e) => handleChange("format", e.target.value)}
+        onChange={(e) => handleChange("format", e?.target?.value)}
         description="Enter Expression format for generating the value eg. format:EXAMPLE-{MM}morewords{fieldname1}-{fieldname2}-{#####} "
       />
 
@@ -203,7 +203,7 @@ const GeneralSettings = () => {
         // icon={faList}
         label=""
         value={selectedItem?.fieldtype}
-        onChange={(e) => handleChange("fetch_from_field", e.value)}
+        onChange={(e) => handleChange("fetch_from_field", e?.value)}
         options={fieldOptions}
       />
 
@@ -212,7 +212,7 @@ const GeneralSettings = () => {
           icon={faPuzzlePiece}
           label="Allowed File Types"
           value={selectedItem?.allowed_file_types}
-          onChange={(e) => handleChange("allowed_file_types", e.target.value)}
+          onChange={(e) => handleChange("allowed_file_types", e?.target?.value)}
           placeholder="Enter allowed file types (comma-separated)"
         />
       )}
@@ -221,7 +221,7 @@ const GeneralSettings = () => {
           icon={faColumns}
           label="Child Table Doctype"
           value={selectedItem?.options}
-          onChange={(e) => handleChange("options", e.target.value)}
+          onChange={(e) => handleChange("options", e?.target?.value)}
           placeholder="Enter child Doctype name"
         />
       )}
@@ -230,7 +230,7 @@ const GeneralSettings = () => {
           icon={faFilter}
           label="Input Type"
           value={selectedItem?.input_type}
-          onChange={(e) => handleChange("input_type", e.value)}
+          onChange={(e) => handleChange("input_type", e?.value)}
           options={[
             { label: "Email", value: "email" },
             { label: "Phone", value: "phone" },
@@ -243,7 +243,7 @@ const GeneralSettings = () => {
           icon={faChartBar}
           label="Check Value"
           value={selectedItem?.check_value}
-          onChange={(e) => handleChange("check_value", e.target.value)}
+          onChange={(e) => handleChange("check_value", e?.target?.value)}
           placeholder="Enter check value"
         />
       )}
@@ -253,28 +253,28 @@ const GeneralSettings = () => {
         icon={faColumns}
         label="Columns"
         value={selectedItem?.columns}
-        onChange={(e) => handleChange("columns", e.target.value)}
+        onChange={(e) => handleChange("columns", e?.target?.value)}
         placeholder="Enter number of columns"
       />
       <TextInput
         icon={faEyeSlash}
         label="Max Height"
         value={selectedItem?.max_height}
-        onChange={(e) => handleChange("max_height", e.target.value)}
+        onChange={(e) => handleChange("max_height", e?.target?.value)}
         placeholder="Enter max height"
       />
       <TextInput
         icon={faClipboard}
         label="Placeholder"
         value={selectedItem?.placeholder}
-        onChange={(e) => handleChange("placeholder", e.target.value)}
+        onChange={(e) => handleChange("placeholder", e?.target?.value)}
         placeholder="Enter placeholder"
       />
       <TextareaInput
         icon={faClipboardCheck}
         label="Mandatory Depends On"
         value={selectedItem?.mandatory_depends_on}
-        onChange={(e) => handleChange("mandatory_depends_on", e.target.value)}
+        onChange={(e) => handleChange("mandatory_depends_on", e?.target?.value)}
         placeholder="Enter mandatory condition"
       />
 
@@ -377,15 +377,15 @@ const GeneralSettings = () => {
           description: "Enable to show this field in public detail views.",
         },
       ].map((checkbox) => (
-        <div key={checkbox.value}>
+        <div key={checkbox?.value}>
           <CheckboxInput
-            label={checkbox.label}
-            value={selectedItem ? selectedItem[checkbox.value] : null}
-            onChange={(e) => handleChange(checkbox.value, e.target.checked)}
+            label={checkbox?.label}
+            value={selectedItem ? selectedItem[checkbox?.value] : null}
+            onChange={(e) => handleChange(checkbox?.value, e?.target?.checked)}
           />
-          {checkbox.description && (
+          {checkbox?.description && (
             <div className="text-[11px] text-blue-800 pl-6 italic">
-              {checkbox.description}
+              {checkbox?.description}
             </div>
           )}
         </div>

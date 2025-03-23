@@ -13,7 +13,6 @@ import { addFieldToConfig } from "../utils/addFieldToConfig";
 import { getFirstFieldname } from "../utils/getFirstField";
 
 const ColumnItem = ({ section, column, handleFocus, handleBlur }) => {
-  // Dragging logic for the column (already in place)
   const { selectedItem, localConfig, selectedTab, setLocalConfig } =
     useConfig();
 
@@ -23,34 +22,31 @@ const ColumnItem = ({ section, column, handleFocus, handleBlur }) => {
     type: COLUMN_TYPE,
     item: { column, type: COLUMN_TYPE },
     collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
+      isDragging: monitor?.isDragging(),
     }),
   }));
 
-  // Dropping logic for both ITEM_TYPE and COLUMN_TYPE
   const [{ isOver, canDrop }, dropColumn] = useDrop(() => ({
-    accept: [COLUMN_TYPE], // Allow both ITEM_TYPE and COLUMN_TYPE to be dropped
-
+    accept: [COLUMN_TYPE],
     drop: (item, monitor) => {
       handleDrop(item, monitor);
     },
     collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
+      isOver: monitor?.isOver(),
+      canDrop: monitor?.canDrop(),
     }),
   }));
 
-  // Handle click event
   const handleColClick = (e) => {
-    if (e && typeof e.stopPropagation === "function") {
+    if (e?.stopPropagation) {
       e.stopPropagation();
     }
-    handleFocus(column); // Focus the column
+    handleFocus(column);
   };
 
   const handleAddField = async () => {
     const targetField =
-      getLastFieldname(column) || column.fieldname || column.prevField;
+      getLastFieldname(column) || column?.fieldname || column?.prevField;
     const newConfig = await addFieldToConfig(localConfig, targetField, "Data");
     setLocalConfig({ ...newConfig });
   };
@@ -58,14 +54,13 @@ const ColumnItem = ({ section, column, handleFocus, handleBlur }) => {
   dropColumn(dragColumn(ref));
 
   const getDropType = (current) => {
-    // Determine the attribute used and the drop type
-    const attributeUsed = current.getAttribute("fieldname")
+    const attributeUsed = current?.getAttribute("fieldname")
       ? "fieldname"
-      : current.getAttribute("firstfield")
+      : current?.getAttribute("firstfield")
       ? "firstfield"
-      : current.getAttribute("sectionname")
+      : current?.getAttribute("sectionname")
       ? "sectionname"
-      : current.getAttribute("tabname")
+      : current?.getAttribute("tabname")
       ? "tabname"
       : "other";
 
@@ -78,25 +73,23 @@ const ColumnItem = ({ section, column, handleFocus, handleBlur }) => {
   };
 
   const handleDrop = (item, monitor) => {
-    const current = ref.current;
+    const current = ref?.current;
     const targetField =
-      current.getAttribute("fieldname") ||
-      current.getAttribute("sectionname") ||
-      current.getAttribute("firstfield") ||
-      current.getAttribute("tabname");
+      current?.getAttribute("fieldname") ||
+      current?.getAttribute("sectionname") ||
+      current?.getAttribute("firstfield") ||
+      current?.getAttribute("tabname");
 
-    const { moveAbove, attributeUsed } = getDropType(ref.current);
+    const { moveAbove, attributeUsed } = getDropType(ref?.current);
 
-    if (item.type === COLUMN_TYPE) {
-      const firstfield = getFirstFieldname(item.column);
-      const targetRect = ref.current.getBoundingClientRect(); // Get the bounding box of the target
-      const clientOffset = monitor.getClientOffset(); // Get the mouse position
+    if (item?.type === COLUMN_TYPE) {
+      const firstfield = getFirstFieldname(item?.column);
+      const targetRect = ref?.current?.getBoundingClientRect();
+      const clientOffset = monitor?.getClientOffset();
 
-      // Calculate the percentage of the target element's width covered by the drop point
       const dropPercentage =
         ((clientOffset?.x - targetRect?.left) / targetRect?.width) * 100;
 
-      // Determine drop side based on percentage
       const dropSide = dropPercentage <= 50 ? "left" : "right";
       const targetFields = getFieldsAfterBreak(
         localConfig,
@@ -104,7 +97,7 @@ const ColumnItem = ({ section, column, handleFocus, handleBlur }) => {
         "Column",
         true
       );
-      const specificTargetField = targetFields[targetFields.length - 1]; // Last field if dropped on the right
+      const specificTargetField = targetFields?.[targetFields?.length - 1];
 
       const droppedFields = getFieldsAfterBreak(
         localConfig,
@@ -113,18 +106,16 @@ const ColumnItem = ({ section, column, handleFocus, handleBlur }) => {
         true
       );
 
-      // Uncomment and modify as necessary to integrate further functionality
       const newConfig = moveGroupedItems(
         droppedFields,
         specificTargetField,
         localConfig,
-        false // Pass the drop side to determine before/after placement
+        false
       );
 
       setLocalConfig(newConfig);
     } else {
-      // Handle ITEM_TYPE drop
-      const newConfig = moveItem(item.id, targetField, localConfig, moveAbove);
+      const newConfig = moveItem(item?.id, targetField, localConfig, moveAbove);
       setLocalConfig(newConfig);
     }
   };
@@ -136,36 +127,34 @@ const ColumnItem = ({ section, column, handleFocus, handleBlur }) => {
         fieldname={column?.fieldname}
         sectionname={section?.fieldname}
         tabname={selectedTab?.fieldname}
-        firstfield={column?.fields[0]?.fieldname}
+        firstfield={column?.fields?.[0]?.fieldname}
         className={clsx("flex-1 bg-gray-100 p-2 rounded-md border-[1px]", {
           "border border-black": selectedItem === column,
           "border-dashed border-gray-500": selectedItem !== column,
           "opacity-50": isColumnDragging,
           "bg-green-200": isOver && canDrop,
         })}
-        onClick={handleColClick} // Click to focus the column
-        key={column.fieldname}
+        onClick={handleColClick}
+        key={column?.fieldname}
       >
         <div className="flex flex-row w-full h-fit justify-between">
-          <h5 className="text-md font-semibold p-2">{column.label}</h5>
+          <h5 className="text-md font-semibold p-2">{column?.label}</h5>
           {selectedItem === column && (
             <ColumnActions column={column} handleAddField={handleAddField} />
           )}
         </div>
 
-        {/* Render draggable items inside the column */}
         {column?.fields?.map((item) => (
-          <Suspense fallback={<div>Loading...</div>} key={item.fieldname}>
+          <Suspense fallback={<div>Loading...</div>} key={item?.fieldname}>
             <DraggableItem
               item={item}
               handleFocus={handleFocus}
               handleBlur={handleBlur}
-              itemType={COLUMN_TYPE} // Specify ITEM_TYPE here if DraggableItem is for both types
+              itemType={COLUMN_TYPE}
             />
           </Suspense>
         ))}
 
-        {/* Render Custom Button to add a new field */}
         <Suspense fallback={<div>Loading...</div>}>
           <CustomButton
             text="Add field"

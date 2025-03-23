@@ -6,16 +6,16 @@ import { updateConfig } from "@/components/studio/doctype/updateConfig";
 const ConfigContext = createContext();
 
 export const ConfigProvider = ({
-  initialConfig,
+  initialConfig = {},
   initialAppData,
   children,
   documentData,
 }) => {
-  const [localConfig, setLocalConfig] = useState(initialConfig);
-  const [localAppData, setLocalAppData] = useState(initialAppData);
+  const [localConfig, setLocalConfig] = useState(initialConfig || {});
+  const [localAppData, setLocalAppData] = useState(initialAppData || {});
   const [selectedItem, setSelectedItem] = useState(null);
   const [settings, setSettings] = useState({});
-  const [selectedTab, setSelectedTab] = useState(null);
+  const [selectedTab, setSelectedTab] = useState("details");
   const [hoveredItem, setHoveredItem] = useState({});
   // Set document data (app, module, doctype) to context
   const [app, setApp] = useState(documentData?.app || "");

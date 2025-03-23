@@ -85,7 +85,7 @@ export default function App({ Component, pageProps }) {
           <main className="relative flex flex-col w-full items-center justify-center h-screen">
             <div
               className={`ease-soft-in-out max-h-screen ${
-                !isAuthPage ? "pt-1 md:pt-14 h-[100vh]" : ""
+                !isAuthPage ? "pt-1 md:pt-2 h-[100vh]" : ""
               } flex flex-row relative items-center justify-center rounded-xl transition-all duration-200 w-full max-w-[1536px]`}
             >
               {isAuthPage ? (
@@ -99,8 +99,8 @@ export default function App({ Component, pageProps }) {
                   <div className="h-[88vh] w-fit">
                     <Sidebar />
                   </div>
-                  <div className="flex-grow flex flex-col w-full">
-                    <div className="flex-grow h-full md:h-[88vh] pt-[6vh] md:pt-0 overflow-y-auto">
+                  <div className="flex-grow flex flex-col w-full h-[96vh]">
+                    <div className="flex-grow h-full md:h-[88vh] pt-[6vh] overflow-y-auto">
                       <div className="relative flex-grow">
                         <Component {...pageProps} />
                       </div>

@@ -21,7 +21,7 @@ const DraggableItem = ({ item, handleFocus, placeholder = false }) => {
     type: ITEM_TYPE,
     item: { type: ITEM_TYPE, id: item?.fieldname, item },
     collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
+      isDragging: monitor?.isDragging(),
     }),
   });
 
@@ -31,8 +31,8 @@ const DraggableItem = ({ item, handleFocus, placeholder = false }) => {
     hover: (draggedItem) => {
       // Ensure the item is moved correctly when dropped
       const newConfig = moveItem(
-        draggedItem.item.fieldname,
-        item.fieldname,
+        draggedItem?.item?.fieldname,
+        item?.fieldname,
         localConfig
       );
       setLocalConfig(newConfig);
@@ -40,8 +40,8 @@ const DraggableItem = ({ item, handleFocus, placeholder = false }) => {
     drop: (draggedItem) => {
       // Ensure the item is moved correctly when dropped
       const newConfig = moveItem(
-        draggedItem.item.fieldname,
-        item.fieldname,
+        draggedItem?.item?.fieldname,
+        item?.fieldname,
         localConfig
       );
       setLocalConfig(newConfig);
@@ -76,21 +76,21 @@ const DraggableItem = ({ item, handleFocus, placeholder = false }) => {
   // Handle Delete Action
   const handleDelete = async () => {
     const newConfig = await deleteFieldsFromConfig(localConfig, [
-      item.fieldname,
+      item?.fieldname,
     ]);
     setLocalConfig({ ...newConfig });
   };
 
   // Handle Duplicate Action
   const handleDuplicate = () => {
-    const newConfig = duplicateFieldInConfig(localConfig, item.fieldname);
+    const newConfig = duplicateFieldInConfig(localConfig, item?.fieldname);
     setLocalConfig({ ...newConfig });
   };
 
   const handleAddField = async () => {
     const newConfig = await addFieldToConfig(
       localConfig,
-      item.fieldname,
+      item?.fieldname,
       "Data"
     );
     setLocalConfig({ ...newConfig });
@@ -113,8 +113,8 @@ const DraggableItem = ({ item, handleFocus, placeholder = false }) => {
         >
           <input
             type="text"
-            value={item.label}
-            onChange={(e) => handleChange("label", e.target.value)}
+            value={item?.label}
+            onChange={(e) => handleChange("label", e.target?.value)}
             className="block w-full py-1 text-sm border-none focus:outline-none bg-transparent"
             placeholder="Edit label"
           />
@@ -123,14 +123,14 @@ const DraggableItem = ({ item, handleFocus, placeholder = false }) => {
           ${selectedItem === item ? "opacity-100" : ""}`}
           >
             <ItemActions
-              onDelete={() => handleDelete(item.id)}
-              onDuplicate={() => handleDuplicate(item.id)}
-              onAddField={() => handleAddField(item.id)}
+              onDelete={() => handleDelete(item?.id)}
+              onDuplicate={() => handleDuplicate(item?.id)}
+              onAddField={() => handleAddField(item?.id)}
             />
           </div>
         </div>
         {/* Render field preview using FieldRenderer */}
-        <FieldRenderer fieldtype={item.fieldtype} item={item} />
+        <FieldRenderer fieldtype={item?.fieldtype} item={item} />
       </>
     </div>
   );

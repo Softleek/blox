@@ -21,7 +21,7 @@ import DocEditFields from "@/components/pages/detail/DocEditFields";
 import useKeySave from "@/hooks/useKeySave";
 import DoctypeFields from "./DoctypeFields";
 
-const octypeStudio = ({ config, saveSettings }) => {
+const DoctypeStudio = ({ config, saveSettings }) => {
   const { data, setData } = useData();
   const router = useRouter();
   const [endpoint, setEndpoint] = useState("");
@@ -29,19 +29,19 @@ const octypeStudio = ({ config, saveSettings }) => {
   const [isEditing, setIsEditing] = useState(false);
   const formRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { slug } = router.query;
+  const { slug } = router?.query;
 
-  const currentPath = router.pathname;
+  const currentPath = router?.pathname;
   const getId = (path) => {
-    const segments = path.split("/");
-    return segments[segments.length - 1];
+    const segments = path?.split("/");
+    return segments?.[segments?.length - 1];
   };
 
-  const id = router.query.slug || getId(currentPath);
+  const id = router?.query?.slug || getId(currentPath);
 
   useEffect(() => {
     if (id) {
-      setEndpoint(`${config.endpoint}/${id}`);
+      setEndpoint(`${config?.endpoint}/${id}`);
     }
   }, [id]);
 
@@ -51,10 +51,10 @@ const octypeStudio = ({ config, saveSettings }) => {
       try {
         const response = await fetchData({}, endpoint);
         if (response?.data) {
-          setData(response.data);
+          setData(response?.data);
         }
       } catch (error) {
-        toast.error(`Failed to fetch data: ${error.message || error}`);
+        toast?.error(`Failed to fetch data: ${error?.message || error}`);
       }
     };
 
@@ -74,8 +74,8 @@ const octypeStudio = ({ config, saveSettings }) => {
   };
 
   const handleSaveClick = () => {
-    if (formRef.current) {
-      formRef.current.submit();
+    if (formRef?.current) {
+      formRef?.current?.submit();
     }
   };
 
@@ -84,24 +84,24 @@ const octypeStudio = ({ config, saveSettings }) => {
   const handleUpdate = async (formData) => {
     try {
       const changedFields = getChangedFields(formData);
-      if (Object.keys(changedFields).length) {
+      if (Object.keys(changedFields)?.length) {
         const response = await updateData(changedFields, endpoint);
         if (response?.data) {
-          toast.success("Document updated successfully!");
-          setData(response.data);
+          toast?.success("Document updated successfully!");
+          setData(response?.data);
           setIsEditing(false);
         }
       }
     } catch (error) {
-      toast.error(`Failed to update document: ${error.message || error}`);
+      toast?.error(`Failed to update document: ${error?.message || error}`);
     }
   };
 
   const getChangedFields = (formData) => {
     const changedFields = {};
-    Object.keys(formData).forEach((key) => {
-      if (data[key] !== formData[key]) {
-        changedFields[key] = formData[key];
+    Object.keys(formData)?.forEach((key) => {
+      if (data?.[key] !== formData?.[key]) {
+        changedFields[key] = formData?.[key];
       }
     });
     return changedFields;
@@ -120,16 +120,16 @@ const octypeStudio = ({ config, saveSettings }) => {
     setIsModalOpen(false);
     try {
       await deleteData(endpoint);
-      toast.success("Document deleted successfully!");
-      router.back();
+      toast?.success("Document deleted successfully!");
+      router?.back();
     } catch (error) {
-      toast.error(`Failed to delete document: ${error.message || error}`);
+      toast?.error(`Failed to delete document: ${error?.message || error}`);
     }
   };
 
   const tabs = [
     { name: "Details", icon: faInfoCircle, label: "Details" },
-    ...(config.endpoint === "documents"
+    ...(config?.endpoint === "documents"
       ? [{ name: "Fields", icon: faFileEdit, label: "Fields" }]
       : []),
     { name: "Messages", icon: faEnvelope, label: "Messages" },
@@ -163,7 +163,7 @@ const octypeStudio = ({ config, saveSettings }) => {
         <DocSettings
           config={config}
           data={data}
-          setting={config.setting}
+          setting={config?.setting}
           saveSettings={saveSettings}
         />
       ) : null}

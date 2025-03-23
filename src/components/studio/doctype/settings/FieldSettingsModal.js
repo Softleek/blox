@@ -12,14 +12,14 @@ const FieldSettingsModal = ({
   deleteField,
   fields,
 }) => {
-  const { type, readonly, default: defaultValue, options } = item;
+  const { type, readonly, default: defaultValue, options } = item ?? {};
 
   return (
     <Modal onClose={closeModal} title={"Field Settings"}>
       <div className="relative bg-white mb-12">
         {/* Delete Button */}
         <button
-          onClick={() => deleteField(item.id1)}
+          onClick={() => deleteField?.(item?.id1)}
           className="absolute -top-2 right-0 text-red-600 hover:text-red-800 transition-colors"
         >
           <DeleteButton />

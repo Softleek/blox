@@ -11,8 +11,8 @@ import { getFirstFieldname } from "./getFirstField";
  */
 const deleteSection = async (localConfig, section, deleteFields = false) => {
   const targetField =
-    section.fieldname || section.prevField || getFirstFieldname(section);
-  const includeField = section.fieldname || getFirstFieldname(section);
+    section?.fieldname || section?.prevField || getFirstFieldname(section);
+  const includeField = section?.fieldname || getFirstFieldname(section);
   let list;
   if (deleteFields) {
     // Delete section and related fields
@@ -24,7 +24,7 @@ const deleteSection = async (localConfig, section, deleteFields = false) => {
     );
   } else {
     // Only delete the section break (no fields)
-    list = [section.fieldname];
+    list = [section?.fieldname];
   }
   const newConfig = await deleteFieldsFromConfig(localConfig, list);
   return newConfig;

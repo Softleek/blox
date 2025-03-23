@@ -28,15 +28,15 @@ const ColActionsDropdownMenu = ({
             ease: [0.25, 0.8, 0.25, 1],
           }}
           className="absolute right-4 top-0 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => e?.stopPropagation()}
         >
           <ul className="divide-y divide-gray-100 text-sm text-gray-700">
             <li>
               <button
                 className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-gray-100"
                 onClick={() => {
-                  onAddBefore();
-                  closeMenu();
+                  onAddBefore?.();
+                  closeMenu?.();
                 }}
               >
                 <div className="flex items-center space-x-1 text-blue-500">
@@ -49,8 +49,8 @@ const ColActionsDropdownMenu = ({
               <button
                 className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-gray-100"
                 onClick={() => {
-                  onAddAfter();
-                  closeMenu();
+                  onAddAfter?.();
+                  closeMenu?.();
                 }}
               >
                 <div className="flex items-center space-x-1 text-blue-500">
@@ -63,8 +63,8 @@ const ColActionsDropdownMenu = ({
               <button
                 className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-gray-100"
                 onClick={() => {
-                  handleAddField();
-                  closeMenu();
+                  handleAddField?.();
+                  closeMenu?.();
                 }}
               >
                 <div className="flex items-center space-x-1 text-gray-900">
@@ -77,8 +77,8 @@ const ColActionsDropdownMenu = ({
               <button
                 className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 text-red-600"
                 onClick={() => {
-                  onDelete();
-                  closeMenu();
+                  onDelete?.();
+                  closeMenu?.();
                 }}
               >
                 <FontAwesomeIcon icon={faTrash} className="text-red-500" />

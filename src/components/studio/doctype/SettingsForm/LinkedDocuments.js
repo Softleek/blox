@@ -15,7 +15,7 @@ const LinkedDocuments = () => {
   const handleInputChange = (name, value) => {
     setConfig((prevConfig) => {
       const updatedConfig = { ...prevConfig, [name]: value };
-      setLocalConfig(updatedConfig); // Assuming setLocalConfig updates the context
+      setLocalConfig?.(updatedConfig); // Assuming setLocalConfig updates the context
       return updatedConfig;
     });
   };
@@ -33,7 +33,7 @@ const LinkedDocuments = () => {
           options: "DocType Link",
           title_field: "name",
         }}
-        value={config.links}
+        value={config?.links}
         onChange={(e) => handleInputChange("links", e)}
         description="This is the default template used for emails."
       />

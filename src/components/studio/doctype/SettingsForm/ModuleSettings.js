@@ -4,7 +4,7 @@ import LinkField from "@/components/fields/LinkField";
 import { toUnderscoreLowercase } from "@/utils/textConvert";
 import Checkbox from "./fields/Checkbox";
 
-const ModuleSettings = () => {
+const ModuleSettings = ({ isNew = false }) => {
   const { localConfig, setLocalConfig } = useConfig(); // Assume setLocalConfig is available
   const [config, setConfig] = useState(localConfig); // Local state for config
 
@@ -40,6 +40,19 @@ const ModuleSettings = () => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 p-4 border-b border-gray-100">
+      {/* Name */}
+      {isNew && (
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-gray-700">Name</label>
+          <input
+            type="text"
+            className="p-1 border border-gray-300 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out"
+            value={config?.name || ""}
+            onChange={(e) => handleInputChange("name", e.target.value)}
+          />
+        </div>
+      )}
+
       {/* Module */}
       <div className="flex flex-col">
         <label className="text-sm font-medium text-gray-700">Module</label>
@@ -68,7 +81,7 @@ const ModuleSettings = () => {
       {/* Is Submittable */}
       <Checkbox
         label="Is Submittable"
-        checked={config.is_submittable || false}
+        checked={config?.is_submittable || false}
         onChange={(e) => handleInputChange("is_submittable", e.target.checked)}
         description="Once submitted, submittable documents cannot be changed. They can only be Cancelled and Amended."
       />
@@ -76,7 +89,7 @@ const ModuleSettings = () => {
       {/* Is Child Table */}
       <Checkbox
         label="Is Child Table"
-        checked={config.istable || false}
+        checked={config?.istable || false}
         onChange={(e) => handleInputChange("istable", e.target.checked)}
         description="Child Tables are shown as a Grid in other DocTypes."
       />
@@ -84,7 +97,7 @@ const ModuleSettings = () => {
       {config?.istable && (
         <Checkbox
           label="Edidatble Grid"
-          checked={config.editable_grid || false}
+          checked={config?.editable_grid || false}
           onChange={(e) => handleInputChange("editable_grid", e.target.checked)}
           description="Child Tables are shown as a Grid in other DocTypes."
         />
@@ -92,7 +105,7 @@ const ModuleSettings = () => {
       {/* Is Single */}
       <Checkbox
         label="Is Single"
-        checked={config.issingle || false}
+        checked={config?.issingle || false}
         onChange={(e) => handleInputChange("issingle", e.target.checked)}
         description="Single Types have only one record with no tables associated. Values are stored in tabSingles."
       />
@@ -100,7 +113,7 @@ const ModuleSettings = () => {
       {/* Is Tree */}
       <Checkbox
         label="Is Tree"
-        checked={config.is_tree || false}
+        checked={config?.is_tree || false}
         onChange={(e) => handleInputChange("is_tree", e.target.checked)}
         description="Tree structures are implemented using Nested Set."
       />
@@ -108,7 +121,7 @@ const ModuleSettings = () => {
       {/* Is Calendar and Gantt */}
       <Checkbox
         label="Is Calendar and Gantt"
-        checked={config.is_calendar_and_gantt || false}
+        checked={config?.is_calendar_and_gantt || false}
         onChange={(e) =>
           handleInputChange("is_calendar_and_gantt", e.target.checked)
         }
@@ -118,7 +131,7 @@ const ModuleSettings = () => {
       {/* Quick Entry */}
       <Checkbox
         label="Quick Entry"
-        checked={config.quick_entry || false}
+        checked={config?.quick_entry || false}
         onChange={(e) => handleInputChange("quick_entry", e.target.checked)}
         description="Open a dialog with mandatory fields to create a new record quickly."
       />
@@ -126,7 +139,7 @@ const ModuleSettings = () => {
       {/* Track Changes */}
       <Checkbox
         label="Track Changes"
-        checked={config.track_changes || false}
+        checked={config?.track_changes || false}
         onChange={(e) => handleInputChange("track_changes", e.target.checked)}
         description="If enabled, changes to the document are tracked and shown in the timeline."
       />
@@ -134,7 +147,7 @@ const ModuleSettings = () => {
       {/* Track Seen */}
       <Checkbox
         label="Track Seen"
-        checked={config.track_seen || false}
+        checked={config?.track_seen || false}
         onChange={(e) => handleInputChange("track_seen", e.target.checked)}
         description="If enabled, the document is marked as seen, the first time a user opens it."
       />
@@ -142,7 +155,7 @@ const ModuleSettings = () => {
       {/* Track Views */}
       <Checkbox
         label="Track Views"
-        checked={config.track_views || false}
+        checked={config?.track_views || false}
         onChange={(e) => handleInputChange("track_views", e.target.checked)}
         description="If enabled, document views are tracked, this can happen multiple times."
       />
@@ -150,21 +163,21 @@ const ModuleSettings = () => {
       {/* Custom? */}
       <Checkbox
         label="Custom?"
-        checked={config.custom || false}
+        checked={config?.custom || false}
         onChange={(e) => handleInputChange("custom", e.target.checked)}
       />
 
       {/* Beta */}
       <Checkbox
         label="Beta"
-        checked={config.beta || false}
+        checked={config?.beta || false}
         onChange={(e) => handleInputChange("beta", e.target.checked)}
       />
 
       {/* Is Virtual */}
       <Checkbox
         label="Is Virtual"
-        checked={config.is_virtual || false}
+        checked={config?.is_virtual || false}
         onChange={(e) => handleInputChange("is_virtual", e.target.checked)}
       />
     </div>

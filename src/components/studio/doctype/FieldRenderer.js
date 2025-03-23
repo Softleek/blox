@@ -41,9 +41,9 @@ const FieldRenderer = ({ fieldtype, item, handleInputChange }) => {
     case "Text":
       return (
         <TextField
-          value={item.label}
+          value={item?.label}
           onChange={(e) =>
-            handleInputChange("label", e.target.value, item, "field")
+            handleInputChange("label", e?.target?.value, item, "field")
           }
           preview={true}
         />
@@ -51,20 +51,20 @@ const FieldRenderer = ({ fieldtype, item, handleInputChange }) => {
     case "Select":
       return (
         <SelectField
-          value={item.options}
+          value={item?.options}
           onChange={(e) =>
-            handleInputChange("options", e.target.value, item, "field")
+            handleInputChange("options", e?.target?.value, item, "field")
           }
-          options={item.options ? item.options.split("\n") : []}
+          options={item?.options ? item?.options?.split("\n") : []}
           preview={true}
         />
       );
     case "Link":
       return (
         <LinkField
-          value={item.options}
+          value={item?.options}
           onChange={(e) =>
-            handleInputChange("options", e.target.value, item, "field")
+            handleInputChange("options", e?.target?.value, item, "field")
           }
           preview={true}
         />
@@ -72,34 +72,38 @@ const FieldRenderer = ({ fieldtype, item, handleInputChange }) => {
     case "Attach":
       return (
         <AttachField
-          onChange={(e) => handleInputChange("file", e.target.files[0], item)}
+          onChange={(e) =>
+            handleInputChange("file", e?.target?.files?.[0], item)
+          }
           preview={true}
         />
       );
     case "Attach Image":
       return (
         <AttachImageField
-          onChange={(e) => handleInputChange("image", e.target.files[0], item)}
+          onChange={(e) =>
+            handleInputChange("image", e?.target?.files?.[0], item)
+          }
           preview={true}
         />
       );
     case "Autocomplete":
       return (
         <AutocompleteField
-          value={item.label}
+          value={item?.label}
           onChange={(e) =>
-            handleInputChange("label", e.target.value, item, "field")
+            handleInputChange("label", e?.target?.value, item, "field")
           }
-          options={item.options ? item.options.split("\n") : []}
+          options={item?.options ? item?.options?.split("\n") : []}
           preview={true}
         />
       );
     case "Barcode":
       return (
         <BarcodeField
-          value={item.label}
+          value={item?.label}
           onChange={(e) =>
-            handleInputChange("label", e.target.value, item, "field")
+            handleInputChange("label", e?.target?.value, item, "field")
           }
           preview={true}
         />
@@ -107,7 +111,7 @@ const FieldRenderer = ({ fieldtype, item, handleInputChange }) => {
     case "Button":
       return (
         <ButtonField
-          label={item.label}
+          label={item?.label}
           onClick={() => handleInputChange("action", null, item)}
           preview={true}
         />
@@ -115,97 +119,99 @@ const FieldRenderer = ({ fieldtype, item, handleInputChange }) => {
     case "Check":
       return (
         <CheckField
-          checked={item.checked}
-          onChange={(e) => handleInputChange("checked", e.target.checked, item)}
+          checked={item?.checked}
+          onChange={(e) =>
+            handleInputChange("checked", e?.target?.checked, item)
+          }
           preview={true}
         />
       );
     case "Color":
       return (
         <ColorField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Currency":
       return (
         <CurrencyField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Data":
       return (
         <DataField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Date":
       return (
         <DateField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Datetime":
       return (
         <DatetimeField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Duration":
       return (
         <DurationField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Dynamic Link":
       return (
         <DynamicLinkField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Float":
       return (
         <FloatField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Geolocation":
       return (
         <GeolocationField
-          latitude={item.latitude}
-          longitude={item.longitude}
+          latitude={item?.latitude}
+          longitude={item?.longitude}
           onLatitudeChange={(e) =>
-            handleInputChange("latitude", e.target.value, item)
+            handleInputChange("latitude", e?.target?.value, item)
           }
           onLongitudeChange={(e) =>
-            handleInputChange("longitude", e.target.value, item)
+            handleInputChange("longitude", e?.target?.value, item)
           }
           preview={true}
         />
       );
     case "Heading":
-      return <HeadingField text={item.label} preview={true} />;
+      return <HeadingField text={item?.label} preview={true} />;
     case "HTML":
-      return <HtmlField html={item.htmlContent} preview={true} />;
+      return <HtmlField html={item?.htmlContent} preview={true} />;
     case "Icon":
       return (
         <IconField
-          icon={item.icon}
+          icon={item?.icon}
           onChange={(icon) => handleInputChange("icon", icon, item)}
           preview={true}
         />
@@ -213,89 +219,93 @@ const FieldRenderer = ({ fieldtype, item, handleInputChange }) => {
     case "Image":
       return (
         <ImageField
-          value={item.image}
-          onChange={(e) => handleInputChange("image", e.target.files[0], item)}
+          value={item?.image}
+          onChange={(e) =>
+            handleInputChange("image", e?.target?.files?.[0], item)
+          }
           preview={true}
         />
       );
     case "Int":
       return (
         <IntField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "JSON":
       return (
         <JsonField
-          value={item.json}
-          onChange={(e) => handleInputChange("json", e.target.value, item)}
+          value={item?.json}
+          onChange={(e) => handleInputChange("json", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Long Text":
       return (
         <LongTextField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Password":
       return (
         <PasswordField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Percent":
       return (
         <PercentField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Phone":
       return (
         <PhoneField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Rating":
       return (
         <RatingField
-          value={item.rating}
+          value={item?.rating}
           onChange={(rating) => handleInputChange("rating", rating, item)}
           preview={true}
         />
       );
     case "Read Only":
-      return <ReadOnlyField value={item.label} preview={true} />;
+      return <ReadOnlyField value={item?.label} preview={true} />;
     case "Signature":
       return (
         <SignatureField
-          value={item.signature}
-          onChange={(e) => handleInputChange("signature", e.target.value, item)}
+          value={item?.signature}
+          onChange={(e) =>
+            handleInputChange("signature", e?.target?.value, item)
+          }
           preview={true}
         />
       );
     case "Small Text":
       return (
         <SmallTextField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );
     case "Table":
       return (
         <TableField
-          data={item.data}
+          data={item?.data}
           onChange={(data) => handleInputChange("data", data, item)}
           preview={true}
         />
@@ -303,7 +313,7 @@ const FieldRenderer = ({ fieldtype, item, handleInputChange }) => {
     case "Table MultiSelect":
       return (
         <TableMultiSelectField
-          selectedItems={item.selectedItems}
+          selectedItems={item?.selectedItems}
           onChange={(items) => handleInputChange("selectedItems", items, item)}
           preview={true}
         />
@@ -311,7 +321,7 @@ const FieldRenderer = ({ fieldtype, item, handleInputChange }) => {
     case "Text Editor":
       return (
         <TextEditorField
-          content={item.content}
+          content={item?.content}
           onChange={(content) => handleInputChange("content", content, item)}
           preview={true}
         />
@@ -319,8 +329,8 @@ const FieldRenderer = ({ fieldtype, item, handleInputChange }) => {
     case "Time":
       return (
         <TimeField
-          value={item.label}
-          onChange={(e) => handleInputChange("label", e.target.value, item)}
+          value={item?.label}
+          onChange={(e) => handleInputChange("label", e?.target?.value, item)}
           preview={true}
         />
       );

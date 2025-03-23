@@ -4,7 +4,7 @@
  * @returns {string} - A unique fieldname.
  */
 const generateUniqueFieldname = (prefix) => {
-  return `${prefix}_${Math.random().toString(36).substr(2, 9)}`;
+  return `${prefix}_${Math.random()?.toString(36)?.substr(2, 9)}`;
 };
 
 /**
@@ -14,7 +14,7 @@ const generateUniqueFieldname = (prefix) => {
  * @returns {object} - The updated configuration object.
  */
 export const addSectionAbove = (config, section) => {
-  const index = config.field_order.indexOf(section.fieldname);
+  const index = config?.field_order?.indexOf(section?.fieldname);
   if (index === -1) return config; // Section not found, return unchanged.
 
   const newSection = {
@@ -23,11 +23,11 @@ export const addSectionAbove = (config, section) => {
     fieldtype: "Section Break",
   };
 
-  const newFieldOrder = [...config.field_order];
-  newFieldOrder.splice(index, 0, newSection.fieldname);
+  const newFieldOrder = [...config?.field_order];
+  newFieldOrder?.splice(index, 0, newSection?.fieldname);
 
   return {
-    fields: [...config.fields, newSection],
+    fields: [...config?.fields, newSection],
     field_order: newFieldOrder,
   };
 };
@@ -39,7 +39,7 @@ export const addSectionAbove = (config, section) => {
  * @returns {object} - The updated configuration object.
  */
 export const addSectionBelow = (config, section) => {
-  const index = config.field_order.indexOf(section.fieldname);
+  const index = config?.field_order?.indexOf(section?.fieldname);
   if (index === -1) return config; // Section not found, return unchanged.
 
   const newSection = {
@@ -48,11 +48,11 @@ export const addSectionBelow = (config, section) => {
     fieldtype: "Section Break",
   };
 
-  const newFieldOrder = [...config.field_order];
-  newFieldOrder.splice(index + 1, 0, newSection.fieldname);
+  const newFieldOrder = [...config?.field_order];
+  newFieldOrder?.splice(index + 1, 0, newSection?.fieldname);
 
   return {
-    fields: [...config.fields, newSection],
+    fields: [...config?.fields, newSection],
     field_order: newFieldOrder,
   };
 };
@@ -64,22 +64,22 @@ export const addSectionBelow = (config, section) => {
  * @returns {object} - The updated configuration object.
  */
 export const addColumn = (config, section) => {
-  const sectionIndex = config.fields.findIndex(
-    (field) => field.fieldname === section.fieldname
+  const sectionIndex = config?.fields?.findIndex(
+    (field) => field?.fieldname === section?.fieldname
   );
   if (sectionIndex === -1) return config; // Section not found, return unchanged.
 
-  const updatedFields = [...config.fields];
+  const updatedFields = [...config?.fields];
   const targetSection = { ...updatedFields[sectionIndex] };
 
   // Initialize columns if not already present
-  if (!targetSection.columns) targetSection.columns = [];
+  if (!targetSection?.columns) targetSection.columns = [];
 
   const newColumn = {
     fieldname: generateUniqueFieldname("column"),
     fieldtype: "Column Break",
   };
-  targetSection.columns.push(newColumn);
+  targetSection?.columns?.push(newColumn);
 
   updatedFields[sectionIndex] = targetSection; // Update the section in fields
 
@@ -96,12 +96,12 @@ export const addColumn = (config, section) => {
  * @returns {object} - The updated configuration object.
  */
 export const deleteSection = (config, section) => {
-  const updatedFields = config.fields.filter(
-    (field) => field.fieldname !== section.fieldname
+  const updatedFields = config?.fields?.filter(
+    (field) => field?.fieldname !== section?.fieldname
   );
 
-  const updatedFieldOrder = config.field_order.filter(
-    (fieldname) => fieldname !== section.fieldname
+  const updatedFieldOrder = config?.field_order?.filter(
+    (fieldname) => fieldname !== section?.fieldname
   );
 
   return {

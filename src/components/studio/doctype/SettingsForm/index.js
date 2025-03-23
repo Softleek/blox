@@ -7,7 +7,6 @@ import AdditionalSettings from "./AdditionalSettings";
 import PermissionSettings from "./PermissionSettings";
 import WebViewSettings from "./WebViewSettings";
 import FormSettings from "./FormSettings";
-import { View } from "@react-pdf/renderer";
 import ViewSettings from "./ViewSettings";
 import EmailSettings from "./EmailSettings";
 import ActionsSettings from "./ActionsSettings";
@@ -16,7 +15,7 @@ import DocumentStates from "./DocumentStates";
 import Field from "../../Field";
 import FieldTable from "./FieldTable";
 
-const SettingsForm = () => {
+const SettingsForm = ({ isNew = false }) => {
   const sections = [
     {
       Component: ModuleSettings,
@@ -79,9 +78,9 @@ const SettingsForm = () => {
   ];
 
   const [collapsedSections, setCollapsedSections] = useState(
-    sections.reduce((acc, section) => {
-      if (section.collapsible) {
-        acc[section.key] = true;
+    sections?.reduce((acc, section) => {
+      if (section?.collapsible) {
+        acc[section?.key] = true;
       }
       return acc;
     }, {})
@@ -90,12 +89,12 @@ const SettingsForm = () => {
   const toggleCollapse = (key) => {
     setCollapsedSections((prev) => ({
       ...prev,
-      [key]: !prev[key],
+      [key]: !prev?.[key],
     }));
   };
   return (
     <div className="h-full overflow-y-auto bg-gray-100 rounded-lg pb-6">
-      {sections.map(({ Component, key, title, collapsible }) => (
+      {sections?.map(({ Component, key, title, collapsible }) => (
         <div key={key} className="border-b-[1px] border-gray-400">
           {title && (
             <div
@@ -107,12 +106,14 @@ const SettingsForm = () => {
               <h2 className="text-lg font-semibold">{title}</h2>
               {collapsible && (
                 <FontAwesomeIcon
-                  icon={collapsedSections[key] ? faChevronUp : faChevronDown}
+                  icon={collapsedSections?.[key] ? faChevronUp : faChevronDown}
                 />
               )}
             </div>
           )}
-          {(!collapsible || !collapsedSections[key]) && <Component />}
+          {(!collapsible || !collapsedSections?.[key]) && (
+            <Component isNew={isNew} />
+          )}
         </div>
       ))}
     </div>

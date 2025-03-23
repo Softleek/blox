@@ -71,6 +71,7 @@ CUSTOM_APPS = [
     "core",
     'frappe_app',
     'shop_app',
+    'core_app',
 ]
 
 # Final Installed Apps List
@@ -327,3 +328,6 @@ sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "frappe")))
 
 
 sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "shop")))
+
+
+sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "core")))

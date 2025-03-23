@@ -11,16 +11,16 @@ import { getLastFieldname } from "./getLastFieldname";
  */
 const addColumn = async (localConfig, column, top = false) => {
   const { fieldname, prevField } = column;
-  const firstField = getFirstFieldname(column);
-  const lastFieldname = getLastFieldname(column);
+  const firstField = getFirstFieldname?.(column);
+  const lastFieldname = getLastFieldname?.(column);
 
   let newConfig = null;
 
   if (top) {
     if (prevField) {
-      newConfig = await addFieldToConfig(localConfig, prevField, "Column");
+      newConfig = await addFieldToConfig?.(localConfig, prevField, "Column");
     } else {
-      newConfig = await addFieldToConfig(
+      newConfig = await addFieldToConfig?.(
         localConfig,
         firstField,
         "Column",
@@ -29,7 +29,7 @@ const addColumn = async (localConfig, column, top = false) => {
     }
   } else {
     const targetField = lastFieldname || fieldname || prevField;
-    newConfig = await addFieldToConfig(localConfig, targetField, "Column");
+    newConfig = await addFieldToConfig?.(localConfig, targetField, "Column");
   }
 
   return newConfig;

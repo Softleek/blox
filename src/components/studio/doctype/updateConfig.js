@@ -8,37 +8,37 @@ export const updateConfig = (config) => {
   const updatedFieldOrder = [];
 
   const addFieldToOrder = (field) => {
-    if (!updatedFieldOrder.includes(field.fieldname)) {
-      updatedFieldOrder.push(field.fieldname);
+    if (!updatedFieldOrder?.includes(field?.fieldname)) {
+      updatedFieldOrder?.push(field?.fieldname);
     }
   };
 
   // Traverse through the structure to update `updatedFields` and `updatedFieldOrder` in the required strict sequence.
-  structure.forEach((tab) => {
+  structure?.forEach((tab) => {
     // Add tab itself to updatedFields and field order
-    if (!updatedFields.some((f) => f.fieldname === tab.fieldname)) {
-      updatedFields.push(tab);
+    if (!updatedFields?.some((f) => f?.fieldname === tab?.fieldname)) {
+      updatedFields?.push(tab);
     }
     addFieldToOrder(tab);
 
-    tab.sections.forEach((section) => {
+    tab?.sections?.forEach((section) => {
       // Add section to updatedFields and field order
-      if (!updatedFields.some((f) => f.fieldname === section.fieldname)) {
-        updatedFields.push(section);
+      if (!updatedFields?.some((f) => f?.fieldname === section?.fieldname)) {
+        updatedFields?.push(section);
       }
       addFieldToOrder(section);
 
-      section.columns.forEach((column) => {
+      section?.columns?.forEach((column) => {
         // Add column to updatedFields and field order
-        if (!updatedFields.some((f) => f.fieldname === column.fieldname)) {
-          updatedFields.push(column);
+        if (!updatedFields?.some((f) => f?.fieldname === column?.fieldname)) {
+          updatedFields?.push(column);
         }
         addFieldToOrder(column);
 
         // Add each field in the column in strict order
-        column.fields.forEach((field) => {
-          if (!updatedFields.some((f) => f.fieldname === field.fieldname)) {
-            updatedFields.push(field);
+        column?.fields?.forEach((field) => {
+          if (!updatedFields?.some((f) => f?.fieldname === field?.fieldname)) {
+            updatedFields?.push(field);
           }
           addFieldToOrder(field);
         });

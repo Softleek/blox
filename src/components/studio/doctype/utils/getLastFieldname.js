@@ -12,7 +12,7 @@ export const getLastFieldname = (input) => {
   }
 
   // Handle a section object
-  if (input.columns) {
+  if (input?.columns) {
     // Iterate columns in reverse
     for (let i = input.columns.length - 1; i >= 0; i--) {
       const fieldname = getLastFieldname(input.columns[i]); // Recursively check each column
@@ -22,7 +22,7 @@ export const getLastFieldname = (input) => {
     }
 
     // Check if the section itself has a fieldname (after checking columns)
-    if (input.fieldname) {
+    if (input?.fieldname) {
       return input.fieldname;
     }
 
@@ -30,16 +30,16 @@ export const getLastFieldname = (input) => {
   }
 
   // Handle a column object
-  if (input.fields) {
+  if (input?.fields) {
     // Iterate fields in reverse
     for (let i = input.fields.length - 1; i >= 0; i--) {
-      if (input.fields[i].fieldname) {
+      if (input.fields[i]?.fieldname) {
         return input.fields[i].fieldname;
       }
     }
 
     // Check if the column itself has a fieldname (after checking fields)
-    if (input.fieldname) {
+    if (input?.fieldname) {
       return input.fieldname;
     }
 

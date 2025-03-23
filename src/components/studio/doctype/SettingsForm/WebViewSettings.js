@@ -26,7 +26,7 @@ const WebViewSettings = () => {
       {/* Has Web View */}
       <Checkbox
         label="Has Web View"
-        checked={config.has_web_view || false}
+        checked={config?.has_web_view || false}
         onChange={(e) => handleInputChange("has_web_view", e.target.checked)}
         description="Enables the ability to view this content via a web view."
       />
@@ -34,7 +34,7 @@ const WebViewSettings = () => {
       {/* Allow Guest to View */}
       <Checkbox
         label="Allow Guest to View"
-        checked={config.allow_guest_to_view || false}
+        checked={config?.allow_guest_to_view || false}
         onChange={(e) =>
           handleInputChange("allow_guest_to_view", e.target.checked)
         }
@@ -44,7 +44,7 @@ const WebViewSettings = () => {
       {/* Index Web Pages for Search */}
       <Checkbox
         label="Index Web Pages for Search"
-        checked={config.index_web_pages_for_search || false}
+        checked={config?.index_web_pages_for_search || false}
         onChange={(e) =>
           handleInputChange("index_web_pages_for_search", e.target.checked)
         }
@@ -54,7 +54,7 @@ const WebViewSettings = () => {
       {/* Route */}
       <TextInput
         label="Route"
-        value={config.route || ""}
+        value={config?.route || ""}
         onChange={(e) => handleInputChange("route", e.target.value)}
         description="Specify the route for the web view."
       />
@@ -62,7 +62,7 @@ const WebViewSettings = () => {
       {/* Is Published Field */}
       <TextInput
         label="Is Published Field"
-        value={config.is_published_field || ""}
+        value={config?.is_published_field || ""}
         onChange={(e) =>
           handleInputChange("is_published_field", e.target.value)
         }
@@ -72,7 +72,7 @@ const WebViewSettings = () => {
       {/* Website Search Field */}
       <TextInput
         label="Website Search Field"
-        value={config.website_search_field || ""}
+        value={config?.website_search_field || ""}
         onChange={(e) =>
           handleInputChange("website_search_field", e.target.value)
         }

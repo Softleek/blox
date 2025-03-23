@@ -6,8 +6,8 @@ export const mapFieldsToStructure = (config) => {
     `${prefix}_${Math.random().toString(36).substring(2, 8)}`;
 
   // Check if the first field is a "Tab Break"
-  const firstField = config?.fields.find(
-    (f) => f.fieldname === config?.field_order[0]
+  const firstField = config?.fields?.find(
+    (f) => f.fieldname === config?.field_order?.[0]
   );
   if (firstField && firstField.fieldtype !== "Tab Break") {
     // If the first field is not a "Tab Break", add the default "Details" tab
@@ -36,19 +36,19 @@ export const mapFieldsToStructure = (config) => {
     updatedFieldOrder.push(detailsTab.fieldname); // Add the new tab's fieldname to field_order
   }
 
-  let currentTab = structure[0]; // If the default tab is added, this will be "Details"
-  let currentSection = currentTab?.sections[0]; // Start with default section if "Details" tab is added
-  let currentColumn = currentSection?.columns[0]; // Start with the first column in the default section
+  let currentTab = structure?.[0]; // If the default tab is added, this will be "Details"
+  let currentSection = currentTab?.sections?.[0]; // Start with default section if "Details" tab is added
+  let currentColumn = currentSection?.columns?.[0]; // Start with the first column in the default section
 
-  config?.field_order.forEach((fieldName, index) => {
-    const field = config?.fields.find((f) => f.fieldname === fieldName);
+  config?.field_order?.forEach((fieldName, index) => {
+    const field = config?.fields?.find((f) => f.fieldname === fieldName);
     if (!field) return;
 
     switch (field.fieldtype) {
       case "Tab Break":
         // Create a new tab with a default section and column
-        const nextFieldTab = config?.fields.find(
-          (f) => f.fieldname === config?.field_order[index + 1]
+        const nextFieldTab = config?.fields?.find(
+          (f) => f.fieldname === config?.field_order?.[index + 1]
         );
         const shouldAddSection = !(
           nextFieldTab && nextFieldTab.fieldtype === "Section Break"
@@ -72,14 +72,14 @@ export const mapFieldsToStructure = (config) => {
         structure.push(currentTab);
         updatedFields.push(currentTab); // Add the new tab to fields
         updatedFieldOrder.push(currentTab.fieldname); // Add the new tab's fieldname to field_order
-        currentSection = currentTab?.sections[0]; // Reset to new default section in the new tab
-        currentColumn = currentSection?.columns[0]; // Reset to the first column in the new section
+        currentSection = currentTab?.sections?.[0]; // Reset to new default section in the new tab
+        currentColumn = currentSection?.columns?.[0]; // Reset to the first column in the new section
         break;
 
       case "Section Break":
         // Create a new section within the current tab with a default column
-        const nextField = config?.fields.find(
-          (f) => f.fieldname === config?.field_order[index + 1]
+        const nextField = config?.fields?.find(
+          (f) => f.fieldname === config?.field_order?.[index + 1]
         );
         const shouldAddColumn = !(
           nextField && nextField.fieldtype === "Column Break"
@@ -101,10 +101,10 @@ export const mapFieldsToStructure = (config) => {
               ]
             : [], // If next is a "Column Break", skip adding a default column
         };
-        currentTab.sections.push(currentSection);
+        currentTab?.sections?.push(currentSection);
         updatedFields.push(currentSection); // Add the new section to fields
         updatedFieldOrder.push(currentSection.fieldname); // Add the new section's fieldname to field_order
-        currentColumn = shouldAddColumn ? currentSection.columns[0] : null; // Set currentColumn if a default column was added
+        currentColumn = shouldAddColumn ? currentSection?.columns?.[0] : null; // Set currentColumn if a default column was added
         break;
 
       case "Column Break":
@@ -115,9 +115,9 @@ export const mapFieldsToStructure = (config) => {
           fieldtype: "Column Break", // Specify the fieldtype for columns
           fields: [], // Array to hold fields in this column
         };
-        currentSection.columns.push(currentColumn);
-        updatedFields.push(currentColumn); // Add the new column to fields
-        updatedFieldOrder.push(currentColumn.fieldname); // Add the new column's fieldname to field_order
+        currentSection?.columns?.push(currentColumn);
+        updatedFields?.push(currentColumn); // Add the new column to fields
+        updatedFieldOrder?.push(currentColumn.fieldname); // Add the new column's fieldname to field_order
         break;
 
       default:
@@ -132,14 +132,14 @@ export const mapFieldsToStructure = (config) => {
   });
 
   // Remove empty columns, sections, and tabs
-  structure.forEach((tab) => {
-    tab.sections = tab.sections.filter((section) => {
+  structure?.forEach((tab) => {
+    tab.sections = tab?.sections?.filter((section) => {
       // Remove columns that are empty
-      section.columns = section.columns.filter(
-        (column) => column.fields.length > 0
+      section.columns = section?.columns?.filter(
+        (column) => column?.fields?.length > 0
       );
       // Keep sections that have at least one non-empty column
-      return section.columns.length > 0;
+      return section?.columns?.length > 0;
     });
   });
 

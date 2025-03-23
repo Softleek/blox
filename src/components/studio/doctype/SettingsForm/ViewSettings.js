@@ -28,14 +28,14 @@ const ViewSettings = () => {
         {/* Title Field */}
         <TextInput
           label="Title Field"
-          value={config.title_field || ""}
+          value={config?.title_field || ""}
           onChange={(e) => handleInputChange("title_field", e.target.value)}
         />
 
         {/* Show Title in Link Fields */}
         <Checkbox
           label="Show Title in Link Fields"
-          checked={config.show_title_field_in_link || false}
+          checked={config?.show_title_field_in_link || false}
           onChange={(e) =>
             handleInputChange("show_title_field_in_link", e.target.checked)
           }
@@ -45,7 +45,7 @@ const ViewSettings = () => {
         {/* Translate Link Fields */}
         <Checkbox
           label="Translate Link Fields"
-          checked={config.translated_doctype || false}
+          checked={config?.translated_doctype || false}
           onChange={(e) =>
             handleInputChange("translated_doctype", e.target.checked)
           }
@@ -55,14 +55,14 @@ const ViewSettings = () => {
         {/* Search Fields */}
         <TextInput
           label="Search Fields"
-          value={config.search_fields || ""}
+          value={config?.search_fields || ""}
           onChange={(e) => handleInputChange("search_fields", e.target.value)}
         />
 
         {/* Default Print Format */}
         <TextInput
           label="Default Print Format"
-          value={config.default_print_format || ""}
+          value={config?.default_print_format || ""}
           onChange={(e) =>
             handleInputChange("default_print_format", e.target.value)
           }
@@ -71,14 +71,14 @@ const ViewSettings = () => {
         {/* Default Sort Field */}
         <TextInput
           label="Default Sort Field"
-          value={config.sort_field || "modified"}
+          value={config?.sort_field || "modified"}
           onChange={(e) => handleInputChange("sort_field", e.target.value)}
         />
 
         {/* Default Sort Order */}
         <Select
           label="Default Sort Order"
-          value={config.sort_order || "ASC"}
+          value={config?.sort_order || "ASC"}
           onChange={(e) => handleInputChange("sort_order", e.target.value)}
           options={[
             { label: "Ascending (ASC)", value: "ASC" },
@@ -89,7 +89,7 @@ const ViewSettings = () => {
         {/* Default View */}
         <Select
           label="Default View"
-          value={config.default_view}
+          value={config?.default_view}
           onChange={(e) => handleInputChange("default_view", e.target.value)}
           options={[
             { label: "", value: "" },
@@ -104,7 +104,7 @@ const ViewSettings = () => {
         {/* Force Re-route to Default View */}
         <Checkbox
           label="Force Re-route to Default View"
-          checked={config.force_re_route_to_default_view || false}
+          checked={config?.force_re_route_to_default_view || false}
           onChange={(e) =>
             handleInputChange(
               "force_re_route_to_default_view",
@@ -119,7 +119,7 @@ const ViewSettings = () => {
         {/* Show in Module Section */}
         <Select
           label="Show in Module Section"
-          value={config.document_type || ""}
+          value={config?.document_type || ""}
           onChange={(e) => handleInputChange("document_type", e.target.value)}
           options={[
             { label: "", value: "" },
@@ -133,21 +133,21 @@ const ViewSettings = () => {
         {/* Icon */}
         <TextInput
           label="Icon"
-          value={config.icon || "fa fa-envelope"}
+          value={config?.icon || "fa fa-envelope"}
           onChange={(e) => handleInputChange("icon", e.target.value)}
         />
 
         {/* Color */}
         <TextInput
           label="Color"
-          value={config.color || ""}
+          value={config?.color || ""}
           onChange={(e) => handleInputChange("color", e.target.value)}
         />
 
         {/* Show Preview Popup */}
         <Checkbox
           label="Show Preview Popup"
-          checked={config.show_preview_popup || false}
+          checked={config?.show_preview_popup || false}
           onChange={(e) =>
             handleInputChange("show_preview_popup", e.target.checked)
           }
@@ -157,7 +157,7 @@ const ViewSettings = () => {
         {/* Make 'name' searchable in Global Search */}
         <Checkbox
           label="Make 'name' searchable in Global Search"
-          checked={config.name_searchable || false}
+          checked={config?.name_searchable || false}
           onChange={(e) =>
             handleInputChange("name_searchable", e.target.checked)
           }
@@ -167,7 +167,7 @@ const ViewSettings = () => {
         {/* Make APIs Public */}
         <Checkbox
           label="Make APIs Public"
-          checked={config.is_public || false}
+          checked={config?.is_public || false}
           onChange={(e) => handleInputChange("is_public", e.target.checked)}
           description="Enable to make this DocType's APIs publicly accessible."
         />

@@ -35,7 +35,7 @@ const Canvas = () => {
       setTabs(uniqueTabs);
 
       // Default to the first tab if none is selected
-      if (!selectedTab && uniqueTabs.length > 0) {
+      if (!selectedTab && uniqueTabs?.length > 0) {
         setSelectedTab(uniqueTabs[0]);
       }
     };
@@ -62,7 +62,7 @@ const Canvas = () => {
   const handleAddTab = async () => {
     // Add a new Tab field to the config
     const lastField =
-      localConfig.field_order[localConfig.field_order.length - 1];
+      localConfig?.field_order?.[localConfig?.field_order?.length - 1];
     const newConfig = await addFieldToConfig(localConfig, lastField, "Tab");
     setLocalConfig({ ...newConfig }); // Trigger context update
   };
@@ -74,9 +74,9 @@ const Canvas = () => {
           <div className="relative flex items-center px-2 pt-2">
             <ul className="flex py-2 gap-x-4 list-none bg-transparent">
               <Suspense fallback={<div>Loading Tabs...</div>}>
-                {tabs.map((tab) => (
+                {tabs?.map((tab) => (
                   <DraggableTab
-                    key={tab.fieldname}
+                    key={tab?.fieldname}
                     tab={tab}
                     handleFocus={handleFocus}
                   />

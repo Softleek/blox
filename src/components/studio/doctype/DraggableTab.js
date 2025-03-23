@@ -8,25 +8,25 @@ const DraggableTab = ({ tab, handleFocus }) => {
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: [TabType, ITEM_TYPE, SECTION_TYPE, COLUMN_TYPE],
     canDrop: (draggedItem) => {
-      return draggedItem.type === TabType;
+      return draggedItem?.type === TabType;
     },
 
     hover: () => {
-      setSelectedTab(tab);
+      setSelectedTab?.(tab);
     },
     collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
+      isOver: monitor?.isOver(),
+      canDrop: monitor?.canDrop(),
     }),
   });
 
   const handleSectionClick = (e) => {
-    preventPropagation(e);
-    handleFocus(tab);
+    preventPropagation?.(e);
+    handleFocus?.(tab);
   };
 
   const preventPropagation = (e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
   };
 
   const [, drag] = useDrag(() => ({
@@ -35,19 +35,19 @@ const DraggableTab = ({ tab, handleFocus }) => {
   }));
 
   return (
-    <div ref={(node) => drag(drop(node))}>
+    <div ref={(node) => drag?.(drop?.(node))}>
       <a
         onClick={(e) => {
-          handleSectionClick(e);
-          setSelectedTab(tab);
+          handleSectionClick?.(e);
+          setSelectedTab?.(tab);
         }}
         className={`flex items-center ${
-          selectedTab.fieldname === tab.fieldname
+          selectedTab?.fieldname === tab?.fieldname
             ? "border-b-[1px] border-slate-800 font-semibold text-purple-700"
             : "text-slate-700"
         }`}
       >
-        {tab.label}
+        {tab?.label}
       </a>
     </div>
   );

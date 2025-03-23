@@ -25,21 +25,21 @@ const DropArea = ({
     const uniqueTabs = generateTabStructure(config);
     setTabs(uniqueTabs);
     if (selectedTab == null) {
-      setSelectedTab(uniqueTabs[0]?.label);
+      setSelectedTab(uniqueTabs?.[0]?.label);
     }
   }, [config]);
 
   const handleTabClick = (tabName) => setSelectedTab(tabName);
 
-  const activeTabContent = tabs.find((tab) => tab.label === selectedTab);
+  const activeTabContent = tabs?.find((tab) => tab?.label === selectedTab);
 
   return (
     <div style={{ backgroundColor: "white" }}>
       <div className="relative flex items-center p-2">
         <ul className="flex py-2 gap-x-2 list-none bg-transparent">
-          {tabs.map((tab) => (
+          {tabs?.map((tab) => (
             <DraggableTab
-              key={tab.fieldname}
+              key={tab?.fieldname}
               tab={tab}
               selectedTab={selectedTab}
               setSelectedTab={setSelectedTab}
@@ -49,7 +49,7 @@ const DropArea = ({
           <div
             onClick={() => {
               const lastField =
-                config.field_order[config.field_order.length - 1];
+                config?.field_order?.[config?.field_order?.length - 1];
               const newConfig = addFieldToConfig(config, lastField, "Tab");
 
               setLocalConfig({ ...newConfig });
@@ -61,9 +61,9 @@ const DropArea = ({
         </ul>
       </div>
       <div>
-        {activeTabContent?.sections.map((section) => (
+        {activeTabContent?.sections?.map((section) => (
           <Section
-            key={section.fieldname}
+            key={section?.fieldname}
             section={section}
             tabId={selectedTab}
             moveItem={moveItem}

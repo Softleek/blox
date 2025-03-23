@@ -7,7 +7,7 @@ const AdvancedSection = ({ item, handleInputChange }) => (
       <label className="mr-3 text-gray-700">Mandatory</label>
       <input
         type="checkbox"
-        checked={!!item.mandatory}
+        checked={!!item?.mandatory}
         onChange={(e) => handleInputChange("mandatory", e.target.checked, item)}
         className="form-checkbox text-purple-600 rounded focus:ring-purple-500"
       />
@@ -18,7 +18,7 @@ const AdvancedSection = ({ item, handleInputChange }) => (
       <label className="mr-3 text-gray-700">Read Only</label>
       <input
         type="checkbox"
-        checked={!!item.readonly}
+        checked={!!item?.readonly}
         onChange={(e) => handleInputChange("readonly", e.target.checked, item)}
         className="form-checkbox text-purple-600 rounded focus:ring-purple-500"
       />
@@ -29,7 +29,7 @@ const AdvancedSection = ({ item, handleInputChange }) => (
       <label className="mr-3 text-gray-700">Unique</label>
       <input
         type="checkbox"
-        checked={!!item.unique}
+        checked={!!item?.unique}
         onChange={(e) => handleInputChange("unique", e.target.checked, item)}
         className="form-checkbox text-purple-600 rounded focus:ring-purple-500"
       />

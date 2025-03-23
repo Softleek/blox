@@ -5,25 +5,27 @@ const useMultiDrag = () => {
 
   const toggleSelect = (index) => {
     setSelectedIndices((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+      prev?.includes(index)
+        ? prev?.filter((i) => i !== index)
+        : [...prev, index]
     );
   };
 
   const moveRow = (fromIndex, toIndex, orderedFields) => {
     const updatedFields = [...orderedFields];
-    const [movedRow] = updatedFields.splice(fromIndex, 1);
+    const [movedRow] = updatedFields?.splice(fromIndex, 1);
 
     // Handle multi-row dragging
-    if (selectedIndices.includes(fromIndex)) {
-      selectedIndices.forEach((selectedIndex) => {
+    if (selectedIndices?.includes(fromIndex)) {
+      selectedIndices?.forEach((selectedIndex) => {
         if (selectedIndex !== fromIndex) {
-          const row = orderedFields[selectedIndex];
-          updatedFields.splice(toIndex, 0, row);
+          const row = orderedFields?.[selectedIndex];
+          updatedFields?.splice(toIndex, 0, row);
         }
       });
     }
 
-    updatedFields.splice(toIndex, 0, movedRow);
+    updatedFields?.splice(toIndex, 0, movedRow);
     return updatedFields;
   };
 

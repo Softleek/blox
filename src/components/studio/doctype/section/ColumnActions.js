@@ -15,7 +15,7 @@ const ColumnActions = ({ column, handleAddField }) => {
   const menuRef = useRef(null);
 
   const toggleMenu = (e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
     setMenuOpen((prev) => !prev);
   };
 
@@ -24,7 +24,7 @@ const ColumnActions = ({ column, handleAddField }) => {
   const handleAddColumn = async (top = false) => {
     try {
       const newConfig = await addColumn(localConfig, column, top);
-      setLocalConfig({ ...newConfig });
+      setLocalConfig?.({ ...newConfig });
       closeMenu();
     } catch (error) {
       console.error("Error adding column:", error);
@@ -45,7 +45,7 @@ const ColumnActions = ({ column, handleAddField }) => {
         column,
         shouldDeleteFields
       ); // Pass user choice for field deletion
-      setLocalConfig({ ...newConfig });
+      setLocalConfig?.({ ...newConfig });
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error deleting column:", error);
@@ -64,13 +64,13 @@ const ColumnActions = ({ column, handleAddField }) => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
+      if (menuRef?.current && !menuRef?.current?.contains(event?.target)) {
         closeMenu();
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document?.addEventListener("mousedown", handleClickOutside);
+    return () => document?.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (

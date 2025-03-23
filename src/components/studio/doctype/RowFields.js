@@ -22,15 +22,15 @@ const DraggableRow = ({
   const [, dropRef] = useDrop({
     accept: "ROW",
     hover: (draggedItem) => {
-      if (draggedItem.index !== index) {
-        moveRow(draggedItem.index, index);
+      if (draggedItem?.index !== index) {
+        moveRow(draggedItem?.index, index);
         draggedItem.index = index;
       }
     },
   });
 
   const handleFieldEdit = (key, value) => {
-    updateField(field.fieldname, { ...field, [key]: value });
+    updateField(field?.fieldname, { ...field, [key]: value });
   };
 
   return (
@@ -44,7 +44,7 @@ const DraggableRow = ({
         <input
           type="checkbox"
           checked={selected}
-          onChange={() => onToggleSelect(field.fieldname)}
+          onChange={() => onToggleSelect(field?.fieldname)}
           className="cursor-pointer"
         />
       </td>
@@ -58,25 +58,25 @@ const DraggableRow = ({
         className="border px-4 py-2"
         contentEditable
         suppressContentEditableWarning
-        onBlur={(e) => handleFieldEdit("label", e.target.textContent)}
+        onBlur={(e) => handleFieldEdit("label", e.target?.textContent)}
       >
-        {field.label || ""}
+        {field?.label || ""}
       </td>
       <td
         className="border px-4 py-2"
         contentEditable
         suppressContentEditableWarning
-        onBlur={(e) => handleFieldEdit("fieldname", e.target.textContent)}
+        onBlur={(e) => handleFieldEdit("fieldname", e.target?.textContent)}
       >
-        {field.fieldname || ""}
+        {field?.fieldname || ""}
       </td>
       <td
         className="border px-4 py-2"
         contentEditable
         suppressContentEditableWarning
-        onBlur={(e) => handleFieldEdit("default", e.target.textContent)}
+        onBlur={(e) => handleFieldEdit("default", e.target?.textContent)}
       >
-        {field.default || ""}
+        {field?.default || ""}
       </td>
       <td
         className="border px-4 py-2"
@@ -85,11 +85,11 @@ const DraggableRow = ({
         onBlur={(e) =>
           handleFieldEdit(
             "options",
-            e.target.textContent.split(",").map((opt) => opt.trim())
+            e.target?.textContent?.split(",").map((opt) => opt.trim())
           )
         }
       >
-        {/* {field.options?.join(", ") || ""} */}
+        {/* {field?.options?.join(", ") || ""} */}
       </td>
     </tr>
   );
@@ -102,8 +102,8 @@ const DraggableTable = () => {
 
   useEffect(() => {
     // Map field_order to fields
-    const ordered = localConfig.field_order.map((fieldname) =>
-      localConfig.fields.find((field) => field.fieldname === fieldname)
+    const ordered = localConfig?.field_order?.map((fieldname) =>
+      localConfig?.fields?.find((field) => field?.fieldname === fieldname)
     );
     setOrderedFields(ordered);
   }, [localConfig]);
@@ -116,21 +116,21 @@ const DraggableTable = () => {
     setOrderedFields(updatedFields);
 
     // Update the localConfig's field_order
-    const updatedFieldOrder = updatedFields.map((field) => field.fieldname);
+    const updatedFieldOrder = updatedFields.map((field) => field?.fieldname);
     setLocalConfig({ ...localConfig, field_order: updatedFieldOrder });
   };
 
   const updateField = (fieldname, updatedField) => {
-    const updatedFields = localConfig.fields.map((field) =>
-      field.fieldname === fieldname ? updatedField : field
+    const updatedFields = localConfig?.fields?.map((field) =>
+      field?.fieldname === fieldname ? updatedField : field
     );
     setLocalConfig({ ...localConfig, fields: updatedFields });
   };
 
   const onToggleSelect = (fieldname) => {
     setSelectedFields((prevSelected) =>
-      prevSelected.includes(fieldname)
-        ? prevSelected.filter((f) => f !== fieldname)
+      prevSelected?.includes(fieldname)
+        ? prevSelected?.filter((f) => f !== fieldname)
         : [...prevSelected, fieldname]
     );
   };
@@ -150,13 +150,13 @@ const DraggableTable = () => {
             </tr>
           </thead>
           <tbody>
-            {orderedFields.map((field, index) => (
+            {orderedFields?.map((field, index) => (
               <DraggableRow
-                key={field.fieldname}
+                key={field?.fieldname}
                 field={field}
                 index={index}
                 moveRow={moveRow}
-                selected={selectedFields.includes(field.fieldname)}
+                selected={selectedFields?.includes(field?.fieldname)}
                 onToggleSelect={onToggleSelect}
                 updateField={updateField}
               />

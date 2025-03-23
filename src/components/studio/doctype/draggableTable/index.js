@@ -21,7 +21,7 @@ const DraggableTable = () => {
   };
 
   useEffect(() => {
-    const ordered = localConfig.field_order.map((fieldname) =>
+    const ordered = localConfig?.field_order?.map((fieldname) =>
       localConfig.fields.find((field) => field.fieldname === fieldname)
     );
     setOrderedFields(ordered);
@@ -33,7 +33,7 @@ const DraggableTable = () => {
     updatedFields.splice(toIndex, 0, movedRow);
     setOrderedFields(updatedFields);
 
-    const updatedFieldOrder = updatedFields.map((field) => field.fieldname);
+    const updatedFieldOrder = updatedFields?.map((field) => field.fieldname);
     setLocalConfig({ ...localConfig, field_order: updatedFieldOrder });
   };
 
@@ -47,10 +47,11 @@ const DraggableTable = () => {
   return (
     <div className="w-full bg-white rounded-lg shadow-md overflow-x-auto">
       <DndProvider backend={HTML5Backend}>
-        {orderedFields.map((field, index) => (
+        {orderedFields?.map((field, index) => (
           <div
             className={`${selectedItem == field ? "bg-purple-50" : ""}`}
             onClick={() => setSelectedItem(field)}
+            key={field.fieldname}
           >
             <DraggableRow
               key={field.fieldname}

@@ -22,7 +22,7 @@ const StudioTabs = ({
   const [tabName, setTabName] = useState("");
 
   const handleInputChange = (key, value, item, type) => {
-    const updatedItems = updateItemById(fields, item.id, type, key, value);
+    const updatedItems = updateItemById(fields, item?.id, type, key, value);
     if (updatedItems) setCanvasItems([...updatedItems]);
   };
 
@@ -40,13 +40,13 @@ const StudioTabs = ({
     moveItem(draggedItem, targetItem, parent1Id, parent2Id);
 
   const handleEditSectionName = (section) => {
-    setEditingSectionId(section.id);
-    setSectionName(section.name);
+    setEditingSectionId(section?.id);
+    setSectionName(section?.name);
   };
 
   const handleEditTabName = (tab) => {
-    setEditingTabId(tab.id);
-    setTabName(tab.name);
+    setEditingTabId(tab?.id);
+    setTabName(tab?.name);
   };
 
   const handleSaveSectionName = () => {
@@ -62,7 +62,7 @@ const StudioTabs = ({
   };
 
   const handleSaveTabName = () => {
-    if (tabName.trim() !== "") {
+    if (tabName?.trim() !== "") {
       const updatedItems = updateItemById(
         fields,
         editingTabId,
@@ -82,12 +82,12 @@ const StudioTabs = ({
 
   return (
     <>
-      {tabs.map(
+      {tabs?.map(
         (tab) =>
           selectedTab === tab?.name && (
-            <div key={tab.id} className="mb-4 bg-slate-50">
+            <div key={tab?.id} className="mb-4 bg-slate-50">
               <div className="flex items-center justify-start border-b border-gray-500 p-2">
-                {editingTabId === tab.id ? (
+                {editingTabId === tab?.id ? (
                   <input
                     type="text"
                     value={tabName}
@@ -101,11 +101,11 @@ const StudioTabs = ({
                     className="text-md font-semibold p-1 border border-gray-300 rounded bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 ) : (
-                  <h4 className="text-md font-semibold">{tab.name}</h4>
+                  <h4 className="text-md font-semibold">{tab?.name}</h4>
                 )}
                 <button
                   onClick={() =>
-                    editingTabId === tab.id
+                    editingTabId === tab?.id
                       ? handleSaveTabName()
                       : handleEditTabName(tab)
                   }
@@ -122,11 +122,11 @@ const StudioTabs = ({
                   <FontAwesomeIcon icon={faTimes} className="w-4 h-4" />
                 </button>
               </div>
-              {tab.sections.map((section) => (
-                <div key={section.id} className="border-b border-gray-500 p-2">
+              {tab?.sections?.map((section) => (
+                <div key={section?.id} className="border-b border-gray-500 p-2">
                   <div className="flex items-center justify-between my-2">
                     <div className="flex items-center">
-                      {editingSectionId === section.id ? (
+                      {editingSectionId === section?.id ? (
                         <input
                           type="text"
                           value={sectionName}
@@ -141,12 +141,12 @@ const StudioTabs = ({
                         />
                       ) : (
                         <h4 className="text-md font-semibold">
-                          {section.name}
+                          {section?.name}
                         </h4>
                       )}
                       <button
                         onClick={() =>
-                          editingSectionId === section.id
+                          editingSectionId === section?.id
                             ? handleSaveSectionName()
                             : handleEditSectionName(section)
                         }
@@ -168,12 +168,12 @@ const StudioTabs = ({
                     </div>
                   </div>
                   <div className="flex space-x-2">
-                    {section.columns.map((column, index) => (
+                    {section?.columns?.map((column, index) => (
                       <div key={index} className="flex-1">
                         <ColumnDropZone
                           key={index}
                           column={column}
-                          sectionId={section.id}
+                          sectionId={section?.id}
                           selectedFieldId={selectedFieldId}
                           handleFocus={handleFocus}
                           handleBlur={handleBlur}

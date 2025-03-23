@@ -15,7 +15,7 @@ const DocumentStates = () => {
   const handleInputChange = (name, value) => {
     setConfig((prevConfig) => {
       const updatedConfig = { ...prevConfig, [name]: value };
-      setLocalConfig(updatedConfig); // Assuming setLocalConfig updates the context
+      setLocalConfig?.(updatedConfig); // Assuming setLocalConfig updates the context
       return updatedConfig;
     });
   };
@@ -33,7 +33,7 @@ const DocumentStates = () => {
           options: "DocType State",
           title_field: "title",
         }}
-        value={config.states}
+        value={config?.states}
         onChange={(e) => handleInputChange("states", e)}
         description="This is the default template used for emails."
       />

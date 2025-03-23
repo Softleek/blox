@@ -14,11 +14,11 @@ export const getFirstFieldname = (input) => {
   if (input?.columns) {
     // Check if the section itself has a fieldname
     if (input?.fieldname) {
-      return input.fieldname;
+      return input?.fieldname;
     }
 
     // Check columns for fieldname
-    for (const column of input.columns) {
+    for (const column of input?.columns) {
       const fieldname = getFirstFieldname(column); // Recursively check each column
       if (fieldname) {
         return fieldname;
@@ -36,8 +36,8 @@ export const getFirstFieldname = (input) => {
 
     // Check fields within the column for fieldname
     for (const field of input?.fields) {
-      if (field.fieldname) {
-        return field.fieldname;
+      if (field?.fieldname) {
+        return field?.fieldname;
       }
     }
     return null; // No fieldname found in the column

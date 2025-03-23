@@ -22,13 +22,13 @@ import SettingsForm from "./SettingsForm";
 import { handleDocSave } from "./utils/saveUtils";
 import { useData } from "@/contexts/DataContext";
 
-const DoctypeStudio = ({ handleSave, config }) => {
+const DoctypeStudio = ({ handleSave, config, isNew = false }) => {
   const { localConfig } = useConfig();
   const { form } = useData();
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedTab, setSelectedTab] = useState("form"); // State to track the selected tab
+  const [selectedTab, setSelectedTab] = useState(isNew ? "settings" : "form"); // State to track the selected tab
   const router = useRouter();
-  const { slug } = router.query;
+  const { slug } = isNew ? {} : router?.query; // Only get slug if isNew is false
 
   // Check for changes whenever config or localConfig updates
   useEffect(() => {
@@ -58,7 +58,9 @@ const DoctypeStudio = ({ handleSave, config }) => {
 
   // Handle Go to List
   const handleGoToList = () => {
-    window.open(`/app/${slug}`, "_blank"); // Open in a new tab
+    if (!isNew) {
+      window.open(`/app/${slug}`, "_blank"); // Open in a new tab
+    }
   };
 
   useKeyEvents(() => {}, handleSaveClick, handleDuplicate);
@@ -83,6 +85,7 @@ const DoctypeStudio = ({ handleSave, config }) => {
       text: "Go to List",
       action: handleGoToList,
       icon: faList,
+      disabled: isNew, // Disable the button if isNew is true
     },
     {
       type: "primary",
@@ -116,15 +119,15 @@ const DoctypeStudio = ({ handleSave, config }) => {
                   } px-0 pt-2 font-bold text-base`}
                   onClick={() => handleTabChange(tab)}
                 >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  {tab?.charAt(0)?.toUpperCase() + tab?.slice(1)}
                 </button>
               ))}
             </div>
-            <div className="relative z-1 flex max-h-[78vh]">
+            <div className="relative z-1 flex max-h-[72vh]">
               {/* Main Content Section */}
               {selectedTab === "settings" ? (
                 <div className="w-full">
-                  <SettingsForm />
+                  <SettingsForm isNew={isNew} />
                 </div>
               ) : (
                 <>
@@ -143,7 +146,7 @@ const DoctypeStudio = ({ handleSave, config }) => {
 
                   {/* Settings Section */}
                   {selectedTab !== "settings" && (
-                    <div className="w-1/4 p-2 ml-4 shadow-md shadow-gray-400 bg-white rounded max-h-[100vh] border border-gray-300 rounded-lg">
+                    <div className="w-1/4 p-2 m-1 shadow-md shadow-gray-400 bg-white rounded max-h-[100vh] border border-gray-300 rounded-lg">
                       <div className="h-full overflow-y-auto shadow-inner">
                         <FieldSettings />
                       </div>

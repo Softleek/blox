@@ -9,7 +9,7 @@ const MoreSection = ({ item, handleInputChange }) => (
       </label>
       <input
         type="text"
-        value={item.default || ""}
+        value={item?.default || ""}
         onChange={(e) => handleInputChange("default", e.target.value, item)}
         className="block w-full p-2 border border-gray-300 rounded text-gray-800 focus:border-purple-500 focus:ring-purple-500"
         placeholder="Enter default value"
@@ -22,7 +22,7 @@ const MoreSection = ({ item, handleInputChange }) => (
         Description
       </label>
       <textarea
-        value={item.description || ""}
+        value={item?.description || ""}
         onChange={(e) => handleInputChange("description", e.target.value, item)}
         className="block w-full p-2 border border-gray-300 rounded text-gray-800 focus:border-purple-500 focus:ring-purple-500"
         placeholder="Enter description"

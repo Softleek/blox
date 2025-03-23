@@ -8,9 +8,9 @@ import ColumnItemEmpty from "./ColumnItemEmpty";
 const SectionItem = ({ section, handleFocus, handleBlur, selectedItem }) => {
   const [{ isDragging: isSectionDragging }, drag] = useDrag(() => ({
     type: "SECTION_TYPE",
-    item: { sectionId: section.fieldname },
+    item: { sectionId: section?.fieldname },
     collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
+      isDragging: monitor?.isDragging(),
     }),
   }));
 
@@ -31,7 +31,7 @@ const SectionItem = ({ section, handleFocus, handleBlur, selectedItem }) => {
       onClick={handleSectionClick}
     >
       <div className="flex flex-row w-full h-fit justify-between">
-        <h4 className="text-md font-semibold py-2">{section.label || ""}</h4>
+        <h4 className="text-md font-semibold py-2">{section?.label || ""}</h4>
 
         <SectionActions section={section} />
       </div>

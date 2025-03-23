@@ -15,7 +15,7 @@ const ColumnDropZone = ({
   const [, drop] = useDrop({
     accept: [ItemType, "column", "section"], // Accept columns, sections, and fields
     drop: (item) => {
-      handleMoveItem(item, column, item.parentId, column.id);
+      handleMoveItem(item, column, item?.parentId, column?.id);
     },
   });
 
@@ -33,7 +33,7 @@ const ColumnDropZone = ({
             handleBlur={handleBlur}
             handleInputChange={handleInputChange}
             moveItem={handleMoveItem}
-            parentId={column.id}
+            parentId={column?.id}
             placeholder={true}
             itemType="field" // Placeholder should have 'field' as its itemType
           />
@@ -41,7 +41,7 @@ const ColumnDropZone = ({
       ) : (
         column?.map((field, index) => (
           <DraggableItem
-            key={field.id}
+            key={field?.id}
             item={field}
             index={index}
             column={column}
@@ -50,7 +50,7 @@ const ColumnDropZone = ({
             handleBlur={handleBlur}
             handleInputChange={handleInputChange}
             moveItem={handleMoveItem}
-            parentId={column.id}
+            parentId={column?.id}
             deleteField={deleteField}
             itemType="field" // Fields will have 'field' as itemType
           />

@@ -3,7 +3,7 @@ import { getFieldsAfterBreak } from "./getFieldsAfterBreak";
 // Helper to extract field names
 const getFieldName = (item) => {
   if (Array.isArray(item)) {
-    return item[0].fieldname || item[0].id;
+    return item[0]?.fieldname || item[0]?.id;
   }
   return item?.fieldname || item?.id || item;
 };
@@ -18,14 +18,14 @@ export const moveItem = (
   const draggedFieldName = getFieldName(draggedItem);
   const targetFieldName = getFieldName(targetItem);
 
-  const draggedItemIndex = localConfig.field_order.indexOf(draggedFieldName);
-  const targetItemIndex = localConfig.field_order.indexOf(targetFieldName);
+  const draggedItemIndex = localConfig?.field_order?.indexOf(draggedFieldName);
+  const targetItemIndex = localConfig?.field_order?.indexOf(targetFieldName);
 
   if (draggedItemIndex === -1 || targetItemIndex === -1) {
     return { success: false, error: "Field not found in field_order" };
   }
 
-  const updatedFieldOrder = [...localConfig.field_order];
+  const updatedFieldOrder = [...(localConfig?.field_order || [])];
   updatedFieldOrder.splice(draggedItemIndex, 1);
 
   const newTargetIndex = moveAfter
@@ -57,14 +57,14 @@ const moveGroupedItems1 = (draggedItem, targetItem, localConfig, breakType) => {
   const draggedFieldName = getFieldName(draggedItem);
   const targetFieldName = getFieldName(targetItem);
 
-  const draggedItemIndex = localConfig.field_order.indexOf(draggedFieldName);
-  const targetItemIndex = localConfig.field_order.indexOf(targetFieldName);
+  const draggedItemIndex = localConfig?.field_order?.indexOf(draggedFieldName);
+  const targetItemIndex = localConfig?.field_order?.indexOf(targetFieldName);
 
   if (draggedItemIndex === -1 || targetItemIndex === -1) {
     return { success: false, error: "Field not found in field_order" };
   }
 
-  const updatedFieldOrder = [...localConfig.field_order];
+  const updatedFieldOrder = [...(localConfig?.field_order || [])];
 
   // Use getFieldsAfterBreak to collect fields to move
   const draggedItemsToMove = [
@@ -98,7 +98,7 @@ export const moveGroupedItems = (
   localConfig,
   moveAbove = true // Default to moving above the target field
 ) => {
-  const fieldOrder = [...localConfig.field_order];
+  const fieldOrder = [...(localConfig?.field_order || [])];
 
   // Extract field names to move and the target field name
   const fieldNamesToMove = fieldsToMove.map(getFieldName);

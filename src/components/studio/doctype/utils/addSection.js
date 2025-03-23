@@ -10,7 +10,7 @@ import { getLastFieldname } from "./getLastFieldname";
  * @returns {Promise<Object>} - Updated configuration.
  */
 const addSection = async (localConfig, section, top = false) => {
-  const { fieldname, prevField } = section;
+  const { fieldname, prevField } = section ?? {};
   const firstField = getFirstFieldname(section);
   const lastFieldname = getLastFieldname(section);
 

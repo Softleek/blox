@@ -21,7 +21,7 @@ const StudioTabs = ({
   const [tabName, setTabName] = useState("");
 
   const handleInputChange = (key, value, item, type) => {
-    const updatedItems = updateItemById(items, item.id, type, key, value);
+    const updatedItems = updateItemById(items, item?.id, type, key, value);
     if (updatedItems) {
       setCanvasItems([...updatedItems]);
     }
@@ -40,21 +40,21 @@ const StudioTabs = ({
   };
 
   const handleEditSectionName = (section) => {
-    setEditingSectionId(section.id);
-    setSectionName(section.name);
+    setEditingSectionId(section?.id);
+    setSectionName(section?.name);
   };
 
   const handleEditTabName = (tab) => {
-    setEditingTabId(tab.id);
-    setTabName(tab.name);
+    setEditingTabId(tab?.id);
+    setTabName(tab?.name);
   };
 
   const handleSectionNameChange = (event) => {
-    setSectionName(event.target.value);
+    setSectionName(event?.target?.value);
   };
 
   const handleTabNameChange = (event) => {
-    setTabName(event.target.value);
+    setTabName(event?.target?.value);
   };
 
   const handleSaveSectionName = () => {
@@ -72,7 +72,7 @@ const StudioTabs = ({
   };
 
   const handleSaveTabName = () => {
-    if (tabName.trim() !== "") {
+    if (tabName?.trim() !== "") {
       const updatedItems = updateItemById(
         items,
         editingTabId,
@@ -110,7 +110,7 @@ const StudioTabs = ({
   const refreshPage = () => {
     simulateCtrlS();
     setTimeout(() => {
-      window.location.reload();
+      window?.location?.reload();
     }, 400); // Delay of 2000 milliseconds (2 seconds)
   };
 
@@ -119,18 +119,18 @@ const StudioTabs = ({
       {tabs?.map(
         (tab) =>
           selectedTab === tab?.name && (
-            <div key={tab.id} className="mb-4 bg-slate-50">
+            <div key={tab?.id} className="mb-4 bg-slate-50">
               <div className="flex items-center justify-start border-b border-gray-500 p-2">
-                {editingTabId === tab.id ? (
+                {editingTabId === tab?.id ? (
                   <input
                     type="text"
                     value={tabName}
                     onChange={handleTabNameChange}
                     onBlur={handleSaveTabName}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter") {
+                      if (e?.key === "Enter") {
                         handleSaveTabName();
-                      } else if (e.key === "Escape") {
+                      } else if (e?.key === "Escape") {
                         handleCancelEdit();
                       }
                     }}
@@ -138,11 +138,11 @@ const StudioTabs = ({
                     className="text-md font-semibold p-1 border border-gray-300 rounded bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 ) : (
-                  <h4 className="text-md font-semibold">{tab.name}</h4>
+                  <h4 className="text-md font-semibold">{tab?.name}</h4>
                 )}
                 <button
                   onClick={() => {
-                    if (editingTabId === tab.id) {
+                    if (editingTabId === tab?.id) {
                       handleSaveTabName();
                     } else {
                       handleEditTabName(tab);
@@ -166,19 +166,19 @@ const StudioTabs = ({
                 </button>
               </div>
               {tab?.sections?.map((section) => (
-                <div key={section.id} className="border-b border-gray-500 p-2">
+                <div key={section?.id} className="border-b border-gray-500 p-2">
                   <div className="flex items-center justify-between my-2">
                     <div className="flex items-center">
-                      {editingSectionId === section.id ? (
+                      {editingSectionId === section?.id ? (
                         <input
                           type="text"
                           value={sectionName}
                           onChange={handleSectionNameChange}
                           onBlur={handleSaveSectionName}
                           onKeyDown={(e) => {
-                            if (e.key === "Enter") {
+                            if (e?.key === "Enter") {
                               handleSaveSectionName();
-                            } else if (e.key === "Escape") {
+                            } else if (e?.key === "Escape") {
                               handleCancelEdit();
                             }
                           }}
@@ -187,12 +187,12 @@ const StudioTabs = ({
                         />
                       ) : (
                         <h4 className="text-md font-semibold">
-                          {section.name}
+                          {section?.name}
                         </h4>
                       )}
                       <button
                         onClick={() => {
-                          if (editingSectionId === section.id) {
+                          if (editingSectionId === section?.id) {
                             handleSaveSectionName();
                           } else {
                             handleEditSectionName(section);
@@ -218,7 +218,7 @@ const StudioTabs = ({
                     <div>
                       <button
                         className="text-xs px-2 py-1 align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 border-fuchsia-500 text-fuchsia-500 hover:opacity-75 mr-2"
-                        onClick={() => addColumn(section.id, setCanvasItems)}
+                        onClick={() => addColumn(section?.id, setCanvasItems)}
                       >
                         + Column
                       </button>
@@ -226,9 +226,9 @@ const StudioTabs = ({
                         className="text-xs px-2 py-1 align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 border-purple-700 text-purple-700 hover:opacity-75"
                         onClick={() =>
                           addSection(
-                            tab.id,
+                            tab?.id,
                             "below",
-                            section.id,
+                            section?.id,
                             setCanvasItems
                           )
                         }
@@ -239,9 +239,9 @@ const StudioTabs = ({
                         className="text-xs px-2 py-1 ml-2 align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 border-purple-700 text-purple-700 hover:opacity-75"
                         onClick={() =>
                           addSection(
-                            tab.id,
+                            tab?.id,
                             "above",
-                            section.id,
+                            section?.id,
                             setCanvasItems
                           )
                         }
@@ -252,10 +252,10 @@ const StudioTabs = ({
                   </div>
                   <div className="flex space-x-2">
                     {section?.columns?.map((column) => (
-                      <React.Fragment key={column.id}>
+                      <React.Fragment key={column?.id}>
                         <ColumnDropZone
                           column={column}
-                          sectionId={section.id}
+                          sectionId={section?.id}
                           selectedFieldId={selectedFieldId}
                           handleFocus={handleFocus}
                           handleBlur={handleBlur}

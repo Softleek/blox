@@ -24,9 +24,9 @@ const Select = ({
         className={`mt-1 p-2 border rounded focus:ring-0 text-sm ${className}`}
         {...props}
       >
-        {options.map((option, index) => (
-          <option key={index} value={option.value}>
-            {option.label}
+        {options?.map((option, index) => (
+          <option key={index} value={option?.value}>
+            {option?.label}
           </option>
         ))}
       </select>

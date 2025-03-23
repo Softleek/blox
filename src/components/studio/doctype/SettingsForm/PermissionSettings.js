@@ -18,7 +18,7 @@ const PermissionSettings = () => {
   const handleInputChange = (name, value) => {
     setConfig((prevConfig) => {
       const updatedConfig = { ...prevConfig, [name]: value };
-      setLocalConfig(updatedConfig); // Assuming setLocalConfig updates the context
+      setLocalConfig?.(updatedConfig); // Assuming setLocalConfig updates the context
       return updatedConfig;
     });
   };
@@ -36,7 +36,7 @@ const PermissionSettings = () => {
           options: "DocPerm",
           title_field: "name",
         }}
-        value={config.permissions}
+        value={config?.permissions}
         onChange={(e) => handleInputChange("permissions", e)}
         description="This is the default template used for emails."
       />
@@ -49,19 +49,19 @@ const PermissionSettings = () => {
           options: "Domain",
           title_field: "name",
         }}
-        value={config.restrict_to_domain}
+        value={config?.restrict_to_domain}
         onChange={(e) => handleInputChange("restrict_to_domain", e)}
         description="This is the default template used for emails."
       />
       <Checkbox
         label="User Cannot Search"
-        checked={config.cannot_search || false}
+        checked={config?.cannot_search || false}
         onChange={(e) => handleInputChange("cannot_search", e.target.checked)}
         description="This will hide the sidebar, menu, and comments in the view."
       />
       <Checkbox
         label="User Cannot Create"
-        checked={config.read_only || false}
+        checked={config?.read_only || false}
         onChange={(e) => handleInputChange("read_only", e.target.checked)}
         description="This will hide the sidebar, menu, and comments in the view."
       />

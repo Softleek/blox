@@ -16,7 +16,7 @@ const FormSettings = () => {
   const handleInputChange = (name, value) => {
     setConfig((prevConfig) => {
       const updatedConfig = { ...prevConfig, [name]: value };
-      setLocalConfig(updatedConfig); // Assuming setLocalConfig updates the context
+      setLocalConfig?.(updatedConfig); // Assuming setLocalConfig updates the context
       return updatedConfig;
     });
   };
@@ -27,14 +27,14 @@ const FormSettings = () => {
       <TextInput
         label={"Image Field"}
         description="Must be of type 'Attach Image'"
-        value={config.image_field || ""}
+        value={config?.image_field || ""}
         onChange={(e) => handleInputChange("image_field", e.target.value)}
       />
 
       {/* Hide Sidebar, Menu, and Comments */}
       <Checkbox
         label="Hide Sidebar, Menu, and Comments"
-        checked={config.hide_toolbar || false}
+        checked={config?.hide_toolbar || false}
         onChange={(e) => handleInputChange("hide_toolbar", e.target.checked)}
         description="This will hide the sidebar, menu, and comments in the view."
       />
@@ -42,14 +42,14 @@ const FormSettings = () => {
       <TextInput
         label="Timeline Field"
         description="Comments and Communications will be associated with this linked document"
-        value={config.timeline_field || ""}
+        value={config?.timeline_field || ""}
         onChange={(e) => handleInputChange("timeline_field", e.target.value)}
       />
 
       {/* Hide Copy */}
       <Checkbox
         label="Hide Copy"
-        checked={config.allow_copy || false}
+        checked={config?.allow_copy || false}
         onChange={(e) => handleInputChange("allow_copy", e.target.checked)}
         description="This will prevent copying of the document."
       />
@@ -57,14 +57,14 @@ const FormSettings = () => {
       {/* Max Attachments */}
       <TextInput
         label="Max Attachments"
-        value={config.max_attachments || 0}
+        value={config?.max_attachments || 0}
         onChange={(e) => handleInputChange("max_attachments", e.target.value)}
       />
 
       {/* Allow Import (via Data Import Tool) */}
       <Checkbox
         label="Allow Import (via Data Import Tool)"
-        checked={config.allow_import || false}
+        checked={config?.allow_import || false}
         onChange={(e) => handleInputChange("allow_import", e.target.checked)}
         description="This will allow importing data via the data import tool."
       />
@@ -72,7 +72,7 @@ const FormSettings = () => {
       {/* Allow events in timeline */}
       <Checkbox
         label="Allow events in timeline"
-        checked={config.allow_events_in_timeline || false}
+        checked={config?.allow_events_in_timeline || false}
         onChange={(e) =>
           handleInputChange("allow_events_in_timeline", e.target.checked)
         }
@@ -82,7 +82,7 @@ const FormSettings = () => {
       {/* Allow Auto Repeat */}
       <Checkbox
         label="Allow Auto Repeat"
-        checked={config.allow_auto_repeat || false}
+        checked={config?.allow_auto_repeat || false}
         onChange={(e) =>
           handleInputChange("allow_auto_repeat", e.target.checked)
         }
@@ -92,7 +92,7 @@ const FormSettings = () => {
       {/* Make Attachments Public by Default */}
       <Checkbox
         label="Make Attachments Public by Default"
-        checked={config.make_attachments_public || false}
+        checked={config?.make_attachments_public || false}
         onChange={(e) =>
           handleInputChange("make_attachments_public", e.target.checked)
         }

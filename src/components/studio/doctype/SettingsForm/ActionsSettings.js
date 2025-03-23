@@ -15,7 +15,7 @@ const ActionsSettings = () => {
   const handleInputChange = (name, value) => {
     setConfig((prevConfig) => {
       const updatedConfig = { ...prevConfig, [name]: value };
-      setLocalConfig(updatedConfig); // Assuming setLocalConfig updates the context
+      setLocalConfig?.(updatedConfig); // Assuming setLocalConfig updates the context
       return updatedConfig;
     });
   };
@@ -33,7 +33,7 @@ const ActionsSettings = () => {
           options: "DocType Action",
           title_field: "name",
         }}
-        value={config.actions}
+        value={config?.actions}
         onChange={(e) => handleInputChange("actions", e)}
         description="This is the default template used for emails."
       />

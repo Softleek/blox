@@ -15,7 +15,7 @@ const FieldTable = () => {
   const handleInputChange = (name, value) => {
     setConfig((prevConfig) => {
       const updatedConfig = { ...prevConfig, [name]: value };
-      setLocalConfig(updatedConfig); // Assuming setLocalConfig updates the context
+      setLocalConfig?.(updatedConfig); // Assuming setLocalConfig updates the context
       return updatedConfig;
     });
   };
@@ -33,7 +33,7 @@ const FieldTable = () => {
           options: "DocField",
           title_field: "name",
         }}
-        value={config.fields}
+        value={config?.fields}
         onChange={(e) => handleInputChange("fields", e)}
         description="This is the default template used for emails."
         ordered={true}

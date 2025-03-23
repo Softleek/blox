@@ -9,7 +9,7 @@ export const getFieldsAfterBreak = (
   }
 
   const findField = (fieldname) =>
-    config.fields.find((field) => field.fieldname === fieldname);
+    config?.fields?.find((field) => field?.fieldname === fieldname);
 
   // Define the break types for each level
   const breakTypes = {
@@ -19,10 +19,10 @@ export const getFieldsAfterBreak = (
   };
 
   // Determine valid break types based on the parameter
-  const validBreakTypes = breakTypes[breakType] || [];
+  const validBreakTypes = breakTypes?.[breakType] || [];
 
   // Find the index of the startField
-  const startFieldIndex = config.field_order.findIndex(
+  const startFieldIndex = config?.field_order?.findIndex(
     (fieldname) => fieldname === startField
   );
 
@@ -37,20 +37,20 @@ export const getFieldsAfterBreak = (
   if (includeStartField) {
     const startFieldObj = findField(startField);
     if (startFieldObj) {
-      fieldsAfter.push(startFieldObj.fieldname);
+      fieldsAfter.push(startFieldObj?.fieldname);
     }
   }
 
   // Collect fields after the startField, stopping at a valid break
-  for (let i = startFieldIndex + 1; i < config.field_order.length; i++) {
-    const field = findField(config.field_order[i]);
+  for (let i = startFieldIndex + 1; i < config?.field_order?.length; i++) {
+    const field = findField(config?.field_order?.[i]);
     if (!field) continue;
 
-    if (validBreakTypes.includes(field.fieldtype)) {
+    if (validBreakTypes?.includes(field?.fieldtype)) {
       break; // Stop at the first matching break type
     }
 
-    fieldsAfter.push(field.fieldname); // Add field to the end
+    fieldsAfter.push(field?.fieldname); // Add field to the end
   }
 
   return fieldsAfter;

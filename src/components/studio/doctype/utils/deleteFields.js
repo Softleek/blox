@@ -9,12 +9,12 @@ export const deleteFieldsFromConfig = (config, fieldnames) => {
   const fieldsToDelete = Array.isArray(fieldnames) ? fieldnames : [fieldnames];
 
   // Filter out fields from the config.fields array
-  config.fields = config.fields.filter(
+  config.fields = config.fields?.filter(
     (field) => !fieldsToDelete.includes(field.fieldname)
   );
 
   // Filter out fieldnames from the config.field_order array
-  config.field_order = config.field_order.filter(
+  config.field_order = config.field_order?.filter(
     (fieldname) => !fieldsToDelete.includes(fieldname)
   );
 

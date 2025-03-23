@@ -10,8 +10,8 @@ import { deleteFieldsFromConfig } from "./deleteFields";
  */
 const deleteColumn = async (localConfig, column, deleteFields = false) => {
   const targetField =
-    column.fieldname || column.prevField || getFirstFieldname(column);
-  const includeField = column.fieldname || getFirstFieldname(column);
+    column?.fieldname || column?.prevField || getFirstFieldname(column);
+  const includeField = column?.fieldname || getFirstFieldname(column);
 
   let list;
   if (deleteFields) {

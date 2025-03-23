@@ -17,7 +17,7 @@ const EmailSettings = () => {
   const handleInputChange = (name, value) => {
     setConfig((prevConfig) => {
       const updatedConfig = { ...prevConfig, [name]: value };
-      setLocalConfig(updatedConfig); // Assuming setLocalConfig updates the context
+      setLocalConfig?.(updatedConfig); // Assuming setLocalConfig updates the context
       return updatedConfig;
     });
   };
@@ -35,7 +35,7 @@ const EmailSettings = () => {
             options: "Email Template",
             title_field: "name",
           }}
-          value={config.default_email_template}
+          value={config?.default_email_template}
           onChange={(e) => handleInputChange("default_email_template", e)}
           description="This is the default template used for emails."
         />
@@ -45,9 +45,9 @@ const EmailSettings = () => {
         {/* Allow document creation via Email */}
         <Checkbox
           label="Allow document creation via Email"
-          checked={config.email_append_to || false}
+          checked={config?.email_append_to || false}
           onChange={(e) =>
-            handleInputChange("email_append_to", e.target.checked)
+            handleInputChange("email_append_to", e.target?.checked)
           }
           description="This will allow the creation of documents via email."
         />
@@ -57,9 +57,9 @@ const EmailSettings = () => {
             {/* Sender Email Field */}
             <TextInput
               label="Sender Email Field"
-              value={config.sender_field || ""}
+              value={config?.sender_field || ""}
               onChange={(e) =>
-                handleInputChange("sender_field", e.target.value)
+                handleInputChange("sender_field", e.target?.value)
               }
               description="Specify the field used for the sender's email address."
             />
@@ -67,9 +67,9 @@ const EmailSettings = () => {
             {/* Sender Name Field */}
             <TextInput
               label="Sender Name Field"
-              value={config.sender_name_field || ""}
+              value={config?.sender_name_field || ""}
               onChange={(e) =>
-                handleInputChange("sender_name_field", e.target.value)
+                handleInputChange("sender_name_field", e.target?.value)
               }
               description="Specify the field used for the sender's name."
             />
@@ -77,9 +77,9 @@ const EmailSettings = () => {
             {/* Subject Field */}
             <TextInput
               label="Subject Field"
-              value={config.subject_field || ""}
+              value={config?.subject_field || ""}
               onChange={(e) =>
-                handleInputChange("subject_field", e.target.value)
+                handleInputChange("subject_field", e.target?.value)
               }
               description="Specify the field used for the subject of the email."
             />
