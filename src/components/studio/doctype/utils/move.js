@@ -15,6 +15,8 @@ export const moveItem = (
   localConfig,
   moveAfter = false
 ) => {
+  // console.log("moveItem", draggedItem, targetItem, localConfig, moveAfter);
+
   const draggedFieldName = getFieldName(draggedItem);
   const targetFieldName = getFieldName(targetItem);
 

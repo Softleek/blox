@@ -100,7 +100,7 @@ export default function App({ Component, pageProps }) {
                     <Sidebar />
                   </div>
                   <div className="flex-grow flex flex-col w-full h-[96vh]">
-                    <div className="flex-grow h-full md:h-[88vh] pt-[6vh] overflow-y-auto">
+                    <div className="flex-grow h-full md:h-[88vh] pt-[6vh] md:pt-[4vh] overflow-y-auto">
                       <div className="relative flex-grow">
                         <Component {...pageProps} />
                       </div>

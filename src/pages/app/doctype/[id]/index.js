@@ -13,7 +13,7 @@ import { findDocDetails } from "@/utils/findDocDetails";
 import { importFile } from "@/utils/importFile";
 
 const DocumentDetail = () => {
-  const { slug } = useRouter().query;
+  const { id } = useRouter().query;
   const [config, setConfig] = useState(null);
   const [filePath, setFilePath] = useState(null);
   const { setLoading } = useData();
@@ -26,25 +26,25 @@ const DocumentDetail = () => {
     updatePageInfo,
     updateNavLinks,
   } = useNavbar();
-  const { setSidebarHidden, setSidebarWidth } = useSidebar();
+  const { setSidebarHidden, setSidebarCollaped } = useSidebar();
 
   useEffect(() => {
-    if (!slug) return;
+    if (!id) return;
 
     const fetchDocumentData = async () => {
       try {
         // Fetch document details
 
-        const docData = findDocDetails(slug);
+        const docData = findDocDetails(id);
         if (!docData) throw new Error("Failed to fetch document details");
 
         setFilePath(docData.docPath);
 
         // Update UI elements
-        const title = toTitleCase(slug);
-        updateDashboardText(title);
-        updatePagesText(toTitleCase(docData.module));
-        updatePageInfo({ text: title, link: `documents/${slug}` });
+        const defaultTitle = "Doctype";
+        updateDashboardText(defaultTitle);
+        updatePagesText("Doctype");
+        updatePageInfo({ text: defaultTitle, link: `app/doctype` });
         updateNavLinks([
           { text: toTitleCase(docData.app), link: `/apps/${docData.app}` },
           {
@@ -54,7 +54,7 @@ const DocumentDetail = () => {
         ]);
 
         // Fetch configuration data
-        const configData = await importFile(slug, `${slug}.json`);
+        const configData = await importFile(id, `${id}.json`);
         if (!configData) throw new Error("Failed to load configuration");
 
         setConfig(configData.content);
@@ -62,33 +62,33 @@ const DocumentDetail = () => {
         // Sidebar and UI customization
         updateTextColor("text-gray-200");
         updateIconColor("text-purple-300");
-        setSidebarWidth(100);
-        setSidebarHidden(true);
+        setSidebarCollaped(true);
+        // setSidebarHidden(true);
       } catch (error) {
         console.error(error.message);
       }
     };
 
     fetchDocumentData();
-  }, [slug]);
+  }, [id]);
 
   const saveConfig = async (settings) => {
     try {
-      if (!filePath || !slug) throw new Error("File path or slug not set");
+      if (!filePath || !id) throw new Error("File path or id not set");
       setLoading(true);
       const response = await fetch("/api/save-config", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           directoryPath: filePath,
-          filename: `${slug}.json`,
+          filename: `${id}.json`,
           content: settings,
         }),
       });
 
       if (response.ok) {
         setConfig(settings);
-        const response1 = await postData({ doc: slug }, `migrate`);
+        const response1 = await postData({ doc: id }, `migrate`);
         if (!response1) {
           throw new Error("Failed to migrate");
         } else {
@@ -110,7 +110,7 @@ const DocumentDetail = () => {
   return (
     <ConfigProvider
       initialConfig={config}
-      initialAppData={{ endpoint: `documents/${slug}` }}
+      initialAppData={{ endpoint: `documents/${id}` }}
     >
       <DoctypeStudio handleSave={saveConfig} config={config} />
     </ConfigProvider>

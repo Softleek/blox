@@ -33,9 +33,13 @@ export default async function handler(req, res) {
     // Ensure the directory exists before writing the file
     await fs.promises.mkdir(path.dirname(fullPath), { recursive: true });
 
-    // Write the content to the file
-    await fs.promises.writeFile(fullPath, JSON.stringify(content, null, 2));
-
+    if (filename.endsWith(".js") || filename.endsWith(".py")) {
+      // Write the raw content to the file (no JSON.stringify)
+      await fs.promises.writeFile(fullPath, content);
+    } else {
+      // Write the content to the file
+      await fs.promises.writeFile(fullPath, JSON.stringify(content, null, 2));
+    }
     res
       .status(200)
       .json({ message: "Config saved successfully", path: fullPath });

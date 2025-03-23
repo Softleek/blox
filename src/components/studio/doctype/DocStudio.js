@@ -28,7 +28,8 @@ const DoctypeStudio = ({ handleSave, config, isNew = false }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedTab, setSelectedTab] = useState(isNew ? "settings" : "form"); // State to track the selected tab
   const router = useRouter();
-  const { slug } = isNew ? {} : router?.query; // Only get slug if isNew is false
+  const { slug, id } = isNew ? {} : router?.query;
+  const doctypeId = slug || id;
 
   // Check for changes whenever config or localConfig updates
   useEffect(() => {
@@ -59,7 +60,7 @@ const DoctypeStudio = ({ handleSave, config, isNew = false }) => {
   // Handle Go to List
   const handleGoToList = () => {
     if (!isNew) {
-      window.open(`/app/${slug}`, "_blank"); // Open in a new tab
+      window.open(`/app/${doctypeId}`, "_blank"); // Open in a new tab
     }
   };
 

@@ -152,32 +152,43 @@ def migrate_django(site: Optional[str] = None) -> None:
 
 
 def run_migrate_django(site: Optional[str] = None) -> None:
-    """Run Django makemigrations and migrate commands.
+    """Run Django makemigrations and migrate commands non-interactively.
 
     Args:
         site (Optional[str]): Name of the site to migrate.
     """
     python_executable = get_python_executable()
-
     db_arg = [f"--database={site}"] if site else []
 
-    subprocess.run(
-        [python_executable, "manage.py", "makemigrations"],
-        cwd=DJANGO_PATH,
-    )
+    try:
+        # Run makemigrations non-interactively
+        subprocess.run(
+            [python_executable, "manage.py", "makemigrations", "--noinput"],
+            cwd=DJANGO_PATH,
+            stdin=subprocess.DEVNULL,  # Prevents input prompts
+            check=True,
+        )
 
-    subprocess.run(
-        [python_executable, "manage.py", "migrate", "--noinput"] + db_arg,
-        cwd=DJANGO_PATH,
-    )
+        # Run migrate with --noinput and database argument
+        subprocess.run(
+            [python_executable, "manage.py", "migrate", "--noinput"] + db_arg,
+            cwd=DJANGO_PATH,
+            stdin=subprocess.DEVNULL,  # Prevents input prompts
+            check=True,
+        )
 
-    create_entries_from_config(DJANGO_PATH, site)
-    message = (
-        f"Migration completed successfully for site '{site}'."
-        if site
-        else "Migration completed successfully."
-    )
-    click.echo(message)
+        # Post-migration custom logic
+        create_entries_from_config(DJANGO_PATH, site)
+
+        message = (
+            f"Migration completed successfully for site '{site}'."
+            if site
+            else "Migration completed successfully."
+        )
+        click.echo(message)
+
+    except subprocess.CalledProcessError as e:
+        click.echo(f"Migration failed: {e}", err=True)
 
 
 def run_migration(

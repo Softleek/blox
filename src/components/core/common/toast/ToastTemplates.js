@@ -34,7 +34,7 @@ const ToastTemplates = {
 
   error: (message, title = "Error!", position = "top-center") =>
     toast(
-      <div className={`${baseStyle} !text-red-500`}>
+      <div className={`${baseStyle} !text-purple-800`}>
         <FontAwesomeIcon
           icon={faTimesCircle}
           className="w-6 h-6 mr-3 text-red-600"

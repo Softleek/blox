@@ -23,13 +23,17 @@ const generateNextLabel = (prefix, items) => {
   return `${prefix} ${nextNumber}`;
 };
 
-// Main function to add a new field (tab, section, or column) to config
 export const addFieldToConfig = (
   config,
   after_field,
   fieldType,
   addBefore = false
 ) => {
+  if (!config) {
+    console.error("addFieldToConfig: 'config' is null or undefined.");
+    return null; // or handle the fallback
+  }
+
   const fieldname = generateUniqueName(fieldType.toLowerCase(), config?.fields);
   let newField;
 
@@ -61,22 +65,17 @@ export const addFieldToConfig = (
     };
   }
 
-  config?.fields?.push(newField);
-  if (!config?.field_order) {
-    config.field_order = [];
-  }
+  config.fields = config.fields || [];
+  config.fields.push(newField);
 
-  const index = config?.field_order?.indexOf(after_field) || -1;
+  config.field_order = config.field_order || [];
 
+  const index = config.field_order.indexOf(after_field);
   if (index !== -1) {
-    // Determine the insertion index based on addBefore
     const insertIndex = addBefore ? index : index + 1;
-
-    // Insert the new fieldname at the determined index
-    config?.field_order?.splice(insertIndex, 0, fieldname);
+    config.field_order.splice(insertIndex, 0, fieldname);
   } else {
-    // If after_field is not found, just add to the end
-    config?.field_order?.push(fieldname);
+    config.field_order.push(fieldname);
   }
 
   return config;

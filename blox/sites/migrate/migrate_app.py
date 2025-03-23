@@ -3,11 +3,11 @@ from typing import List
 
 import click
 
-from ...utils.text import to_snake_case
 from ..utils.app_actions import find_modules
 from .migrate_doc import STRUCTURE
 from .migrate_module import migrate_module
 from .update_urls_app import update_urls_py
+from .write_viewsets import clear_signals
 
 
 def add_init_files(folder_path: str, modules: List[str]) -> None:
@@ -46,6 +46,8 @@ def migrate_app(app_name: str, django_path: str) -> None:
 
     # Absolute path of django_path for comparison
     django_path_abs = os.path.abspath(django_path)
+    
+    clear_signals(app_name)
 
     modules = find_modules(app_name)
 

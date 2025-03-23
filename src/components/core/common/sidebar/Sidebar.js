@@ -39,10 +39,11 @@ import Link from "next/link";
 import { fetchData } from "@/utils/Api";
 
 const Sidebar = () => {
-  const { sidebarWidth, setSidebarWidth, sidebarHidden } = useSidebar();
+  const { sidebarWidth, setSidebarWidth, sidebarHidden, sidebarCollaped } =
+    useSidebar();
   const { dashboardText, pageInfo } = useNavbar();
   const sidebarRef = useRef(null);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(sidebarCollaped);
   const [sidebarLinks, setSidebarLinks] = useState([]);
   const router = useRouter();
 
@@ -70,6 +71,10 @@ const Sidebar = () => {
       setSidebarWidth(sidebarRef.current.offsetWidth);
     }
   }, [isCollapsed, sidebarHidden]);
+
+  useEffect(() => {
+    setIsCollapsed(sidebarCollaped);
+  }, [sidebarCollaped]);
 
   useEffect(() => {
     const fetchLinks = async () => {
@@ -102,7 +107,7 @@ const Sidebar = () => {
         {isCollapsed && (
           <button
             onClick={toggleSidebar}
-            className="w-fit fixed z-100 text-slate-700 py-2 px-2 group text-sm md:text-xl top-2 md:top-16 bg-gray-50 rounded" // Use group class for managing hover effect
+            className="w-fit fixed z-100 text-slate-700 py-2 px-2 group text-sm md:text-xl top-2 md:top-16 bg-gray-100 rounded" // Use group class for managing hover effect
           >
             {/* Default icon (faBars) */}
             <FontAwesomeIcon

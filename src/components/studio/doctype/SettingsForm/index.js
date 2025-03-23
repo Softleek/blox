@@ -16,7 +16,7 @@ import Field from "../../Field";
 import FieldTable from "./FieldTable";
 
 const SettingsForm = ({ isNew = false }) => {
-  const sections = [
+  const allSections = [
     {
       Component: ModuleSettings,
       key: "ModuleSettings",
@@ -76,6 +76,16 @@ const SettingsForm = ({ isNew = false }) => {
       collapsible: true,
     },
   ];
+  const sections = isNew
+    ? allSections.filter(
+        (section) =>
+          section.key !== "LinkedDocuments" &&
+          section.key !== "PermissionSettings" &&
+          section.key !== "DocumentStates" &&
+          section.key !== "FieldTable" &&
+          section.key !== "ActionsSettings"
+      )
+    : allSections;
 
   const [collapsedSections, setCollapsedSections] = useState(
     sections?.reduce((acc, section) => {
@@ -92,6 +102,7 @@ const SettingsForm = ({ isNew = false }) => {
       [key]: !prev?.[key],
     }));
   };
+
   return (
     <div className="h-full overflow-y-auto bg-gray-100 rounded-lg pb-6">
       {sections?.map(({ Component, key, title, collapsible }) => (

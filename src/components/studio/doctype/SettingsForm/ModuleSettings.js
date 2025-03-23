@@ -43,24 +43,30 @@ const ModuleSettings = ({ isNew = false }) => {
       {/* Name */}
       {isNew && (
         <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700">Name</label>
+          <label className="text-sm font-medium text-gray-700">
+            Name <span className="text-red-600">*</span>{" "}
+          </label>
           <input
             type="text"
             className="p-1 border border-gray-300 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out"
             value={config?.name || ""}
             onChange={(e) => handleInputChange("name", e.target.value)}
+            required={true}
           />
         </div>
       )}
 
       {/* Module */}
       <div className="flex flex-col">
-        <label className="text-sm font-medium text-gray-700">Module</label>
+        <label className="text-sm font-medium text-gray-700">
+          Module <span className="text-red-600">*</span>{" "}
+        </label>
         <div className="p-1 border border-gray-300 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out">
           <LinkField
             field={item}
             value={toUnderscoreLowercase(config?.module) || ""}
             onChange={(e) => handleInputChange("module", e)}
+            required={true}
           />
         </div>
       </div>

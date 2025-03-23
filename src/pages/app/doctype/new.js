@@ -7,11 +7,13 @@ import { ConfigProvider } from "@/contexts/ConfigContext";
 import ToastTemplates from "@/components/core/common/toast/ToastTemplates";
 import { postData } from "@/utils/Api";
 import { useData } from "@/contexts/DataContext";
-import { importFile } from "@/utils/importFile";
+import { constructPath } from "@/utils/importFile";
+import { toUnderscoreLowercase } from "@/utils/textConvert";
+import { useRouter } from "next/router";
+// import { importFile } from "@/utils/importFile";
 
 const DocumentDetail = () => {
   const [config, setConfig] = useState(null);
-  const [filePath, setFilePath] = useState(null);
   const { setLoading } = useData();
 
   const {
@@ -23,19 +25,16 @@ const DocumentDetail = () => {
     updateNavLinks,
   } = useNavbar();
   const { setSidebarHidden, setSidebarWidth } = useSidebar();
+  const router = useRouter();
 
   useEffect(() => {
     const initializeDocument = async () => {
       try {
-        // Set default file path or configuration
-        const defaultFilePath = "/default/path/to/document";
-        setFilePath(defaultFilePath);
-
         // Update UI elements with default values
-        const defaultTitle = "New Document";
+        const defaultTitle = "Doctype";
         updateDashboardText(defaultTitle);
-        updatePagesText("Default Module");
-        updatePageInfo({ text: defaultTitle, link: `documents/new-document` });
+        updatePagesText("Doctype");
+        updatePageInfo({ text: defaultTitle, link: `app/doctype` });
         updateNavLinks([
           { text: "Default App", link: `/apps/default-app` },
           {
@@ -44,17 +43,11 @@ const DocumentDetail = () => {
           },
         ]);
 
-        // Load default configuration
-        const configData = await importFile("default", "default-config.json");
-        if (configData) {
-          setConfig(configData.content);
-        }
-
         // Sidebar and UI customization
         updateTextColor("text-gray-200");
         updateIconColor("text-purple-300");
         setSidebarWidth(100);
-        setSidebarHidden(true);
+        setSidebarHidden(false);
       } catch (error) {
         console.error(error.message);
       }
@@ -65,25 +58,59 @@ const DocumentDetail = () => {
 
   const saveConfig = async (settings) => {
     try {
+      const requiredFields = ["name", "module"];
+      const missingFields = requiredFields.filter(
+        (field) => !settings?.[field]
+      );
+
+      if (missingFields.length > 0) {
+        throw `Missing required field(s): ${missingFields.join(", ")}`;
+      }
+
+      const name = toUnderscoreLowercase(settings.name);
+
+      const filePath = constructPath(settings.module, name);
+
       if (!filePath) throw new Error("File path not set");
       setLoading(true);
+      await fetch("/api/save-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          directoryPath: filePath,
+          filename: `${name}.js`,
+          content: `//\n`,
+        }),
+      });
+
+      await fetch("/api/save-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          directoryPath: filePath,
+          filename: `${name}.py`,
+          content: `#\n`,
+        }),
+      });
+
       const response = await fetch("/api/save-config", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           directoryPath: filePath,
-          filename: `default-config.json`,
+          filename: `${name}.json`,
           content: settings,
         }),
       });
 
       if (response.ok) {
         setConfig(settings);
-        const response1 = await postData({ doc: "default" }, `migrate`);
+        const response1 = await postData({}, `migrate`);
         if (!response1) {
           throw new Error("Failed to migrate");
         } else {
           ToastTemplates.success("Saved!");
+          router.push(`/app/doctype/${name}`);
         }
       } else throw new Error("Failed to save configuration");
     } catch (error) {

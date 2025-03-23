@@ -126,3 +126,15 @@ def add_import_to_signals(app_name, module_name, doc_name):
     # Append the import if it does not exist
     with open(signals_path, "a") as f:
         f.write(f"\n{import_statement}")
+        
+
+
+def clear_signals(app_name):
+    signals_path = os.path.join(DJANGO_PATH, f"{app_name}_app", "signals.py")
+    try:
+        with open(signals_path, "w") as file:
+            file.write("")
+    except FileNotFoundError:
+        print(f"No signals.py found for {app_name}")
+    except Exception as e:
+        print(f"Error clearing signals for {app_name}: {e}")

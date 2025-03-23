@@ -17,6 +17,8 @@ const LinkField = ({
   preview = false,
   hidden = false,
   field,
+  required = false,
+  ...rest
 }) => {
   const [endpoint, setEndpoint] = useState(null);
   const [appData, setAppData] = useState(null);
@@ -227,6 +229,8 @@ const LinkField = ({
               setIsDropdownOpen(false);
             }
           }}
+          required={required}
+          {...rest}
         />
         {value && isDropdownOpen && (
           <>

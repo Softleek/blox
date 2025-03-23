@@ -6,6 +6,7 @@ export const SidebarProvider = ({ children }) => {
   const [sidebarWidth, setSidebarWidth] = useState(350); // Default width set here
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [sidebarHidden, setSidebarHidden] = useState(false);
+  const [sidebarCollaped, setSidebarCollaped] = useState(false);
 
   const toggleSidebarWidth = () => {
     setSidebarWidth((prevWidth) => (prevWidth === 350 ? 10 : 350));
@@ -36,6 +37,8 @@ export const SidebarProvider = ({ children }) => {
         toggleSidebarWidth,
         sidebarHidden,
         setSidebarHidden,
+        sidebarCollaped,
+        setSidebarCollaped,
       }}
     >
       {children}

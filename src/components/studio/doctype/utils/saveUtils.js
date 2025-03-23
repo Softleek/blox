@@ -34,69 +34,75 @@ export const handleDocSave = (localConfig, form, handleSave) => {
       ...cleanForm, // Override properties from cleaned form
     };
 
-    // Deep merge fields array
-    updatedConfig.fields = updatedConfig.fields?.map((field) => {
-      let updatedField = { ...field };
+    // Ensure fields and field_order are arrays (or empty)
+    updatedConfig.fields = Array.isArray(updatedConfig.fields)
+      ? updatedConfig.fields
+      : [];
 
-      // Check if the field exists in the form and has been changed
-      const matchingField = cleanForm?.fields?.find(
-        (f) => f?.fieldname === field?.fieldname
-      );
+    updatedConfig.field_order = Array.isArray(updatedConfig.field_order)
+      ? updatedConfig.field_order
+      : [];
 
-      if (matchingField) {
-        updatedField = { ...updatedField, ...matchingField }; // Override with form values
-      }
+    // Only process fields if we have any
+    if (updatedConfig.fields.length > 0) {
+      updatedConfig.fields = updatedConfig.fields.map((field) => {
+        let updatedField = { ...field };
 
-      // Handle new fields that need their fieldname generated from label
-      if (updatedField?.is_new && updatedField?.label) {
-        const newFieldname = generateFieldnameFromLabel(updatedField?.label);
-
-        if (
-          updatedConfig?.fields?.some(
-            (existingField) =>
-              existingField?.fieldname === newFieldname &&
-              existingField !== updatedField
-          )
-        ) {
-          throw new Error(
-            `Fieldname conflict: "${newFieldname}" already exists. Please use a different label.`
-          );
-        }
-
-        updatedField.fieldname = newFieldname;
-
-        // Update field_order list entry matching the new field
-        const fieldOrderIndex = updatedConfig?.field_order?.indexOf(
-          field?.fieldname
+        // Check if the field exists in the form and has been changed
+        const matchingField = cleanForm?.fields?.find(
+          (f) => f?.fieldname === field?.fieldname
         );
-        if (fieldOrderIndex !== -1) {
-          updatedConfig.field_order[fieldOrderIndex] = newFieldname;
+
+        if (matchingField) {
+          updatedField = { ...updatedField, ...matchingField };
         }
-      }
 
-      delete updatedField?.is_new;
-      delete updatedField?.prevField;
+        // Handle new fields
+        if (updatedField?.is_new && updatedField?.label) {
+          const newFieldname = generateFieldnameFromLabel(updatedField.label);
 
-      return updatedField;
-    });
+          if (
+            updatedConfig.fields.some(
+              (existingField) =>
+                existingField?.fieldname === newFieldname &&
+                existingField !== updatedField
+            )
+          ) {
+            throw new Error(
+              `Fieldname conflict: "${newFieldname}" already exists. Please use a different label.`
+            );
+          }
 
-    // Handle field_order merging, ensuring new fieldnames are accounted for
-    const fieldnameMap = new Map();
-    updatedConfig.field_order = updatedConfig?.field_order?.map((fieldname) => {
-      if (fieldnameMap?.has(fieldname)) {
-        return fieldnameMap?.get(fieldname);
-      }
+          updatedField.fieldname = newFieldname;
+
+          // Update field_order
+          const fieldOrderIndex = updatedConfig?.field_order.indexOf(
+            field?.fieldname
+          );
+          if (fieldOrderIndex !== -1) {
+            updatedConfig.field_order[fieldOrderIndex] = newFieldname;
+          }
+        }
+
+        delete updatedField?.is_new;
+        delete updatedField?.prevField;
+
+        return updatedField;
+      });
+    }
+
+    // Handle field_order mapping (though you’re not mapping any changes here, so this may not be needed)
+    updatedConfig.field_order = updatedConfig.field_order.map((fieldname) => {
+      // This map currently has no effect since fieldnameMap is empty
       return fieldname;
     });
 
-    // Validate fieldnames
-    validateFieldnames(updatedConfig?.fields);
+    // Validate fieldnames (optional safety)
+    validateFieldnames(updatedConfig.fields);
 
-    // Save the updated configuration
     handleSave(updatedConfig);
   } catch (error) {
-    console.error(error?.message);
-    // Assuming ToastTemplates is a global toast utility function for error handling
+    console.error(error);
     ToastTemplates?.error(error?.message);
   }
 };

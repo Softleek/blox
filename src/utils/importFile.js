@@ -87,3 +87,30 @@ export default function handler(req, res) {
     return res.status(404).json(docDetails); // Return error message if not found
   }
 }
+
+// Utility function to find the app for a given module
+const findAppByModule = (module) => {
+  for (const app of doctypesData) {
+    const foundModule = app.modules.find((mod) => mod.id === module);
+    if (foundModule) {
+      return app; // Return the app if the module is found
+    }
+  }
+  return null; // Return null if the module is not found
+};
+
+// Utility function to construct a new path given module and slug
+export const constructPath = (module, slug, type = "doctype") => {
+  // Find the app for the given module
+  const app = findAppByModule(module);
+
+  if (!app) {
+    throw new Error(`App not found for module: ${module}`);
+  }
+
+  // Construct the path
+  const appDoctypePath = `./apps/${app.id}/${app.id}/${module}/${type}`;
+  const doctypeFilePath = `${appDoctypePath}/${slug}`;
+
+  return doctypeFilePath;
+};

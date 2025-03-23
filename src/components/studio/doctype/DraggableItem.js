@@ -29,16 +29,20 @@ const DraggableItem = ({ item, handleFocus, placeholder = false }) => {
   const [, drop] = useDrop({
     accept: ITEM_TYPE, // Accepts other items of type ITEM_TYPE
     hover: (draggedItem) => {
-      // Ensure the item is moved correctly when dropped
+      if (draggedItem?.item?.fieldname == item?.fieldname) {
+        return;
+      }
+
       const newConfig = moveItem(
         draggedItem?.item?.fieldname,
         item?.fieldname,
         localConfig
       );
+      // console.log("newConfig", newConfig, localConfig);
+
       setLocalConfig(newConfig);
     },
     drop: (draggedItem) => {
-      // Ensure the item is moved correctly when dropped
       const newConfig = moveItem(
         draggedItem?.item?.fieldname,
         item?.fieldname,
