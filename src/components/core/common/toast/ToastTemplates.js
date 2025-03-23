@@ -13,7 +13,7 @@ const baseStyle = "flex items-center text-slate-800";
 const ToastTemplates = {
   success: (message, title = "Success!", position = "bottom-right") =>
     toast(
-      <div className={`${baseStyle} text-green-500 w-full`}>
+      <div className={`${baseStyle} text-green-500 w-full !min-w-[200px]`}>
         <FontAwesomeIcon
           icon={faCheckCircle}
           className="w-6 h-6 mr-3 text-green-600"
@@ -34,7 +34,7 @@ const ToastTemplates = {
 
   error: (message, title = "Error!", position = "top-center") =>
     toast(
-      <div className={`${baseStyle} !text-purple-800`}>
+      <div className={`${baseStyle} !text-purple-800 w-full !min-w-[200px]`}>
         <FontAwesomeIcon
           icon={faTimesCircle}
           className="w-6 h-6 mr-3 text-red-600"
@@ -55,7 +55,7 @@ const ToastTemplates = {
 
   warning: (message, title = "Warning!", position = "bottom-right") =>
     toast(
-      <div className={`${baseStyle} text-yellow-500 w-full`}>
+      <div className={`${baseStyle} text-yellow-500 w-full !min-w-[200px]`}>
         <FontAwesomeIcon
           icon={faExclamationCircle}
           className="w-6 h-6 mr-3 text-yellow-600"
@@ -76,7 +76,7 @@ const ToastTemplates = {
 
   info: (message, title = "Info!", position = "bottom-right") =>
     toast(
-      <div className={`${baseStyle} text-blue-500 w-full`}>
+      <div className={`${baseStyle} text-blue-500 w-full !min-w-[200px]`}>
         <FontAwesomeIcon
           icon={faInfoCircle}
           className="w-6 h-6 mr-3 text-blue-600"

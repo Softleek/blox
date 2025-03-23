@@ -4,6 +4,7 @@ from typing import List
 import click
 
 from ..utils.app_actions import find_modules
+from ...utils.text import to_snake_case
 from .migrate_doc import STRUCTURE
 from .migrate_module import migrate_module
 from .update_urls_app import update_urls_py
@@ -20,12 +21,11 @@ def add_init_files(folder_path: str, modules: List[str]) -> None:
     init_file_path = os.path.join(folder_path, "__init__.py")
     os.makedirs(folder_path, exist_ok=True)
     with open(init_file_path, "w") as init_file:
-        init_file.truncate(0)  # Clear the contents of the file
-        init_file.write(f"from . import *\n")
-        # for module in modules:
-        #     # Convert module name to snake_case and lowercase before writing
-        #     module_snake_case = to_snake_case(module).lower()
-        #     init_file.write(f"from .{module_snake_case} import *\n")
+        init_file.truncate(0) 
+        for module in modules:
+            # Convert module name to snake_case and lowercase before writing
+            module_snake_case = to_snake_case(module).lower()
+            init_file.write(f"from .{module_snake_case} import *\n")
 
 
 def migrate_app(app_name: str, django_path: str) -> None:

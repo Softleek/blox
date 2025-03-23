@@ -27,7 +27,7 @@ export const arrangeFieldsIntoSectionsAndColumns = (
       label: "",
       fieldname: "",
       id: generateRandomId("column"),
-      prevField: currentSection.id,
+      prevField: currentSection?.id,
       fieldtype: "Column Break",
       fields: [],
     };

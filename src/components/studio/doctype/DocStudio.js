@@ -21,6 +21,7 @@ import DraggableTable from "./draggableTable";
 import SettingsForm from "./SettingsForm";
 import { handleDocSave } from "./utils/saveUtils";
 import { useData } from "@/contexts/DataContext";
+import { toUnderscoreLowercase } from "@/utils/textConvert";
 
 const DoctypeStudio = ({ handleSave, config, isNew = false }) => {
   const { localConfig } = useConfig();
@@ -60,7 +61,7 @@ const DoctypeStudio = ({ handleSave, config, isNew = false }) => {
   // Handle Go to List
   const handleGoToList = () => {
     if (!isNew) {
-      window.open(`/app/${doctypeId}`, "_blank"); // Open in a new tab
+      window.open(`/app/${toUnderscoreLowercase(doctypeId)}`, "_blank"); // Open in a new tab
     }
   };
 

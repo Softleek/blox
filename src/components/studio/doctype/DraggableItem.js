@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import FieldRenderer from "./FieldRenderer";
-import { moveItem } from "./utils/move";
+import { moveAfterField, moveBeforeField, moveItem } from "./utils/move";
 import { handleInputChange } from "./utils/handleInputChange";
 import { useConfig } from "@/contexts/ConfigContext";
 import ItemActions from "./section/ItemActions";
@@ -25,30 +25,13 @@ const DraggableItem = ({ item, handleFocus, placeholder = false }) => {
     }),
   });
 
-  // Drop logic for moving the item
   const [, drop] = useDrop({
-    accept: ITEM_TYPE, // Accepts other items of type ITEM_TYPE
+    accept: ITEM_TYPE,
     hover: (draggedItem) => {
-      if (draggedItem?.item?.fieldname == item?.fieldname) {
-        return;
-      }
-
-      const newConfig = moveItem(
-        draggedItem?.item?.fieldname,
-        item?.fieldname,
-        localConfig
-      );
-      // console.log("newConfig", newConfig, localConfig);
-
-      setLocalConfig(newConfig);
+      handleDropAndHover(draggedItem);
     },
     drop: (draggedItem) => {
-      const newConfig = moveItem(
-        draggedItem?.item?.fieldname,
-        item?.fieldname,
-        localConfig
-      );
-      setLocalConfig(newConfig);
+      handleDropAndHover(draggedItem);
     },
   });
 
@@ -59,6 +42,41 @@ const DraggableItem = ({ item, handleFocus, placeholder = false }) => {
     console.error(`Item at index ${index} is undefined`);
     return null;
   }
+
+  const handleDropAndHover = (draggedItem) => {
+    if (!draggedItem?.item || !item) return;
+
+    const draggedFieldName = draggedItem?.item?.fieldname;
+    const targetFieldName = item?.fieldname;
+
+    if (!draggedFieldName || draggedFieldName === targetFieldName) return;
+
+    const fieldOrder = localConfig?.field_order || [];
+    const draggedIndex = fieldOrder.indexOf(draggedFieldName);
+    const targetIndex = fieldOrder.indexOf(targetFieldName);
+
+    if (draggedIndex === -1 || targetIndex === -1) return;
+
+    let newConfig;
+
+    if (draggedIndex < targetIndex) {
+      // Dragged item is above the target item; move it after
+      newConfig = moveAfterField(
+        localConfig,
+        draggedFieldName,
+        targetFieldName
+      ); // true = moveAfter
+    } else {
+      // Dragged item is below or same level; default behavior
+      newConfig = moveBeforeField(
+        localConfig,
+        draggedFieldName,
+        targetFieldName
+      );
+    }
+
+    setLocalConfig(newConfig);
+  };
 
   // Handle selecting the field for focus
   const handleSelect = (e) => {

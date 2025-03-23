@@ -3,7 +3,7 @@ from .drop import *
 from .installapp import *
 from .installdoc import *
 from .installmodule import *
-from .migrate.migrate import migrate, migrate_django
+from .migrate.migrate import migrate, migrate_django, registermodels
 from .movedoc import *
 from .new import *
 from .uninstallapp import *

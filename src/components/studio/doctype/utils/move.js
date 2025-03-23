@@ -3,7 +3,7 @@ import { getFieldsAfterBreak } from "./getFieldsAfterBreak";
 // Helper to extract field names
 const getFieldName = (item) => {
   if (Array.isArray(item)) {
-    return item[0]?.fieldname || item[0]?.id;
+    return item?.[0]?.fieldname || item?.[0]?.id;
   }
   return item?.fieldname || item?.id || item;
 };
@@ -15,19 +15,25 @@ export const moveItem = (
   localConfig,
   moveAfter = false
 ) => {
-  // console.log("moveItem", draggedItem, targetItem, localConfig, moveAfter);
-
   const draggedFieldName = getFieldName(draggedItem);
   const targetFieldName = getFieldName(targetItem);
 
-  const draggedItemIndex = localConfig?.field_order?.indexOf(draggedFieldName);
-  const targetItemIndex = localConfig?.field_order?.indexOf(targetFieldName);
+  const updatedFieldOrder = [...(localConfig?.field_order || [])];
+
+  const draggedItemIndex = updatedFieldOrder.indexOf(draggedFieldName);
+  const targetItemIndex = updatedFieldOrder.indexOf(targetFieldName);
 
   if (draggedItemIndex === -1 || targetItemIndex === -1) {
-    return { success: false, error: "Field not found in field_order" };
+    // Remove dragged item if it exists to avoid duplicates
+    if (draggedItemIndex !== -1) {
+      updatedFieldOrder.splice(draggedItemIndex, 1);
+    }
+    // Append dragged item to end (even if it wasn't found before)
+    updatedFieldOrder.push(draggedFieldName);
+    return { ...localConfig, field_order: updatedFieldOrder };
   }
 
-  const updatedFieldOrder = [...(localConfig?.field_order || [])];
+  // Normal reordering
   updatedFieldOrder.splice(draggedItemIndex, 1);
 
   const newTargetIndex = moveAfter
@@ -55,26 +61,36 @@ export const moveTab = (draggedItem, targetItem, localConfig) => {
   return moveGroupedItems(draggedItem, targetItem, localConfig, "Tab");
 };
 
+// Helper to move fields after breaks (not used directly but kept for completeness)
 const moveGroupedItems1 = (draggedItem, targetItem, localConfig, breakType) => {
   const draggedFieldName = getFieldName(draggedItem);
   const targetFieldName = getFieldName(targetItem);
 
-  const draggedItemIndex = localConfig?.field_order?.indexOf(draggedFieldName);
-  const targetItemIndex = localConfig?.field_order?.indexOf(targetFieldName);
+  const updatedFieldOrder = [...(localConfig?.field_order || [])];
+  const draggedItemIndex = updatedFieldOrder.indexOf(draggedFieldName);
+  const targetItemIndex = updatedFieldOrder.indexOf(targetFieldName);
 
   if (draggedItemIndex === -1 || targetItemIndex === -1) {
-    return { success: false, error: "Field not found in field_order" };
+    // Fallback: move dragged group to end
+    const draggedItemsToMove = [
+      draggedFieldName,
+      ...getFieldsAfterBreak(localConfig, draggedFieldName, breakType),
+    ];
+    draggedItemsToMove.forEach((fieldname) => {
+      const index = updatedFieldOrder.indexOf(fieldname);
+      if (index !== -1) {
+        updatedFieldOrder.splice(index, 1);
+      }
+    });
+    updatedFieldOrder.push(...draggedItemsToMove);
+    return { ...localConfig, field_order: updatedFieldOrder };
   }
 
-  const updatedFieldOrder = [...(localConfig?.field_order || [])];
-
-  // Use getFieldsAfterBreak to collect fields to move
   const draggedItemsToMove = [
     draggedFieldName,
     ...getFieldsAfterBreak(localConfig, draggedFieldName, breakType),
   ];
 
-  // Remove the dragged items from their current positions
   draggedItemsToMove.forEach((fieldname) => {
     const index = updatedFieldOrder.indexOf(fieldname);
     if (index !== -1) {
@@ -82,12 +98,11 @@ const moveGroupedItems1 = (draggedItem, targetItem, localConfig, breakType) => {
     }
   });
 
-  // Insert the dragged items immediately above the targetFieldName
   const insertIndex = updatedFieldOrder.indexOf(targetFieldName);
-
-  // If insertIndex is valid, splice the items above the target
   if (insertIndex !== -1) {
     updatedFieldOrder.splice(insertIndex, 0, ...draggedItemsToMove);
+  } else {
+    updatedFieldOrder.push(...draggedItemsToMove);
   }
 
   return { ...localConfig, field_order: updatedFieldOrder };
@@ -102,39 +117,123 @@ export const moveGroupedItems = (
 ) => {
   const fieldOrder = [...(localConfig?.field_order || [])];
 
-  // Extract field names to move and the target field name
-  const fieldNamesToMove = fieldsToMove.map(getFieldName);
+  const fieldNamesToMove = fieldsToMove?.map(getFieldName) || [];
   const targetFieldName = getFieldName(targetField);
 
-  // Validate all fields are in field_order
-  if (fieldNamesToMove.some((field) => !fieldOrder.includes(field))) {
-    return {
-      success: false,
-      error: "Some fields to move are not in field_order",
-    };
-  }
-  if (!fieldOrder.includes(targetFieldName)) {
-    return { success: false, error: "Target field not found in field_order" };
-  }
+  // Filter out undefined/null values
+  const validFieldsToMove = fieldNamesToMove.filter(Boolean);
 
-  // Remove the fields to move from the field order
+  // Remove existing fields to avoid duplicates
   const updatedFieldOrder = fieldOrder.filter(
-    (field) => !fieldNamesToMove.includes(field)
+    (field) => !validFieldsToMove.includes(field)
   );
 
-  // Find the index of the target field in the updated field order
   const targetIndex = updatedFieldOrder.indexOf(targetFieldName);
 
   if (targetIndex === -1) {
-    return { success: false, error: "Target field index not found" };
+    // Target not found, move fields to end
+    updatedFieldOrder.push(...validFieldsToMove);
+  } else {
+    const insertionIndex = moveAbove ? targetIndex : targetIndex + 1;
+    updatedFieldOrder.splice(insertionIndex, 0, ...validFieldsToMove);
   }
 
-  // Calculate the insertion index based on moveAbove flag
-  const insertionIndex = moveAbove ? targetIndex : targetIndex + 1;
-
-  // Insert the fields to move at the calculated index
-  updatedFieldOrder.splice(insertionIndex, 0, ...fieldNamesToMove);
-
-  // Return the updated localConfig with the new field order
   return { ...localConfig, field_order: updatedFieldOrder };
+};
+
+// New Function: Move `newField` exactly after `oldField`
+export const moveAfterField = (config, newFieldName, oldFieldName) => {
+  try {
+    const fieldOrder = [...(config?.field_order || [])];
+
+    if (!newFieldName || !oldFieldName) return config;
+
+    // Remove newField if it exists to avoid duplicates
+    const cleanedFieldOrder = fieldOrder.filter(
+      (field) => field !== newFieldName
+    );
+
+    const oldFieldIndex = cleanedFieldOrder.indexOf(oldFieldName);
+
+    if (oldFieldIndex === -1) {
+      // Old field not found, append new field to end
+      cleanedFieldOrder.push(newFieldName);
+    } else {
+      // Insert new field after old field
+      cleanedFieldOrder.splice(oldFieldIndex + 1, 0, newFieldName);
+    }
+
+    return { ...config, field_order: cleanedFieldOrder };
+  } catch (error) {
+    console.error("Error in moveAfterField:", error);
+    return config;
+  }
+};
+
+// New Function: Move `newField` exactly before `oldField`
+export const moveBeforeField = (config, newFieldName, oldFieldName) => {
+  try {
+    const fieldOrder = [...(config?.field_order || [])];
+
+    if (!newFieldName || !oldFieldName) return config;
+
+    // Remove newField if it exists to avoid duplicates
+    const cleanedFieldOrder = fieldOrder.filter(
+      (field) => field !== newFieldName
+    );
+
+    const oldFieldIndex = cleanedFieldOrder.indexOf(oldFieldName);
+
+    if (oldFieldIndex === -1) {
+      // Old field not found, append new field to end
+      cleanedFieldOrder.push(newFieldName);
+    } else {
+      // Insert new field before old field
+      cleanedFieldOrder.splice(oldFieldIndex, 0, newFieldName);
+    }
+
+    return { ...config, field_order: cleanedFieldOrder };
+  } catch (error) {
+    console.error("Error in moveBeforeField:", error);
+    return config;
+  }
+};
+
+export const moveGroupfields = (
+  config,
+  firstFieldName,
+  lastFieldName,
+  targetFieldName,
+  insertBefore = true
+) => {
+  try {
+    const fieldOrder = [...(config?.field_order || [])];
+
+    if (!firstFieldName || !lastFieldName || !targetFieldName) return config;
+
+    const startIndex = fieldOrder.indexOf(firstFieldName);
+    const endIndex = fieldOrder.indexOf(lastFieldName);
+    const targetIndex = fieldOrder.indexOf(targetFieldName);
+
+    if (startIndex === -1 || endIndex === -1 || targetIndex === -1)
+      return config;
+
+    const groupFields = fieldOrder.slice(startIndex, endIndex + 1);
+
+    // Remove groupFields from fieldOrder
+    const cleanedFieldOrder = fieldOrder.filter(
+      (field) => !groupFields.includes(field)
+    );
+
+    // Determine new index for insertion
+    const adjustedTargetIndex = insertBefore ? targetIndex : targetIndex + 1;
+
+    // Insert group at the correct position
+    cleanedFieldOrder.splice(adjustedTargetIndex, 0, ...groupFields);
+
+    return { ...config, field_order: cleanedFieldOrder };
+  } catch (error) {
+    console.error("Error in moveGroupRelativeToTarget:", error);
+    return config;
+  }
 };

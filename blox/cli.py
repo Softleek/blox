@@ -41,6 +41,7 @@ cli.add_command(i)
 
 cli.add_command(migrate)
 cli.add_command(migrate_django, name="migrate-django")
+cli.add_command(registermodels, name="register-models")
 
 cli.add_command(django)
 

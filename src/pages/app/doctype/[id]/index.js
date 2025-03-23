@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useNavbar } from "@/contexts/NavbarContext";
 import { useSidebar } from "@/contexts/SidebarContext";
-import { toTitleCase } from "@/utils/textConvert";
+import { toTitleCase, toUnderscoreLowercase } from "@/utils/textConvert";
 import Loading from "@/components/core/account/Loading";
 import DoctypeStudio from "@/components/studio/doctype/DocStudio";
 import { ConfigProvider } from "@/contexts/ConfigContext";
@@ -35,7 +35,7 @@ const DocumentDetail = () => {
       try {
         // Fetch document details
 
-        const docData = findDocDetails(id);
+        const docData = findDocDetails(toUnderscoreLowercase(id));
         if (!docData) throw new Error("Failed to fetch document details");
 
         setFilePath(docData.docPath);
@@ -54,7 +54,10 @@ const DocumentDetail = () => {
         ]);
 
         // Fetch configuration data
-        const configData = await importFile(id, `${id}.json`);
+        const configData = await importFile(
+          toUnderscoreLowercase(id),
+          `${toUnderscoreLowercase(id)}.json`
+        );
         if (!configData) throw new Error("Failed to load configuration");
 
         setConfig(configData.content);
@@ -81,14 +84,17 @@ const DocumentDetail = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           directoryPath: filePath,
-          filename: `${id}.json`,
+          filename: `${toUnderscoreLowercase(id)}.json`,
           content: settings,
         }),
       });
 
       if (response.ok) {
         setConfig(settings);
-        const response1 = await postData({ doc: id }, `migrate`);
+        const response1 = await postData(
+          { doc: toUnderscoreLowercase(id) },
+          `migrate`
+        );
         if (!response1) {
           throw new Error("Failed to migrate");
         } else {
@@ -110,7 +116,7 @@ const DocumentDetail = () => {
   return (
     <ConfigProvider
       initialConfig={config}
-      initialAppData={{ endpoint: `documents/${id}` }}
+      initialAppData={{ endpoint: `documents/${toUnderscoreLowercase(id)}` }}
     >
       <DoctypeStudio handleSave={saveConfig} config={config} />
     </ConfigProvider>

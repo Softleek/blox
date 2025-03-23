@@ -37,6 +37,7 @@ def create_entries_from_config(django_path: str, site: str) -> None:
     # Import models after Django setup
     from core.models import App  # Update with actual path to models
     from core.models import Document, Module, PrintFormat
+    from frappe_app.models import DocType
 
     # Load JSON configuration file
     ensure_file_exists(DOCS_JSON_PATH, initial_data=[])
@@ -51,13 +52,13 @@ def create_entries_from_config(django_path: str, site: str) -> None:
     existing_modules = {
         module.id: module for module in Module.objects.using(site).all()
     }
-    existing_docs = {doc.id: doc for doc in Document.objects.using(site).all()}
+    existing_docs = {doc.id: doc for doc in DocType.objects.using(site).all()}
     existing_print_formats = {pf.id: pf for pf in PrintFormat.objects.using(site).all()}
 
     # Prepare lists for bulk operations
     apps_to_create: List[App] = []
     modules_to_create: List[Module] = []
-    docs_to_create: List[Document] = []
+    docs_to_create: List[DocType] = []
     print_formats_to_create: List[PrintFormat] = []
 
     # Track IDs that have already been added to avoid duplicates
@@ -105,26 +106,25 @@ def create_entries_from_config(django_path: str, site: str) -> None:
                 )
 
             for doc_data in module_data.get("docs", []):
-                doc_id = doc_data.get("id")
-                doc_name = doc_data.get("name")
+                doc_id = doc_data.get("name")
 
-                # Skip entries without id or name
-                if not doc_id or not doc_name:
+                # Skip entries without id
+                if not doc_id:
                     continue
 
                 # Skip if the doc_id already exists in existing_docs or has been added to docs_to_create
                 if doc_id in added_doc_ids:
                     continue
 
-                # Add the doc_id to the set of added IDs
-                added_doc_ids.add(doc_id)
-
-                # Create the Document object
-                docs_to_create.append(
-                    Document(
-                        id=doc_id, name=doc_name, module_id=module_id, app_id=app_id
-                    )
-                )
+                # Check if the doc_id already exists in the database
+                if doc_id in existing_docs:
+                    # If the record already exists, skip creation
+                    continue
+                else:
+                    # Add the doc_id to the set of added IDs
+                    added_doc_ids.add(doc_id)
+                    # Create the DocType object with only the id field
+                    docs_to_create.append(DocType(id=doc_id))
 
             for pf_data in module_data.get("print_formats", []):
                 pf_id = pf_data.get("id")
@@ -152,6 +152,6 @@ def create_entries_from_config(django_path: str, site: str) -> None:
     if modules_to_create:
         Module.objects.using(site).bulk_create(modules_to_create)
     if docs_to_create:
-        Document.objects.using(site).bulk_create(docs_to_create)
+        DocType.objects.using(site).bulk_create(docs_to_create)
     if print_formats_to_create:
         PrintFormat.objects.using(site).bulk_create(print_formats_to_create)
