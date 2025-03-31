@@ -10,6 +10,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.db import IntegrityError  
 import click
 
 from ..utils.data_validation import validate_serializer_data
@@ -396,7 +397,7 @@ class GenericViewSet(BaseModelMixin, viewsets.ModelViewSet):
 
 
 
-class SingleInstanceViewSet(BaseModelMixin, viewsets.ViewSet):
+class SingleInstanceViewSet(BaseModelMixin, viewsets.ModelViewSet):
     """
     ViewSet for handling single instance models (singleton pattern).
     Automatically creates instance if it doesn't exist during GET requests.
@@ -501,14 +502,40 @@ class SingleInstanceViewSet(BaseModelMixin, viewsets.ViewSet):
         except Exception:
             return "1"
 
+    # def get_or_create_instance(self):
+    #     """Get or create the single instance with default data"""
+    #     instance_id = self.get_instance_id()
+    #     instance, created = self.queryset.model.objects.get_or_create(
+    #         pk=instance_id,
+    #         defaults=self.default_data
+    #     )
+    #     return instance
+    
     def get_or_create_instance(self):
-        """Get or create the single instance with default data"""
-        instance_id = self.get_instance_id()
-        instance, created = self.queryset.model.objects.get_or_create(
-            pk=instance_id,
-            defaults=self.default_data
-        )
-        return instance
+            """Get or create the single instance with default data"""
+            instance_id = self.get_instance_id()
+            
+            try:
+                # First try to get existing instance
+                return self.queryset.model.objects.get(pk=instance_id)
+            except self.queryset.model.DoesNotExist:
+                try:
+                    # Try to create with default data
+                    instance = self.queryset.model.objects.create(pk=instance_id, **self.default_data)
+                    return instance
+                except IntegrityError as ie:
+                    # If foreign key constraints fail, try to create minimal instance
+                    try:
+                        minimal_data = {
+                            k: v for k, v in self.default_data.items() 
+                            if not isinstance(self.queryset.model._meta.get_field(k), models.ForeignKey)
+                        }
+                        instance = self.queryset.model.objects.create(pk=instance_id, **minimal_data)
+                        return instance
+                    except Exception:
+                        # As last resort, create empty instance
+                        instance = self.queryset.model.objects.create(pk=instance_id)
+                    return instance
 
     @handle_errors
     def list(self, request, *args, **kwargs):

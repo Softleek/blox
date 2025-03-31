@@ -60,6 +60,13 @@ class SingletonModel(BaseModel):
 
     class Meta:
         abstract = True
+        
+    @classmethod
+    def get(cls, *args, **kwargs):
+        """Override the default get() to return the singleton instance"""
+        if not kwargs and not args:  # If no filters provided
+            return cls.get_instance()
+        return super().get(*args, **kwargs) 
 
     def get_config_based_id(self):
         """Get the ID based on model's doctype config or fallback to model name"""
@@ -86,22 +93,27 @@ class SingletonModel(BaseModel):
     @classmethod
     def get_instance(cls):
         """
-        Get or create the single instance.
+        Get or create the single instance using filter() approach.
         Automatically sets ID based on config name.
         """
-        # Create temp instance to generate the ID
+        # Generate the singleton ID
         temp_instance = cls()
         instance_id = temp_instance.get_config_based_id()
         
-        instance, created = cls.objects.get_or_create(
-            id=instance_id,
-            defaults={}
-        )
+        # Try to get existing instance using filter()
+        instance = cls.objects.filter(id=instance_id).first()
         
-        if created:
-            instance._just_created = True
-            instance.save()  # Ensure defaults are saved
-            
+        if instance:
+            instance._just_created = False
+            return instance
+        
+        # If no instance exists, create new one
+        if cls.objects.exists():
+            raise ValidationError(f"Only one instance of {cls.__name__} is allowed.")
+        
+        instance = cls(id=instance_id)
+        instance._just_created = True
+        instance.save()
         return instance
 
     def delete(self, *args, **kwargs):
