@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.integrations.google_calendar import GoogleCalendar
 from frappe_app.filters.integrations.google_calendar import GoogleCalendarFilter
 from frappe_app.serializers.integrations.google_calendar import GoogleCalendarSerializer
@@ -12,3 +11,4 @@ class GoogleCalendarViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = GoogleCalendarSerializer
 
+    filterset_class = GoogleCalendarFilter

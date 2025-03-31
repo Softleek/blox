@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.server_script import ServerScript
 from frappe_app.filters.frappe_core.server_script import ServerScriptFilter
 from frappe_app.serializers.frappe_core.server_script import ServerScriptSerializer
@@ -12,3 +11,4 @@ class ServerScriptViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ServerScriptSerializer
 
+    filterset_class = ServerScriptFilter

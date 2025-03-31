@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.integrations.connected_app import ConnectedApp
 from frappe_app.filters.integrations.connected_app import ConnectedAppFilter
 from frappe_app.serializers.integrations.connected_app import ConnectedAppSerializer
@@ -12,3 +11,4 @@ class ConnectedAppViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ConnectedAppSerializer
 
+    filterset_class = ConnectedAppFilter

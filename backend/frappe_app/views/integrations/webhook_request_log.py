@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.integrations.webhook_request_log import WebhookRequestLog
 from frappe_app.filters.integrations.webhook_request_log import WebhookRequestLogFilter
 from frappe_app.serializers.integrations.webhook_request_log import WebhookRequestLogSerializer
@@ -12,3 +11,4 @@ class WebhookRequestLogViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WebhookRequestLogSerializer
 
+    filterset_class = WebhookRequestLogFilter

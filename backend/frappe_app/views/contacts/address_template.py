@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.contacts.address_template import AddressTemplate
 from frappe_app.filters.contacts.address_template import AddressTemplateFilter
 from frappe_app.serializers.contacts.address_template import AddressTemplateSerializer
@@ -12,3 +11,4 @@ class AddressTemplateViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = AddressTemplateSerializer
 
+    filterset_class = AddressTemplateFilter

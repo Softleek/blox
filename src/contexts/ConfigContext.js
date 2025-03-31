@@ -15,7 +15,7 @@ export const ConfigProvider = ({
   const [localAppData, setLocalAppData] = useState(initialAppData || {});
   const [selectedItem, setSelectedItem] = useState(null);
   const [settings, setSettings] = useState({});
-  const [selectedTab, setSelectedTab] = useState("details");
+  const [selectedTab, setSelectedTab] = useState(null);
   const [hoveredItem, setHoveredItem] = useState({});
   // Set document data (app, module, doctype) to context
   const [app, setApp] = useState(documentData?.app || "");

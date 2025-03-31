@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.workspace_custom_block import WorkspaceCustomBlock
 from frappe_app.filters.desk.workspace_custom_block import WorkspaceCustomBlockFilter
 from frappe_app.serializers.desk.workspace_custom_block import WorkspaceCustomBlockSerializer
@@ -12,3 +11,4 @@ class WorkspaceCustomBlockViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WorkspaceCustomBlockSerializer
 
+    filterset_class = WorkspaceCustomBlockFilter

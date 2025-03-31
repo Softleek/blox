@@ -85,7 +85,7 @@ const Search = () => {
   // Handle click on an option
   const handleOptionClick = (option) => {
     const link =
-      option.type === "new" ? `/${option.link}/new` : `/${option.link}`;
+      option.type === "new" ? `${option.link}/new` : `${option.link}`;
     router.push(link);
     setIsFocused(false); // Hide options after clicking
   };

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.desktop_icon import DesktopIcon
 from frappe_app.filters.desk.desktop_icon import DesktopIconFilter
 from frappe_app.serializers.desk.desktop_icon import DesktopIconSerializer
@@ -12,3 +11,4 @@ class DesktopIconViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DesktopIconSerializer
 
+    filterset_class = DesktopIconFilter

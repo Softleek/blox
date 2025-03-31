@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.tag_link import TagLink
 from frappe_app.filters.desk.tag_link import TagLinkFilter
 from frappe_app.serializers.desk.tag_link import TagLinkSerializer
@@ -12,3 +11,4 @@ class TagLinkViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = TagLinkSerializer
 
+    filterset_class = TagLinkFilter

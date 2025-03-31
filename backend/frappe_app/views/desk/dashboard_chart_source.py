@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.dashboard_chart_source import DashboardChartSource
 from frappe_app.filters.desk.dashboard_chart_source import DashboardChartSourceFilter
 from frappe_app.serializers.desk.dashboard_chart_source import DashboardChartSourceSerializer
@@ -12,3 +11,4 @@ class DashboardChartSourceViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DashboardChartSourceSerializer
 
+    filterset_class = DashboardChartSourceFilter

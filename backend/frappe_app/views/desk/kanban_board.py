@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.kanban_board import KanbanBoard
 from frappe_app.filters.desk.kanban_board import KanbanBoardFilter
 from frappe_app.serializers.desk.kanban_board import KanbanBoardSerializer
@@ -12,3 +11,4 @@ class KanbanBoardViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = KanbanBoardSerializer
 
+    filterset_class = KanbanBoardFilter

@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { useConfig } from "@/contexts/ConfigContext";
 import FieldRenderer from "./FieldRenderer";
 import { useData } from "@/contexts/DataContext";
+import { evaluateDependsOn } from "@/utils/evaluationUtils";
 
 const FieldItem = ({ item, handleFocus, placeholder = false }) => {
   const { selectedItem, setSelectedItem } = useConfig();
@@ -34,32 +35,6 @@ const FieldItem = ({ item, handleFocus, placeholder = false }) => {
       ...prevData,
       [field.fieldname]: value,
     }));
-  };
-
-  const evaluateDependsOn = (dependsOn, form) => {
-    try {
-      // If form is null, return true to make the section visible by default
-      if (!form) return true;
-  
-      const match = dependsOn.match(/^\s*(\w+)\s*(!=|==)\s*(['"]?)(.*?)\3\s*$/);
-      if (!match) {
-        console.error("Invalid depends_on condition format:", dependsOn);
-        return true;
-      }
-  
-      const [, key, operator, , value] = match;
-      const formValue = form[key.trim()];
-  
-      if (operator === "!=") {
-        return formValue !== value;
-      } else if (operator === "==") {
-        return formValue === value;
-      }
-      return true;
-    } catch (error) {
-      console.error("Error evaluating depends_on condition:", error);
-      return true;
-    }
   };
 
   if (!isVisible) return null;

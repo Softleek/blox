@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.utm_campaign import UTMCampaign
 from frappe_app.filters.website.utm_campaign import UTMCampaignFilter
 from frappe_app.serializers.website.utm_campaign import UTMCampaignSerializer
@@ -12,3 +11,4 @@ class UTMCampaignViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = UTMCampaignSerializer
 
+    filterset_class = UTMCampaignFilter

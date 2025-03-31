@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.automation.auto_repeat_day import AutoRepeatDay
 from frappe_app.filters.automation.auto_repeat_day import AutoRepeatDayFilter
 from frappe_app.serializers.automation.auto_repeat_day import AutoRepeatDaySerializer
@@ -12,3 +11,4 @@ class AutoRepeatDayViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = AutoRepeatDaySerializer
 
+    filterset_class = AutoRepeatDayFilter

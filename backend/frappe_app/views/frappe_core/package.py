@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.package import Package
 from frappe_app.filters.frappe_core.package import PackageFilter
 from frappe_app.serializers.frappe_core.package import PackageSerializer
@@ -12,3 +11,4 @@ class PackageViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = PackageSerializer
 
+    filterset_class = PackageFilter

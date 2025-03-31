@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.document_share_key import DocumentShareKey
 from frappe_app.filters.frappe_core.document_share_key import DocumentShareKeyFilter
 from frappe_app.serializers.frappe_core.document_share_key import DocumentShareKeySerializer
@@ -12,3 +11,4 @@ class DocumentShareKeyViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DocumentShareKeySerializer
 
+    filterset_class = DocumentShareKeyFilter

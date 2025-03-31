@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.integrations.social_login_key import SocialLoginKey
 from frappe_app.filters.integrations.social_login_key import SocialLoginKeyFilter
 from frappe_app.serializers.integrations.social_login_key import SocialLoginKeySerializer
@@ -12,3 +11,4 @@ class SocialLoginKeyViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = SocialLoginKeySerializer
 
+    filterset_class = SocialLoginKeyFilter

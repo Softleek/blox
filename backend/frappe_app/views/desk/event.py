@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.event import Event
 from frappe_app.filters.desk.event import EventFilter
 from frappe_app.serializers.desk.event import EventSerializer
@@ -12,3 +11,4 @@ class EventViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = EventSerializer
 
+    filterset_class = EventFilter

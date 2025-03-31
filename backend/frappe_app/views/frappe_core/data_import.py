@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.data_import import DataImport
 from frappe_app.filters.frappe_core.data_import import DataImportFilter
 from frappe_app.serializers.frappe_core.data_import import DataImportSerializer
@@ -12,3 +11,4 @@ class DataImportViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DataImportSerializer
 
+    filterset_class = DataImportFilter

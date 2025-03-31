@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.changelog_feed import ChangelogFeed
 from frappe_app.filters.desk.changelog_feed import ChangelogFeedFilter
 from frappe_app.serializers.desk.changelog_feed import ChangelogFeedSerializer
@@ -12,3 +11,4 @@ class ChangelogFeedViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ChangelogFeedSerializer
 
+    filterset_class = ChangelogFeedFilter

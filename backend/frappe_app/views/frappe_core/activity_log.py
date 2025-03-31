@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.activity_log import ActivityLog
 from frappe_app.filters.frappe_core.activity_log import ActivityLogFilter
 from frappe_app.serializers.frappe_core.activity_log import ActivityLogSerializer
@@ -12,3 +11,4 @@ class ActivityLogViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ActivityLogSerializer
 
+    filterset_class = ActivityLogFilter

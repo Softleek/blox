@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.onboarding_permission import OnboardingPermission
 from frappe_app.filters.desk.onboarding_permission import OnboardingPermissionFilter
 from frappe_app.serializers.desk.onboarding_permission import OnboardingPermissionSerializer
@@ -12,3 +11,4 @@ class OnboardingPermissionViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = OnboardingPermissionSerializer
 
+    filterset_class = OnboardingPermissionFilter

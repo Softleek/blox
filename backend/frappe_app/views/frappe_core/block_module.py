@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.block_module import BlockModule
 from frappe_app.filters.frappe_core.block_module import BlockModuleFilter
 from frappe_app.serializers.frappe_core.block_module import BlockModuleSerializer
@@ -12,3 +11,4 @@ class BlockModuleViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = BlockModuleSerializer
 
+    filterset_class = BlockModuleFilter

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.workspace_number_card import WorkspaceNumberCard
 from frappe_app.filters.desk.workspace_number_card import WorkspaceNumberCardFilter
 from frappe_app.serializers.desk.workspace_number_card import WorkspaceNumberCardSerializer
@@ -12,3 +11,4 @@ class WorkspaceNumberCardViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WorkspaceNumberCardSerializer
 
+    filterset_class = WorkspaceNumberCardFilter

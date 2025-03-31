@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.dynamic_link import DynamicLink
 from frappe_app.filters.frappe_core.dynamic_link import DynamicLinkFilter
 from frappe_app.serializers.frappe_core.dynamic_link import DynamicLinkSerializer
@@ -12,3 +11,4 @@ class DynamicLinkViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DynamicLinkSerializer
 
+    filterset_class = DynamicLinkFilter

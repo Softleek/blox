@@ -99,7 +99,8 @@ const DocHeader = ({
             <div className="h-full">
               <Link href={link}>
                 <h5 className="mb-1 text-gray-900 font-bold">
-                  {toTitleCase(title)}
+                  {title}
+                  {/* {toTitleCase(title)} */}
                 </h5>
               </Link>
               <p className="mb-0 font-semibold leading-normal text-sm">

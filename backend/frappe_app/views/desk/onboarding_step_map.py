@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.onboarding_step_map import OnboardingStepMap
 from frappe_app.filters.desk.onboarding_step_map import OnboardingStepMapFilter
 from frappe_app.serializers.desk.onboarding_step_map import OnboardingStepMapSerializer
@@ -12,3 +11,4 @@ class OnboardingStepMapViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = OnboardingStepMapSerializer
 
+    filterset_class = OnboardingStepMapFilter

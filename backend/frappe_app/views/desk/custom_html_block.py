@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.custom_html_block import CustomHTMLBlock
 from frappe_app.filters.desk.custom_html_block import CustomHTMLBlockFilter
 from frappe_app.serializers.desk.custom_html_block import CustomHTMLBlockSerializer
@@ -12,3 +11,4 @@ class CustomHTMLBlockViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = CustomHTMLBlockSerializer
 
+    filterset_class = CustomHTMLBlockFilter

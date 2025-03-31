@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.user_type import UserType
 from frappe_app.filters.frappe_core.user_type import UserTypeFilter
 from frappe_app.serializers.frappe_core.user_type import UserTypeSerializer
@@ -12,3 +11,4 @@ class UserTypeViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = UserTypeSerializer
 
+    filterset_class = UserTypeFilter

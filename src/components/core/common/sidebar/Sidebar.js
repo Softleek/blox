@@ -143,18 +143,13 @@ const Sidebar = () => {
                 className="transition-all duration-300 ease-in-out hidden group-hover:block" // Show on hover
               />
             </button>
-            <a
-              className="block py-2 m-0 text-sm flex flex-col whitespace-nowrap justify-center items-center text-slate-700"
-              target="_blank"
-              rel="noreferrer"
-              href="/"
-            >
-              <Link href={`/${pageInfo?.link}` || "/"}>
+            <div className="block py-2 m-0 text-sm flex flex-col whitespace-nowrap justify-center items-center text-slate-700">
+              <Link href={`${pageInfo?.link}` || "/"}>
                 <span className="ml-4 mr-2 font-semibold text-xl transition-all duration-200 ease-nav-brand">
                   {pageInfo?.text || "Home"}
                 </span>
               </Link>
-            </a>
+            </div>
           </div>
 
           <hr className="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />

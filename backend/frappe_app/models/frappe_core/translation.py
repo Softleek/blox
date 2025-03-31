@@ -1,9 +1,9 @@
 from django.db import models
 from multiselectfield import MultiSelectField
-from core.models.template import BaseModel, SingletonModel
 import uuid
 import os
 from django.conf import settings
+from core.models.template import BaseModel
 
 class Translation(BaseModel):
     language = models.ForeignKey("frappe_app.Language", related_name="TranslationLanguage", on_delete=models.CASCADE, null=True, blank=True)

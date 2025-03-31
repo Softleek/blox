@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.workflow.workflow import Workflow
 from frappe_app.filters.workflow.workflow import WorkflowFilter
 from frappe_app.serializers.workflow.workflow import WorkflowSerializer
@@ -12,3 +11,4 @@ class WorkflowViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WorkflowSerializer
 
+    filterset_class = WorkflowFilter

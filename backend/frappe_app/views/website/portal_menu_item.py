@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.portal_menu_item import PortalMenuItem
 from frappe_app.filters.website.portal_menu_item import PortalMenuItemFilter
 from frappe_app.serializers.website.portal_menu_item import PortalMenuItemSerializer
@@ -12,3 +11,4 @@ class PortalMenuItemViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = PortalMenuItemSerializer
 
+    filterset_class = PortalMenuItemFilter

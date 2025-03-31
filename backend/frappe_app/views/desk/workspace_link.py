@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.workspace_link import WorkspaceLink
 from frappe_app.filters.desk.workspace_link import WorkspaceLinkFilter
 from frappe_app.serializers.desk.workspace_link import WorkspaceLinkSerializer
@@ -12,3 +11,4 @@ class WorkspaceLinkViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WorkspaceLinkSerializer
 
+    filterset_class = WorkspaceLinkFilter

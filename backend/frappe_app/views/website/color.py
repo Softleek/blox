@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.color import Color
 from frappe_app.filters.website.color import ColorFilter
 from frappe_app.serializers.website.color import ColorSerializer
@@ -12,3 +11,4 @@ class ColorViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ColorSerializer
 
+    filterset_class = ColorFilter

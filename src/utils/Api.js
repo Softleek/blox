@@ -9,17 +9,18 @@ let apiUrl = "";
 
 if (typeof window !== "undefined") {
   const nextJsRootUrl = window.location.origin;
-  const hasPort = window.location.port;
 
-  if (hasPort) {
-    apiUrl = `${nextJsRootUrl.replace(window.location.port, djangoPort)}/apis`;
-  } else {
-    const protocol = nextJsRootUrl.startsWith("https://") ? "https" : "http";
-    const domain = nextJsRootUrl.replace(/^https?:\/\//, "").split("/")[0];
-    apiUrl = `${protocol}://${domain}/apis`;
+  let domain = nextJsRootUrl.replace(/^https?:\/\//, "").split("/")[0];
+
+  // Replace any subdomain of localhost (e.g., test.localhost, dev.localhost) with 127.0.0.1
+  if (domain.includes("localhost")) {
+    domain = "127.0.0.1";
   }
+
+  const protocol = nextJsRootUrl.startsWith("https://") ? "https" : "http";
+  apiUrl = `${protocol}://${domain}:${djangoPort}/apis`;
 } else {
-  apiUrl = `http://localhost:${djangoPort}/apis`;
+  apiUrl = `http://127.0.0.1:${djangoPort}/apis`;
 }
 
 const formatUrl = (url) => (url.endsWith("/") ? url : url + "/");
@@ -494,11 +495,6 @@ export const uploadFile = async (file, folder, filename, isPrivate) => {
     formData.append("file", file); // Append the file
     formData.append("folder", `${tenant}/${isPrivateFolder}/${folder}`); // Append the folder name
     formData.append("filename", filename); // Append the desired filename
-
-    // Debugging: Log FormData entries
-    for (const [key, value] of formData.entries()) {
-      console.log(`FormData Key: ${key}, Value:`, value);
-    }
 
     // Send the request
     const response = await axios.post(uploadUrl, formData, { headers });

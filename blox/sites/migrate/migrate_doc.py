@@ -130,12 +130,26 @@ def write_module_content(
     with open(module_file_path, "w+") as module_file:
         if folder == "models":
             model_file_path = os.path.join(doc_folder_path, f"{doc_name}.json")
-            is_single = False
+            is_single = False 
+            model_type = "default"
             if os.path.exists(model_file_path):
                 # Load data from doc_name.json and extract fields and settings
-                model_data = load_json_file(model_file_path)
-                is_single = str((model_data or {}).get("issingle")).lower() in ("1", "true")
-            write_model_header(module_file, model_name, is_single)
+                model_data = load_json_file(model_file_path) or {}
+                
+                # Determine model type (single takes precedence over submittable)
+                is_single = str(model_data.get("issingle", "")).lower() in ("1", "true")
+                is_submittable = str(model_data.get("is_submittable", "")).lower() in ("1", "true") if not is_single else False
+                
+                # Set model type based on configuration
+                if is_single:
+                    model_type = "single"
+                elif is_submittable:
+                    model_type = "submittable"
+                else:
+                    model_type = "default"
+                
+            write_model_header(module_file, model_name, model_type)
+            
             write_model_fields(
                 module_file,
                 module_file_path,
@@ -169,21 +183,38 @@ def write_module_content(
             )
             
 
-def write_model_header(module_file: TextIO, model_name: str, is_single: bool) -> None:
+def write_model_header(module_file: TextIO, model_name: str, model_type: str) -> None:
     """Write the imports and class definition header for models.
 
     Args:
         module_file (TextIO): The file object for the module file.
         model_name (str): The name of the model class.
-        is_single (bool): Whether the model is a singleton.
+        model_type (str): Type of model - 'default', 'single', or 'submittable'
     """
-    module_file.write(
-        "from django.db import models\n"
-        "from multiselectfield import MultiSelectField\n"
-        "from core.models.template import BaseModel, SingletonModel\n"
-        "import uuid\nimport os\nfrom django.conf import settings\n\n"
-    )
-    base_class = "SingletonModel" if is_single else "BaseModel"
+    imports = [
+        "from django.db import models",
+        "from multiselectfield import MultiSelectField",
+        "import uuid",
+        "import os",
+        "from django.conf import settings"
+    ]
+    
+    # Determine base class and additional imports
+    if model_type == "single":
+        imports.append("from core.models.template import SingletonModel")
+        base_class = "SingletonModel"
+    elif model_type == "submittable":
+        imports.append("from core.models.template import SubmittableModel")
+        base_class = "SubmittableModel"
+    else:  # default
+        imports.append("from core.models.template import BaseModel")
+        base_class = "BaseModel"
+    
+    # Write all imports
+    module_file.write("\n".join(imports))
+    module_file.write("\n\n")
+    
+    # Write class definition
     module_file.write(f"class {model_name}({base_class}):\n")
 
 
@@ -200,8 +231,8 @@ def write_views_header(
         doc_name (str): The name of the document.
     """
     module_file.write(
-        f"from rest_framework import viewsets\n"
-        f"from core.views.template import GenericViewSet\n"
+        # f"from rest_framework import viewsets\n"
+        f"from core.views.template import GenericViewSet, SingleInstanceViewSet\n"
         f"from {app_name}.models.{module_name}.{doc_name} import {model_name}\n"
         f"from {app_name}.filters.{module_name}.{doc_name} import {model_name}Filter\n"
         f"from {app_name}.serializers.{module_name}.{doc_name} import {model_name}Serializer\n"

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.workspace_quick_list import WorkspaceQuickList
 from frappe_app.filters.desk.workspace_quick_list import WorkspaceQuickListFilter
 from frappe_app.serializers.desk.workspace_quick_list import WorkspaceQuickListSerializer
@@ -12,3 +11,4 @@ class WorkspaceQuickListViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WorkspaceQuickListSerializer
 
+    filterset_class = WorkspaceQuickListFilter

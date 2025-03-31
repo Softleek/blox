@@ -27,7 +27,7 @@ const CustomTimePicker = ({
   const [timeState, setTimeState] = useState(
     includeDate ? new Date(value) : value
   );
-  const [selectedDate, setSelectedDate] = useState(new Date(value));
+  const [selectedDate, setSelectedDate] = useState(new Date(value) || "");
   const [hour, setHour] = useState(0);
   const [minute, setMinute] = useState(0);
   const [isAmSelected, setIsAmSelected] = useState(true);
@@ -287,7 +287,7 @@ const CustomTimePicker = ({
     >
       <input
         className="!w-full px-2 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus:border-none focus:ring-0 bg-transparent"
-        value={value}
+        value={value || ""}
         onFocus={handleIconClick}
         onChange={(e) => onChange(e.target.value)}
         placeholder="HH:mm:ss"

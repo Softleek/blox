@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { XCircle, Eye } from "lucide-react"; // Import Lucide icons
 import Modal from "../core/common/modal/Modal";
-import { uploadFile } from "@/utils/Api";
+import { uploadFile, apiUrl } from "@/utils/Api";
 import Image from "next/image"; // Import Next.js Image component
 
 const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
   const [imageFile, setImageFile] = useState(value || null);
-  const [previewImage, setPreviewImage] = useState(value ? value : null);
+  const [previewImage, setPreviewImage] = useState(
+    value ? (value.startsWith("http") ? value : `${apiUrl}${value}`) : null
+  );
   const [imageName, setImageName] = useState(
     value ? value.name || value.split("/").pop() : ""
   );
@@ -14,6 +16,14 @@ const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isPrivate, setIsPrivate] = useState(false); // Private/public toggle
+
+  // Helper function to get the full image URL
+  const getImageUrl = (image) => {
+    if (!image) return null;
+    if (typeof image === "object") return URL.createObjectURL(image); // For file objects
+    if (image.startsWith("http") || image.startsWith("blob:")) return image; // Already a URL
+    return `${apiUrl}${image}`; // Prepend apiUrl for relative paths
+  };
 
   // Split filename into name and extension
   const getFileNameAndExtension = (filename) => {
@@ -43,7 +53,7 @@ const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
       // Set the selected file and open the confirmation modal
       setSelectedFile(file);
       setImageName(file.name); // Set the initial image name
-      setPreviewImage(URL.createObjectURL(file)); // Generate a preview URL
+      setPreviewImage(getImageUrl(file)); // Generate a preview URL
       setShowConfirmationModal(true);
     }
   };
@@ -62,7 +72,7 @@ const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
           const fileUrl = resp?.url;
           // Update the state with the new file URL
           setImageFile(null); // Clear the file object
-          setPreviewImage(fileUrl); // Set the URL as the preview image
+          setPreviewImage(getImageUrl(fileUrl)); // Set the URL as the preview image
           setImageName(imageName); // Keep the updated name
 
           // Pass the file URL to the parent component
@@ -96,17 +106,16 @@ const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
     setImageName("");
     onChange(null);
   };
-
   return (
     <div className="relative image-field w-full overflow-auto" hidden={hidden}>
       {previewImage ? (
         <div className="relative image-preview w-full overflow-auto">
           <Image
             src={previewImage}
-            alt="Preview"
+            alt={imageName}
             width={500} // Set appropriate width
             height={300} // Set appropriate height
-            className="image-preview__img w-full h-32 p-2 object-cover rounded-lg cursor-pointer"
+            className="image-preview__img w-full h-fit p-2 object-cover rounded-lg cursor-pointer"
             onClick={() => setShowPreview(true)}
           />
           <div className="flex items-center -mt-14 mb-2 p-2 w-full overflow-auto">

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.contacts.salutation import Salutation
 from frappe_app.filters.contacts.salutation import SalutationFilter
 from frappe_app.serializers.contacts.salutation import SalutationSerializer
@@ -12,3 +11,4 @@ class SalutationViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = SalutationSerializer
 
+    filterset_class = SalutationFilter

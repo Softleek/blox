@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.discussion_topic import DiscussionTopic
 from frappe_app.filters.website.discussion_topic import DiscussionTopicFilter
 from frappe_app.serializers.website.discussion_topic import DiscussionTopicSerializer
@@ -12,3 +11,4 @@ class DiscussionTopicViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DiscussionTopicSerializer
 
+    filterset_class = DiscussionTopicFilter

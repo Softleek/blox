@@ -153,5 +153,120 @@ def create_entries_from_config(django_path: str, site: str) -> None:
         Module.objects.using(site).bulk_create(modules_to_create)
     if docs_to_create:
         DocType.objects.using(site).bulk_create(docs_to_create)
-    if print_formats_to_create:
-        PrintFormat.objects.using(site).bulk_create(print_formats_to_create)
+    # if print_formats_to_create:
+    #     PrintFormat.objects.using(site).bulk_create(print_formats_to_create)
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+#         import json
+# import os
+# import sys
+# from typing import Any, List
+
+# import django
+# from django.db.models import Model
+
+# from ...utils.config import DOCS_JSON_PATH, get_site_config
+# from ...utils.file_operations import ensure_file_exists
+
+
+# def initialize_django_env(django_path: str) -> None:
+#     """
+#     Initialize the Django environment based on the provided django_path.
+
+#     Args:
+#         django_path (str): The path to the Django project.
+#     """
+#     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")  # Update to your settings module
+#     sys.path.insert(0, django_path)  # Add Django project path to Python path
+#     django.setup()
+
+
+# def create_entries_from_config(django_path: str, site: str) -> None:
+#     """
+#     Process the JSON configuration file and create/update database entries.
+
+#     Args:
+#         django_path (str): The path to the Django project.
+#         site (str): The site name to filter the configuration.
+#     """
+#     # Initialize Django environment
+#     initialize_django_env(django_path)
+
+#     # Import models after Django setup
+#     from core.models import App, Document, Module, PrintFormat
+#     from frappe_app.models import DocType
+
+#     # Load JSON configuration file
+#     ensure_file_exists(DOCS_JSON_PATH, initial_data=[])
+#     site_data = get_site_config(site)
+#     installed_apps = site_data.get("installed_apps", []) if site_data else []
+#     installed_apps.append("core")  # Ensure 'core' is always included
+
+#     with open(DOCS_JSON_PATH, "r") as file:
+#         config = json.load(file)
+
+#     # Process each app and its modules/documents
+#     for app_data in config:
+#         app_id = app_data.get("id")
+#         app_name = app_data.get("name")
+
+#         # Skip invalid entries
+#         if not app_id or not app_name or app_name not in installed_apps:
+#             continue
+
+#         # Update or create App
+#         app, _ = App.objects.using(site).update_or_create(
+#             id=app_id, defaults={"name": app_name}
+#         )
+
+#         for module_data in app_data.get("modules", []):
+#             module_id = module_data.get("id")
+#             module_name = module_data.get("name")
+
+#             if not module_id or not module_name:
+#                 continue
+
+#             # Update or create Module
+#             module, _ = Module.objects.using(site).update_or_create(
+#                 id=module_id, defaults={"name": module_name, "app_id": app.id}
+#             )
+
+#             for doc_data in module_data.get("docs", []):
+#                 doc_id = doc_data.get("id")
+#                 doc_name = doc_data.get("name")
+
+#                 if not doc_id or not doc_name:
+#                     continue
+
+#                 # Update or create DocType
+#                 doc, _ = DocType.objects.using(site).update_or_create(
+#                     id=doc_id
+#                 )
+
+#                 # Ensure a corresponding Document exists
+#                 Document.objects.using(site).update_or_create(
+#                     id=doc.id, defaults={"name": doc_data.name, "id": doc.id, "module_id": module.id, "app_id": app.id}
+#                 )
+
+#             for pf_data in module_data.get("print_formats", []):
+#                 pf_id = pf_data.get("id")
+#                 pf_name = pf_data.get("name")
+
+#                 if not pf_id or not pf_name:
+#                     continue
+
+#                 # Update or create PrintFormat
+#                 PrintFormat.objects.using(site).update_or_create(
+#                     id=pf_id, defaults={"name": pf_name, "module_id": module.id, "app_id": app.id}
+#                 )

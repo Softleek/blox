@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.amended_document_naming_settings import AmendedDocumentNamingSettings
 from frappe_app.filters.frappe_core.amended_document_naming_settings import AmendedDocumentNamingSettingsFilter
 from frappe_app.serializers.frappe_core.amended_document_naming_settings import AmendedDocumentNamingSettingsSerializer
@@ -12,3 +11,4 @@ class AmendedDocumentNamingSettingsViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = AmendedDocumentNamingSettingsSerializer
 
+    filterset_class = AmendedDocumentNamingSettingsFilter

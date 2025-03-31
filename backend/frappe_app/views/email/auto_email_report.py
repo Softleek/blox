@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.email.auto_email_report import AutoEmailReport
 from frappe_app.filters.email.auto_email_report import AutoEmailReportFilter
 from frappe_app.serializers.email.auto_email_report import AutoEmailReportSerializer
@@ -12,3 +11,4 @@ class AutoEmailReportViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = AutoEmailReportSerializer
 
+    filterset_class = AutoEmailReportFilter

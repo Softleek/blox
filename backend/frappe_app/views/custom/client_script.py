@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.custom.client_script import ClientScript
 from frappe_app.filters.custom.client_script import ClientScriptFilter
 from frappe_app.serializers.custom.client_script import ClientScriptSerializer
@@ -12,3 +11,4 @@ class ClientScriptViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ClientScriptSerializer
 
+    filterset_class = ClientScriptFilter

@@ -72,6 +72,8 @@ CUSTOM_APPS = [
     'frappe_app',
     'shop_app',
     'core_app',
+    'frappe_mpsa_payments_app',
+    'erpnext_app',
 ]
 
 # Final Installed Apps List
@@ -231,7 +233,8 @@ DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="webmaster@example.com
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
 ACCOUNT_LOGIN_METHODS = {"email"}
-ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 ACCOUNT_UNIQUE_EMAIL = True
 SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
@@ -275,6 +278,7 @@ CRONJOBS = [
 
 # Define default_site and common_config_file
 default_site = "default"
+
 common_config_file = os.path.join(SITE_PATH, "common_site_config.json")  # Use os.path.join
 
 # Check if common_config_file exists and load it
@@ -311,10 +315,10 @@ for site_folder in os.listdir(SITE_PATH):
 # Set the default database configuration
 if default_site in DATABASES:
     default_database = DATABASES.pop(default_site)
-    DATABASES = {default_site: default_database, **DATABASES}
+    DATABASES = {"default": default_database, **DATABASES}
 else:
     DATABASES = {
-        default_site: {
+        "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": os.path.join(BASE_DIR, "db.sqlite3"),  # Use os.path.join
         }, 
@@ -331,3 +335,9 @@ sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "shop")))
 
 
 sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "core")))
+
+
+sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "frappe_mpsa_payments")))
+
+
+sys.path.append(str(os.path.join(PROJECT_PATH, "apps", "erpnext")))

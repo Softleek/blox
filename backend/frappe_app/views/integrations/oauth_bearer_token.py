@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.integrations.oauth_bearer_token import OAuthBearerToken
 from frappe_app.filters.integrations.oauth_bearer_token import OAuthBearerTokenFilter
 from frappe_app.serializers.integrations.oauth_bearer_token import OAuthBearerTokenSerializer
@@ -12,3 +11,4 @@ class OAuthBearerTokenViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = OAuthBearerTokenSerializer
 
+    filterset_class = OAuthBearerTokenFilter

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.custom_role import CustomRole
 from frappe_app.filters.frappe_core.custom_role import CustomRoleFilter
 from frappe_app.serializers.frappe_core.custom_role import CustomRoleSerializer
@@ -12,3 +11,4 @@ class CustomRoleViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = CustomRoleSerializer
 
+    filterset_class = CustomRoleFilter

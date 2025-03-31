@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.doctype_action import DocTypeAction
 from frappe_app.filters.frappe_core.doctype_action import DocTypeActionFilter
 from frappe_app.serializers.frappe_core.doctype_action import DocTypeActionSerializer
@@ -12,3 +11,4 @@ class DocTypeActionViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DocTypeActionSerializer
 
+    filterset_class = DocTypeActionFilter

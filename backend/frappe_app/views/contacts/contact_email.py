@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.contacts.contact_email import ContactEmail
 from frappe_app.filters.contacts.contact_email import ContactEmailFilter
 from frappe_app.serializers.contacts.contact_email import ContactEmailSerializer
@@ -12,3 +11,4 @@ class ContactEmailViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ContactEmailSerializer
 
+    filterset_class = ContactEmailFilter

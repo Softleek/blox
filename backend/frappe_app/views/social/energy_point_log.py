@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.social.energy_point_log import EnergyPointLog
 from frappe_app.filters.social.energy_point_log import EnergyPointLogFilter
 from frappe_app.serializers.social.energy_point_log import EnergyPointLogSerializer
@@ -12,3 +11,4 @@ class EnergyPointLogViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = EnergyPointLogSerializer
 
+    filterset_class = EnergyPointLogFilter

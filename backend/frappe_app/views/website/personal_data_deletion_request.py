@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.personal_data_deletion_request import PersonalDataDeletionRequest
 from frappe_app.filters.website.personal_data_deletion_request import PersonalDataDeletionRequestFilter
 from frappe_app.serializers.website.personal_data_deletion_request import PersonalDataDeletionRequestSerializer
@@ -12,3 +11,4 @@ class PersonalDataDeletionRequestViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = PersonalDataDeletionRequestSerializer
 
+    filterset_class = PersonalDataDeletionRequestFilter

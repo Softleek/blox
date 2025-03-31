@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.integrations.slack_webhook_url import SlackWebhookURL
 from frappe_app.filters.integrations.slack_webhook_url import SlackWebhookURLFilter
 from frappe_app.serializers.integrations.slack_webhook_url import SlackWebhookURLSerializer
@@ -12,3 +11,4 @@ class SlackWebhookURLViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = SlackWebhookURLSerializer
 
+    filterset_class = SlackWebhookURLFilter

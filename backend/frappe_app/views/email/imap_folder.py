@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.email.imap_folder import IMAPFolder
 from frappe_app.filters.email.imap_folder import IMAPFolderFilter
 from frappe_app.serializers.email.imap_folder import IMAPFolderSerializer
@@ -12,3 +11,4 @@ class IMAPFolderViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = IMAPFolderSerializer
 
+    filterset_class = IMAPFolderFilter

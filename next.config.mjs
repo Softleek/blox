@@ -8,39 +8,17 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "api.qrserver.com",
-        pathname: "/v1/create-qr-code/**",
-      },
-      {
-        protocol: "https",
-        hostname: "barcode.tec-it.com",
-        pathname: "/barcode.ashx/**",
-      },
-      {
-        protocol: "https",
-        hostname: "cms.destinycarehome.org",
+        hostname: "**", // Allow all HTTPS domains
         pathname: "/**",
       },
       {
-        protocol: "http", // Add protocol for local development
-        hostname: "test.localhost",
-        pathname: "/**",
-      },
-      {
-        hostname: "",
+        protocol: "http",
+        hostname: "**", // Allow all HTTP domains (including local dev)
         pathname: "/**",
       },
     ],
-  },
-  images: {
-    domains: [
-      "test.localhost",
-      "localhost",
-      "cms.destinycarehome.org",
-      "api.qrserver.com",
-      "barcode.tec-it.com",
-      "",
-    ], // Add your domain(s) here
+    domains: ["*"], // Allow all domains
+    unoptimized: true, // Allows images without Next.js optimization
   },
   async rewrites() {
     return [

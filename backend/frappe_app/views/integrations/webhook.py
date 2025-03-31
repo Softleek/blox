@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.integrations.webhook import Webhook
 from frappe_app.filters.integrations.webhook import WebhookFilter
 from frappe_app.serializers.integrations.webhook import WebhookSerializer
@@ -12,3 +11,4 @@ class WebhookViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WebhookSerializer
 
+    filterset_class = WebhookFilter

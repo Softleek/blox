@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.web_form_field import WebFormField
 from frappe_app.filters.website.web_form_field import WebFormFieldFilter
 from frappe_app.serializers.website.web_form_field import WebFormFieldSerializer
@@ -12,3 +11,4 @@ class WebFormFieldViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WebFormFieldSerializer
 
+    filterset_class = WebFormFieldFilter

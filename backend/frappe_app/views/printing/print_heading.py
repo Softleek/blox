@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.printing.print_heading import PrintHeading
 from frappe_app.filters.printing.print_heading import PrintHeadingFilter
 from frappe_app.serializers.printing.print_heading import PrintHeadingSerializer
@@ -12,3 +11,4 @@ class PrintHeadingViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = PrintHeadingSerializer
 
+    filterset_class = PrintHeadingFilter

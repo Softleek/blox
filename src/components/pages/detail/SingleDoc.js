@@ -10,19 +10,18 @@ import { postData } from "@/utils/Api";
 
 const SingleDocumentDetail = () => {
   const router = useRouter();
-  const id = "1";
   const { slug } = router.query;
   const [config, setConfig] = useState(null);
   const { data, form, setData, setForm, loading, setLoading } = useData();
 
   useEffect(() => {
-    if (!slug && !id) {
+    if (!slug) {
       setData(null); // Reset data before fetching new document details
       setForm(null); // Reset form to avoid stale data
     }
-  }, [slug, id]);
+  }, [slug]);
 
-  const { appData } = useDocumentData(slug, id, setConfig);
+  const { appData } = useDocumentData({ slug, setConfig });
 
   const saveData = async (f) => {
     if (!data) {

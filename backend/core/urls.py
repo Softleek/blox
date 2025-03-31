@@ -101,3 +101,5 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += [    path('frappe/', include('frappe_app.urls')),]
 urlpatterns += [    path('shop/', include('shop_app.urls')),]
 urlpatterns += [    path('core/', include('core_app.urls')),]
+urlpatterns += [    path('frappe_mpsa_payments/', include('frappe_mpsa_payments_app.urls')),]
+urlpatterns += [    path('erpnext/', include('erpnext_app.urls')),]

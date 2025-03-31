@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.website_meta_tag import WebsiteMetaTag
 from frappe_app.filters.website.website_meta_tag import WebsiteMetaTagFilter
 from frappe_app.serializers.website.website_meta_tag import WebsiteMetaTagSerializer
@@ -12,3 +11,4 @@ class WebsiteMetaTagViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WebsiteMetaTagSerializer
 
+    filterset_class = WebsiteMetaTagFilter

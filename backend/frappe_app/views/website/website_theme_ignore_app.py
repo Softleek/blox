@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.website_theme_ignore_app import WebsiteThemeIgnoreApp
 from frappe_app.filters.website.website_theme_ignore_app import WebsiteThemeIgnoreAppFilter
 from frappe_app.serializers.website.website_theme_ignore_app import WebsiteThemeIgnoreAppSerializer
@@ -12,3 +11,4 @@ class WebsiteThemeIgnoreAppViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WebsiteThemeIgnoreAppSerializer
 
+    filterset_class = WebsiteThemeIgnoreAppFilter

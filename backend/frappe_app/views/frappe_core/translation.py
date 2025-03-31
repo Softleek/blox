@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.translation import Translation
 from frappe_app.filters.frappe_core.translation import TranslationFilter
 from frappe_app.serializers.frappe_core.translation import TranslationSerializer
@@ -12,3 +11,4 @@ class TranslationViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = TranslationSerializer
 
+    filterset_class = TranslationFilter

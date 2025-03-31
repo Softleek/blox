@@ -1,9 +1,9 @@
 from django.db import models
 from multiselectfield import MultiSelectField
-from core.models.template import BaseModel, SingletonModel
 import uuid
 import os
 from django.conf import settings
+from core.models.template import BaseModel
 
 class Newsletter(BaseModel):
     email_group = models.ManyToManyField("frappe_app.NewsletterEmailGroup", related_name="NewsletterEmailGroup", )

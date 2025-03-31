@@ -5,7 +5,7 @@ import uuid
 from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
-
+from ..utils.get_model_details import get_model_doctype_json
 
 def generate_random_slug(length=10):
     characters = string.ascii_letters + string.digits
@@ -42,29 +42,176 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
-        
+
 
 class SingletonModel(BaseModel):
-    id = models.AutoField(primary_key=True)
+    """
+    Abstract base class for singleton models.
+    Uses config name as ID (CharField) instead of AutoField.
+    """
+    id = models.CharField(
+        primary_key=True,
+        max_length=100,
+        editable=False
+    )
+
+    # Track if instance was just created
+    _just_created = False
+
     class Meta:
         abstract = True
 
+    def get_config_based_id(self):
+        """Get the ID based on model's doctype config or fallback to model name"""
+        try:
+            doctype_config = get_model_doctype_json(self.__class__.__name__)
+            return doctype_config.get("name", self.__class__.__name__)
+        except Exception:
+            return self.__class__.__name__.lower()
+
     def save(self, *args, **kwargs):
-        if not self.pk:
+        # Set ID from config if not set
+        if not self.id:
+            self.id = self.get_config_based_id()
+            
+            # Verify singleton constraint
             if self.__class__.objects.exists():
                 raise ValidationError(f"Only one instance of {self.__class__.__name__} is allowed.")
-            self.pk = 1  # Force id=1 on creation
-
-        elif self.pk != "1" and self.pk != 1:
-            raise ValidationError(f"The primary key for {self.__class__.__name__} - {self.pk } must be 1.")
-        
-        print(self)
+            
+            self._just_created = True
+            
         super().save(*args, **kwargs)
+        self._just_created = False
 
     @classmethod
     def get_instance(cls):
-        instance, created = cls.objects.get_or_create(pk=1)
+        """
+        Get or create the single instance.
+        Automatically sets ID based on config name.
+        """
+        # Create temp instance to generate the ID
+        temp_instance = cls()
+        instance_id = temp_instance.get_config_based_id()
+        
+        instance, created = cls.objects.get_or_create(
+            id=instance_id,
+            defaults={}
+        )
+        
+        if created:
+            instance._just_created = True
+            instance.save()  # Ensure defaults are saved
+            
         return instance
+
+    def delete(self, *args, **kwargs):
+        """Prevent deletion of the singleton instance"""
+        raise ValidationError(f"Cannot delete singleton instance of {self.__class__.__name__}")
+
+class SubmittableModel(BaseModel):
+    """
+    Abstract model for documents that can be submitted and cancelled,
+    with field-level control over editable states.
+    """
+    DOCSTATUS_DRAFT = 0
+    DOCSTATUS_SUBMITTED = 1
+    DOCSTATUS_CANCELLED = 2
+    
+    DOCSTATUS_CHOICES = (
+        (DOCSTATUS_DRAFT, 'Draft'),
+        (DOCSTATUS_SUBMITTED, 'Submitted'),
+        (DOCSTATUS_CANCELLED, 'Cancelled'),
+    )
+    
+    docstatus = models.PositiveSmallIntegerField(
+        choices=DOCSTATUS_CHOICES,
+        default=DOCSTATUS_DRAFT,
+        editable=False,
+        help_text="0=Draft, 1=Submitted, 2=Cancelled"
+    )
+    
+    class Meta:
+        abstract = True
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._original_docstatus = self.docstatus if self.pk else None
+    
+    def clean(self):
+        """Validate document status transitions and field modifications"""
+        if self.pk:
+            original = self.__class__.objects.get(pk=self.pk)
+            
+            # Prevent changing from submitted/cancelled back to draft
+            if original.docstatus != self.DOCSTATUS_DRAFT and self.docstatus == self.DOCSTATUS_DRAFT:
+                raise ValidationError("Cannot change status from Submitted/Cancelled back to Draft")
+            
+            # Prevent modifying cancelled documents entirely
+            if original.docstatus == self.DOCSTATUS_CANCELLED:
+                raise ValidationError("Cannot modify Cancelled documents")
+            
+            # For submitted documents, check field-level permissions
+            if original.docstatus == self.DOCSTATUS_SUBMITTED:
+                for field in self._meta.get_fields():
+                    field_name = field.name
+                    
+                    # Skip system fields
+                    if field_name in ['docstatus', 'id', 'created', 'modified']:
+                        continue
+                    
+                    # Get the field object from the model (not from _meta.get_fields())
+                    model_field = self._meta.get_field(field_name)
+                    
+                    # Check if field is allowed to be modified on submitted documents
+                    allow_on_submit = getattr(model_field, 'allow_on_submit', False)
+                    if allow_on_submit:
+                        continue
+                        
+                    # Compare values
+                    original_value = getattr(original, field_name)
+                    current_value = getattr(self, field_name)
+                    if original_value != current_value:
+                        raise ValidationError(
+                            f"Cannot modify field '{field_name}' on submitted document "
+                            "unless explicitly allowed with allow_on_submit=True"
+                        )
+        
+    def save(self, *args, **kwargs):
+        """Override save to prevent updates to cancelled documents"""
+        if self.pk and self.docstatus == self.DOCSTATUS_CANCELLED:
+            raise ValidationError("Cannot save changes to a Cancelled document")
+        super().save(*args, **kwargs)
+    
+    def delete(self, *args, **kwargs):
+        """Prevent deletion of submitted documents"""
+        if self.docstatus == self.DOCSTATUS_SUBMITTED:
+            raise ValidationError("Cannot delete Submitted documents")
+        super().delete(*args, **kwargs)
+    
+    def submit(self):
+        """Submit the document (change status to Submitted)"""
+        if self.docstatus != self.DOCSTATUS_DRAFT:
+            raise ValidationError("Only Draft documents can be submitted")
+        
+        self.docstatus = self.DOCSTATUS_SUBMITTED
+        self.save()
+    
+    def cancel(self):
+        """Cancel the document (change status to Cancelled)"""
+        if self.docstatus != self.DOCSTATUS_SUBMITTED:
+            raise ValidationError("Only Submitted documents can be cancelled")
+        
+        self.docstatus = self.DOCSTATUS_CANCELLED
+        self.save()
+    
+    def is_draft(self):
+        return self.docstatus == self.DOCSTATUS_DRAFT
+    
+    def is_submitted(self):
+        return self.docstatus == self.DOCSTATUS_SUBMITTED
+    
+    def is_cancelled(self):
+        return self.docstatus == self.DOCSTATUS_CANCELLED
 
 
 

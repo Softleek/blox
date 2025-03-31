@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.user_email import UserEmail
 from frappe_app.filters.frappe_core.user_email import UserEmailFilter
 from frappe_app.serializers.frappe_core.user_email import UserEmailSerializer
@@ -12,3 +11,4 @@ class UserEmailViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = UserEmailSerializer
 
+    filterset_class = UserEmailFilter

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.printing.print_style import PrintStyle
 from frappe_app.filters.printing.print_style import PrintStyleFilter
 from frappe_app.serializers.printing.print_style import PrintStyleSerializer
@@ -12,3 +11,4 @@ class PrintStyleViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = PrintStyleSerializer
 
+    filterset_class = PrintStyleFilter

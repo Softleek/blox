@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.user_select_document_type import UserSelectDocumentType
 from frappe_app.filters.frappe_core.user_select_document_type import UserSelectDocumentTypeFilter
 from frappe_app.serializers.frappe_core.user_select_document_type import UserSelectDocumentTypeSerializer
@@ -12,3 +11,4 @@ class UserSelectDocumentTypeViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = UserSelectDocumentTypeSerializer
 
+    filterset_class = UserSelectDocumentTypeFilter

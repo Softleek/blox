@@ -1,9 +1,9 @@
 from django.db import models
 from multiselectfield import MultiSelectField
-from core.models.template import BaseModel, SingletonModel
 import uuid
 import os
 from django.conf import settings
+from core.models.template import BaseModel
 
 class SystemHealthReportFailingJobs(BaseModel):
     scheduled_job_type = models.ForeignKey("frappe_app.ScheduledJobType", related_name="SystemHealthReportFailingJobsScheduledJobType", on_delete=models.CASCADE, null=True, blank=True)

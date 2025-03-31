@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.contacts.gender import Gender
 from frappe_app.filters.contacts.gender import GenderFilter
 from frappe_app.serializers.contacts.gender import GenderSerializer
@@ -12,3 +11,4 @@ class GenderViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = GenderSerializer
 
+    filterset_class = GenderFilter

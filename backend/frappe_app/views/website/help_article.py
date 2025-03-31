@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.help_article import HelpArticle
 from frappe_app.filters.website.help_article import HelpArticleFilter
 from frappe_app.serializers.website.help_article import HelpArticleSerializer
@@ -12,3 +11,4 @@ class HelpArticleViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = HelpArticleSerializer
 
+    filterset_class = HelpArticleFilter

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.automation.milestone_tracker import MilestoneTracker
 from frappe_app.filters.automation.milestone_tracker import MilestoneTrackerFilter
 from frappe_app.serializers.automation.milestone_tracker import MilestoneTrackerSerializer
@@ -12,3 +11,4 @@ class MilestoneTrackerViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = MilestoneTrackerSerializer
 
+    filterset_class = MilestoneTrackerFilter

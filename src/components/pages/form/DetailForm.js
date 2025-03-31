@@ -63,22 +63,22 @@ const DetailForm = () => {
       className="w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.2 }}
     >
       <motion.div
-        initial={{ y: -20, opacity: 0 }}
+        initial={{ y: -10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.3 }}
       >
         <div className="relative flex items-center justify-between px-4 pt-2 bg-gradient-to-tl from-purple-100 to-pink-100 text-white rounded-t-xl">
           <ul className="flex pt-2 gap-x-6 list-none bg-transparent">
             <Suspense fallback={<div>Loading Tabs...</div>}>
-              {tabs.map((tab, index) => (
+              {tabs.map((tab) => (
                 <motion.li
                   key={tab.fieldname}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 5 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  transition={{ duration: 0.2 }}
                 >
                   <Tab
                     tab={tab}
@@ -89,30 +89,6 @@ const DetailForm = () => {
               ))}
             </Suspense>
           </ul>
-          <div
-            className={`flex flex-row items-center font-medium text-base cursor-pointer ${
-              showLogs
-                ? "border-b-[1px] border-slate-800 text-purple-700"
-                : !id
-                ? "hidden"
-                : "text-slate-900"
-            }`}
-            onClick={handleShowLogs}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-2"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 002 0V7zm-1 8a1 1 0 100-2 1 1 0 000 2z"
-                clipRule="evenodd"
-              />
-            </svg>
-            Activity Logs
-          </div>
         </div>
       </motion.div>
 
@@ -120,18 +96,18 @@ const DetailForm = () => {
         className="px-2 py-4 h-[72vh] overflow-y-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.2 }}
       >
         {showLogs ? (
           <DocumentLogs />
         ) : (
           <Suspense fallback={<div>Loading Sections...</div>}>
-            {tabFields?.map((section, index) => (
+            {tabFields?.map((section) => (
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 10 }}
+                key={section.fieldname}
+                initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.5 }}
+                transition={{ duration: 0.2 }}
               >
                 <Section
                   section={section}

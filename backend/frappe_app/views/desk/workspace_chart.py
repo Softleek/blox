@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.workspace_chart import WorkspaceChart
 from frappe_app.filters.desk.workspace_chart import WorkspaceChartFilter
 from frappe_app.serializers.desk.workspace_chart import WorkspaceChartSerializer
@@ -12,3 +11,4 @@ class WorkspaceChartViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WorkspaceChartSerializer
 
+    filterset_class = WorkspaceChartFilter

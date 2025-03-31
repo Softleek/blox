@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.module_def import ModuleDef
 from frappe_app.filters.frappe_core.module_def import ModuleDefFilter
 from frappe_app.serializers.frappe_core.module_def import ModuleDefSerializer
@@ -12,3 +11,4 @@ class ModuleDefViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ModuleDefSerializer
 
+    filterset_class = ModuleDefFilter

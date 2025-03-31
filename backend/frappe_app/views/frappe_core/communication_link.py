@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.communication_link import CommunicationLink
 from frappe_app.filters.frappe_core.communication_link import CommunicationLinkFilter
 from frappe_app.serializers.frappe_core.communication_link import CommunicationLinkSerializer
@@ -12,3 +11,4 @@ class CommunicationLinkViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = CommunicationLinkSerializer
 
+    filterset_class = CommunicationLinkFilter

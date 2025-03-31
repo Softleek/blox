@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.utm_medium import UTMMedium
 from frappe_app.filters.website.utm_medium import UTMMediumFilter
 from frappe_app.serializers.website.utm_medium import UTMMediumSerializer
@@ -12,3 +11,4 @@ class UTMMediumViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = UTMMediumSerializer
 
+    filterset_class = UTMMediumFilter

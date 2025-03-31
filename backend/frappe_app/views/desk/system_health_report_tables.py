@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.system_health_report_tables import SystemHealthReportTables
 from frappe_app.filters.desk.system_health_report_tables import SystemHealthReportTablesFilter
 from frappe_app.serializers.desk.system_health_report_tables import SystemHealthReportTablesSerializer
@@ -12,3 +11,4 @@ class SystemHealthReportTablesViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = SystemHealthReportTablesSerializer
 
+    filterset_class = SystemHealthReportTablesFilter

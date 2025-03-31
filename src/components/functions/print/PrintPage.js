@@ -23,7 +23,7 @@ const PrintPage = () => {
   const [url, setUrl] = useState(null);
 
   const { form } = useData();
-  useDocumentData(slug, id, setConfig);
+  useDocumentData({ slug, id, setConfig });
 
   useEffect(() => {
     if (config) {

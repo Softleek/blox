@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.error_log import ErrorLog
 from frappe_app.filters.frappe_core.error_log import ErrorLogFilter
 from frappe_app.serializers.frappe_core.error_log import ErrorLogSerializer
@@ -12,3 +11,4 @@ class ErrorLogViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ErrorLogSerializer
 
+    filterset_class = ErrorLogFilter

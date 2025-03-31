@@ -38,7 +38,7 @@ def generate_name_for_model(sender, instance, **kwargs):
     doctype_config = get_model_doctype_json(model_name)
     naming_manager = NamingManager(instance, doctype_config)
     
-    is_single =  str((doctype_config or {}).get("issingle")).lower() in ("1", "true")
+    is_single = str((doctype_config or {}).get("issingle")).lower() in ("1", "true")
 
     if doctype_config and doctype_config.get("fields"):
         for field in doctype_config.get("fields", []):
@@ -52,12 +52,10 @@ def generate_name_for_model(sender, instance, **kwargs):
                 )
     
     if not getattr(instance, "created", None):
-
         if is_single:
-            instance.id = "1"
+            instance.id = doctype_config.get("name", model_name)
         else:
             id = naming_manager.generate_name()
-
             if id:
                 instance.id = id
 
@@ -106,7 +104,6 @@ def track_changes_after_save(sender, instance, **kwargs):
             if old_value != new_value:
                 changes[field] = {"old": str(old_value), "new": str(new_value)}
     if changes:
-
         from core.models import ChangeLog
 
         ChangeLog.objects.create(
@@ -120,5 +117,4 @@ def track_changes_after_save(sender, instance, **kwargs):
 
 def generate_uuid():
     import uuid
-
     return str(uuid.uuid4())

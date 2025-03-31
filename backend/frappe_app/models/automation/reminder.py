@@ -1,9 +1,9 @@
 from django.db import models
 from multiselectfield import MultiSelectField
-from core.models.template import BaseModel, SingletonModel
 import uuid
 import os
 from django.conf import settings
+from core.models.template import BaseModel
 
 class Reminder(BaseModel):
     user = models.ForeignKey("frappe_app.User", related_name="ReminderUser", on_delete=models.CASCADE, default='__user', null=True, blank=True)

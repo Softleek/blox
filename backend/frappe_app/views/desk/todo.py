@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.todo import ToDo
 from frappe_app.filters.desk.todo import ToDoFilter
 from frappe_app.serializers.desk.todo import ToDoSerializer
@@ -12,3 +11,4 @@ class ToDoViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ToDoSerializer
 
+    filterset_class = ToDoFilter

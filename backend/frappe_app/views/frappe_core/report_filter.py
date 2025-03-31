@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.report_filter import ReportFilter
 from frappe_app.filters.frappe_core.report_filter import ReportFilterFilter
 from frappe_app.serializers.frappe_core.report_filter import ReportFilterSerializer
@@ -12,3 +11,4 @@ class ReportFilterViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ReportFilterSerializer
 
+    filterset_class = ReportFilterFilter

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.email.document_follow import DocumentFollow
 from frappe_app.filters.email.document_follow import DocumentFollowFilter
 from frappe_app.serializers.email.document_follow import DocumentFollowSerializer
@@ -12,3 +11,4 @@ class DocumentFollowViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DocumentFollowSerializer
 
+    filterset_class = DocumentFollowFilter

@@ -55,6 +55,8 @@ import MultiSelectField from "@/components/fields/MultiSelectField";
 import PasswordField from "@/components/fields/PasswordField";
 import ConnectionField from "@/components/fields/ConnectionField";
 import IconField from "@/components/fields/IconField";
+import TextEditorField from "@/components/fields/TextEditorField";
+import MarkdownEditorField from "@/components/fields/MarkdownField";
 
 const FieldRenderer = ({
   fieldtype,
@@ -71,9 +73,9 @@ const FieldRenderer = ({
     "Small Text": { type: "textarea", icon: faTextWidth },
     "Long Text": { type: "textarea", icon: faFileAlt },
     Password: { type: "password", icon: faEye },
-    "HTML Editor": { type: "textarea", icon: faCode },
-    "Markdown Editor": { type: "textarea", icon: faCode },
-    "Text Editor": { type: "textarea", icon: faFileCode },
+    "HTML Editor": { type: "html", icon: faCode },
+    "Markdown Editor": { type: "markdown", icon: faCode },
+    "Text Editor": { type: "texteditor", icon: faFileCode },
     Code: { type: "textarea", icon: faCode },
     Select: { type: "select", icon: faBoxOpen },
     Autocomplete: { type: "autocomplete", icon: faSearch },
@@ -515,6 +517,54 @@ const FieldRenderer = ({
           </div>
         </>
       );
+    case "htmleditor":
+      return (
+        <>
+          {renderLabel()}
+          <div className="text-right flex justify-between w-full">
+            <HtmlField
+              field={item}
+              value={value}
+              onChange={(content) => handleInputChange(item, content)}
+              readOnly={item?.read_only}
+              hidden={item?.hidden}
+            />
+            {/* {renderIcon()}{" "} */}
+          </div>
+        </>
+      );
+    case "texteditor":
+      return (
+        <>
+          {renderLabel()}
+          <div className="text-right flex justify-between w-full">
+            <TextEditorField
+              field={item}
+              value={value}
+              onChange={(content) => handleInputChange(item, content)}
+              readOnly={item?.read_only}
+              hidden={item?.hidden}
+            />
+            {/* {renderIcon()}{" "} */}
+          </div>
+        </>
+      );
+    case "markdown":
+      return (
+        <>
+          {renderLabel()}
+          <div className="text-right flex justify-between w-full">
+            <MarkdownEditorField
+              field={item}
+              value={value}
+              onChange={(content) => handleInputChange(item, content)}
+              readOnly={item?.read_only}
+              hidden={item?.hidden}
+            />
+            {/* {renderIcon()}{" "} */}
+          </div>
+        </>
+      );
     case "html":
       return (
         <>
@@ -527,7 +577,7 @@ const FieldRenderer = ({
               readOnly={item?.read_only}
               hidden={item?.hidden}
             />
-            {renderIcon()}{" "}
+            {/* {renderIcon()}{" "} */}
           </div>
         </>
       );

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.form_tour_step import FormTourStep
 from frappe_app.filters.desk.form_tour_step import FormTourStepFilter
 from frappe_app.serializers.desk.form_tour_step import FormTourStepSerializer
@@ -12,3 +11,4 @@ class FormTourStepViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = FormTourStepSerializer
 
+    filterset_class = FormTourStepFilter

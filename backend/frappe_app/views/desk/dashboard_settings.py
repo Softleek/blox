@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.dashboard_settings import DashboardSettings
 from frappe_app.filters.desk.dashboard_settings import DashboardSettingsFilter
 from frappe_app.serializers.desk.dashboard_settings import DashboardSettingsSerializer
@@ -12,3 +11,4 @@ class DashboardSettingsViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DashboardSettingsSerializer
 
+    filterset_class = DashboardSettingsFilter

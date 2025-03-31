@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.integrations.query_parameters import QueryParameters
 from frappe_app.filters.integrations.query_parameters import QueryParametersFilter
 from frappe_app.serializers.integrations.query_parameters import QueryParametersSerializer
@@ -12,3 +11,4 @@ class QueryParametersViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = QueryParametersSerializer
 
+    filterset_class = QueryParametersFilter

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.website_slideshow_item import WebsiteSlideshowItem
 from frappe_app.filters.website.website_slideshow_item import WebsiteSlideshowItemFilter
 from frappe_app.serializers.website.website_slideshow_item import WebsiteSlideshowItemSerializer
@@ -12,3 +11,4 @@ class WebsiteSlideshowItemViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WebsiteSlideshowItemSerializer
 
+    filterset_class = WebsiteSlideshowItemFilter

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.printing.print_format_field_template import PrintFormatFieldTemplate
 from frappe_app.filters.printing.print_format_field_template import PrintFormatFieldTemplateFilter
 from frappe_app.serializers.printing.print_format_field_template import PrintFormatFieldTemplateSerializer
@@ -12,3 +11,4 @@ class PrintFormatFieldTemplateViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = PrintFormatFieldTemplateSerializer
 
+    filterset_class = PrintFormatFieldTemplateFilter

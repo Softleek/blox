@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.console_log import ConsoleLog
 from frappe_app.filters.desk.console_log import ConsoleLogFilter
 from frappe_app.serializers.desk.console_log import ConsoleLogSerializer
@@ -12,3 +11,4 @@ class ConsoleLogViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ConsoleLogSerializer
 
+    filterset_class = ConsoleLogFilter

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.custom.custom_field import CustomField
 from frappe_app.filters.custom.custom_field import CustomFieldFilter
 from frappe_app.serializers.custom.custom_field import CustomFieldSerializer
@@ -12,3 +11,4 @@ class CustomFieldViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = CustomFieldSerializer
 
+    filterset_class = CustomFieldFilter

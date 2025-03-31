@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.web_template import WebTemplate
 from frappe_app.filters.website.web_template import WebTemplateFilter
 from frappe_app.serializers.website.web_template import WebTemplateSerializer
@@ -12,3 +11,4 @@ class WebTemplateViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WebTemplateSerializer
 
+    filterset_class = WebTemplateFilter

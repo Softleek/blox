@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.number_card_link import NumberCardLink
 from frappe_app.filters.desk.number_card_link import NumberCardLinkFilter
 from frappe_app.serializers.desk.number_card_link import NumberCardLinkSerializer
@@ -12,3 +11,4 @@ class NumberCardLinkViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = NumberCardLinkSerializer
 
+    filterset_class = NumberCardLinkFilter

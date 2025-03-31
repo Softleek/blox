@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.blog_category import BlogCategory
 from frappe_app.filters.website.blog_category import BlogCategoryFilter
 from frappe_app.serializers.website.blog_category import BlogCategorySerializer
@@ -12,3 +11,4 @@ class BlogCategoryViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = BlogCategorySerializer
 
+    filterset_class = BlogCategoryFilter

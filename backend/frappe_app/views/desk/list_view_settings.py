@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.list_view_settings import ListViewSettings
 from frappe_app.filters.desk.list_view_settings import ListViewSettingsFilter
 from frappe_app.serializers.desk.list_view_settings import ListViewSettingsSerializer
@@ -12,3 +11,4 @@ class ListViewSettingsViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ListViewSettingsSerializer
 
+    filterset_class = ListViewSettingsFilter

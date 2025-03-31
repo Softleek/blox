@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.scheduler_event import SchedulerEvent
 from frappe_app.filters.frappe_core.scheduler_event import SchedulerEventFilter
 from frappe_app.serializers.frappe_core.scheduler_event import SchedulerEventSerializer
@@ -12,3 +11,4 @@ class SchedulerEventViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = SchedulerEventSerializer
 
+    filterset_class = SchedulerEventFilter

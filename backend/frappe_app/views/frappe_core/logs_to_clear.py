@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.logs_to_clear import LogsToClear
 from frappe_app.filters.frappe_core.logs_to_clear import LogsToClearFilter
 from frappe_app.serializers.frappe_core.logs_to_clear import LogsToClearSerializer
@@ -12,3 +11,4 @@ class LogsToClearViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = LogsToClearSerializer
 
+    filterset_class = LogsToClearFilter

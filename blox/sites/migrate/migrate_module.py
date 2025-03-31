@@ -1,7 +1,8 @@
 import os
 import shutil
 from typing import List, Tuple
-
+import stat
+import time
 import click
 
 from ...utils.config import find_module_base_path
@@ -142,7 +143,7 @@ def process_folder_docs(
         )
 
         if os.path.exists(module_path):
-            shutil.rmtree(module_path)
+            force_rmtree(module_path)
         os.makedirs(module_path, exist_ok=True)
 
     # Process each document in the folder
@@ -156,3 +157,34 @@ def process_folder_docs(
                 doc=item_name,
                 django_path=django_path,
             )
+
+
+def force_remove_readonly(func, path, excinfo):
+    """Force remove readonly files/dirs on Windows and handle other OS errors"""
+    if not os.access(path, os.W_OK):
+        # Try making the file writable
+        os.chmod(path, stat.S_IWRITE | stat.S_IREAD | stat.S_IEXEC)
+    try:
+        func(path)
+    except Exception as e:
+        # Last resort - try to rename and mark for deletion on next reboot (Windows)
+        if os.name == 'nt':
+            import ctypes
+            kernel32 = ctypes.windll.kernel32
+            kernel32.MoveFileExW(path, None, 0x00000004)  # MOVEFILE_DELAY_UNTIL_REBOOT
+        else:
+            raise
+
+def force_rmtree(path, max_retries=3, wait_seconds=1):
+    """Forcefully remove directory tree with retries across all OSes"""
+    for attempt in range(max_retries):
+        try:
+            if os.path.exists(path):
+                shutil.rmtree(path, onerror=force_remove_readonly)
+            return True
+        except Exception as e:
+            if attempt == max_retries - 1:
+                raise RuntimeError(f"Failed to remove {path} after {max_retries} attempts: {str(e)}")
+            time.sleep(wait_seconds)
+    return False
+

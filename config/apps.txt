@@ -2,3 +2,7 @@ core
 frappe
 shop
 core
+frappe-mpsa-payments
+frappe-mpsa-payments
+frappe_mpsa_payments
+erpnext

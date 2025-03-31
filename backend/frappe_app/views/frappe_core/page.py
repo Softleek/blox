@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.page import Page
 from frappe_app.filters.frappe_core.page import PageFilter
 from frappe_app.serializers.frappe_core.page import PageSerializer
@@ -12,3 +11,4 @@ class PageViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = PageSerializer
 
+    filterset_class = PageFilter

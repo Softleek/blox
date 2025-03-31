@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.geo.country import Country
 from frappe_app.filters.geo.country import CountryFilter
 from frappe_app.serializers.geo.country import CountrySerializer
@@ -12,3 +11,4 @@ class CountryViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = CountrySerializer
 
+    filterset_class = CountryFilter

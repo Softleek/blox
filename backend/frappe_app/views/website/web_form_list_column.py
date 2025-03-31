@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.web_form_list_column import WebFormListColumn
 from frappe_app.filters.website.web_form_list_column import WebFormListColumnFilter
 from frappe_app.serializers.website.web_form_list_column import WebFormListColumnSerializer
@@ -12,3 +11,4 @@ class WebFormListColumnViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WebFormListColumnSerializer
 
+    filterset_class = WebFormListColumnFilter

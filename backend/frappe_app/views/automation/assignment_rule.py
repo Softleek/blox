@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.automation.assignment_rule import AssignmentRule
 from frappe_app.filters.automation.assignment_rule import AssignmentRuleFilter
 from frappe_app.serializers.automation.assignment_rule import AssignmentRuleSerializer
@@ -12,3 +11,4 @@ class AssignmentRuleViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = AssignmentRuleSerializer
 
+    filterset_class = AssignmentRuleFilter

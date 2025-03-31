@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.personal_data_download_request import PersonalDataDownloadRequest
 from frappe_app.filters.website.personal_data_download_request import PersonalDataDownloadRequestFilter
 from frappe_app.serializers.website.personal_data_download_request import PersonalDataDownloadRequestSerializer
@@ -12,3 +11,4 @@ class PersonalDataDownloadRequestViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = PersonalDataDownloadRequestSerializer
 
+    filterset_class = PersonalDataDownloadRequestFilter

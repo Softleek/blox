@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.workspace_shortcut import WorkspaceShortcut
 from frappe_app.filters.desk.workspace_shortcut import WorkspaceShortcutFilter
 from frappe_app.serializers.desk.workspace_shortcut import WorkspaceShortcutSerializer
@@ -12,3 +11,4 @@ class WorkspaceShortcutViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WorkspaceShortcutSerializer
 
+    filterset_class = WorkspaceShortcutFilter

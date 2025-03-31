@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.website_route_redirect import WebsiteRouteRedirect
 from frappe_app.filters.website.website_route_redirect import WebsiteRouteRedirectFilter
 from frappe_app.serializers.website.website_route_redirect import WebsiteRouteRedirectSerializer
@@ -12,3 +11,4 @@ class WebsiteRouteRedirectViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WebsiteRouteRedirectSerializer
 
+    filterset_class = WebsiteRouteRedirectFilter

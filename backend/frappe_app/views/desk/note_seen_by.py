@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.note_seen_by import NoteSeenBy
 from frappe_app.filters.desk.note_seen_by import NoteSeenByFilter
 from frappe_app.serializers.desk.note_seen_by import NoteSeenBySerializer
@@ -12,3 +11,4 @@ class NoteSeenByViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = NoteSeenBySerializer
 
+    filterset_class = NoteSeenByFilter

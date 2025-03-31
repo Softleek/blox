@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.printing.network_printer_settings import NetworkPrinterSettings
 from frappe_app.filters.printing.network_printer_settings import NetworkPrinterSettingsFilter
 from frappe_app.serializers.printing.network_printer_settings import NetworkPrinterSettingsSerializer
@@ -12,3 +11,4 @@ class NetworkPrinterSettingsViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = NetworkPrinterSettingsSerializer
 
+    filterset_class = NetworkPrinterSettingsFilter

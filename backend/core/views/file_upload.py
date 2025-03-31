@@ -39,39 +39,15 @@ class FileUploadView(APIView):
         return Response({"url": parse_url(file_url)}, status=status.HTTP_201_CREATED)
 
 def parse_url(file_url):
-    from urllib.parse import urlparse, urlunparse
+    from urllib.parse import urlparse
 
-    if file_url.startswith("http://") or file_url.startswith("https://"):
-        parsed_url = urlparse(file_url)
+    parsed_url = urlparse(file_url)
 
-        # Force HTTPS if it's HTTP
-        scheme = parsed_url.scheme
+    # Extract the path and find the `/media` part
+    media_index = parsed_url.path.find("/media")
+    if media_index != -1:
+        return parsed_url.path[media_index:]  # Return only the `/media/...` part
 
-        # Replace /media with /apis/media
-        new_path = parsed_url.path
-        if "/media" in new_path and "/apis/media" not in new_path:
-            new_path = new_path.replace("/media", "/apis/media", 1)
-
-        # Handle .localhost stripping, preserve port if present
-        hostname = parsed_url.hostname  # gives 'dev.localhost'
-        port = parsed_url.port  # gives 8000 if present
-
-        if hostname and hostname.endswith(".localhost"):
-            netloc = "localhost"
-            if port:
-                netloc += f":{port}"
-        else:
-            netloc = parsed_url.netloc  # keep original if not .localhost
-
-        # Rebuild URL without scheme
-        new_url = urlunparse((scheme, netloc, new_path, parsed_url.params, parsed_url.query, parsed_url.fragment))
-
-        # Remove leading '//' added when scheme is empty
-        if new_url.startswith('//'):
-            new_url = new_url[2:]
-
-        return new_url
-
-    else:
-        return file_url
+    # If `/media` is not found, return the original path
+    return parsed_url.path
 

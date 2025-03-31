@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.custom.doctype_layout import DocTypeLayout
 from frappe_app.filters.custom.doctype_layout import DocTypeLayoutFilter
 from frappe_app.serializers.custom.doctype_layout import DocTypeLayoutSerializer
@@ -12,3 +11,4 @@ class DocTypeLayoutViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DocTypeLayoutSerializer
 
+    filterset_class = DocTypeLayoutFilter

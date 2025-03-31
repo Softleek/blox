@@ -36,7 +36,7 @@ const parseDateInput = (inputStr) => {
 
 const CustomDateSelector = ({ selectedDate, onChange, readOnly }) => {
   const [value, setValue] = useState(selectedDate);
-  const [inputValue, setInputValue] = useState(formatDateDisplay(value));
+  const [inputValue, setInputValue] = useState(formatDateDisplay(value) || "");
 
   // Handle change in the input field
   const handleInputChange = (event) => {

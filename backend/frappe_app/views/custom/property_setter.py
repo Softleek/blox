@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.custom.property_setter import PropertySetter
 from frappe_app.filters.custom.property_setter import PropertySetterFilter
 from frappe_app.serializers.custom.property_setter import PropertySetterSerializer
@@ -12,3 +11,4 @@ class PropertySetterViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = PropertySetterSerializer
 
+    filterset_class = PropertySetterFilter

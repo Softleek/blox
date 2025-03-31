@@ -20,7 +20,7 @@ const PrintModal = ({ form, onClose, isOpen }) => {
   const [prints, setPrints] = useState([]);
   const [url, setUrl] = useState(null);
 
-  useDocumentData(slug, id, setConfig);
+  useDocumentData({ slug, id, setConfig });
 
   useEffect(() => {
     if (config) {

@@ -12,7 +12,9 @@ def to_snake_case(name: str) -> str:
         str: The converted name in snake_case.
     """
     # Replace spaces with underscores and convert to lowercase
-    return name.replace(" ", "_").lower()
+    name = name.replace(" ", "_").lower()
+    name = name.replace("-", "_").lower()
+    return name
 
 
 def underscore_to_titlecase(underscore_str: str) -> str:

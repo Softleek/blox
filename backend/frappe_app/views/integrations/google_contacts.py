@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.integrations.google_contacts import GoogleContacts
 from frappe_app.filters.integrations.google_contacts import GoogleContactsFilter
 from frappe_app.serializers.integrations.google_contacts import GoogleContactsSerializer
@@ -12,3 +11,4 @@ class GoogleContactsViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = GoogleContactsSerializer
 
+    filterset_class = GoogleContactsFilter

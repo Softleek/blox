@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.automation.assignment_rule_day import AssignmentRuleDay
 from frappe_app.filters.automation.assignment_rule_day import AssignmentRuleDayFilter
 from frappe_app.serializers.automation.assignment_rule_day import AssignmentRuleDaySerializer
@@ -12,3 +11,4 @@ class AssignmentRuleDayViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = AssignmentRuleDaySerializer
 
+    filterset_class = AssignmentRuleDayFilter

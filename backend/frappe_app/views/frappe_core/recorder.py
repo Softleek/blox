@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.recorder import Recorder
 from frappe_app.filters.frappe_core.recorder import RecorderFilter
 from frappe_app.serializers.frappe_core.recorder import RecorderSerializer
@@ -12,3 +11,4 @@ class RecorderViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = RecorderSerializer
 
+    filterset_class = RecorderFilter

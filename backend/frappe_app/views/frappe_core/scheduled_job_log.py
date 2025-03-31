@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.scheduled_job_log import ScheduledJobLog
 from frappe_app.filters.frappe_core.scheduled_job_log import ScheduledJobLogFilter
 from frappe_app.serializers.frappe_core.scheduled_job_log import ScheduledJobLogSerializer
@@ -12,3 +11,4 @@ class ScheduledJobLogViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = ScheduledJobLogSerializer
 
+    filterset_class = ScheduledJobLogFilter

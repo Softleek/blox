@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.website_route_meta import WebsiteRouteMeta
 from frappe_app.filters.website.website_route_meta import WebsiteRouteMetaFilter
 from frappe_app.serializers.website.website_route_meta import WebsiteRouteMetaSerializer
@@ -12,3 +11,4 @@ class WebsiteRouteMetaViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WebsiteRouteMetaSerializer
 
+    filterset_class = WebsiteRouteMetaFilter

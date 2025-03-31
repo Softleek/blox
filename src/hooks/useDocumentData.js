@@ -7,7 +7,7 @@ import { useData } from "@/contexts/DataContext";
 import { findDocDetails } from "@/utils/findDocDetails";
 import { importFile } from "@/utils/importFile";
 
-export const useDocumentData = (slug, id, setConfig) => {
+export const useDocumentData = ({ slug, setConfig, id = null }) => {
   const [appData, setAppData] = useState(null);
   const { setData, setForm } = useData();
   const {
@@ -28,9 +28,14 @@ export const useDocumentData = (slug, id, setConfig) => {
         const docData = findDocDetails(slug);
         if (!docData) throw new Error("Failed to fetch document details");
 
+        // Construct endpoint without id if not provided
+        const endpoint = id
+          ? `${docData?.app_id}/${slug}/${id}`
+          : `${docData?.app_id}/${slug}`;
+
         setAppData({
           ...docData,
-          endpoint: `${docData?.app_id}/${slug}/${id}`,
+          endpoint,
         });
 
         // UI updates
@@ -49,11 +54,13 @@ export const useDocumentData = (slug, id, setConfig) => {
         updateIconColor("text-purple-300");
         setSidebarHidden(false);
 
-        // Fetch document data
-        const responseData = await fetchData(
-          {},
-          `${docData.app}/${slug}/${id}`
-        );
+        // Fetch document data (without id if not provided)
+        const fetchUrl = id
+          ? `${docData.app}/${slug}/${id}`
+          : `${docData.app}/${slug}`;
+        const responseData = await fetchData({}, fetchUrl);
+        console.log("Response Data:", responseData, fetchUrl);
+
         if (responseData?.data) {
           setData(responseData.data);
           setForm(responseData.data);

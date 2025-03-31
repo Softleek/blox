@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.defaultvalue import DefaultValue
 from frappe_app.filters.frappe_core.defaultvalue import DefaultValueFilter
 from frappe_app.serializers.frappe_core.defaultvalue import DefaultValueSerializer
@@ -12,3 +11,4 @@ class DefaultValueViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DefaultValueSerializer
 
+    filterset_class = DefaultValueFilter

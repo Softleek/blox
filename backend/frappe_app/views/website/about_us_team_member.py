@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.about_us_team_member import AboutUsTeamMember
 from frappe_app.filters.website.about_us_team_member import AboutUsTeamMemberFilter
 from frappe_app.serializers.website.about_us_team_member import AboutUsTeamMemberSerializer
@@ -12,3 +11,4 @@ class AboutUsTeamMemberViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = AboutUsTeamMemberSerializer
 
+    filterset_class = AboutUsTeamMemberFilter

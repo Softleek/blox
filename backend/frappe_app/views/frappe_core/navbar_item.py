@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.navbar_item import NavbarItem
 from frappe_app.filters.frappe_core.navbar_item import NavbarItemFilter
 from frappe_app.serializers.frappe_core.navbar_item import NavbarItemSerializer
@@ -12,3 +11,4 @@ class NavbarItemViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = NavbarItemSerializer
 
+    filterset_class = NavbarItemFilter

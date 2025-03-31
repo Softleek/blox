@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.desk.calendar_view import CalendarView
 from frappe_app.filters.desk.calendar_view import CalendarViewFilter
 from frappe_app.serializers.desk.calendar_view import CalendarViewSerializer
@@ -12,3 +11,4 @@ class CalendarViewViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = CalendarViewSerializer
 
+    filterset_class = CalendarViewFilter

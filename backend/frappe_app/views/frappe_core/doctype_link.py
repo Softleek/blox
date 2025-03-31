@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.doctype_link import DocTypeLink
 from frappe_app.filters.frappe_core.doctype_link import DocTypeLinkFilter
 from frappe_app.serializers.frappe_core.doctype_link import DocTypeLinkSerializer
@@ -12,3 +11,4 @@ class DocTypeLinkViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DocTypeLinkSerializer
 
+    filterset_class = DocTypeLinkFilter

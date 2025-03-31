@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.has_domain import HasDomain
 from frappe_app.filters.frappe_core.has_domain import HasDomainFilter
 from frappe_app.serializers.frappe_core.has_domain import HasDomainSerializer
@@ -12,3 +11,4 @@ class HasDomainViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = HasDomainSerializer
 
+    filterset_class = HasDomainFilter

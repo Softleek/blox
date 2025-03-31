@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.social.energy_point_rule import EnergyPointRule
 from frappe_app.filters.social.energy_point_rule import EnergyPointRuleFilter
 from frappe_app.serializers.social.energy_point_rule import EnergyPointRuleSerializer
@@ -12,3 +11,4 @@ class EnergyPointRuleViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = EnergyPointRuleSerializer
 
+    filterset_class = EnergyPointRuleFilter

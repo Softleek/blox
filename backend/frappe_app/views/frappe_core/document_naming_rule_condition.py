@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.document_naming_rule_condition import DocumentNamingRuleCondition
 from frappe_app.filters.frappe_core.document_naming_rule_condition import DocumentNamingRuleConditionFilter
 from frappe_app.serializers.frappe_core.document_naming_rule_condition import DocumentNamingRuleConditionSerializer
@@ -12,3 +11,4 @@ class DocumentNamingRuleConditionViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DocumentNamingRuleConditionSerializer
 
+    filterset_class = DocumentNamingRuleConditionFilter

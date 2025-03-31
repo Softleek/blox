@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.website.web_page import WebPage
 from frappe_app.filters.website.web_page import WebPageFilter
 from frappe_app.serializers.website.web_page import WebPageSerializer
@@ -12,3 +11,4 @@ class WebPageViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = WebPageSerializer
 
+    filterset_class = WebPageFilter

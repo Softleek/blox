@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.frappe_core.docfield import DocField
 from frappe_app.filters.frappe_core.docfield import DocFieldFilter
 from frappe_app.serializers.frappe_core.docfield import DocFieldSerializer
@@ -12,3 +11,4 @@ class DocFieldViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = DocFieldSerializer
 
+    filterset_class = DocFieldFilter

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.geo.currency import Currency
 from frappe_app.filters.geo.currency import CurrencyFilter
 from frappe_app.serializers.geo.currency import CurrencySerializer
@@ -12,3 +11,4 @@ class CurrencyViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = CurrencySerializer
 
+    filterset_class = CurrencyFilter

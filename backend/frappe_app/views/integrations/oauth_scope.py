@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.integrations.oauth_scope import OAuthScope
 from frappe_app.filters.integrations.oauth_scope import OAuthScopeFilter
 from frappe_app.serializers.integrations.oauth_scope import OAuthScopeSerializer
@@ -12,3 +11,4 @@ class OAuthScopeViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = OAuthScopeSerializer
 
+    filterset_class = OAuthScopeFilter

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.email.email_flag_queue import EmailFlagQueue
 from frappe_app.filters.email.email_flag_queue import EmailFlagQueueFilter
 from frappe_app.serializers.email.email_flag_queue import EmailFlagQueueSerializer
@@ -12,3 +11,4 @@ class EmailFlagQueueViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = EmailFlagQueueSerializer
 
+    filterset_class = EmailFlagQueueFilter

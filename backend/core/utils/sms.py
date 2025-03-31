@@ -2,16 +2,10 @@ import json
 import logging
 
 import requests
-from core.models import Reminder
-from core.utils import send_custom_email
 from django.conf import settings
-from django.utils import timezone
 from requests.auth import HTTPBasicAuth
 
 logger = logging.getLogger(__name__)
-from datetime import timedelta
-
-from django.utils import timezone
 
 
 def send_sms(phone_number, message, code="254"):

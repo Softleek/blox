@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.printing.letter_head import LetterHead
 from frappe_app.filters.printing.letter_head import LetterHeadFilter
 from frappe_app.serializers.printing.letter_head import LetterHeadSerializer
@@ -12,3 +11,4 @@ class LetterHeadViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = LetterHeadSerializer
 
+    filterset_class = LetterHeadFilter

@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.integrations.token_cache import TokenCache
 from frappe_app.filters.integrations.token_cache import TokenCacheFilter
 from frappe_app.serializers.integrations.token_cache import TokenCacheSerializer
@@ -12,3 +11,4 @@ class TokenCacheViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = TokenCacheSerializer
 
+    filterset_class = TokenCacheFilter

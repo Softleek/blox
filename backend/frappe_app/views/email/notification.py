@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from core.views.template import GenericViewSet
+from core.views.template import GenericViewSet, SingleInstanceViewSet
 from frappe_app.models.email.notification import Notification
 from frappe_app.filters.email.notification import NotificationFilter
 from frappe_app.serializers.email.notification import NotificationSerializer
@@ -12,3 +11,4 @@ class NotificationViewSet(GenericViewSet):
     permission_classes = [HasGroupPermission]
     serializer_class = NotificationSerializer
 
+    filterset_class = NotificationFilter
