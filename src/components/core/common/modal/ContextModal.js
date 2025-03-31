@@ -10,6 +10,9 @@ const ContextConfirmationModal = () => {
     message,
     onConfirm,
     confirmButtonStyles = "",
+    showButtons = true,
+    position = "top",
+    className = "!pt-10",
   } = modalState;
 
   const baseButtonClass =
@@ -19,29 +22,31 @@ const ContextConfirmationModal = () => {
     <Modal
       isOpen={isOpen}
       onClose={closeModal}
-      position="top"
-      className="!pt-40"
+      position={position}
+      className={className}
     >
-      <div className="flex flex-col w-fit p-4">
+      <div className="flex flex-col w-full p-4">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">{title}</h2>
         <p className="text-gray-700 mb-6">{message}</p>
-        <div className="flex justify-between items-center space-x-4 mt-4 text-gray-100">
-          <button
-            onClick={closeModal}
-            className={`${baseButtonClass} bg-gray-200 hover:bg-gray-300 text-gray-800`}
-          >
-            Cancel
-          </button>
-          <button
-            onClick={() => {
-              if (onConfirm) onConfirm();
-              closeModal();
-            }}
-            className={`${baseButtonClass} ${confirmButtonStyles}`}
-          >
-            Confirm
-          </button>
-        </div>
+        {showButtons && (
+          <div className="flex justify-between items-center space-x-4 mt-4 text-gray-100">
+            <button
+              onClick={closeModal}
+              className={`${baseButtonClass} bg-gray-200 hover:bg-gray-300 text-gray-800`}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                if (onConfirm) onConfirm();
+                closeModal();
+              }}
+              className={`${baseButtonClass} ${confirmButtonStyles}`}
+            >
+              Confirm
+            </button>
+          </div>
+        )}
       </div>
     </Modal>
   );

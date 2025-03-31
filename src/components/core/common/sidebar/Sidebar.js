@@ -144,7 +144,7 @@ const Sidebar = () => {
               />
             </button>
             <div className="block py-2 m-0 text-sm flex flex-col whitespace-nowrap justify-center items-center text-slate-700">
-              <Link href={`${pageInfo?.link}` || "/"}>
+              <Link href={`/${pageInfo?.link}` || "/"}>
                 <span className="ml-4 mr-2 font-semibold text-xl transition-all duration-200 ease-nav-brand">
                   {pageInfo?.text || "Home"}
                 </span>

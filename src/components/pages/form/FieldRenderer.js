@@ -66,6 +66,9 @@ const FieldRenderer = ({
   placeholder,
   label,
   minimal = false,
+  required = false,
+  readOnly = false,
+  disabled = false,
 }) => {
   const fieldTypeMapping = {
     Text: { type: "text", icon: faTextWidth },
@@ -133,13 +136,13 @@ const FieldRenderer = ({
             generalType === "table" ? "mb-1" : "flex items-center"
           }`}
         >
-          {label} {item?.reqd && <span className="text-red-600">*</span>}
+          {label} {required && <span className="text-red-600">*</span>}
         </div>
       );
     }
     return (
       <div className="text-xs -mt-2 px-1 mx-1 bg-white rounded-md mb- w-fit text-gray-600 font-medium">
-        {label} {item?.reqd && <span className="text-red-600">*</span>}
+        {label} {required && <span className="text-red-600">*</span>}
       </div>
     );
   };
@@ -169,9 +172,9 @@ const FieldRenderer = ({
               value={value}
               onChange={(e) => handleInputChange(item, e.target.value)}
               // placeholder={placeholder}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
-              required={item?.reqd}
+              required={required}
             />
             {renderIcon()}{" "}
           </div>
@@ -186,7 +189,7 @@ const FieldRenderer = ({
               field={item}
               value={value}
               onChange={(icon) => handleInputChange(item, icon)}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {/* {renderIcon()}{" "} */}
@@ -204,7 +207,7 @@ const FieldRenderer = ({
               value={value}
               onChange={(e) => handleInputChange(item, e.target.value)}
               // placeholder={placeholder}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
           </div>
@@ -221,7 +224,7 @@ const FieldRenderer = ({
               value={value}
               onChange={(e) => handleInputChange(item, e)}
               // placeholder={placeholder}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {renderIcon()}{" "}
@@ -239,7 +242,7 @@ const FieldRenderer = ({
               onChange={(e) => handleInputChange(item, e.target.value)}
               rows={4}
               // placeholder={placeholder}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {renderIcon()}{" "}
@@ -258,7 +261,7 @@ const FieldRenderer = ({
               options={item.options ? item.options.split("\n") : []}
               multiple={false}
               // placeholder={placeholder}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {renderIcon()}{" "}
@@ -290,7 +293,7 @@ const FieldRenderer = ({
               options={item.options ? item.options.split("\n") : []}
               autocomplete={true}
               // placeholder={placeholder}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {renderIcon()}{" "}
@@ -333,7 +336,7 @@ const FieldRenderer = ({
                 handleInputChange(item, e);
               }}
               // placeholder={placeholder}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {/* {renderIcon()}{" "} */}
@@ -352,7 +355,7 @@ const FieldRenderer = ({
                 handleInputChange(item, e);
               }}
               // placeholder={placeholder}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {renderIcon()}{" "}
@@ -371,7 +374,7 @@ const FieldRenderer = ({
                 handleInputChange(item, e);
               }}
               // placeholder={placeholder}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {/* {renderIcon()}{" "} */}
@@ -387,7 +390,7 @@ const FieldRenderer = ({
               field={item}
               onChange={(e) => handleInputChange(item, e.target.files[0])}
               // placeholder={placeholder}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {/* {renderIcon()}{" "} */}
@@ -402,7 +405,7 @@ const FieldRenderer = ({
             <ImageField
               field={item}
               onChange={(file) => handleInputChange(item, file)}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
               value={value}
             />
@@ -451,7 +454,7 @@ const FieldRenderer = ({
             field={item}
             checked={value}
             onChange={(e) => handleInputChange(item, e.target.checked)}
-            readOnly={item?.read_only}
+            readOnly={readOnly}
             hidden={item?.hidden}
           />
           <span className="ml-2">{label}</span>
@@ -464,7 +467,7 @@ const FieldRenderer = ({
             field={item}
             label={item.label}
             onClick={() => handleInputChange(item, null)}
-            readOnly={item?.read_only}
+            readOnly={readOnly}
             hidden={item?.hidden}
           />
         </>
@@ -478,7 +481,7 @@ const FieldRenderer = ({
               field={item}
               value={value}
               // placeholder={placeholder}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {renderIcon()}{" "}
@@ -494,7 +497,7 @@ const FieldRenderer = ({
               field={item}
               value={value}
               onChange={(e) => handleInputChange(item, e)}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {renderIcon()}{" "}
@@ -510,7 +513,7 @@ const FieldRenderer = ({
               field={item}
               value={value}
               onChange={(location) => handleInputChange(item, location)}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {renderIcon()}{" "}
@@ -526,7 +529,7 @@ const FieldRenderer = ({
               field={item}
               value={value}
               onChange={(content) => handleInputChange(item, content)}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {/* {renderIcon()}{" "} */}
@@ -542,7 +545,7 @@ const FieldRenderer = ({
               field={item}
               value={value}
               onChange={(content) => handleInputChange(item, content)}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {/* {renderIcon()}{" "} */}
@@ -558,7 +561,7 @@ const FieldRenderer = ({
               field={item}
               value={value}
               onChange={(content) => handleInputChange(item, content)}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {/* {renderIcon()}{" "} */}
@@ -574,7 +577,7 @@ const FieldRenderer = ({
               field={item}
               value={value}
               onChange={(content) => handleInputChange(item, content)}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {/* {renderIcon()}{" "} */}
@@ -604,7 +607,7 @@ const FieldRenderer = ({
               value={value}
               onChange={(color) => handleInputChange(item, color)}
               // placeholder={placeholder}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {renderIcon()}{" "}
@@ -618,7 +621,7 @@ const FieldRenderer = ({
             <JsonField
               value={value}
               onChange={(json) => handleInputChange(item, json)}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
           </div>
@@ -633,7 +636,7 @@ const FieldRenderer = ({
               field={item}
               value={value}
               onChange={(signature) => handleInputChange(item, signature)}
-              readOnly={item?.read_only}
+              readOnly={readOnly}
               hidden={item?.hidden}
             />
             {renderIcon()}{" "}

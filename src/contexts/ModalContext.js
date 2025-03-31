@@ -11,6 +11,9 @@ export const ModalProvider = ({ children }) => {
     message: "",
     onConfirm: null,
     confirmButtonStyles: "",
+    showButtons: true,
+    position: "top",
+    className: "!pt-10",
   });
 
   const openModal = ({
@@ -18,6 +21,9 @@ export const ModalProvider = ({ children }) => {
     message,
     onConfirm,
     confirmButtonStyles = "",
+    showButtons = true, // Default to true
+    position,
+    className = "!pt-10",
   }) => {
     setModalState({
       isOpen: true,
@@ -25,6 +31,9 @@ export const ModalProvider = ({ children }) => {
       message,
       onConfirm,
       confirmButtonStyles,
+      showButtons,
+      position,
+      className,
     });
   };
 

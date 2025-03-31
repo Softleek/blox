@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+// src/components/pages/form/DoctypeForm.js
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import DocHeader from "@/components/core/common/header/DocHeader";
 import DetailForm from "./DetailForm";
 import { useConfig } from "@/contexts/ConfigContext";
@@ -10,6 +11,8 @@ import SendSms from "@/components/functions/communication/SendSms";
 import { useFormEvents } from "@/hooks/useFormEvents";
 import { useFormLogic } from "@/hooks/useFormLogic";
 import { useFormButtons } from "@/hooks/useFormButtons";
+import { useFormValidation } from "@/hooks/useFormValidation";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 
 const DoctypeForm = ({ handleSave, config, title }) => {
   const [smsModalOpen, setSmsModalOpen] = useState(false);
@@ -22,13 +25,46 @@ const DoctypeForm = ({ handleSave, config, title }) => {
   const formRef = useRef(null);
 
   const { initializeFormEvents } = useFormEvents(form, setForm, doc, setDoc);
-  const { isEditing, handleSaveClick } = useFormLogic(
+  const { isEditing, handleSaveClick: originalHandleSaveClick } = useFormLogic(
     form,
     setForm,
     data,
     localConfig,
     handleSave
   );
+  const { validateRequiredFields, showValidationErrors } = useFormValidation();
+
+  // Define handleSaveClick using useCallback to maintain stable reference
+  const handleSaveClick = useCallback(
+    async (e) => {
+      e?.preventDefault();
+
+      const validation = validateRequiredFields(form, localConfig);
+      if (!validation.isValid) {
+        showValidationErrors(validation.errors);
+        return;
+      }
+
+      await originalHandleSaveClick(e);
+    },
+    [
+      form,
+      doc?.meta?.requiredFields,
+      validateRequiredFields,
+      showValidationErrors,
+      originalHandleSaveClick,
+    ]
+  );
+
+  // Initialize keyboard shortcuts after handleSaveClick is defined
+  const { setupShortcuts } = useKeyboardShortcuts({
+    form,
+    router,
+    slug,
+    handleSave: handleSaveClick,
+    disabled: !isEditing,
+  });
+
   const { buttons } = useFormButtons(
     form,
     setForm,
@@ -48,11 +84,8 @@ const DoctypeForm = ({ handleSave, config, title }) => {
     if (slug) {
       initializeFormEvents(slug);
     }
-  }, [slug]);
-
-  // if (!slug || !localConfig) {
-  //   return null;
-  // }
+    return setupShortcuts();
+  }, [slug, form, router, isEditing, initializeFormEvents, setupShortcuts]);
 
   const ComponentBefore = doc?.componentBefore || null;
   const ComponentAfter = doc?.componentAfter || null;

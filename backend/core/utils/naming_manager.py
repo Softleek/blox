@@ -131,21 +131,46 @@ class NamingManager:
     def generate_by_old_style_expression(self, expression):
         """
         Generate name using an old-style expression.
-        Supports format like 'PREFIX-.#####' where prefix and series are separated by a dot.
+        Supports formats like:
+        - 'PREFIX-.#####' (simple counter)
+        - 'MEXP-.YY.-.MM.-.######' (with date parts)
+        Preserves existing hyphens exactly as in formula, removes only dots used as separators
         """
-        parts = expression.split(".")
-        if len(parts) != 2 or not parts[1].startswith("#"):
+        # Split into parts using dot as separator
+        parts = [p for p in expression.split(".") if p]  # remove empty parts
+        
+        # The last part should be the series pattern (with #)
+        series_part = parts[-1]
+        if not series_part.startswith("#"):
             raise ValueError(
-                "Invalid old-style expression format. Expected 'PREFIX-.#####'."
+                "Invalid old-style expression format. Expected last part to be series like '#####'."
             )
-
-        prefix = parts[0]
-        series_pattern = parts[1]
-        digits = series_pattern.count("#")
-
+        
+        # Process all parts to build the prefix
+        today = datetime.now()
+        date_formats = {
+            'YY': today.strftime('%y'),
+            'YYYY': today.strftime('%Y'),
+            'MM': today.strftime('%m'),
+            'DD': today.strftime('%d'),
+            'hh': today.strftime('%H'),
+            'mm': today.strftime('%M'),
+            'ss': today.strftime('%S'),
+        }
+        
+        # Reconstruct the prefix by processing each part
+        prefix = ""
+        for part in parts[:-1]:
+            if part in date_formats:
+                prefix += date_formats[part]
+            else:
+                prefix += part  # Preserve exactly as is (with any hyphens)
+        
+        digits = len(series_part)
+        
         # Generate the next value in the series with the prefix
         next_value = self.get_series_with_prefix(prefix, digits)
-        return f"{prefix}.{next_value}"
+        return f"{prefix}{next_value}"  # Directly concatenate without adding separators
 
     def get_series_with_prefix(self, prefix, digits):
         """
@@ -153,10 +178,15 @@ class NamingManager:
         Ensures unique numbering for each prefix.
         """
         with transaction.atomic():
-            obj, _ = Series.objects.get_or_create(name=prefix, defaults={"current": 0})
+            # Include the full prefix in the series name to maintain separate counters
+            obj, _ = Series.objects.get_or_create(
+                name=f"oldstyle_{prefix}_series",
+                defaults={"current": 0}
+            )
             obj.current += 1
             obj.save()
             return str(obj.current).zfill(digits)
+
 
     def generate_by_hash(self):
         """Generate a random hash-based name."""

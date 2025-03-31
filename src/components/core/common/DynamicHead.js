@@ -10,7 +10,7 @@ const DynamicHead = () => {
 
   useEffect(() => {
     const fetchSettings = async () => {
-      const settings = await fetchData({}, `frappe/website_settings/1/`);
+      const settings = await fetchData({}, `frappe/website_settings/`);
       if (settings?.data) {
         setWebsiteSettings(settings.data);
         if (settings.data.head_html) {
