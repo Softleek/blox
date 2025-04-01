@@ -1,5 +1,6 @@
 from django.db import models
 from multiselectfield import MultiSelectField
+from datetime import timedelta
 import uuid
 import os
 from django.conf import settings
@@ -14,7 +15,7 @@ class RQWorker(BaseModel):
     birth_date = models.DateTimeField(null=True, blank=True)
     successful_job_count = models.IntegerField(null=True, blank=True)
     failed_job_count = models.IntegerField(null=True, blank=True)
-    total_working_time = models.DurationField(null=True, blank=True)
+    total_working_time =  models.DurationField(null=True, blank=True)
     queue = models.CharField(max_length=255, null=True, blank=True)
     CHOICES_QUEUE_TYPE = [
         ("default", "default"),

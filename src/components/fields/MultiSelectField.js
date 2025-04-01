@@ -1,6 +1,12 @@
 import Select from "react-select";
 
-const MultiSelectField = ({ value = [], onChange, options, placeholder }) => {
+const MultiSelectField = ({
+  value = [],
+  onChange,
+  options,
+  placeholder,
+  readOnly,
+}) => {
   // Convert string options to { label, value } format
   const formattedOptions = options?.map((opt) => ({ label: opt, value: opt }));
 
@@ -9,15 +15,20 @@ const MultiSelectField = ({ value = [], onChange, options, placeholder }) => {
 
   return (
     <div
-      className={`relative flex flex-col w-full break-words rounded-md font-bold text-[14px]`}
+      className={`relative flex flex-col w-full break-words rounded-md font-bold text-[14px] ${
+        readOnly ? "cursor-not-allowed" : ""
+      }`}
     >
       <Select
         isMulti
         options={formattedOptions}
         value={selectedValues}
-        onChange={(selected) => onChange(selected?.map((item) => item.value))}
+        onChange={(selected) =>
+          !readOnly && onChange(selected?.map((item) => item.value))
+        }
         placeholder={placeholder || "Select options"}
         classNamePrefix="custom-select"
+        isDisabled={readOnly}
       />
     </div>
   );

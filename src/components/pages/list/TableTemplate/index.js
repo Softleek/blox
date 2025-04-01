@@ -177,6 +177,7 @@ const TableTemplate = ({
                     data={data}
                     handleSelectAll={handleSelectAll}
                     selectedRows={selectedRows}
+                    config={tableConfig}
                   />
                   {data && (
                     <TableBody
@@ -190,6 +191,7 @@ const TableTemplate = ({
                       endpoint={endpoint}
                       setLoading={setLoading}
                       refresh={refresh}
+                      config={tableConfig}
                     />
                   )}
                 </table>

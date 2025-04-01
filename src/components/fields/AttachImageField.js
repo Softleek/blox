@@ -8,7 +8,9 @@ const AttachImageField = ({ value, onChange, readOnly, preview, hidden }) => (
     hidden={hidden}
     readOnly={readOnly || preview} // Make input readOnly in both readOnly and preview mode
     disabled={readOnly || preview}
-    className="p-1 text-xs bg-white rounded-md"
+    className={`p-1 text-xs bg-white rounded-md ${
+      readOnly || preview ? "cursor-not-allowed" : ""
+    }`}
   />
 );
 

@@ -22,7 +22,9 @@ const SmallTextField = ({
         rows={rows}
         readOnly={readOnly || preview}
         disabled={readOnly || preview}
-        className="px-2 py-1 text-sm w-full border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
+        className={`px-2 py-1 text-sm w-full border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none ${
+          readOnly || preview ? "cursor-not-allowed" : ""
+        }`}
         placeholder={placeholder}
       />
       {!readOnly && !preview && (

@@ -8,7 +8,9 @@ const AttachField = ({ value, onChange, readOnly, preview, hidden }) => (
     disabled={readOnly || preview}
     onChange={onChange}
     hidden={hidden}
-    className="px-1 w-full focus:outline-none focus:ring-0 focus:border-none"
+    className={`px-1 w-full focus:outline-none focus:ring-0 focus:border-none ${
+      readOnly || preview ? "cursor-not-allowed" : ""
+    }`}
   />
 );
 

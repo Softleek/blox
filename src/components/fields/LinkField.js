@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import QuickEntryModal from "../pages/list/quickentry";
 import { findDocDetails } from "@/utils/findDocDetails";
 import { importFile } from "@/utils/importFile";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 const LinkField = ({
   value = "",
@@ -28,7 +29,7 @@ const LinkField = ({
   const [isQuickEntryModalOpen, setIsQuickEntryModalOpen] = useState(false);
   const { selectedItem, setSelectedItem } = useConfig();
   const inputRef = useRef(null);
-  // Fetch endpoint and appData when field is passed
+
   const initializeField = useCallback(async () => {
     if (!field) return;
 
@@ -57,7 +58,6 @@ const LinkField = ({
 
         setAppData(configData.content);
 
-        // If value is provided, set the initial search term
         if (value) {
           const titleField =
             configData.content?.title_field || configData.content?.id_field;
@@ -79,7 +79,6 @@ const LinkField = ({
     }
   }, [field, value]);
 
-  // Fetch options based on search term
   const fetchOptions = useCallback(
     async (search = "") => {
       if (!endpoint || readOnly || preview || hidden) return;
@@ -89,26 +88,22 @@ const LinkField = ({
 
         const fetchedOptions =
           response?.data?.data?.map((option) => {
-            // Check if title_field is present, and add 'id' to the start of search_fields automatically
             let searchFields = [];
 
             if (appData.search_fields) {
               if (Array.isArray(appData.search_fields)) {
-                // If it's already a list, just use it directly
                 searchFields = appData.search_fields.map((key) => key.trim());
               } else if (typeof appData.search_fields === "string") {
-                // If it's a string, check for commas and split
                 searchFields = appData.search_fields.includes(",")
-                  ? appData.search_fields.split(",").map((key) => key.trim()) // Split by comma and trim
-                  : [appData.search_fields.trim()]; // Treat it as a single element list
+                  ? appData.search_fields.split(",").map((key) => key.trim())
+                  : [appData.search_fields.trim()];
               }
             }
 
             if (appData.title_field && !searchFields.includes("id")) {
-              searchFields.unshift("id"); // Add 'id' to the start of search_fields if title_field is present
+              searchFields.unshift("id");
             }
 
-            // Create subFields from the processed search fields
             const subFields = searchFields
               .map((key) => option[key])
               .filter(Boolean)
@@ -144,7 +139,6 @@ const LinkField = ({
     [endpoint, appData, readOnly, preview, hidden]
   );
 
-  // Handle input change
   const handleInputChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
@@ -152,38 +146,34 @@ const LinkField = ({
     setIsDropdownOpen(true);
   };
 
-  // Handle selection change
   const handleSelectionChange = (option) => {
     if (option?.isAddNew) {
       setIsQuickEntryModalOpen(true);
     } else {
       setSearchTerm(option.label);
-      onChange(option.value); // Send the selected value to the parent
+      onChange(option.value);
       setSelectedItem(null);
       setIsDropdownOpen(false);
     }
   };
 
-  // Handle quick entry modal close
   const handleClose = async (response) => {
     setIsQuickEntryModalOpen(false);
     if (response?.id) {
       const newLabel = response[appData.title_field] || response.id;
       setSearchTerm(newLabel);
       onChange(response);
-      await fetchOptions(); // Refetch options to include the new entry
+      await fetchOptions();
     }
   };
 
-  // Clear selection
   const clearSelection = () => {
     setSearchTerm("");
-    onChange(null); // Clear the parent value
+    onChange(null);
     setSelectedItem(null);
     fetchOptions("");
   };
 
-  // Open link in a new tab
   const openLink = () => {
     if (endpoint && searchTerm) {
       window.open(
@@ -193,7 +183,6 @@ const LinkField = ({
     }
   };
 
-  // Initialize field and appData on mount or field change
   React.useEffect(() => {
     initializeField();
   }, [initializeField]);
@@ -218,7 +207,9 @@ const LinkField = ({
           value={searchTerm}
           onChange={handleInputChange}
           placeholder={placeholder}
-          className="px-1 w-full focus:outline-none focus:ring-0 focus:border-none"
+          className={`px-1 w-full focus:outline-none focus:ring-0 focus:border-none ${
+            readOnly ? "cursor-pointer" : ""
+          }`}
           disabled={readOnly || preview}
           onFocus={() => {
             setIsDropdownOpen(true);
@@ -232,32 +223,34 @@ const LinkField = ({
           required={required}
           {...rest}
         />
-        {value && isDropdownOpen && (
-          <>
-            <button
-              type="button"
-              onMouseDown={(e) => {
-                e.preventDefault(); // Prevent blur event
-                clearSelection();
-              }}
-              className="text-gray-800 font-bold hover:text-gray-700 text-xs ml-1 mr-2"
-              title="Clear selection"
-            >
-              ✕
-            </button>
-            <button
-              type="button"
-              onMouseDown={(e) => {
-                e.preventDefault(); // Prevent blur event
-                openLink();
-              }}
-              className="text-purple-800 hover:text-gray-700 hover:bg-pink-50 font-bold mr-1"
-              title="Open link"
-            >
-              →
-            </button>
-          </>
-        )}
+        <button
+          type="button"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            openLink();
+          }}
+          className="p-2 rounded-full bg-purple-100 text-purple-600 hover:bg-purple-200 hover:text-purple-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 group"
+          title="Open link"
+          aria-label="Open link"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="w-5 h-5 transition-transform duration-300 transform group-hover:translate-x-1 group-hover:rotate-12"
+          >
+            <path
+              fillRule="evenodd"
+              d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z"
+              clipRule="evenodd"
+            />
+            <path
+              fillRule="evenodd"
+              d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
       </div>
       <AnimatePresence>
         {isDropdownOpen && options.length > 0 && (
@@ -274,7 +267,7 @@ const LinkField = ({
                   searchTerm === option.label ? "bg-gray-200" : ""
                 }`}
                 onMouseDown={(e) => {
-                  e.preventDefault(); // Prevent blur event
+                  e.preventDefault();
                   handleSelectionChange(option);
                 }}
               >

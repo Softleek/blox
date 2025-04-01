@@ -47,7 +47,6 @@ export const useFormValidation = () => {
 
     // Get all required fields from both sources
     const requiredFields = getRequiredFields(config);
-    console.log("Required Fields:", requiredFields);
 
     // Validate required fields
     requiredFields.forEach((field) => {

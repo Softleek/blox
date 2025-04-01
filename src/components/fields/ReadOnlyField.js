@@ -9,8 +9,10 @@ const ReadOnlyField = ({ value = "", onChange, readOnly, preview, hidden }) => {
       <input
         type="text"
         value={value || ""}
-        readOnly
-        className="w-full p-2 text-sm border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+        readOnly={readOnly}
+        className={`w-full p-2 text-sm border border-gray-300 rounded-md bg-gray-100 ${
+          readOnly ? "cursor-not-allowed" : ""
+        }`}
       />
     </div>
   );

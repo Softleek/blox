@@ -500,7 +500,7 @@ const FieldRenderer = ({
               readOnly={readOnly}
               hidden={item?.hidden}
             />
-            {renderIcon()}{" "}
+            {/* {renderIcon()}{" "} */}
           </div>
         </>
       );

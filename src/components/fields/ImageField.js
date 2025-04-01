@@ -121,8 +121,11 @@ const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
           <div className="flex items-center -mt-14 mb-2 p-2 w-full overflow-auto">
             <input
               type="text"
-              className="mt-1 block w-full text-[12px] border border-gray-300 rounded-md py-1 px-2 mx-1 bg-pink-50 focus:outline-none focus:ring-1 focus:ring-yellow-500"
+              className={`mt-1 block w-full text-[12px] border border-gray-300 rounded-md py-1 px-2 mx-1 bg-pink-50 focus:outline-none focus:ring-1 focus:ring-yellow-500 ${
+                readOnly ? "cursor-not-allowed" : ""
+              }`}
               value={imageName}
+              readOnly={readOnly}
             />
           </div>
 
@@ -139,7 +142,9 @@ const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
         <div className="image-upload">
           <label
             htmlFor="image-upload"
-            className="image-upload__label bg-purple-100 text-black px-4 py-2 my-2 rounded-lg cursor-pointer hover:bg-purple-200"
+            className={`image-upload__label bg-purple-100 text-black px-4 py-2 my-2 rounded-lg cursor-pointer hover:bg-purple-200 ${
+              readOnly || preview ? "cursor-not-allowed" : ""
+            }`}
           >
             <span>Upload Image</span>
           </label>
@@ -237,9 +242,12 @@ const ImageField = ({ value, onChange, readOnly, preview, hidden }) => {
               <div className="">
                 <input
                   type="text"
-                  className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-yellow-500"
+                  className={`mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-yellow-500 ${
+                    readOnly ? "cursor-not-allowed" : ""
+                  }`}
                   value={imageName}
                   onChange={handleRename}
+                  readOnly={readOnly}
                 />
               </div>
             </div>

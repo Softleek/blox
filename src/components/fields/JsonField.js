@@ -36,7 +36,7 @@ const JsonField = ({ value = "", onChange, readOnly, preview, hidden }) => {
         placeholder="Enter JSON here"
         className={`w-full p-3 text-sm focus:outline-none transition-all ${
           isValid ? "" : ""
-        }`}
+        } ${readOnly || preview ? "cursor-not-allowed" : ""}`}
         rows={8}
       />
       {!isValid && (

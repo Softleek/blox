@@ -16,6 +16,11 @@ import { postData } from "@/utils/Api";
 import { useStatusHandler } from "@/custom/masafa";
 import useLoadingOffloadingKeyEvents from "@/hooks/useLoadingOffloadingKeyEvents";
 import CustomMessageModal from "../modal/CustomMessageModal";
+import { useConfig } from "@/contexts/ConfigContext";
+import { useData } from "@/contexts/DataContext";
+import { useDocActions } from "@/hooks/useDocActions";
+import { removeIdAndRelatedFields } from "@/components/pages/form/actions/handleDuplicate";
+import { Edit, CheckCircle2, XCircle } from "lucide-react";
 
 const DocHeader = ({
   title,
@@ -35,6 +40,9 @@ const DocHeader = ({
   const { dashboardText } = useNavbar();
   const [perms, setPerms] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { localConfig, localAppData } = useConfig();
+  const { form, setForm, setLoading, data: localData, setData } = useData();
+
   const router = useRouter();
 
   const rt = useRt();
@@ -45,6 +53,17 @@ const DocHeader = ({
     useStatusHandler(dashboardText);
   const [canEdit, setCanEdit] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
+
+  const { handleSubmit, handleCancel, isProcessing } = useDocActions({
+    localConfig,
+    localData,
+    setForm,
+    setData,
+    setLoading,
+    localAppData,
+    slug,
+    id,
+  });
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -67,6 +86,71 @@ const DocHeader = ({
 
   useLoadingOffloadingKeyEvents("Loading", handleScannedCode);
 
+  const handleAmend = async () => {
+    // Set form data with amended_from
+    setForm((prev) => ({
+      ...removeIdAndRelatedFields(prev),
+      amended_from: id, // Store the original ID
+      docstatus: 0, // Reset docstatus to 0 for the new document
+    }));
+
+    const newPath = `/app/${slug}/new`;
+    router.push(newPath);
+  };
+
+  // Function to get status label and style based on docstatus
+  const getDocStatusInfo = () => {
+    if (!localConfig?.is_submittable) return null;
+
+    const statusMap = {
+      0: {
+        label: "Draft",
+        color: "bg-yellow-600 text-purple-100 font-bold",
+        icon: <Edit className="w-3.5 h-3.5 mr-1" />,
+      },
+      1: {
+        label: "Submitted",
+        color: "bg-green-600 text-purple-100 font-bold",
+        icon: <CheckCircle2 className="w-3.5 h-3.5 mr-1" />,
+      },
+      2: {
+        label: "Cancelled",
+        color: "bg-red-600 text-purple-100 font-bold",
+        icon: <XCircle className="w-3.5 h-3.5 mr-1" />,
+      },
+    };
+
+    return statusMap[localData.docstatus] || null;
+  };
+
+  // Function to get status label and style based on status field and config.states
+  const getCustomStatusInfo = () => {
+    if (!localData?.status || !localConfig?.states) return null;
+
+    const stateConfig = localConfig.states.find(
+      (state) => state.title === localData.status
+    );
+
+    if (!stateConfig) return null;
+
+    const colorMap = {
+      Blue: "bg-blue-600 text-blue-100",
+      Green: "bg-green-600 text-green-100",
+      Red: "bg-red-600 text-red-100",
+      Orange: "bg-orange-600 text-orange-100",
+      // Add more colors as needed
+    };
+
+    return {
+      label: stateConfig.title,
+      color: colorMap[stateConfig.color] || "bg-gray-600 text-gray-100",
+      icon: <CheckCircle2 className="w-3.5 h-3.5 mr-1" />,
+    };
+  };
+
+  const docStatusInfo = getDocStatusInfo();
+  const customStatusInfo = getCustomStatusInfo();
+
   return (
     <>
       {isLoading && <Loading />}
@@ -83,26 +167,32 @@ const DocHeader = ({
         style={{
           zIndex: 2,
         }}
-        className="relative flex flex-col flex-auto min-w-0 px-4 py-1 mx-6 -mt-10 break-words border-0 shadow-blur rounded-2xl bg-white/80 bg-clip-border backdrop-blur-2xl backdrop-saturate-200"
+        className="relative flex flex-col flex-auto min-w-0 px-4 py-1 mx-6 -mt-10 break-words border-0 shadow-blur rounded-2xl bg-white bg-clip-border backdrop-blur-2xl backdrop-saturate-200"
       >
         <div className="flex flex-wrap -mx-3 min-h-12 justify-between">
-          {/* <div className="flex-none w-auto max-w-full px-3">
-            <div className="text-base ease-soft-in-out h-8.5 w-8.5 relative inline-flex items-center justify-center rounded-xl text-white transition-all duration-200">
-              <img
-                src="/img/favicon.png"
-                alt="profile_image"
-                className="w-full shadow-soft-sm rounded-xl"
-              />
-            </div>
-          </div> */}
           <div className="flex-none w-auto max-w-full px-3 my-auto">
             <div className="h-full">
-              <Link href={link}>
-                <h5 className="mb-1 text-gray-900 font-bold">
-                  {title}
-                  {/* {toTitleCase(title)} */}
-                </h5>
-              </Link>
+              <div className="flex items-center">
+                <Link href={link}>
+                  <h5 className="mb-1 text-gray-900 font-bold">{title}</h5>
+                </Link>
+                {docStatusInfo && (
+                  <span
+                    className={`ml-2 px-2 py-1 text-xs font-bold rounded-full flex items-center ${docStatusInfo.color}`}
+                  >
+                    {docStatusInfo.icon}
+                    {docStatusInfo.label}
+                  </span>
+                )}
+                {customStatusInfo && (
+                  <span
+                    className={`ml-2 px-2 py-1 text-xs font-bold rounded-full flex items-center ${customStatusInfo.color}`}
+                  >
+                    {customStatusInfo.icon}
+                    {customStatusInfo.label}
+                  </span>
+                )}
+              </div>
               <p className="mb-0 font-semibold leading-normal text-sm">
                 {subtitle}
               </p>
@@ -137,28 +227,65 @@ const DocHeader = ({
                 {action && (
                   <PrimaryButton text={action} onClick={updateStatus} />
                 )}
-                {/* Pass buttons array to ButtonGroup */}
                 <ButtonGroup buttons={buttons} />
-                {isEditing && handleSaveClick && (
-                  <button type="button" onClick={handleSaveClick}>
-                    <PrimaryButton
-                      text="Save"
-                      className="flex items-center justify-center p-1"
-                    />
-                  </button>
+                {isEditing &&
+                  handleSaveClick &&
+                  ((localConfig?.is_submittable &&
+                    localData?.docstatus === 0) ||
+                    !localConfig?.is_submittable ||
+                    !id) && (
+                    <button type="button" onClick={handleSaveClick}>
+                      <PrimaryButton
+                        text="Save"
+                        className="flex items-center justify-center p-1"
+                      />
+                    </button>
+                  )}
+
+                {localData && id && (
+                  <>
+                    {isEditing && localData.docstatus === 1 && (
+                      <PrimaryButton
+                        text="Update"
+                        onClick={handleSaveClick}
+                        disabled={isProcessing}
+                      />
+                    )}
+
+                    {localConfig?.is_submittable &&
+                      localData.docstatus === 0 &&
+                      !isEditing && (
+                        <PrimaryButton
+                          text="Submit"
+                          onClick={handleSubmit}
+                          disabled={isProcessing}
+                        />
+                      )}
+
+                    {localData.docstatus === 1 && (
+                      <PrimaryButton
+                        text="Cancel"
+                        onClick={handleCancel}
+                        disabled={isProcessing}
+                      />
+                    )}
+                    {localData?.docstatus === 2 && (
+                      <PrimaryButton text="Amend" onClick={handleAmend} />
+                    )}
+                  </>
                 )}
               </div>
             </div>
           </div>
         </div>
       </div>
-      {errorModal.isOpen && (
+      {errorModal?.isOpen && (
         <CustomMessageModal
-          isOpen={errorModal.isOpen}
-          onRequestClose={errorModal.onRequestClose}
-          message={errorModal.message}
-          title={errorModal.title}
-          onProceed={errorModal.onProceed}
+          isOpen={errorModal?.isOpen}
+          onRequestClose={errorModal?.onRequestClose}
+          message={errorModal?.message}
+          title={errorModal?.title}
+          onProceed={errorModal?.onProceed}
         />
       )}
     </>

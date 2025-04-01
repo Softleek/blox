@@ -194,6 +194,7 @@ def write_model_header(module_file: TextIO, model_name: str, model_type: str) ->
     imports = [
         "from django.db import models",
         "from multiselectfield import MultiSelectField",
+        "from datetime import timedelta",
         "import uuid",
         "import os",
         "from django.conf import settings"

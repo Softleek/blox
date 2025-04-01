@@ -11,7 +11,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db import IntegrityError  
+from django.core.exceptions import ValidationError
 import click
+
+from ..models import SubmittableModel
 
 from ..utils.data_validation import validate_serializer_data
 from ..utils.get_model_details import get_file_content
@@ -295,6 +298,73 @@ class GenericViewSet(BaseModelMixin, viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend]
 
+    def _get_instance_response(self, instance):
+        """Helper method to format instance response consistently"""
+        model_fields = [field.name for field in self.queryset.model._meta.fields]
+        sort_field = "modified" if "modified" in model_fields else "id"
+
+        # Ensure `instance` is a model instance before accessing attributes
+        if isinstance(instance, dict):  
+            instance_id = instance.get("id")  # Extract ID from serialized data
+            instance = self.queryset.filter(id=instance_id).first()  
+
+        if not instance:
+            return {"error": "Instance not found"}
+
+        queryset = self.get_queryset().order_by(sort_field)
+
+        next_instance = queryset.filter(**{f"{sort_field}__lt": getattr(instance, sort_field)}).last()
+        prev_instance = queryset.filter(**{f"{sort_field}__gt": getattr(instance, sort_field)}).first()
+
+        data = self._serialize_retrieve_instance(instance)
+        data["_prev"] = prev_instance.id if prev_instance else None
+        data["_next"] = next_instance.id if next_instance else None
+
+        return data
+
+
+    @action(detail=True, methods=['post'])
+    def submit(self, request, pk=None):
+        """Endpoint to submit a document"""
+        instance = self.get_object()
+        if not isinstance(instance, SubmittableModel):
+            return Response({"error": "Submission is not supported for this resource"}, 
+                          status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            instance.submit()
+            instance.refresh_from_db()
+            return Response(self._get_instance_response(instance))
+        except ValidationError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['post'])
+    def cancel(self, request, pk=None):
+        """Endpoint to cancel a document"""
+        instance = self.get_object()
+        if not isinstance(instance, SubmittableModel):
+            return Response({"error": "Cancellation is not supported for this resource"}, 
+                          status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            instance.cancel()
+            instance.refresh_from_db()
+            return Response(self._get_instance_response(instance))
+        except ValidationError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    @handle_errors
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        return Response(self._get_instance_response(instance))
+
+    @handle_errors
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+        updated_instance = self._update_instance(instance, request.data, partial)
+        return Response(self._get_instance_response(updated_instance))
+
     @handle_errors
     def list(self, request, *args, **kwargs):
         query_params = request.GET.copy()
@@ -364,36 +434,17 @@ class GenericViewSet(BaseModelMixin, viewsets.ModelViewSet):
         created_data = []
         for item_data in data_list:
             created_instance = self._create_instance(item_data)
-            created_data.append(created_instance)
+            created_data.append(self._get_instance_response(created_instance))
         return Response(created_data, status=status.HTTP_201_CREATED)
 
     def _create_single_instance(self, data):
         created_instance = self._create_instance(data)
-        return Response(created_instance, status=status.HTTP_201_CREATED)
+        return Response(self._get_instance_response(created_instance), 
+                       status=status.HTTP_201_CREATED)
 
-    @handle_errors
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        model_fields = [field.name for field in self.queryset.model._meta.fields]
-        sort_field = "modified" if "modified" in model_fields else "id"
-        queryset = self.get_queryset().order_by(sort_field)
-
-        next_instance = queryset.filter(**{f"{sort_field}__lt": getattr(instance, sort_field)}).last()
-        prev_instance = queryset.filter(**{f"{sort_field}__gt": getattr(instance, sort_field)}).first()
-
-        data = self._serialize_retrieve_instance(instance)
-        data["_prev"] = prev_instance.id if prev_instance else None
-        data["_next"] = next_instance.id if next_instance else None
-
-        return Response(data)
-
-    @handle_errors
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop("partial", False)
-        instance = self.get_object()
-        updated_instance = self._update_instance(instance, request.data, partial)
-        return Response(updated_instance, status=status.HTTP_200_OK)
-
+    def _serialize_retrieve_instance(self, instance):
+        """Helper method to serialize an instance for retrieve operations"""
+        return self.get_serializer(instance).data
 
 
 

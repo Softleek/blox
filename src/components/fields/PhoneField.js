@@ -9,7 +9,9 @@ const PhoneField = ({ value = "", onChange, readOnly, preview, hidden }) => (
     onChange={onChange}
     hidden={hidden}
     placeholder="Enter Phone Number"
-    className="p-1 text-xs bg-white rounded-md"
+    className={`p-1 text-xs bg-white rounded-md ${
+      readOnly ? "cursor-not-allowed" : ""
+    }`}
   />
 );
 

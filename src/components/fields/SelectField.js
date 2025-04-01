@@ -20,7 +20,11 @@ const SelectField = ({
     formattedOptions.find((opt) => opt.value === value) || null;
 
   return (
-    <div className="relative flex flex-col w-full text-[14px]">
+    <div
+      className={`relative flex flex-col w-full text-[14px] ${
+        readOnly ? "cursor-not-allowed" : ""
+      }`}
+    >
       <Select
         isMulti={false}
         options={formattedOptions}

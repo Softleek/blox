@@ -9,7 +9,9 @@ const IntField = ({ value, onChange, readOnly, preview, hidden }) => (
     onChange={onChange}
     placeholder="Enter Integer"
     hidden={hidden}
-    className="p-1 text-xs bg-white rounded-md"
+    className={`p-1 text-xs bg-white rounded-md ${
+      readOnly || preview ? "cursor-not-allowed" : ""
+    }`}
   />
 );
 

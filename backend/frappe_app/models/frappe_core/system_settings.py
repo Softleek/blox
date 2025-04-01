@@ -1,5 +1,6 @@
 from django.db import models
 from multiselectfield import MultiSelectField
+from datetime import timedelta
 import uuid
 import os
 from django.conf import settings
@@ -120,7 +121,7 @@ class SystemSettings(SingletonModel):
     allow_older_web_view_links = models.BooleanField(default=False, null=True, blank=True)
     max_auto_email_report_per_user = models.IntegerField(default=20, null=True, blank=True)
     disable_change_log_notification = models.BooleanField(default=False, null=True, blank=True)
-    reset_password_link_expiry_duration = models.DurationField(default='"0:20:00"', null=True, blank=True)
+    reset_password_link_expiry_duration =  models.DurationField(default=timedelta(hours=0, minutes=20, seconds=0), null=True, blank=True)
     email_retry_limit = models.IntegerField(default=3, null=True, blank=True)
     disable_user_pass_login = models.BooleanField(default=False, null=True, blank=True)
     login_with_email_link = models.BooleanField(default=True, null=True, blank=True)

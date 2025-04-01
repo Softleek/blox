@@ -9,7 +9,9 @@ const CurrencyField = ({ value, onChange, readOnly, preview, hidden }) => (
     onChange={onChange}
     placeholder="$0.00"
     hidden={hidden}
-    className="p-1 bg-white rounded-md"
+    className={`p-1 bg-white rounded-md ${
+      readOnly || preview ? "cursor-not-allowed" : ""
+    }`}
   />
 );
 

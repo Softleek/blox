@@ -23,7 +23,9 @@ const TextAreaField = ({
         disabled={readOnly || preview}
         onChange={handleInputChange || onChange}
         rows={rows}
-        className="px-1 text-sm w-full focus:outline-none focus:ring-0 focus:border-none"
+        className={`px-1 text-sm w-full focus:outline-none focus:ring-0 focus:border-none ${
+          readOnly ? "cursor-not-allowed" : ""
+        }`}
         placeholder={placeholder}
       />
       {!readOnly && !preview && (

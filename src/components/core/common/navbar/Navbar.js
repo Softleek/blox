@@ -46,7 +46,8 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="w-full max-w-[1536px] z-50 flex flex-wrap items-center justify-between transition-all duration-250 ease-soft-in bg-transparent">
+      {/* <div className="w-full max-w-[1536px] z-50 flex flex-wrap items-center justify-between transition-all duration-250 ease-soft-in bg-transparent"> */}
+      <div className="w-full z-50 flex flex-wrap items-center justify-between transition-all duration-250 ease-soft-in bg-transparent">
         <div className="flex items-center justify-between w-full px-2 md:px-4 py-1">
           <Link href="/">
             {websiteSettings?.app_logo && (

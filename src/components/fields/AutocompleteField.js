@@ -19,7 +19,9 @@ const AutocompleteField = ({
       onChange={onChange}
       placeholder={placeholder}
       hidden={hidden}
-      className="p-1 bg-white rounded-md"
+      className={`p-1 bg-white rounded-md ${
+        readOnly ? "cursor-not-allowed" : ""
+      }`}
     />
     <datalist id="autocomplete-options">
       {options.map((option, index) => (

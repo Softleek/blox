@@ -147,7 +147,7 @@ const LinkSelectField = ({
   if (hidden || preview) return null;
 
   return (
-    <div className="relative w-full">
+    <div className={`relative w-full ${readOnly ? "cursor-not-allowed" : ""}`}>
       {isQuickEntryModalOpen && (
         <QuickEntryModal
           isOpen={isQuickEntryModalOpen}

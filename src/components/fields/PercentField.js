@@ -9,7 +9,9 @@ const PercentField = ({ value = "", onChange, readOnly, preview, hidden }) => (
     hidden={hidden}
     onChange={onChange}
     placeholder="0%"
-    className="p-1 text-xs bg-white rounded-md"
+    className={`p-1 text-xs bg-white rounded-md ${
+      readOnly ? "cursor-not-allowed" : ""
+    }`}
     min="0"
     max="100"
   />

@@ -55,7 +55,9 @@ const SignatureField = ({
           ref={canvasRef}
           width="400"
           height="200"
-          className="border border-gray-300 rounded-md bg-gray-50"
+          className={`border border-gray-300 rounded-md bg-gray-50 ${
+            readOnly || preview ? "cursor-not-allowed" : ""
+          }`}
           onMouseDown={startDrawing}
           onMouseMove={draw}
           onMouseUp={stopDrawing}
@@ -77,7 +79,9 @@ const SignatureField = ({
           onClick={clearCanvas}
           readOnly={readOnly || preview} // Make input readOnly in both readOnly and preview mode
           disabled={readOnly || preview}
-          className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+          className={`px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ${
+            readOnly || preview ? "cursor-not-allowed" : ""
+          }`}
         >
           Clear
         </button>
@@ -85,7 +89,9 @@ const SignatureField = ({
           type="button"
           readOnly={readOnly || preview} // Make input readOnly in both readOnly and preview mode
           disabled={readOnly || preview}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          className={`px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 ${
+            readOnly || preview ? "cursor-not-allowed" : ""
+          }`}
         >
           Save Signature
         </button>

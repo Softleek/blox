@@ -1,11 +1,17 @@
 import React from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEdit,
+  faTrash,
+  faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { timeAgo } from "@/utils/DateFormat";
 import handleDelete from "./DeleteHandler";
 import { useModal } from "@/contexts/ModalContext";
 import { motion } from "framer-motion";
+import { Edit, CheckCircle2, XCircle } from "lucide-react";
+import CustomTooltip from "@/components/tooltip/CustomTooltip";
 
 const TableBody = ({
   data,
@@ -18,141 +24,299 @@ const TableBody = ({
   endpoint,
   setLoading,
   refresh,
+  config,
 }) => {
   const { openModal } = useModal();
+
+  // Function to get docstatus label and style
+  const getDocStatusInfo = (docstatus) => {
+    if (!config?.is_submittable) return null;
+
+    const statusMap = {
+      0: {
+        label: "Draft",
+        bg: "bg-yellow-500/10",
+        text: "text-yellow-800",
+        border: "border-yellow-200",
+        icon: <Edit className="w-3 h-3 mr-1" />,
+        description: "This document is in draft state and not submitted yet",
+      },
+      1: {
+        label: "Submitted",
+        bg: "bg-green-500/10",
+        text: "text-green-800",
+        border: "border-green-200",
+        icon: <CheckCircle2 className="w-3 h-3 mr-1" />,
+        description: "This document has been submitted and is active",
+      },
+      2: {
+        label: "Cancelled",
+        bg: "bg-red-500/10",
+        text: "text-red-800",
+        border: "border-red-200",
+        icon: <XCircle className="w-3 h-3 mr-1" />,
+        description: "This document has been cancelled and is no longer active",
+      },
+    };
+
+    return statusMap[docstatus] || null;
+  };
+
+  // Function to get custom status label and style
+  const getCustomStatusInfo = (status) => {
+    if (!status || !config?.states) return null;
+
+    const stateConfig = config.states.find((state) => state.title === status);
+
+    if (!stateConfig) return null;
+
+    const colorMap = {
+      Blue: {
+        bg: "bg-blue-500/10",
+        text: "text-blue-800",
+        border: "border-blue-200",
+      },
+      Green: {
+        bg: "bg-green-500/10",
+        text: "text-green-800",
+        border: "border-green-200",
+      },
+      Red: {
+        bg: "bg-red-500/10",
+        text: "text-red-800",
+        border: "border-red-200",
+      },
+      Orange: {
+        bg: "bg-orange-500/10",
+        text: "text-orange-800",
+        border: "border-orange-200",
+      },
+      Purple: {
+        bg: "bg-purple-500/10",
+        text: "text-purple-800",
+        border: "border-purple-200",
+      },
+      Pink: {
+        bg: "bg-pink-500/10",
+        text: "text-pink-800",
+        border: "border-pink-200",
+      },
+      Gray: {
+        bg: "bg-gray-500/10",
+        text: "text-gray-800",
+        border: "border-gray-200",
+      },
+    };
+
+    const colors = colorMap[stateConfig.color] || {
+      bg: "bg-gray-500/10",
+      text: "text-gray-800",
+      border: "border-gray-200",
+    };
+
+    return {
+      label: stateConfig.title,
+      description: stateConfig.description,
+      ...colors,
+    };
+  };
 
   const renderField = (field, item) => {
     const field_id = field?.id?.toString() || field?.fieldname?.toString();
     const value = item[field_id];
 
+    // Handle empty values
+    if (value === undefined || value === null || value === "") {
+      return <span className="text-gray-400">-</span>;
+    }
+
     switch (field.type) {
       case "text":
-        return <span>{value}</span>;
+        return <span className="truncate max-w-xs">{value}</span>;
       case "number":
-        return <span>{value}</span>;
+        return <span>{Number(value).toLocaleString()}</span>;
       case "date":
         return <span>{new Date(value).toLocaleDateString()}</span>;
+      case "datetime":
+        return <span>{new Date(value).toLocaleString()}</span>;
       case "boolean":
-        return <span>{value ? "Yes" : "No"}</span>;
+        return (
+          <span
+            className={`px-2 py-1.5 rounded-full text-xs ${
+              value ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+            }`}
+          >
+            {value ? "Yes" : "No"}
+          </span>
+        );
       case "options":
       case "select":
       case "status":
-        return (
-          <span
-            className={`${
-              field?.options.find((option) => option.value === value)?.style
-            }`}
-          >
-            {value}
-          </span>
+        const statusInfo = getCustomStatusInfo(value);
+        return statusInfo ? (
+          <div className="flex items-center">
+            <span
+              className={`px-2 py-1.5 text-xs rounded-full ${statusInfo.bg} ${statusInfo.text} border ${statusInfo.border}`}
+            >
+              {statusInfo.label}
+            </span>
+            {statusInfo.description && (
+              <CustomTooltip content={statusInfo.description}>
+                <FontAwesomeIcon
+                  icon={faInfoCircle}
+                  className="w-3 h-3 ml-1 text-gray-400 cursor-help"
+                />
+              </CustomTooltip>
+            )}
+          </div>
+        ) : (
+          <span>{value}</span>
         );
       case "link":
         return (
-          <Link href={value} className="text-blue-500 underline">
+          <Link
+            href={value}
+            className="text-blue-500 underline hover:text-blue-700 truncate max-w-xs"
+          >
             {value}
           </Link>
         );
+      case "image":
+        return (
+          <div className="flex items-center">
+            <img
+              src={value}
+              className="w-8 h-8 rounded-full object-cover"
+              alt={field.label}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/img/default-avatar.png";
+              }}
+            />
+          </div>
+        );
       default:
-        return <span>{value}</span>;
+        return <span className="truncate max-w-xs">{value}</span>;
     }
   };
 
   return (
     <tbody>
-      {data?.map((item, index) => (
-        <motion.tr
-          key={index}
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: index * 0.1 }}
-          className={`${index % 2 ? "bg-pink-50" : ""} hover:bg-purple-100`}
-        >
-          <td className="items-start text-left">
-            <input
-              type="checkbox"
-              checked={selectedRows.includes(item.id)}
-              onChange={() => handleSelectRow(item.id)}
-            />
-          </td>
-          {updatedFields?.map((field, fieldIndex) => {
-            const field_id =
-              field?.id?.toString() || field?.fieldname?.toString();
+      {data?.map((item, index) => {
+        const docStatusInfo = getDocStatusInfo(item.docstatus);
+        const customStatusInfo = getCustomStatusInfo(item.status);
+        const isSelected = selectedRows.includes(item.id);
 
-            return (
-              <td
-                key={fieldIndex}
-                className="p-2 align-middle bg-transparent shadow-transparent break-words"
-              >
-                {field_id === "id" ? (
-                  <Link href={`${currentPathWithoutParams}/${item.id}`}>
-                    <div className="text-blue-500 hover:underline">
-                      {item.id}
-                    </div>
-                  </Link>
-                ) : field.type === "image" ? (
-                  <div className="flex px-2 py-1 break-words">
-                    <div>
-                      <img
-                        src={item[field_id]}
-                        className="inline-flex items-center justify-center mr-4 text-xs text-white transition-all duration-200 ease-soft-in-out h-9 w-9 rounded-xl"
-                        alt={item.name}
-                      />
-                    </div>
-                    <div className="flex flex-col justify-center">
-                      <h6 className="mb-0 text-xs leading-normal">
-                        {item.name}
-                      </h6>
-                      <p className="mb-0 text-xs leading-tight text-slate-400">
-                        {item.email}
-                      </p>
-                    </div>
-                  </div>
-                ) : field.type === "linkselect" ? (
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={`/${field.endpoint}/${item[field_id]}`}
-                    className="font-semibold leading-tight text-slate-400"
+        return (
+          <motion.tr
+            key={index}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.05 }}
+            className={`
+              ${index % 2 ? "bg-pink-50" : "bg-white"}
+              hover:bg-purple-100
+              ${isSelected ? "ring-1 ring-pink-300" : ""}
+            `}
+          >
+            {/* Checkbox column */}
+            <td className="px-1 py-1.5 whitespace-nowrap">
+              <input
+                type="checkbox"
+                checked={isSelected}
+                onChange={() => handleSelectRow(item.id)}
+                className="h-3 w-3 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+            </td>
+            {/* ID Column */}
+            <td className="px-1 py-1.5 whitespace-nowrap">
+              <Link href={`${currentPathWithoutParams}/${item.id}`}>
+                <span className="text-purple-600 hover:text-purple-800 hover:underline font-medium">
+                  {item.id}
+                </span>
+              </Link>
+            </td>
+
+            {/* ID is automatically rendered as the first field in updatedFields */}
+
+            {/* Docstatus Column */}
+            {config?.is_submittable && (
+              <td className="px-1 py-1.5 whitespace-nowrap">
+                {docStatusInfo && (
+                  <span
+                    className={`px-2 py-1.5 text-xs rounded-full flex items-center ${docStatusInfo.bg} ${docStatusInfo.text} border ${docStatusInfo.border}`}
                   >
-                    {item[field_id]}
-                  </a>
-                ) : field.type === "multiselect" ? (
-                  <div className="flex flex-wrap items-center text-center gap-1">
-                    {item[field_id]?.map((selectedOption) => (
-                      <span
-                        key={selectedOption}
-                        className="bg-purple-100 text-purple-700 py-[1px] px-[4px] rounded-md text-[9px] font-medium shadow-sm"
-                      >
-                        {selectedOption}
-                      </span>
-                    ))}
-                  </div>
-                ) : (
-                  <span>{item[field_id]}</span>
+                    {docStatusInfo.icon}
+                    {docStatusInfo.label}
+                  </span>
                 )}
               </td>
-            );
-          })}
-          {item?.modified && (
-            <td className="p-2 align-middle bg-transparent border-t flex items-center text-xs shadow-transparent">
-              <span className="inline-block w-1 h-1 rounded-full bg-orange-600 mr-1"></span>
-              {timeAgo(new Date(item.modified))}
+            )}
+
+            {/* Custom Status Column */}
+            {config?.states && item.status && (
+              <td className="px-1 py-1.5 whitespace-nowrap">
+                {customStatusInfo && (
+                  <div className="flex items-center">
+                    <span
+                      className={`px-2 py-1.5 text-xs rounded-full ${customStatusInfo.bg} ${customStatusInfo.text} border ${customStatusInfo.border}`}
+                    >
+                      {customStatusInfo.label}
+                    </span>
+                    {customStatusInfo.description && (
+                      <FontAwesomeIcon
+                        icon={faInfoCircle}
+                        className="w-3 h-3 ml-1 text-gray-400 cursor-help"
+                      />
+                    )}
+                  </div>
+                )}
+              </td>
+            )}
+
+            {/* Other Fields */}
+            {updatedFields
+              ?.filter(
+                (field) =>
+                  field.fieldname !== "status" &&
+                  field.id !== "status" &&
+                  field.id !== "id" &&
+                  field.fieldname !== "docstatus"
+              )
+              ?.map((field, fieldIndex) => (
+                <td key={fieldIndex} className="px-1 py-1.5 whitespace-nowrap">
+                  {renderField(field, item)}
+                </td>
+              ))}
+
+            {/* Timestamps */}
+            <td className="px-1 py-1.5 whitespace-nowrap text-xs text-gray-500">
+              {item?.created && (
+                <div className="flex items-center">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500 mr-2"></span>
+                  <span> {timeAgo(new Date(item.created))}</span>
+                </div>
+              )}
             </td>
-          )}
-          <td className="align-middle bg-transparentshadow-transparent">
-            <Link href={`${currentPathWithoutParams}/${item.id}`}>
-              <div
+            <td className="px-1 py-1.5 whitespace-nowrap text-xs text-gray-500">
+              {item?.modified && (
+                <div className="flex items-center">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>
+                  <span>{timeAgo(new Date(item.modified))}</span>
+                </div>
+              )}
+            </td>
+
+            {/* Action buttons */}
+            <td className="px-1 py-1.5 whitespace-nowrap text-right text-xs font-medium">
+              <button
                 onClick={() => onEdit(item)}
-                className="text-xs font-semibold leading-tight text-slate-400 cursor-pointer"
+                className="text-blue-600 hover:text-blue-900 mr-4"
+                title="Edit"
               >
                 <FontAwesomeIcon icon={faEdit} />
-              </div>
-            </Link>
-          </td>
-          <td className="align-middle bg-transparent shadow-transparent">
-            <div className="text-xs w-4 h-4 font-semibold leading-tight text-slate-400 cursor-pointer">
+              </button>
               <button
-                className="text-red-500"
                 onClick={() =>
                   handleDelete({
                     id: item.id,
@@ -162,13 +326,15 @@ const TableBody = ({
                     refresh,
                   })
                 }
+                className="text-red-600 hover:text-red-900"
+                title="Delete"
               >
                 <FontAwesomeIcon icon={faTrash} />
               </button>
-            </div>
-          </td>
-        </motion.tr>
-      ))}
+            </td>
+          </motion.tr>
+        );
+      })}
     </tbody>
   );
 };

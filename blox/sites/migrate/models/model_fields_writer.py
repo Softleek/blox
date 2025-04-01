@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from typing import Any, Dict, List, TextIO
 from django.conf import settings
 from ....utils.register_models import get_app_module_for_model
@@ -120,16 +121,28 @@ def write_model(
             )
         elif field_type == "Duration":
             raw_default = field.get("default")
-            duration_default = format_duration_default(raw_default) if raw_default else None
-
-            write_field_declaration(
-                module_file,
-                field_id,
-                "models.DurationField",
-                field_name=field.get("label", ""),
-                default_value=duration_default,
-                allow_on_submit=allow_on_submit
-            )
+            duration_default = format_duration_default(raw_default)
+            
+            default_value = None
+            if duration_default is not None:
+                if isinstance(duration_default, timedelta):
+                    total_seconds = duration_default.total_seconds()
+                    hours, remainder = divmod(total_seconds, 3600)
+                    minutes, seconds = divmod(remainder, 60)
+                    default_value = f"timedelta(hours={int(hours)}, minutes={int(minutes)}, seconds={int(seconds)})"
+                else:
+                    default_value = repr(duration_default)
+            
+            module_file.write(f"    {field_id} =  models.DurationField(")
+            if default_value is not None:
+                module_file.write(f"default={default_value}, ")
+            module_file.write("null=True, blank=True")
+            module_file.write(")\n")
+            
+            # Add allow_on_submit as a field attribute
+            if allow_on_submit:
+                module_file.write(f"    {field_id}.allow_on_submit = True\n")
+            
         elif field_type in ["Small Text", "Text Area", "Text", "Long Text", "HTML", "HTML Editor", "Markdown Editor"]:
             write_field_declaration(
                 module_file,

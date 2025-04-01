@@ -20,9 +20,10 @@ const GeolocationField = ({
       readOnly={readOnly || preview} // Make input readOnly in both readOnly and preview mode
       disabled={readOnly || preview}
       placeholder="Latitude"
-      className="p-1 bg-white rounded-md  mr-1"
+      className={`p-1 bg-white rounded-md mr-1 ${
+        readOnly || preview ? "cursor-not-allowed" : ""
+      }`}
     />
-    1
     <input
       type="number"
       step="0.0001"
@@ -32,7 +33,9 @@ const GeolocationField = ({
       onChange={onLongitudeChange}
       hidden={hidden}
       placeholder="Longitude"
-      className="p-1 bg-white rounded-md"
+      className={`p-1 bg-white rounded-md ${
+        readOnly || preview ? "cursor-not-allowed" : ""
+      }`}
     />
   </div>
 );

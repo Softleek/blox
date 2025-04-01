@@ -144,7 +144,13 @@ const Sidebar = () => {
               />
             </button>
             <div className="block py-2 m-0 text-sm flex flex-col whitespace-nowrap justify-center items-center text-slate-700">
-              <Link href={`/${pageInfo?.link}` || "/"}>
+              <Link
+                href={
+                  pageInfo?.link?.startsWith("/")
+                    ? pageInfo.link
+                    : `/${pageInfo?.link || ""}`
+                }
+              >
                 <span className="ml-4 mr-2 font-semibold text-xl transition-all duration-200 ease-nav-brand">
                   {pageInfo?.text || "Home"}
                 </span>
@@ -183,27 +189,6 @@ const Sidebar = () => {
                 text="Profile"
                 link="/profile"
                 active={dashboardText === "Profile"}
-              />
-              <SidebarList
-                icon={faUserFriends}
-                text="Users"
-                link="/app/user"
-                permission="view_user"
-                active={dashboardText === "User"}
-              />
-              <SidebarList
-                icon={faCogs}
-                text="Rolegroup"
-                link="/app/group"
-                permission="view_rolegroup"
-                active={dashboardText === "Group"}
-              />
-              <SidebarList
-                icon={faDiagnoses}
-                text="Permissions"
-                link="/app/permission"
-                permission="view_permission"
-                active={dashboardText === "Permission"}
               />
 
               <Documentation />

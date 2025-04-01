@@ -6,7 +6,11 @@ const BarcodeField = ({ value, onChange, readOnly }) => {
     : "";
 
   return (
-    <div className="p-4 bg-gray-100 w-full rounded-md">
+    <div
+      className={`p-4 bg-gray-100 w-full rounded-md ${
+        readOnly ? "cursor-not-allowed" : ""
+      }`}
+    >
       {!readOnly && (
         <input
           type="text"

@@ -27,7 +27,9 @@ const PasswordField = ({
         onChange={onChange}
         placeholder={placeholder}
         hidden={hidden}
-        className="px-1 w-full focus:outline-none focus:ring-0 focus:border-none"
+        className={`px-1 w-full focus:outline-none focus:ring-0 focus:border-none ${
+          readOnly ? "cursor-not-allowed" : ""
+        }`}
       />
       <div className="px-1 text-right flex justify-end">
         <div

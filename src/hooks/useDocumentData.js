@@ -59,7 +59,6 @@ export const useDocumentData = ({ slug, setConfig, id = null }) => {
           ? `${docData.app}/${slug}/${id}`
           : `${docData.app}/${slug}`;
         const responseData = await fetchData({}, fetchUrl);
-        console.log("Response Data:", responseData, fetchUrl);
 
         if (responseData?.data) {
           setData(responseData.data);

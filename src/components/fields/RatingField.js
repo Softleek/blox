@@ -6,8 +6,10 @@ const RatingField = ({ value = "", onChange, readOnly, preview, hidden }) => {
   const [rating, setRating] = useState(value || 0);
 
   const handleRatingChange = (newRating) => {
-    setRating(newRating);
-    onChange(newRating); // Pass the new rating to the parent component
+    if (!readOnly) {
+      setRating(newRating);
+      onChange(newRating); // Pass the new rating to the parent component
+    }
   };
 
   return (
@@ -17,9 +19,11 @@ const RatingField = ({ value = "", onChange, readOnly, preview, hidden }) => {
           <FontAwesomeIcon
             key={star}
             icon={faStar}
-            className={`cursor-pointer text-2xl ${
+            className={`text-2xl ${
               star <= rating ? "text-yellow-400" : "text-gray-300"
-            } hover:text-yellow-500`}
+            } hover:text-yellow-500 ${
+              readOnly ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
             onClick={() => handleRatingChange(star)}
           />
         ))}

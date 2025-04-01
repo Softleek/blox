@@ -1,5 +1,6 @@
 from django.db import models
 from multiselectfield import MultiSelectField
+from datetime import timedelta
 import uuid
 import os
 from django.conf import settings
@@ -26,7 +27,7 @@ class RQJob(BaseModel):
     exc_info = models.CharField(max_length=255, null=True, blank=True)
     job_name = models.CharField(max_length=255, null=True, blank=True)
     arguments = models.CharField(max_length=255, null=True, blank=True)
-    timeout = models.DurationField(null=True, blank=True)
-    time_taken = models.DurationField(null=True, blank=True)
+    timeout =  models.DurationField(null=True, blank=True)
+    time_taken =  models.DurationField(null=True, blank=True)
     started_at = models.DateTimeField(null=True, blank=True)
     ended_at = models.DateTimeField(null=True, blank=True)

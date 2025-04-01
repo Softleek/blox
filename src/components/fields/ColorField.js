@@ -16,7 +16,9 @@ const ColorField = ({
     placeholder={placeholder}
     hidden={hidden}
     onChange={onChange}
-    className="p-1 text-xs bg-white rounded-md"
+    className={`p-1 text-xs bg-white rounded-md ${
+      readOnly ? "cursor-not-allowed" : ""
+    }`}
   />
 );
 

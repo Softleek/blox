@@ -41,7 +41,9 @@ const IconField = ({ value, onChange, readOnly, hidden }) => {
     <div className="relative icon-field w-full pb-1" hidden={hidden}>
       {selectedIcon ? (
         <div
-          className="flex flex-row items-center justify-between w-full gap-2 p-2 bg-pink-50 rounded-lg border border-pink-200 cursor-pointer hover:bg-pink-100 transition-colors"
+          className={`flex flex-row items-center justify-between w-full gap-2 p-2 bg-pink-50 rounded-lg border border-pink-200 cursor-pointer hover:bg-pink-100 transition-colors ${
+            readOnly ? "cursor-not-allowed" : ""
+          }`}
           onClick={handleIconClick}
         >
           {/* Display the selected icon */}
@@ -61,7 +63,9 @@ const IconField = ({ value, onChange, readOnly, hidden }) => {
       ) : (
         <button
           type="button"
-          className="bg-pink-100 text-purple-800 px-4 py-2 rounded-lg cursor-pointer bg-pink-50 rounded-lg border border-pink-200 cursor-pointer hover:bg-pink-100 transition-colors disabled:cursor-not-allowed"
+          className={`bg-pink-100 text-purple-800 px-4 py-2 rounded-lg cursor-pointer bg-pink-50 rounded-lg border border-pink-200 cursor-pointer hover:bg-pink-100 transition-colors ${
+            readOnly ? "cursor-not-allowed" : ""
+          }`}
           onClick={() => setShowIconPicker(true)}
           disabled={readOnly}
         >

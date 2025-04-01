@@ -67,7 +67,9 @@ const MarkdownEditorField = ({
           disabled={readOnly}
           onChange={handleChange}
           rows={rows}
-          className="p-2 text-xs text-gray-900 w-full border border-gray-200 rounded !font-medium outline-none"
+          className={`p-2 text-xs text-gray-900 w-full border border-gray-200 rounded !font-medium outline-none ${
+            readOnly ? "cursor-not-allowed" : ""
+          }`}
           placeholder={placeholder}
         />
       ) : (

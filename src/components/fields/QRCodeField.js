@@ -12,7 +12,9 @@ const QRCodeField = ({ value, onChange, readOnly }) => {
           type="text"
           value={value}
           onChange={(e) => onChange?.(e.target.value)}
-          className="mb-4 p-2 border border-gray-300 rounded-md w-full"
+          className={`mb-4 p-2 border border-gray-300 rounded-md w-full ${
+            readOnly ? "cursor-not-allowed" : ""
+          }`}
           placeholder="Enter text to generate QR code"
         />
       )}

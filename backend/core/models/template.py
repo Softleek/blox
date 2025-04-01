@@ -187,12 +187,23 @@ class SubmittableModel(BaseModel):
                             f"Cannot modify field '{field_name}' on submitted document "
                             "unless explicitly allowed with allow_on_submit=True"
                         )
-        
-    def save(self, *args, **kwargs):
-        """Override save to prevent updates to cancelled documents"""
-        if self.pk and self.docstatus == self.DOCSTATUS_CANCELLED:
-            raise ValidationError("Cannot save changes to a Cancelled document")
-        super().save(*args, **kwargs)
+            
+    # def save(self, *args, **kwargs):
+    #     """Override save to allow the first cancellation but block further updates"""
+    #     if self.pk:
+    #         original = self.__class__.objects.get(pk=self.pk)
+
+    #         # Allow the first save when transitioning to cancelled
+    #         if original.docstatus == self.DOCSTATUS_SUBMITTED and self.docstatus == self.DOCSTATUS_CANCELLED:
+    #             super().save(*args, **kwargs)
+    #             return
+
+    #         # Block further modifications to cancelled documents
+    #         if original.docstatus == self.DOCSTATUS_CANCELLED:
+    #             raise ValidationError("Cannot modify a Cancelled document")
+
+    #     super().save(*args, **kwargs)
+
     
     def delete(self, *args, **kwargs):
         """Prevent deletion of submitted documents"""
@@ -224,7 +235,6 @@ class SubmittableModel(BaseModel):
     
     def is_cancelled(self):
         return self.docstatus == self.DOCSTATUS_CANCELLED
-
 
 
 class Series(models.Model):

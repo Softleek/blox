@@ -8,7 +8,9 @@ const LongTextField = ({ value = "", onChange, readOnly, preview, hidden }) => (
     hidden={hidden}
     onChange={onChange}
     rows="3"
-    className="p-1 bg-white rounded-md w-full"
+    className={`p-1 bg-white rounded-md w-full ${
+      readOnly ? "cursor-not-allowed" : ""
+    }`}
     placeholder="Enter long text..."
   />
 );
