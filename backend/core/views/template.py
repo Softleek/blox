@@ -443,8 +443,79 @@ class GenericViewSet(BaseModelMixin, viewsets.ModelViewSet):
                        status=status.HTTP_201_CREATED)
 
     def _serialize_retrieve_instance(self, instance):
-        """Helper method to serialize an instance for retrieve operations"""
-        return self.get_serializer(instance).data
+        """
+        Serializes the instance, including all fields from relational models.
+        """
+        serializer = self.get_serializer(instance)
+        serialized_data = serializer.data
+
+        # Extract relational fields
+        relational_fields = [
+            field for field in instance._meta.get_fields() 
+            if field.is_relation
+        ]
+
+        for field in relational_fields:
+            field_name = field.name
+            related_model = field.related_model
+
+            if related_model.__name__ in ["Token", "Session"]:
+                continue  # Skip serialization for Token and Session models
+
+            if isinstance(field, models.ForeignKey):
+                # Serialize ForeignKey fields with all fields from the related instance
+                related_instance = getattr(instance, field_name, None)
+                if related_instance:
+                    serialized_data[field_name] = self._serialize_retrieve_related_instance(related_instance)
+                    
+            elif isinstance(field, models.ManyToManyField):
+                # Serialize ManyToMany fields with all fields from related instances
+                related_instances = getattr(instance, field_name).all()
+                serialized_data[field_name] = [
+                    self._serialize_retrieve_related_instance(related_instance)
+                    for related_instance in related_instances
+                ]
+
+        return serialized_data
+    
+    def _serialize_retrieve_related_instance(self, related_instance):
+        """
+        Serializes all fields of a related instance, including 'id' for nested relations.
+        """
+        related_data = {}
+        for field in related_instance._meta.get_fields():
+            field_name = field.name
+            value = getattr(related_instance, field_name, None)
+
+            # Exclude class-like fields (customize this condition as needed)
+            if isinstance(value, list) or isinstance(value, dict):
+                continue
+
+            if field.is_relation:
+                # Skip serialization for Token and Session models
+                if field.related_model.__name__ in ["Token", "Session"]:
+                    continue
+
+                # Include only the 'id' for nested relations
+                if isinstance(value, models.Model):
+                    serialized_value = value.id  # Serialize related model with only its 'id'
+                elif hasattr(value, 'all'):  # Handle ManyToMany or reverse relations
+                    serialized_value = None
+                else:
+                    serialized_value = None
+            else:
+                if isinstance(value, models.fields.files.FieldFile) and not value:
+                    serialized_value = None  # Handle empty file fields gracefully
+                else:
+                    serialized_value = value
+
+            # Only include non-null and non-empty values
+            if serialized_value not in [None, '', [], {}, ()]:
+                related_data[field_name] = serialized_value
+
+        return related_data
+
+
 
 
 
@@ -600,8 +671,22 @@ class SingleInstanceViewSet(BaseModelMixin, viewsets.ModelViewSet):
 
     @handle_errors
     def retrieve(self, request, *args, **kwargs):
-        """Alias for list() since we only have one instance"""
-        return self.list(request, *args, **kwargs)
+        instance = self.get_object()
+        model_fields = [field.name for field in self.queryset.model._meta.fields]
+        sort_field = "modified" if "modified" in model_fields else "id"
+        queryset = self.get_queryset().order_by(sort_field)
+
+        next_instance = queryset.filter(**{f"{sort_field}__lt": getattr(instance, sort_field)}).last()
+        prev_instance = queryset.filter(**{f"{sort_field}__gt": getattr(instance, sort_field)}).first()
+
+        prev_id = prev_instance.id if prev_instance else None
+        next_id = next_instance.id if next_instance else None
+
+        data = self._serialize_retrieve_instance(instance)
+        data["_prev"] = prev_id
+        data["_next"] = next_id
+
+        return Response(data)
 
     @handle_errors
     def create(self, request, *args, **kwargs):
@@ -646,3 +731,8 @@ class SingleInstanceViewSet(BaseModelMixin, viewsets.ModelViewSet):
             {"error": "Use the dedicated create/update endpoints instead"},
             status=status.HTTP_405_METHOD_NOT_ALLOWED
         )
+        
+        
+        
+        
+      
