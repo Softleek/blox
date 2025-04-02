@@ -89,7 +89,7 @@ const DocHeader = ({
   const handleAmend = async () => {
     // Set form data with amended_from
     setForm((prev) => ({
-      ...removeIdAndRelatedFields(prev),
+      ...removeIdAndRelatedFields(prev, localConfig),
       amended_from: id, // Store the original ID
       docstatus: 0, // Reset docstatus to 0 for the new document
     }));
@@ -120,7 +120,7 @@ const DocHeader = ({
       },
     };
 
-    return statusMap[localData.docstatus] || null;
+    return statusMap[localData?.docstatus] || null;
   };
 
   // Function to get status label and style based on status field and config.states

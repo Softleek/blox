@@ -229,7 +229,7 @@ const LinkField = ({
             e.preventDefault();
             openLink();
           }}
-          className="p-2 rounded-full bg-purple-100 text-purple-600 hover:bg-purple-200 hover:text-purple-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 group"
+          className="px-2 rounded-full  text-purple-600  transition-all duration-200 group"
           title="Open link"
           aria-label="Open link"
         >

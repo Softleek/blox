@@ -2,10 +2,14 @@ import random
 import string
 import uuid
 
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
+
 from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
 from ..utils.get_model_details import get_model_doctype_json
+
 
 def generate_random_slug(length=10):
     characters = string.ascii_letters + string.digits
@@ -123,7 +127,7 @@ class SingletonModel(BaseModel):
 class SubmittableModel(BaseModel):
     """
     Abstract model for documents that can be submitted and cancelled,
-    with field-level control over editable states.
+    with field-level control over editable states and signal support.
     """
     DOCSTATUS_DRAFT = 0
     DOCSTATUS_SUBMITTED = 1
@@ -171,7 +175,7 @@ class SubmittableModel(BaseModel):
                     if field_name in ['docstatus', 'id', 'created', 'modified']:
                         continue
                     
-                    # Get the field object from the model (not from _meta.get_fields())
+                    # Get the field object from the model
                     model_field = self._meta.get_field(field_name)
                     
                     # Check if field is allowed to be modified on submitted documents
@@ -187,23 +191,6 @@ class SubmittableModel(BaseModel):
                             f"Cannot modify field '{field_name}' on submitted document "
                             "unless explicitly allowed with allow_on_submit=True"
                         )
-            
-    # def save(self, *args, **kwargs):
-    #     """Override save to allow the first cancellation but block further updates"""
-    #     if self.pk:
-    #         original = self.__class__.objects.get(pk=self.pk)
-
-    #         # Allow the first save when transitioning to cancelled
-    #         if original.docstatus == self.DOCSTATUS_SUBMITTED and self.docstatus == self.DOCSTATUS_CANCELLED:
-    #             super().save(*args, **kwargs)
-    #             return
-
-    #         # Block further modifications to cancelled documents
-    #         if original.docstatus == self.DOCSTATUS_CANCELLED:
-    #             raise ValidationError("Cannot modify a Cancelled document")
-
-    #     super().save(*args, **kwargs)
-
     
     def delete(self, *args, **kwargs):
         """Prevent deletion of submitted documents"""
@@ -216,16 +203,57 @@ class SubmittableModel(BaseModel):
         if self.docstatus != self.DOCSTATUS_DRAFT:
             raise ValidationError("Only Draft documents can be submitted")
         
+        # Trigger before_submit signal
+        from core.signals import document_signals
+        document_signals.before_submit.send(
+            sender=self.__class__,
+            instance=self
+        )
+        
         self.docstatus = self.DOCSTATUS_SUBMITTED
         self.save()
+        
+        # Trigger on_submit signal
+        document_signals.on_submit.send(
+            sender=self.__class__,
+            instance=self
+        )
     
     def cancel(self):
         """Cancel the document (change status to Cancelled)"""
         if self.docstatus != self.DOCSTATUS_SUBMITTED:
             raise ValidationError("Only Submitted documents can be cancelled")
         
+        # Trigger before_cancel signal
+        from core.signals import document_signals
+        document_signals.before_cancel.send(
+            sender=self.__class__,
+            instance=self
+        )
+        
         self.docstatus = self.DOCSTATUS_CANCELLED
         self.save()
+        
+        # Trigger on_cancel signal
+        document_signals.on_cancel.send(
+            sender=self.__class__,
+            instance=self
+        )
+    
+    def save_draft(self):
+        """Save draft with signal support"""
+        from core.signals import document_signals
+        document_signals.before_save_draft.send(
+            sender=self.__class__,
+            instance=self
+        )
+        
+        self.save()
+        
+        document_signals.on_save_draft.send(
+            sender=self.__class__,
+            instance=self
+        )
     
     def is_draft(self):
         return self.docstatus == self.DOCSTATUS_DRAFT
@@ -237,7 +265,4 @@ class SubmittableModel(BaseModel):
         return self.docstatus == self.DOCSTATUS_CANCELLED
 
 
-class Series(models.Model):
-    id = models.AutoField(primary_key=True, editable=False)
-    name = models.CharField(max_length=255)
-    current = models.IntegerField(default=0)
+

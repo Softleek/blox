@@ -309,13 +309,15 @@ const TableBody = ({
 
             {/* Action buttons */}
             <td className="px-1 py-1.5 whitespace-nowrap text-right text-xs font-medium">
-              <button
-                onClick={() => onEdit(item)}
-                className="text-blue-600 hover:text-blue-900 mr-4"
-                title="Edit"
-              >
-                <FontAwesomeIcon icon={faEdit} />
-              </button>
+              <Link href={`${currentPathWithoutParams}/${item.id}`}>
+                <button
+                  onClick={() => onEdit(item)}
+                  className="text-blue-600 hover:text-blue-900 mr-4"
+                  title="Edit"
+                >
+                  <FontAwesomeIcon icon={faEdit} />
+                </button>
+              </Link>
               <button
                 onClick={() =>
                   handleDelete({

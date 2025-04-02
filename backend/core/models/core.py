@@ -154,3 +154,9 @@ class Tenant(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Series(models.Model):
+    id = models.AutoField(primary_key=True, editable=False)
+    name = models.CharField(max_length=255)
+    current = models.IntegerField(default=0)

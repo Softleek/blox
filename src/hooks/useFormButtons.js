@@ -14,7 +14,8 @@ export function useFormButtons(
   slug,
   setSmsModalOpen,
   setEmailModalOpen,
-  setDoc
+  setDoc,
+  localConfig
 ) {
   const wrapButtonProperties = (button, additionalProps) => ({
     ...button,
@@ -36,6 +37,7 @@ export function useFormButtons(
     slug,
     setSmsModalOpen,
     setEmailModalOpen,
+    localConfig,
   };
   const buttons = [...defaultButtons].map((button) =>
     wrapButtonProperties(button, sharedProps)

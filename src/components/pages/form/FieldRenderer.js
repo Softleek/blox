@@ -98,7 +98,7 @@ const FieldRenderer = ({
     Check: { type: "checkbox", icon: faCheckSquare },
     Color: { type: "color", icon: faPaintBrush },
     Link: { type: "link", icon: faLink },
-    "Dynamic Link": { type: "link", icon: faLink },
+    "Dynamic Link": { type: "text", icon: faLink },
     Geolocation: { type: "geolocation", icon: faMapMarkerAlt },
     Signature: { type: "signature", icon: faSignature },
     "Read Only": { type: "text", icon: faEye },
@@ -573,13 +573,13 @@ const FieldRenderer = ({
         <>
           {renderLabel()}
           <div className="text-right flex justify-between w-full">
-            <HtmlField
+            {/* <HtmlField
               field={item}
               value={value}
               onChange={(content) => handleInputChange(item, content)}
               readOnly={readOnly}
               hidden={item?.hidden}
-            />
+            /> */}
             {/* {renderIcon()}{" "} */}
           </div>
         </>

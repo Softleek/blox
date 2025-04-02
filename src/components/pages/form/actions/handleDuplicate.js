@@ -1,8 +1,9 @@
-export const removeIdAndRelatedFields = (data) => {
+export const removeIdAndRelatedFields = (data, config = {}) => {
   const fieldsToRemove = [
     // "id",
     "modified",
     "created",
+    "docstatus",
     "created_by",
     "modified_by",
     "_next",
@@ -15,7 +16,7 @@ export const removeIdAndRelatedFields = (data) => {
       const processedArray = value
         .map((item) => {
           if (typeof item === "object" && item !== null) {
-            return removeIdAndRelatedFields(item); // Recursively clean list objects
+            return removeIdAndRelatedFields(item, config); // Recursively clean list objects
           }
           return item; // Leave non-object items as-is
         })
@@ -27,7 +28,7 @@ export const removeIdAndRelatedFields = (data) => {
       // Replace nested objects with their `id` field if it exists
       return value.id !== undefined
         ? value.id
-        : removeIdAndRelatedFields(value);
+        : removeIdAndRelatedFields(value, config);
     }
     return value; // Return primitives as-is
   };
@@ -35,19 +36,30 @@ export const removeIdAndRelatedFields = (data) => {
   // Process the current object
   return Object.fromEntries(
     Object.entries(data)
-      .filter(
-        ([key, value]) =>
-          !fieldsToRemove.includes(key) && value !== null && value !== undefined // Exclude unwanted fields, `null`, and `undefined` values
-      )
+      .filter(([key, value]) => {
+        const fieldConfig = config?.fields[key] || {};
+        const noCopy =
+          fieldConfig.no_copy === true || fieldConfig.no_copy === 1;
+
+        return (
+          !fieldsToRemove.includes(key) && // Exclude unwanted fields
+          !noCopy && // Exclude fields with no_copy set to true or 1
+          value !== null && // Exclude `null` values
+          value !== undefined // Exclude `undefined` values
+        );
+      })
       .map(([key, value]) => [key, processValue(value)]) // Process each value
       .filter(([, value]) => value !== null) // Remove keys with `null` values after processing
   );
 };
 
 export const handleDuplicate = (props) => {
-  const { router, id, form, setForm } = props;
+  const { router, id, form, setForm, localConfig: config } = props;
 
-  const cleanedForm = removeIdAndRelatedFields({ ...form, id: undefined });
+  const cleanedForm = removeIdAndRelatedFields(
+    { ...form, id: undefined },
+    config
+  );
 
   setForm(cleanedForm);
 

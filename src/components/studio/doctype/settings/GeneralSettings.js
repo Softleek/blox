@@ -93,9 +93,9 @@ const GeneralSettings = () => {
             handleChange={(_, e) => handleChange("options", e)}
             placeholder="Enter target Doctype"
             name="options"
-            endpoint="document"
+            endpoint="frappe/doctype"
             field={{
-              name: "Document",
+              name: "DocType",
               label: "Options",
               filter_on: "doctype",
               title_field: "name",
@@ -190,9 +190,9 @@ const GeneralSettings = () => {
         handleChange={(_, e) => handleChange("fetch_from", e)}
         placeholder="Enter target Doctype"
         name="options"
-        endpoint="document"
+        endpoint="DocType"
         field={{
-          name: "Document",
+          name: "DocType",
           label: "Options",
           filter_on: "doctype",
           title_field: "name",

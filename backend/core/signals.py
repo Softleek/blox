@@ -1,17 +1,57 @@
 from threading import local
 
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
 from .utils.get_model_details import get_model_doctype_json
 from .utils.naming_manager import NamingManager
-
+from django.dispatch import Signal
 _request_local = local()
 
 
 def get_current_user():
     return getattr(_request_local, "user", "system")
+# Custom signals for document lifecycle events
 
+
+class DocumentSignals:
+    def __init__(self):
+        self.before_submit = Signal()
+        self.on_submit = Signal()
+        self.before_cancel = Signal()
+        self.on_cancel = Signal()
+        self.before_save_draft = Signal()
+        self.on_save_draft = Signal()
+        
+        # Register additional signals later if needed
+        self._signals = {
+            'before_submit': self.before_submit,
+            'on_submit': self.on_submit,
+            'before_cancel': self.before_cancel,
+            'on_cancel': self.on_cancel,
+            'before_save_draft': self.before_save_draft,
+            'on_save_draft': self.on_save_draft,
+        }
+    
+    def register(self, signal_name):
+        """Dynamically add new signals"""
+        if signal_name not in self._signals:
+            new_signal = Signal()
+            self._signals[signal_name] = new_signal
+            setattr(self, signal_name, new_signal)
+            return new_signal
+        return self._signals[signal_name]
+
+# Global instance
+document_signals = DocumentSignals()
+
+# Django-style receiver decorator
+def receiver(signal, **kwargs):
+    def _decorator(func):
+        if isinstance(signal, Signal):
+            signal.connect(func, **kwargs)
+        return func
+    return _decorator
 
 @receiver(pre_save)
 def generate_name_for_model(sender, instance, **kwargs):
@@ -118,3 +158,16 @@ def track_changes_after_save(sender, instance, **kwargs):
 def generate_uuid():
     import uuid
     return str(uuid.uuid4())
+
+# from frappe_mpsa_payments_app.models import MpesaExpressRequest
+
+# @receiver(document_signals.before_submit, sender=MpesaExpressRequest)
+# def my_handler(sender, instance, **kwargs):
+#     print("-------------------------------------------")
+#     print("Before submit signal received!")
+#     print(f"Instance: {instance}")
+#     print(f"Sender: {sender}")
+
+#     # Change the status to "Failed" before submission
+#     instance.status = "Failed"
+#     instance.save(update_fields=["status"])

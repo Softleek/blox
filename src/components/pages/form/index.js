@@ -39,11 +39,11 @@ const DoctypeForm = ({ handleSave, config, title }) => {
     async (e) => {
       e?.preventDefault();
 
-      const validation = validateRequiredFields(form, localConfig);
-      if (!validation.isValid) {
-        showValidationErrors(validation.errors);
-        return;
-      }
+      // const validation = validateRequiredFields(form, localConfig);
+      // if (!validation.isValid) {
+      //   showValidationErrors(validation.errors);
+      //   return;
+      // }
 
       await originalHandleSaveClick(e);
     },
@@ -77,7 +77,8 @@ const DoctypeForm = ({ handleSave, config, title }) => {
     slug,
     setSmsModalOpen,
     setEmailModalOpen,
-    setDoc
+    setDoc,
+    localConfig
   );
 
   useEffect(() => {

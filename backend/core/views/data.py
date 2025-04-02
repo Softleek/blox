@@ -228,7 +228,7 @@ class BulkDeleteAPIView(APIView):
                 )
 
             # Function to delete a single record
-            def delete_record(record_id):
+            def delete_record(record_id): 
                 try:
                     record = model.objects.get(id=record_id)
                     if model_name == "Document":
